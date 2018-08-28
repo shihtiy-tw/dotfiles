@@ -1,0 +1,29 @@
+[user]
+	name = Stanley
+	email = stanley830912@gmail.com
+
+[alias]
+	a = add
+	b = branch
+	c = commit
+	cl = clone
+	cm = commit -m
+	co = checkout
+	cp = cherry-pick
+	d = diff --color=auto
+	dc = diff --color=auto --cached
+	diff = diff --color=auto
+	f = fetch
+	m = merge
+	p = pull
+	s = status
+	g = grep --break --heading --line-number --color=auto
+	grep = grep --break --heading --line-number --color=auto
+	l = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%ai%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
+	log = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%ai%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
+
+[push]
+	default = simple
+
+[github]
+	user = stanleyuan
