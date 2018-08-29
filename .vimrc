@@ -46,7 +46,9 @@ Plug 'vim-scripts/matchit.zip'
 Plug 'vim-airline/vim-airline'
 Plug 'alvan/vim-closetag'
 Plug 'scrooloose/nerdcommenter'
-Plug 'vimwiki/vimwiki'
+"Plug 'vimwiki/vimwiki'
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
 
 "Plug 'Shougo/neocomplete'
 
@@ -283,6 +285,23 @@ autocmd filetype javascript nnoremap <leader>r :w <bar> exec '!nodejs '.shellesc
 
 " Ctags
 let g:ctags_statusline = 1
+
+" vimwiki
+"let g:vimwiki_list = [{'path': '~/my_site/',
+                       "\ 'syntax': 'markdown', 'ext': '.md'}]
+"# hotkeys
+"Enter - create a new note (cursor must be on a word)
+"Enter - enter into the note
+"Backspace - Go back
+
+
+" vim-instant-markdown - Instant Markdown previews from Vim
+" https://github.com/suan/vim-instant-markdown
+let g:instant_markdown_autostart = 0	" disable autostart
+map <leader>md :InstantMarkdownPreview<CR>
+"# hotkeys
+"<leader>md - Open Markdown preview on web browser
+"related tools: gitbook, remarkable
 
 " Emmet
 let g:user_emmet_expandabbr_key = '<c-e>'
