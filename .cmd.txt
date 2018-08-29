@@ -1118,6 +1118,8 @@ Ubuntu 網路設定
 
 
 
+Git
+	git remote add
 
 Docker
 	docker run -it -p 4040:4040 -p 8080:8080 -p 8081:8081 -h spark --name=spark p7hb/docker-spark
@@ -1164,6 +1166,7 @@ Gnome
 
 VirtualBox
 	shared folder
+		apt-get install virtualbox-guest-dkms
 		https://askubuntu.com/questions/456400/why-cant-i-access-a-shared-folder-from-within-my-virtualbox-machine
 
 Ubuntu
