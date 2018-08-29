@@ -46,6 +46,7 @@ Plug 'vim-scripts/matchit.zip'
 Plug 'vim-airline/vim-airline'
 Plug 'alvan/vim-closetag'
 Plug 'scrooloose/nerdcommenter'
+Plug 'vimwiki/vimwiki'
 
 "Plug 'Shougo/neocomplete'
 

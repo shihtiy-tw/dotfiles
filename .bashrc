@@ -93,7 +93,7 @@ fi
 
 # mkdir + cd
 function mkdircd() {
-	command mkdir $argv && cd $argv
+	command mkdir $1 && cd $1
 }
 
 # some more ls aliases
