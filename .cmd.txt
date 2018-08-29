@@ -1119,7 +1119,13 @@ Ubuntu 網路設定
 
 
 Git
-	git remote add
+	Remove a file from a Git repository without deleting it from the local filesystem
+		For single file:
+		git rm --cached mylogfile.log
+		For single directory:
+		git rm --cached -r mydirectory
+	Setting bare repository
+		git --git-dir=git_file_path --work-tree=git_work_path
 
 Docker
 	docker run -it -p 4040:4040 -p 8080:8080 -p 8081:8081 -h spark --name=spark p7hb/docker-spark
@@ -1128,6 +1134,9 @@ Docker
 	docker container create --name 'vbird' ubuntu
 	docker exec -it goofy_almeida /bin/bash
 
+ascii art
+	figlet
+	toilet
 
 COPY
 	pv my_big_file > backup/my_big_file
