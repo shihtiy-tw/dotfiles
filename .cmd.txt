@@ -1098,6 +1098,7 @@ Ubuntu 網路設定
 	nmcli c up uuid cd79a7a1-1cf4-49c3-ad58-21ab17d1ba05
 	nmcli c up id Rishbh-Q1000
 	nmcli c up id Rishbh-Q1000 iface wlan1 // specific interface
+	nmcli d wifi connect "SSID" password "password"
 
 	nmcli d disconnect [interface]
 	nmcli c down id Rishbh-Q1000
