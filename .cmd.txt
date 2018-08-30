@@ -391,6 +391,8 @@ Vbrid Basic Chapter
 	grep -vn 'the' regular_express.txt
 	grep -n 'the' regular_express.txt
 
+	grep -C 5 // before and after 5 lines
+
 	sed
 		-n  ：使用安靜(silent)模式。在一般 sed 的用法中，所有來自 STDIN 的資料一般都會被列出到螢幕上。但如果加上 -n 參數後，則只有經過 sed 特殊處理的那一行(或者動作)才會被列出來。
 		-e  ：直接在指令列模式上進行 sed 的動作編輯；
@@ -797,6 +799,7 @@ CH20 開機流程、模組管理與 Loader
 		-e  ：顯示出目前已載入的不可執行的模組名稱
 
 	lsmod // show all the kernel modules
+	find /lib/modules/$(uname -r) -type f -name '*.ko'
 
 	modinfo [-F field] [-adln] [module_name|filename] //show kernel module infomation
 		選項與參數：
@@ -815,6 +818,7 @@ CH20 開機流程、模組管理與 Loader
 		-c  ：列出目前系統所有的模組！(更詳細的代號對應表)
 		-f  ：強制載入該模組；
 		-r  ：類似 rmmod ，就是移除某個模組囉～
+		-b  : blacklist // /etc/modprobe.d/blacklist.conf
 
 	modprobe -r uvcvideo
 	modprobe -a uvcvideo

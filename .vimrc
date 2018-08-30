@@ -49,6 +49,7 @@ Plug 'scrooloose/nerdcommenter'
 "Plug 'vimwiki/vimwiki'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
+Plug '2072/PHP-Indenting-for-VIm'
 
 "Plug 'Shougo/neocomplete'
 
