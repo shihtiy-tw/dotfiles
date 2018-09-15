@@ -50,6 +50,7 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 Plug '2072/PHP-Indenting-for-VIm'
+Plug 'shawncplus/phpcomplete.vim'
 
 "Plug 'Shougo/neocomplete'
 
@@ -265,11 +266,17 @@ inoremap ,, <C-x><C-o>
 "autocmd filetype javascript nnoremap <leader>r :w <bar> exec '!nodejs '.shellescape('%') <CR>
 
 
-autocmd filetype c          nnoremap <leader>r :w <bar> exec '!gcc '.shellescape('%').' -O2 ; and  ./a.out'<CR>
-autocmd filetype cs         nnoremap <leader>r :w <bar> exec '!mcs '.shellescape('%').' ; and  mono '.shellescape('%:r').'.exe'<CR>
-autocmd filetype cpp        nnoremap <leader>r :w <bar> exec '!g++ '.shellescape('%').' -std=c++11 -O2 ; and  ./a.out'<CR>
+"for fish
+"autocmd filetype c          nnoremap <leader>r :w <bar> exec '!gcc '.shellescape('%').' -O2 ; and  ./a.out'<CR>
+"autocmd filetype cs         nnoremap <leader>r :w <bar> exec '!mcs '.shellescape('%').' ; and  mono '.shellescape('%:r').'.exe'<CR>
+"autocmd filetype cpp        nnoremap <leader>r :w <bar> exec '!g++ '.shellescape('%').' -std=c++11 -O2 ; and  ./a.out'<CR>
+"autocmd filetype php        nnoremap <leader>r :w <bar> exec '!php -f '.shellescape('%') <CR>
+"autocmd filetype java       nnoremap <leader>r :w <bar> exec '!javac '.shellescape('%').'; and java '.shellescape('%:r') <CR>
+autocmd filetype c          nnoremap <leader>r :w <bar> exec '!gcc '.shellescape('%').' -O2 &&  ./a.out'<CR>
+autocmd filetype cs         nnoremap <leader>r :w <bar> exec '!mcs '.shellescape('%').' &&  mono '.shellescape('%:r').'.exe'<CR>
+autocmd filetype cpp        nnoremap <leader>r :w <bar> exec '!g++ '.shellescape('%').' -std=c++11 -O2 &&  ./a.out'<CR>
 autocmd filetype php        nnoremap <leader>r :w <bar> exec '!php -f '.shellescape('%') <CR>
-autocmd filetype java       nnoremap <leader>r :w <bar> exec '!javac '.shellescape('%').'; and java '.shellescape('%:r') <CR>
+autocmd filetype java       nnoremap <leader>r :w <bar> exec '!javac '.shellescape('%').'&& java '.shellescape('%:r') <CR>
 autocmd filetype lisp       nnoremap <leader>r :w <bar> exec '!clisp '.shellescape('%') <CR>
 autocmd filetype perl       nnoremap <leader>r :w <bar> exec '!perl '.shellescape('%') <CR>
 autocmd filetype ruby       nnoremap <leader>r :w <bar> exec '!ruby '.shellescape('%') <CR>

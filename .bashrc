@@ -107,23 +107,20 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 
 stty -ixon #disable ctrl-s
 #Alias
+alias cp="rsync -ah --progress"
+alias open="xdg-open"
+alias pingtest="ping 8.8.8.8"
 alias c='clear'
-
 alias weka='java -jar /home/ieni/weka-3-8-1/weka.jar'
-
 alias python='python3'
-
 alias pip='pip3'
-
 alias bkliton='echo 1 | sudo tee /sys/class/leds/asus::kbd_backlight/brightness'
-
 alias bklitoff='echo 0 | sudo tee /sys/class/leds/asus::kbd_backlight/brightness'
-
 # https://developer.atlassian.com/blog/2016/02/best-way-to-store-dotfiles-git-bare-repo/
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-
 alias myip="ifconfig wlp3s0 | grep -m 1 inet | sed 's/^.*inet addr://g' | sed 's/Bcast.*//g'"
 export MYIP=$(myip)
+alias notes='sudo updatedb; locate -r ~/".*notes_.*\.md"'
 
 
 export GOOGLE_APPLICATION_CREDENTIALS='/home/ieni/Documents/NTUT/patrick/Natural_Language/Natural_Language_API-a56f9766faee.json'
