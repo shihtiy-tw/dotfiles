@@ -121,17 +121,24 @@ alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias myip="ifconfig wlp3s0 | grep -m 1 inet | sed 's/^.*inet addr://g' | sed 's/Bcast.*//g'"
 export MYIP=$(myip)
 alias notes='sudo updatedb; locate -r ~/".*notes_.*\.md"'
+alias def='definition'
 
 
 export GOOGLE_APPLICATION_CREDENTIALS='/home/ieni/Documents/NTUT/patrick/Natural_Language/Natural_Language_API-a56f9766faee.json'
 
-export PATH=/usr/local/cuda-8.0/bin:$PATH
-export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64:$LD_LIBRARY_PATH1
+#export PATH=/usr/local/cuda-8.0/bin:$PATH
+#export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64:$LD_LIBRARY_PATH1
+export PATH=${PATH}:/usr/local/cuda-9.0/bin
+export LD_LIBRARY_PATH=/usr/local/cuda-9.0/lib64
 export TF_CPP_MIN_LOG_LEVEL=2
 export VISUAL=vim
 export EDITOR="$VISUAL"
 export PYTHONPATH=$PATH
+#export PYTHONPATH=/usr/local/lib/python3.5/dist-packages:$PYTHONPATH
+#export PYTHONPATH=$PYTHONPATH:/usr/local/lib/python3.5/dist-packages
 export ANDROID_HOME='/home/ieni/Android/Sdk'
+export CATALINA_HOME='/opt/tomcat'
+export PATH=${PATH}:/home/ieni/Documents/NTUT/Learning_Project/idea-IU-182.4892.20/bin
 
 # JAVA_HOME="/usr/lib/jvm/java-8-oracle"
 # GOOGLE_APPLICATION_CREDENTIALS='/home/ieni/Documents/NTUT/patrick/Natural_Language/Natural_Language_API-a56f9766faee.json'

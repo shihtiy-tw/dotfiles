@@ -24,8 +24,11 @@ set nocompatible " Be iMproved
 call plug#begin('~/.vim/plugged')
 "Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 
+" Vim theme
 Plug 'tomasr/molokai'
 Plug 'miyakogi/seiya.vim'
+Plug 'crusoexia/vim-monokai'
+Plug 'altercation/vim-colors-solarized'
 
 " Make Vim Powerful
 Plug 'vim-scripts/Auto-Pairs'
@@ -43,22 +46,37 @@ Plug 'triglav/vim-visual-increment'
 Plug 'vim-scripts/Buffergator'
 Plug 'vim-scripts/matchit.zip'
 
+Plug 'mhinz/vim-grepper'
+Plug 'rking/ag.vim'
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'alvan/vim-closetag'
 Plug 'scrooloose/nerdcommenter'
 "Plug 'vimwiki/vimwiki'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
+Plug 'mzlogin/vim-markdown-toc'
 Plug '2072/PHP-Indenting-for-VIm'
 Plug 'shawncplus/phpcomplete.vim'
+Plug 'tpope/vim-fugitive'
+Plug 'junegunn/gv.vim'
+Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+"Plug 'idanarye/vim-vebugger'
+Plug 'vim-vdebug/vdebug'
+"https://www.raditha.com/blog/archives/vim-and-python-debug/
+
+
 
 "Plug 'Shougo/neocomplete'
 
 
 " Syntax
+Plug 'Valloric/YouCompleteMe'
+Plug 'vim-syntastic/syntastic'
 Plug 'chr4/nginx.vim'
 Plug 'stanangeloff/php.vim'
 Plug 'hdima/python-syntax'
+
 Plug 'keith/swift.vim'
 
 Plug 'davidhalter/jedi-vim'
@@ -118,8 +136,21 @@ filetype plugin indent on
 
 
 let g:rehash256 = 1
-if !empty(glob('~/.vim/plugged/molokai/colors/molokai.vim'))
-	color molokai
+let option = "molokai"
+if option == "molokai"
+	if !empty(glob('~/.vim/plugged/molokai/colors/molokai.vim'))
+		color molokai
+	endif
+elseif option == "monokai"
+	if !empty(glob('~/.vim/plugged/vim-monokai/colors/monokai.vim'))
+		color monokai
+	endif
+elseif option == "solarized"
+	if !empty(glob('~/.vim/plugged/vim-colors-solarized/colors/solarized.vim'))
+		set background=dark
+		let g:solarized_termcolors=256
+		color solarized
+	endif
 endif
 
 " ____            _         ____             __ _
@@ -178,6 +209,9 @@ autocmd FileType php    setlocal et
 "normal mode
 imap <Leader><Leader> <c-c>
 
+" vim-instance-markdown
+map <leader>md :InstantMarkdownPreview<CR>
+
 " clear search result
 " nnoremap <c-l> :noh<CR>
 " inoremap <c-l> <c-o>:noh<CR>
@@ -185,12 +219,28 @@ nnoremap <Leader>m :noh<CR>
 " inoremap <Leader>m :noh<CR>
 nmap <Leader>m :noh<CR>
 
+" Grepper
+nmap gs  <plug>(GrepperOperator)
+xmap gs  <plug>(GrepperOperator)
+"nnoremap <leader>gj :Grepper -tool git<cr>
+"nnoremap <leader>GJ :Grepper -tool ag<cr>
+nnoremap <leader>gj :Grepper -tool grep<cr>
+nnoremap <leader>GJ :Grepper -tool ag<cr>
+
+"Synstatic
+nnoremap <F5> :SyntasticToggleMode <CR>
+nnoremap <F4> :SyntasticCheck <CR>
+
+"YouCompleteMe
+nnoremap <leader>y :YcmCompleter GoToDefinitionElseDeclaration <CR>
+nnoremap <leader>gy :YcmCompleter GoToReferences <CR>
+
 " tagbar
 nmap <F8> :TagbarToggle<CR>
 
 " NERDTree
-inoremap <F10> <ESC>:NERDTreeTabsToggle<CR>
-nnoremap <silent> <F10> :NERDTreeTabsToggle<CR>
+inoremap <F9> <ESC>:NERDTreeTabsToggle<CR>
+nnoremap <silent> <F9> :NERDTreeTabsToggle<CR>
 let g:NERDTreeWinSize=22
 let NERDTreeIgnore=['__pycache__', '\.o$', '\.pyc$', '\~$', 'node_modules', '\.dSYM$', '\.class$']
 
@@ -244,6 +294,10 @@ map <leader>y "*y
 " javacomplete2
 inoremap ,, <C-x><C-o>
 
+" zoom toggle
+nmap <leader>z :tabnew %<CR>
+nmap <leader>Z :q<CR>
+
 
 
 
@@ -294,6 +348,17 @@ autocmd filetype javascript nnoremap <leader>r :w <bar> exec '!nodejs '.shellesc
 " Ctags
 let g:ctags_statusline = 1
 
+"jedi
+
+
+
+" Ag
+let g:ag_working_path_mode="r"
+
+"supertab
+let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
+let g:SuperTabClosePreviewOnPopupClose = 1
+
 " vimwiki
 "let g:vimwiki_list = [{'path': '~/my_site/',
                        "\ 'syntax': 'markdown', 'ext': '.md'}]
@@ -302,11 +367,26 @@ let g:ctags_statusline = 1
 "Enter - enter into the note
 "Backspace - Go back
 
+" syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_mode_map = {
+	\ "mode": "passive",
+	\ "active_filetypes": [],
+	\ "passive_filetypes": [] }
+
+" grepper
+let g:grepper_highlight = 1
 
 " vim-instant-markdown - Instant Markdown previews from Vim
 " https://github.com/suan/vim-instant-markdown
 let g:instant_markdown_autostart = 0	" disable autostart
-map <leader>md :InstantMarkdownPreview<CR>
 "# hotkeys
 "<leader>md - Open Markdown preview on web browser
 "related tools: gitbook, remarkable
@@ -341,6 +421,7 @@ let g:localvimrc_persistent=1
 
 " airline
 let g:airline#extensions#tabline#enabled = 1
+let g:airline_theme='minimalist'
 
 " vim-javacomplete2
 autocmd FileType java setlocal omnifunc=javacomplete#Complete
