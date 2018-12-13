@@ -45,6 +45,7 @@ Plug 'tpope/vim-surround'
 Plug 'triglav/vim-visual-increment'
 Plug 'vim-scripts/Buffergator'
 Plug 'vim-scripts/matchit.zip'
+"Plug 'easymotion/vim-easymotion'
 
 Plug 'mhinz/vim-grepper'
 Plug 'rking/ag.vim'
@@ -61,8 +62,9 @@ Plug 'shawncplus/phpcomplete.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+"Plug 'SkyLeach/pudb.vim'
 "Plug 'idanarye/vim-vebugger'
-Plug 'vim-vdebug/vdebug'
+"Plug 'vim-vdebug/vdebug'
 "https://www.raditha.com/blog/archives/vim-and-python-debug/
 
 
@@ -76,13 +78,15 @@ Plug 'vim-syntastic/syntastic'
 Plug 'chr4/nginx.vim'
 Plug 'stanangeloff/php.vim'
 Plug 'hdima/python-syntax'
-
 Plug 'keith/swift.vim'
-
 Plug 'davidhalter/jedi-vim'
-
 Plug 'artur-shaik/vim-javacomplete2'
 Plug 'PProvost/vim-ps1' "ps1
+Plug 'Rip-Rip/clang_complete'
+Plug 'wookiehangover/jshint.vim'
+Plug 'prettier/vim-prettier', {
+  \ 'do': 'npm install',
+  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
 
 " Plug 'maralla/validator.vim'
 
@@ -187,6 +191,11 @@ set wildmenu                     " 自動補完選單
 syntax on
 filetype plugin indent on
 
+noremap <Leader>y "*y
+noremap <Leader>p "*p
+noremap <Leader>Y "+y
+noremap <Leader>P "+p
+
 " _____ _ _     _____                   ____      _       _           _
 "|  ___(_) | __|_   _|   _ _ __   ___  |  _ \ ___| | __ _| |_ ___  __| |
 "| |_  | | |/ _ \| || | | | '_ \ / _ \ | |_) / _ \ |/ _` | __/ _ \/ _` |
@@ -232,8 +241,10 @@ nnoremap <F5> :SyntasticToggleMode <CR>
 nnoremap <F4> :SyntasticCheck <CR>
 
 "YouCompleteMe
-nnoremap <leader>y :YcmCompleter GoToDefinitionElseDeclaration <CR>
+nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration <CR>
 nnoremap <leader>gy :YcmCompleter GoToReferences <CR>
+" python3 install.py --go-completer --ts-completer --java-completer --clang-completer --cs-completer
+
 
 " tagbar
 nmap <F8> :TagbarToggle<CR>
@@ -350,6 +361,8 @@ let g:ctags_statusline = 1
 
 "jedi
 
+" Prettier
+let g:prettier#config#tab_width = 4
 
 
 " Ag
@@ -376,10 +389,20 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+let g:syntastuc_javascript_checkers = ['jshint']
+" let g:syntastic_c_checkers = [ 'gcc' ]
 let g:syntastic_mode_map = {
 	\ "mode": "passive",
 	\ "active_filetypes": [],
 	\ "passive_filetypes": [] }
+
+
+" YCM 
+" for c family
+" let g:ycm_show_diagnostics_ui = 0
+" let g:ycm_filetype_blacklist = {'java': 1}
+let g:syntastic_java_checkers = []
+let g:EclimFileTypeValidate = 0
 
 " grepper
 let g:grepper_highlight = 1
