@@ -57,6 +57,7 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 Plug 'mzlogin/vim-markdown-toc'
+Plug 'dhruvasagar/vim-table-mode'
 Plug '2072/PHP-Indenting-for-VIm'
 Plug 'shawncplus/phpcomplete.vim'
 Plug 'tpope/vim-fugitive'
@@ -379,6 +380,9 @@ let g:SuperTabClosePreviewOnPopupClose = 1
 "Enter - create a new note (cursor must be on a word)
 "Enter - enter into the note
 "Backspace - Go back
+
+" fugitive
+set diffopt+=vertical
 
 " syntastic
 set statusline+=%#warningmsg#
