@@ -115,7 +115,7 @@ alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias myip="ifconfig wlp3s0 | grep -m 1 inet | sed 's/^.*inet addr://g' | sed 's/Bcast.*//g'"
 alias notes='sudo updatedb; locate -r ~/".*notes_.*\.md"'
 alias def='definition'
-#alias cat='bat'
+alias weather='curl wttr.in'
 
 # ENV VAR
 export MYIP=$(myip)
