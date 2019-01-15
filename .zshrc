@@ -106,7 +106,7 @@ alias open="xdg-open"
 alias pingtest="ping 8.8.8.8"
 alias c='clear'
 alias weka='java -jar /home/ieni/weka-3-8-1/weka.jar'
-alias python='python3'
+alias python='python3.6'
 alias pip='pip3'
 alias bkliton='echo 1 | sudo tee /sys/class/leds/asus::kbd_backlight/brightness'
 alias bklitoff='echo 0 | sudo tee /sys/class/leds/asus::kbd_backlight/brightness'
@@ -134,6 +134,8 @@ export ANDROID_HOME='/home/ieni/Android/Sdk'
 export CATALINA_HOME='/opt/tomcat'
 export PATH=${PATH}:/home/ieni/Documents/NTUT/Learning_Project/idea-IU-182.4892.20/bin
 export PATH=${PATH}:/home/ieni/Documents/NTUT/Learning_Project/DataGrip-2018.3/bin
+export WORKON_HOME=$HOME/.virtualenvs
+
 
 # color for man pages
 export LESS_TERMCAP_mb=$'\E[1;31m'     # begin bold

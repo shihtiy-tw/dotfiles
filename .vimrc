@@ -85,6 +85,7 @@ Plug 'artur-shaik/vim-javacomplete2'
 Plug 'PProvost/vim-ps1' "ps1
 Plug 'Rip-Rip/clang_complete'
 Plug 'wookiehangover/jshint.vim'
+Plug 'Chiel92/vim-autoformat'
 Plug 'prettier/vim-prettier', {
   \ 'do': 'npm install',
   \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
@@ -237,11 +238,15 @@ xmap gs  <plug>(GrepperOperator)
 nnoremap <leader>gj :Grepper -tool grep<cr>
 nnoremap <leader>GJ :Grepper -tool ag<cr>
 
-"Synstatic
+" Synstatic
 nnoremap <F5> :SyntasticToggleMode <CR>
 nnoremap <F4> :SyntasticCheck <CR>
+let g:syntastic_python_flake8_args='--ignore=E501,W503'
 
-"YouCompleteMe
+" vim-autoformat
+nnoremap <F3> :Autoformat <CR>
+
+" YouCompleteMe
 nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration <CR>
 nnoremap <leader>gy :YcmCompleter GoToReferences <CR>
 " python3 install.py --go-completer --ts-completer --java-completer --clang-completer --cs-completer
@@ -361,6 +366,18 @@ autocmd filetype javascript nnoremap <leader>r :w <bar> exec '!nodejs '.shellesc
 let g:ctags_statusline = 1
 
 "jedi
+"
+
+" Autoformat
+" show error
+let g:autoformat_verbosemode=1
+" OR:
+let verbose=1
+" python
+" pip3 install --upgrade autopep8 --user
+" pip3 install --upgrade black --user
+let g:formatdef_custom_black = '"black -q  - --line-length 90"'
+let g:formatters_python = ['custom_black']
 
 " Prettier
 let g:prettier#config#tab_width = 4
