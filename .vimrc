@@ -9,7 +9,7 @@ let mapleader=" "
 
 "       _                       _
 "__   _(_)_ __ ___        _ __ | |_   _  __ _
-"\ \ / / | '_ ` _ \ _____| '_ \| | | | |/ _` |
+			"\ \ / / | '_ ` _ \ _____| '_ \| | | | |/ _` |
 " \ V /| | | | | | |_____| |_) | | |_| | (_| |
 "  \_/ |_|_| |_| |_|     | .__/|_|\__,_|\__, |
 "                        |_|            |___/
@@ -45,6 +45,7 @@ Plug 'tpope/vim-surround'
 Plug 'triglav/vim-visual-increment'
 Plug 'vim-scripts/Buffergator'
 Plug 'vim-scripts/matchit.zip'
+Plug 'xavierchow/vim-swagger-preview'
 "Plug 'easymotion/vim-easymotion'
 
 Plug 'mhinz/vim-grepper'
@@ -87,8 +88,8 @@ Plug 'Rip-Rip/clang_complete'
 Plug 'wookiehangover/jshint.vim'
 Plug 'Chiel92/vim-autoformat'
 Plug 'prettier/vim-prettier', {
-  \ 'do': 'npm install',
-  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
+			\ 'do': 'npm install',
+			\ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
 
 " Plug 'maralla/validator.vim'
 
@@ -96,20 +97,20 @@ Plug 'prettier/vim-prettier', {
 " only load these web front-end related plugins when we need them
 if filereadable(expand('~/.frontend.vimenv'))
 
-" syntax
-Plug 'othree/html5.vim'
-Plug 'alvan/vim-closetag' "html tags
-Plug 'cakebaker/scss-syntax.vim'
-Plug 'hail2u/vim-css3-syntax'
-Plug 'isRuslan/vim-es6'
-Plug 'pangloss/vim-javascript'
-Plug 'othree/yajs.vim'
-Plug 'posva/vim-vue'
-Plug 'slim-template/vim-slim'
-Plug 'digitaltoad/vim-pug'
+	" syntax
+	Plug 'othree/html5.vim'
+	Plug 'alvan/vim-closetag' "html tags
+	Plug 'cakebaker/scss-syntax.vim'
+	Plug 'hail2u/vim-css3-syntax'
+	Plug 'isRuslan/vim-es6'
+	Plug 'pangloss/vim-javascript'
+	Plug 'othree/yajs.vim'
+	Plug 'posva/vim-vue'
+	Plug 'slim-template/vim-slim'
+	Plug 'digitaltoad/vim-pug'
 
-" other
-Plug 'mattn/emmet-vim'
+	" other
+	Plug 'mattn/emmet-vim'
 
 endif
 
@@ -127,7 +128,7 @@ Plug 'editorconfig/editorconfig-vim'
 
 let local_Vimrc=expand('~/.vimrc.local')
 if filereadable(local_Vimrc)
-    source ~/.vimrc.local
+	source ~/.vimrc.local
 endif
 
 call plug#end()
@@ -168,7 +169,7 @@ endif
 
 set autoindent                   " 自動縮排
 set backspace=indent,eol,start   " 統一 backsapce 功能
-set colorcolumn=100              " 換行提示線
+set colorcolumn=91              " 換行提示線
 set cursorline                   " 目前游標所在這行反白
 set fileencodings=utf-8,default,big5,ucs-bom,latin1
 set hlsearch                     " 顏色標記被搜尋的文字
@@ -189,6 +190,7 @@ set tabpagemax=100               " 一次最多可以開多少tab
 set tabstop=4                    " tab寬度
 set timeoutlen=300               " escape delay
 set wildmenu                     " 自動補完選單
+set spell spelllang=en_us		 " 檢查拼字錯誤
 
 syntax on
 filetype plugin indent on
@@ -205,7 +207,7 @@ noremap <Leader>P "+p
 "|_|   |_|_|\___||_| \__, | .__/ \___| |_| \_\___|_|\__,_|\__\___|\__,_|
 "                    |___/|_|
 
-autocmd FileType python setlocal et   sw=4 sts=4 cc=80
+autocmd FileType python setlocal et   sw=4 sts=4 cc=91
 autocmd FileType html   setlocal et   sw=2 sts=2
 autocmd FileType ruby   setlocal noet sw=2 sts=2
 autocmd FileType php    setlocal et
@@ -241,7 +243,6 @@ nnoremap <leader>GJ :Grepper -tool ag<cr>
 " Synstatic
 nnoremap <F5> :SyntasticToggleMode <CR>
 nnoremap <F4> :SyntasticCheck <CR>
-let g:syntastic_python_flake8_args='--ignore=E501,W503'
 
 " vim-autoformat
 nnoremap <F3> :Autoformat <CR>
@@ -376,7 +377,7 @@ let verbose=1
 " python
 " pip3 install --upgrade autopep8 --user
 " pip3 install --upgrade black --user
-let g:formatdef_custom_black = '"black -q  - --line-length 90"'
+let g:formatdef_custom_black = '"black -q  - --line-length 89"'
 let g:formatters_python = ['custom_black']
 
 " Prettier
@@ -392,7 +393,7 @@ let g:SuperTabClosePreviewOnPopupClose = 1
 
 " vimwiki
 "let g:vimwiki_list = [{'path': '~/my_site/',
-                       "\ 'syntax': 'markdown', 'ext': '.md'}]
+			"\ 'syntax': 'markdown', 'ext': '.md'}]
 "# hotkeys
 "Enter - create a new note (cursor must be on a word)
 "Enter - enter into the note
@@ -412,18 +413,26 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastuc_javascript_checkers = ['jshint']
 " let g:syntastic_c_checkers = [ 'gcc' ]
+let g:syntastic_python_flake8_post_args='--ignore=F821,E302,E501,F403,F405,E731,W503'
+"pylint --generate-rcfile > ~/.pylintrc
+
 let g:syntastic_mode_map = {
-	\ "mode": "passive",
-	\ "active_filetypes": [],
-	\ "passive_filetypes": [] }
+			\ "mode": "passive",
+			\ "active_filetypes": [],
+			\ "passive_filetypes": [] }
 
 
-" YCM 
+" YCM
 " for c family
 " let g:ycm_show_diagnostics_ui = 0
-" let g:ycm_filetype_blacklist = {'java': 1}
-let g:syntastic_java_checkers = []
 let g:EclimFileTypeValidate = 0
+"let g:ycm_filetype_blacklist = { 'python': 1 }
+
+
+autocmd filetype c let g:ycm_global_ycm_extra_conf = "~/.vim/.ycm_extra_conf.py"
+autocmd filetype cpp let g:ycm_global_ycm_extra_conf = "~/.vim/.ycm_extra_conf_cpp.py"
+let g:clang_use_library = 1
+let g:clang_library_path = "/usr/lib/llvm-3.8/lib/libclang.so"
 
 " grepper
 let g:grepper_highlight = 1
@@ -440,18 +449,18 @@ let g:user_emmet_expandabbr_key = '<c-e>'
 
 " CtrlP
 let g:ctrlp_custom_ignore = {
-	\ 'dir':  '\v[\/](\.(git|hg|svn)|node_modules)$',
-	\ 'file': '\v\.(exe|so|dll|swp|zip|7z|rar|gz|xz|apk|dmg|iso|jpg|png|pdf)$',
-	\ }
+			\ 'dir':  '\v[\/](\.(git|hg|svn)|node_modules)$',
+			\ 'file': '\v\.(exe|so|dll|swp|zip|7z|rar|gz|xz|apk|dmg|iso|jpg|png|pdf)$',
+			\ }
 
 " python-syntax
 let python_highlight_all = 1
 
 " vim-css3-syntax
 augroup VimCSS3Syntax
-  autocmd!
+	autocmd!
 
-  autocmd FileType css setlocal iskeyword+=-
+	autocmd FileType css setlocal iskeyword+=-
 augroup END
 
 " vim-surround
@@ -493,5 +502,5 @@ autocmd BufWinLeave * call clearmatches()
 hi Search ctermfg=16 ctermbg=226
 
 if has("gui_macvim") || has("gui_vimr")
-   set guifont=Menlo:h14
+	set guifont=Menlo:h14
 endif
