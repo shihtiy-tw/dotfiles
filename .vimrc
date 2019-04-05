@@ -7,9 +7,43 @@
 
 let mapleader=" "
 
+" ___   ___ _  __ __     _____ __  __
+"/ _ \ / _ (_)/ / \ \   / /_ _|  \/  |
+" (_) | | | |/ /   \ \ / / | || |\/| |
+"\__, | |_| / /_    \ V /  | || |  | |
+"  /_/ \___/_/(_)    \_/  |___|_|  |_|
+"
+
+" fuzzy find
+set path +=**
+set wildmenu
+
+" print current filename
+" echo expane("%")
+
+" TAG JUMPING:
+
+" Create the `tags` file (may need to install ctags first)
+command! MakeTags !ctags -R .
+
+" NOW WE CAN:
+" - Use ^] to jump to tag under cursor
+" - Use g^] for ambiguous tags
+" - Use ^t to jump back up the tag stack
+"
+" FILE BROWSING:
+
+" Tweaks for browsing
+let g:netrw_banner=0        " disable annoying banner
+let g:netrw_browse_split=4  " open in prior window
+let g:netrw_altv=1          " open splits to the right
+let g:netrw_liststyle=3     " tree view
+let g:netrw_list_hide=netrw_gitignore#Hide()
+let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
+
 "       _                       _
 "__   _(_)_ __ ___        _ __ | |_   _  __ _
-			"\ \ / / | '_ ` _ \ _____| '_ \| | | | |/ _` |
+"\ \ / / | '_ ` _ \ _____| '_ \| | | | |/ _` |
 " \ V /| | | | | | |_____| |_) | | |_| | (_| |
 "  \_/ |_|_| |_| |_|     | .__/|_|\__,_|\__, |
 "                        |_|            |___/
@@ -31,6 +65,7 @@ Plug 'crusoexia/vim-monokai'
 Plug 'altercation/vim-colors-solarized'
 
 " Make Vim Powerful
+Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh \| UpdateRemotePlugins' }
 Plug 'vim-scripts/Auto-Pairs'
 Plug 'kien/ctrlp.vim'
 Plug 'scrooloose/nerdtree'
@@ -46,6 +81,9 @@ Plug 'triglav/vim-visual-increment'
 Plug 'vim-scripts/Buffergator'
 Plug 'vim-scripts/matchit.zip'
 Plug 'xavierchow/vim-swagger-preview'
+Plug '~/Tool_from_git/fzf/bin/fzf'
+Plug '~/Tool_from_git/fzf/bin/fzf-tmux'
+Plug 'junegunn/fzf.vim'
 "Plug 'easymotion/vim-easymotion'
 
 Plug 'mhinz/vim-grepper'
@@ -69,12 +107,16 @@ Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 "Plug 'vim-vdebug/vdebug'
 "https://www.raditha.com/blog/archives/vim-and-python-debug/
 
+Plug 'stevearc/vim-arduino'
+Plug 'heavenshell/vim-pydocstring'
+Plug 'vim-scripts/DoxygenToolkit.vim'
 
 
 "Plug 'Shougo/neocomplete'
 
 
 " Syntax
+"Plug 'vim-scripts/Conque-GDB'
 Plug 'Valloric/YouCompleteMe'
 Plug 'vim-syntastic/syntastic'
 Plug 'chr4/nginx.vim'
@@ -84,7 +126,7 @@ Plug 'keith/swift.vim'
 Plug 'davidhalter/jedi-vim'
 Plug 'artur-shaik/vim-javacomplete2'
 Plug 'PProvost/vim-ps1' "ps1
-Plug 'Rip-Rip/clang_complete'
+"Plug 'Rip-Rip/clang_complete'
 Plug 'wookiehangover/jshint.vim'
 Plug 'Chiel92/vim-autoformat'
 Plug 'prettier/vim-prettier', {
@@ -190,7 +232,7 @@ set tabpagemax=100               " 一次最多可以開多少tab
 set tabstop=4                    " tab寬度
 set timeoutlen=300               " escape delay
 set wildmenu                     " 自動補完選單
-set spell spelllang=en_us		 " 檢查拼字錯誤
+" set spell! spelllang=en_us 		 " 拼音檢查
 
 syntax on
 filetype plugin indent on
@@ -222,6 +264,10 @@ autocmd FileType php    setlocal et
 "normal mode
 imap <Leader><Leader> <c-c>
 
+" pydocstring
+nmap <leader><leader>c <Plug>(pydocstring)
+
+
 " vim-instance-markdown
 map <leader>md :InstantMarkdownPreview<CR>
 
@@ -240,9 +286,18 @@ xmap gs  <plug>(GrepperOperator)
 nnoremap <leader>gj :Grepper -tool grep<cr>
 nnoremap <leader>GJ :Grepper -tool ag<cr>
 
+" reload files
+function Reload_files()
+	"set autoreload
+	set autoread
+	checktime
+	set noautoread
+endfunction
+noremap <F5> :call Reload_files() <CR>
+
 " Synstatic
-nnoremap <F5> :SyntasticToggleMode <CR>
-nnoremap <F4> :SyntasticCheck <CR>
+nnoremap <F4> :SyntasticToggleMode <CR>
+"nnoremap <F4> :SyntasticCheck <CR>
 
 " vim-autoformat
 nnoremap <F3> :Autoformat <CR>
@@ -252,6 +307,12 @@ nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration <CR>
 nnoremap <leader>gy :YcmCompleter GoToReferences <CR>
 " python3 install.py --go-completer --ts-completer --java-completer --clang-completer --cs-completer
 
+"arduino
+nnoremap <buffer> <leader>am :ArduinoVerify<CR>
+nnoremap <buffer> <leader>au :ArduinoUpload<CR>
+nnoremap <buffer> <leader>ad :ArduinoUploadAndSerial<CR>
+nnoremap <buffer> <leader>ab :ArduinoChooseBoard<CR>
+nnoremap <buffer> <leader>ap :ArduinoChooseProgrammer<CR>
 
 " tagbar
 nmap <F8> :TagbarToggle<CR>
@@ -316,7 +377,11 @@ inoremap ,, <C-x><C-o>
 nmap <leader>z :tabnew %<CR>
 nmap <leader>Z :q<CR>
 
+" spell checking
+nmap <F2> :set spell! spelllang=en_us <CR>
 
+" bash support
+autocmd filetype shell nmap <leader>h :!open ~/.vim/bash-support/doc/bash-hot-keys.pdf <CR>
 
 
 " _____                     _   _
@@ -366,8 +431,35 @@ autocmd filetype javascript nnoremap <leader>r :w <bar> exec '!nodejs '.shellesc
 " Ctags
 let g:ctags_statusline = 1
 
-"jedi
-"
+" Arduino
+
+let g:arduino_serial_tmux = ''
+let g:arduino_verify_tmux = ''
+let g:arduino_upload_tmux = ''
+
+" my_file.ino [arduino:avr:uno] [arduino:usbtinyisp] (/dev/ttyACM0:9600)
+function! MyStatusLine()
+  let port = arduino#GetPort()
+  let line = '%f [' . g:arduino_board . '] [' . g:arduino_programmer . ']'
+  if !empty(port)
+    let line = line . ' (' . port . ':' . g:arduino_serial_baud . ')'
+  endif
+  return line
+endfunction
+setl statusline=%!MyStatusLine()
+
+autocmd BufNewFile,BufRead *.ino let g:airline_section_x='%{MyStatusLine()}'
+
+
+" ConqueGDB
+let g:ConqueTerm_Color=2            " 1: strip color after 200 line, 2: always with color
+"let g:ConqueTerm_CloseOnEnd=1       " close conque when program ends running
+let g:ConqueTerm_StartMessages=0    " display warning message if conqueTerm is configed incorrect
+
+" bash support
+let g:BASH_AuthorName = 'Stanley Yuan'
+let g:BASH_Email = 'None'
+let g:BASH_Company = 'None'
 
 " Autoformat
 " show error
@@ -377,11 +469,16 @@ let verbose=1
 " python
 " pip3 install --upgrade autopep8 --user
 " pip3 install --upgrade black --user
-let g:formatdef_custom_black = '"black -q  - --line-length 89"'
+let g:formatdef_custom_black = '"black -q  - --line-length 91"'
 let g:formatters_python = ['custom_black']
 
+" javascript
+" npm install -g js-beautify
+let g:formatdef_custom_js_beautify = '"js-beautify - --indent-size 2"'
+let g:formatters_javascript = ['custom_js_beautify']
+
 " Prettier
-let g:prettier#config#tab_width = 4
+let g:prettier#config#tab_width = 2
 
 
 " Ag
@@ -412,8 +509,9 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastuc_javascript_checkers = ['jshint']
-" let g:syntastic_c_checkers = [ 'gcc' ]
+let g:syntastic_python_pylint_args = "--load-plugins pylint_django"
 let g:syntastic_python_flake8_post_args='--ignore=F821,E302,E501,F403,F405,E731,W503'
+let g:syntastic_python_pyflakes_exe = 'python3 -m pyflakes'
 "pylint --generate-rcfile > ~/.pylintrc
 
 let g:syntastic_mode_map = {
@@ -421,6 +519,7 @@ let g:syntastic_mode_map = {
 			\ "active_filetypes": [],
 			\ "passive_filetypes": [] }
 
+" let g:syntastic_c_checkers = [ 'gcc' ]
 
 " YCM
 " for c family
