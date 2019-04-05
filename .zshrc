@@ -9,7 +9,7 @@
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 #ZSH_THEME="af-magic"
-ZSH_THEME="agnoster"
+ZSH_THEME="fishy"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -65,6 +65,11 @@ ZSH_THEME="agnoster"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   git
+  django
+  colorize
+  command-not-found
+  zsh-autosuggestions
+  zsh-syntax-highlighting
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -116,25 +121,37 @@ alias myip="ifconfig wlp3s0 | grep -m 1 inet | sed 's/^.*inet addr://g' | sed 's
 alias notes='sudo updatedb; locate -r ~/".*notes_.*\.md"'
 alias def='definition'
 alias weather='curl wttr.in'
+alias tldr='tldr -t ocean'
+alias rm="trash"
+alias say="spd-say"
+alias vim="nvim"
+
+# source
+source /etc/zsh_command_not_found
 
 # ENV VAR
 export MYIP=$(myip)
 export GOOGLE_APPLICATION_CREDENTIALS='/home/ieni/Documents/NTUT/patrick/Natural_Language/Natural_Language_API-a56f9766faee.json'
 #export PATH=/usr/local/cuda-8.0/bin:$PATH
 #export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64:$LD_LIBRARY_PATH1
-export PATH=${PATH}:/usr/local/cuda-9.0/bin
 export LD_LIBRARY_PATH=/usr/local/cuda-9.0/lib64
 export TF_CPP_MIN_LOG_LEVEL=2
 export VISUAL=vim
 export EDITOR="$VISUAL"
-export PYTHONPATH=$PATH
-#export PYTHONPATH=/usr/local/lib/python3.5/dist-packages:$PYTHONPATH
-#export PYTHONPATH=$PYTHONPATH:/usr/local/lib/python3.5/dist-packages
+#export PYTHONPATH=$PATH
+export PYTHONPATH="/usr/local/lib/python3.5/dist-packages"
+#export PYTHONPATH=/usr/local/lib/python3.6/dist-packages:$PYTHONPATH
+#export PYTHONPATH=/usr/local/lib/python3.7/dist-packages:$PYTHONPATH
 export ANDROID_HOME='/home/ieni/Android/Sdk'
 export CATALINA_HOME='/opt/tomcat'
+export PATH=${PATH}:/usr/local/cuda-9.0/bin
 export PATH=${PATH}:/home/ieni/Documents/NTUT/Learning_Project/idea-IU-182.4892.20/bin
 export PATH=${PATH}:/home/ieni/Documents/NTUT/Learning_Project/DataGrip-2018.3/bin
+export PATH=${PATH}:/home/ieni/.cargo/bin
+export PATH=${PATH}:/home/ieni/Tool_from_git/codimd-cli/bin
+export PATH=${PATH}:/home/ieni/arduino-1.8.8
 export WORKON_HOME=$HOME/.virtualenvs
+export CODIMD_SERVER='127.0.0.1:3000'
 
 
 # color for man pages
@@ -208,3 +225,5 @@ function swagger_preview() {
       echo "Converting to json failed!"
     fi
 }
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
