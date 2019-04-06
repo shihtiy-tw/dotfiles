@@ -41,6 +41,56 @@ let g:netrw_liststyle=3     " tree view
 let g:netrw_list_hide=netrw_gitignore#Hide()
 let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
 
+" _____            _   _         __     ___
+"|  ___|__  _ __  | \ | | ___  __\ \   / (_)_ __ ___
+"| |_ / _ \| '__| |  \| |/ _ \/ _ \ \ / /| | '_ ` _ \
+"|  _| (_) | |    | |\  |  __/ (_) \ V / | | | | | | |
+"|_|  \___/|_|    |_| \_|\___|\___/ \_/  |_|_| |_| |_|
+"
+
+" Terminal
+if has('nvim')
+	autocmd BufEnter term://* startinsert
+" To map <Esc> to exit terminal-mode:
+	tnoremap <Esc> <C-\><C-n>
+	tnoremap <M-[> <Esc>
+	tnoremap <C-v><Esc> <Esc>
+	tnoremap <Leader><Leader> <C-\><C-n>
+
+" To use `ALT+{h,j,k,l}` to navigate windows from any mode:
+    tnoremap <A-h> <C-\><C-N><C-w>h
+    tnoremap <A-j> <C-\><C-N><C-w>j
+    tnoremap <A-k> <C-\><C-N><C-w>k
+    tnoremap <A-l> <C-\><C-N><C-w>l
+    inoremap <A-h> <C-\><C-N><C-w>h
+    inoremap <A-j> <C-\><C-N><C-w>j
+    inoremap <A-k> <C-\><C-N><C-w>k
+    inoremap <A-l> <C-\><C-N><C-w>l
+    nnoremap <A-h> <C-w>h
+    nnoremap <A-j> <C-w>j
+    nnoremap <A-k> <C-w>k
+    nnoremap <A-l> <C-w>l
+
+	function! VspTerm()
+		vsp term://zsh
+	endfunction
+
+	function! SpTerm()
+		sp term://zsh
+	endfunction
+
+	command! Vspt call VspTerm()
+	command! Spt call SpTerm()
+
+    tnoremap <A-t> :Vspt <cr>
+    tnoremap <A-s> :Spt <cr>
+    inoremap <A-t> :Vspt <cr>
+    inoremap <A-s> :Spt <cr>
+    nnoremap <A-t> :Vspt <cr>
+    nnoremap <A-s> :Spt <cr>
+
+endif
+
 "       _                       _
 "__   _(_)_ __ ___        _ __ | |_   _  __ _
 "\ \ / / | '_ ` _ \ _____| '_ \| | | | |/ _` |
@@ -232,6 +282,8 @@ set tabpagemax=100               " 一次最多可以開多少tab
 set tabstop=4                    " tab寬度
 set timeoutlen=300               " escape delay
 set wildmenu                     " 自動補完選單
+set splitbelow
+set splitright
 " set spell! spelllang=en_us 		 " 拼音檢查
 
 syntax on
@@ -287,13 +339,14 @@ nnoremap <leader>gj :Grepper -tool grep<cr>
 nnoremap <leader>GJ :Grepper -tool ag<cr>
 
 " reload files
-function Reload_files()
+function! ReloadFilessss()
 	"set autoreload
 	set autoread
 	checktime
 	set noautoread
 endfunction
-noremap <F5> :call Reload_files() <CR>
+
+noremap <F5> :call ReloadFilessss() <CR>
 
 " Synstatic
 nnoremap <F4> :SyntasticToggleMode <CR>
@@ -476,6 +529,11 @@ let g:formatters_python = ['custom_black']
 " npm install -g js-beautify
 let g:formatdef_custom_js_beautify = '"js-beautify - --indent-size 2"'
 let g:formatters_javascript = ['custom_js_beautify']
+
+" c/c++
+" apt install clang-format
+let g:formatdef_custom_clang_format = '"clang-format - "'
+let g:formatters_c = ['custom_clang_format']
 
 " Prettier
 let g:prettier#config#tab_width = 2
