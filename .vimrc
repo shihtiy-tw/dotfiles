@@ -13,7 +13,6 @@ let mapleader=" "
 "\__, | |_| / /_    \ V /  | || |  | |
 "  /_/ \___/_/(_)    \_/  |___|_|  |_|
 "
-
 " fuzzy find
 set path +=**
 set wildmenu
@@ -50,14 +49,14 @@ let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
 
 " Terminal
 if has('nvim')
-	autocmd BufEnter term://* startinsert
-" To map <Esc> to exit terminal-mode:
-	tnoremap <Esc> <C-\><C-n>
-	tnoremap <M-[> <Esc>
-	tnoremap <C-v><Esc> <Esc>
-	tnoremap <Leader><Leader> <C-\><C-n>
+    autocmd BufEnter term://* startinsert
+    " To map <Esc> to exit terminal-mode:
+    "tnoremap <Esc> <C-\><C-n>
+    "tnoremap <M-[> <Esc>
+    "tnoremap <C-v><Esc> <Esc>
+    tnoremap <Leader><Leader> <C-\><C-n>
 
-" To use `ALT+{h,j,k,l}` to navigate windows from any mode:
+    " To use `ALT+{h,j,k,l}` to navigate windows from any mode:
     tnoremap <A-h> <C-\><C-N><C-w>h
     tnoremap <A-j> <C-\><C-N><C-w>j
     tnoremap <A-k> <C-\><C-N><C-w>k
@@ -71,25 +70,34 @@ if has('nvim')
     nnoremap <A-k> <C-w>k
     nnoremap <A-l> <C-w>l
 
-	function! VspTerm()
-		vsp term://zsh
-	endfunction
+    function! VspTerm()
+        vsp term://zsh
+    endfunction
 
-	function! SpTerm()
-		sp term://zsh
-	endfunction
+    function! SpTerm()
+        sp term://zsh
+    endfunction
 
-	command! Vspt call VspTerm()
-	command! Spt call SpTerm()
+    function! TTerm()
+        tabnew term://zsh
+    endfunction
 
-    tnoremap <A-t> :Vspt <cr>
+    command! Vspt call VspTerm()
+    command! Spt call SpTerm()
+    command! Tt call TTerm()
+
+    tnoremap <A-v> :Vspt <cr>
     tnoremap <A-s> :Spt <cr>
-    inoremap <A-t> :Vspt <cr>
+    tnoremap <A-t> :Tt <cr>
+    inoremap <A-v> :Vspt <cr>
     inoremap <A-s> :Spt <cr>
-    nnoremap <A-t> :Vspt <cr>
+    inoremap <A-t> :Tt <cr>
+    nnoremap <A-v> :Vspt <cr>
     nnoremap <A-s> :Spt <cr>
+    nnoremap <A-t> :Tt <cr>
 
 endif
+
 
 "       _                       _
 "__   _(_)_ __ ___        _ __ | |_   _  __ _
@@ -99,9 +107,9 @@ endif
 "                        |_|            |___/
 
 if empty(glob('~/.vim/autoload/plug.vim'))
-	silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-				\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-	autocmd VimEnter * PlugInstall | source $MYVIMRC
+    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+                \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    autocmd VimEnter * PlugInstall | source $MYVIMRC
 endif
 
 set nocompatible " Be iMproved
@@ -115,7 +123,6 @@ Plug 'crusoexia/vim-monokai'
 Plug 'altercation/vim-colors-solarized'
 
 " Make Vim Powerful
-Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh \| UpdateRemotePlugins' }
 Plug 'vim-scripts/Auto-Pairs'
 Plug 'kien/ctrlp.vim'
 Plug 'scrooloose/nerdtree'
@@ -148,11 +155,9 @@ Plug 'plasticboy/vim-markdown'
 Plug 'mzlogin/vim-markdown-toc'
 Plug 'dhruvasagar/vim-table-mode'
 Plug '2072/PHP-Indenting-for-VIm'
-Plug 'shawncplus/phpcomplete.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 Plug 'Shougo/vimproc.vim', {'do' : 'make'}
-"Plug 'SkyLeach/pudb.vim'
 "Plug 'idanarye/vim-vebugger'
 "Plug 'vim-vdebug/vdebug'
 "https://www.raditha.com/blog/archives/vim-and-python-debug/
@@ -161,8 +166,8 @@ Plug 'stevearc/vim-arduino'
 Plug 'heavenshell/vim-pydocstring'
 Plug 'vim-scripts/DoxygenToolkit.vim'
 
+Plug 'wesleyche/SrcExpl'
 
-"Plug 'Shougo/neocomplete'
 
 
 " Syntax
@@ -170,6 +175,7 @@ Plug 'vim-scripts/DoxygenToolkit.vim'
 Plug 'Valloric/YouCompleteMe'
 Plug 'vim-syntastic/syntastic'
 Plug 'chr4/nginx.vim'
+Plug 'shawncplus/phpcomplete.vim'
 Plug 'stanangeloff/php.vim'
 Plug 'hdima/python-syntax'
 Plug 'keith/swift.vim'
@@ -180,8 +186,8 @@ Plug 'PProvost/vim-ps1' "ps1
 Plug 'wookiehangover/jshint.vim'
 Plug 'Chiel92/vim-autoformat'
 Plug 'prettier/vim-prettier', {
-			\ 'do': 'npm install',
-			\ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
+            \ 'do': 'npm install',
+            \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
 
 " Plug 'maralla/validator.vim'
 
@@ -189,20 +195,20 @@ Plug 'prettier/vim-prettier', {
 " only load these web front-end related plugins when we need them
 if filereadable(expand('~/.frontend.vimenv'))
 
-	" syntax
-	Plug 'othree/html5.vim'
-	Plug 'alvan/vim-closetag' "html tags
-	Plug 'cakebaker/scss-syntax.vim'
-	Plug 'hail2u/vim-css3-syntax'
-	Plug 'isRuslan/vim-es6'
-	Plug 'pangloss/vim-javascript'
-	Plug 'othree/yajs.vim'
-	Plug 'posva/vim-vue'
-	Plug 'slim-template/vim-slim'
-	Plug 'digitaltoad/vim-pug'
+    " syntax
+    Plug 'othree/html5.vim'
+    Plug 'alvan/vim-closetag' "html tags
+    Plug 'cakebaker/scss-syntax.vim'
+    Plug 'hail2u/vim-css3-syntax'
+    Plug 'isRuslan/vim-es6'
+    Plug 'pangloss/vim-javascript'
+    Plug 'othree/yajs.vim'
+    Plug 'posva/vim-vue'
+    Plug 'slim-template/vim-slim'
+    Plug 'digitaltoad/vim-pug'
 
-	" other
-	Plug 'mattn/emmet-vim'
+    " other
+    Plug 'mattn/emmet-vim'
 
 endif
 
@@ -214,13 +220,26 @@ Plug 'mileszs/ack.vim'
 Plug 'mattn/webapi-vim' " dependency for gist-vim
 Plug 'mattn/gist-vim'
 Plug 'editorconfig/editorconfig-vim'
-
 " bash-support
 " https://www.thegeekstuff.com/2009/02/make-vim-as-your-bash-ide-using-bash-support-plugin
 
+
+" _   _         __     ___             ____  _             _
+"| \ | | ___  __\ \   / (_)_ __ ___   |  _ \| |_   _  __ _(_)_ __  ___
+"|  \| |/ _ \/ _ \ \ / /| | '_ ` _ \  | |_) | | | | |/ _` | | '_ \/ __|
+"| |\  |  __/ (_) \ V / | | | | | | | |  __/| | |_| | (_| | | | | \__ \
+"|_| \_|\___|\___/ \_/  |_|_| |_| |_| |_|   |_|\__,_|\__, |_|_| |_|___/
+"                                                    |___/
+
+if has('.nvim')
+  Plug 'sakhnik/nvim-gdb'
+  Plug 'SkyLeach/pudb.vim'
+  "Plug 'Shougo/neocomplete'
+endif
+
 let local_Vimrc=expand('~/.vimrc.local')
 if filereadable(local_Vimrc)
-	source ~/.vimrc.local
+    source ~/.vimrc.local
 endif
 
 call plug#end()
@@ -237,19 +256,19 @@ filetype plugin indent on
 let g:rehash256 = 1
 let option = "molokai"
 if option == "molokai"
-	if !empty(glob('~/.vim/plugged/molokai/colors/molokai.vim'))
-		color molokai
-	endif
+    if !empty(glob('~/.vim/plugged/molokai/colors/molokai.vim'))
+        color molokai
+    endif
 elseif option == "monokai"
-	if !empty(glob('~/.vim/plugged/vim-monokai/colors/monokai.vim'))
-		color monokai
-	endif
+    if !empty(glob('~/.vim/plugged/vim-monokai/colors/monokai.vim'))
+        color monokai
+    endif
 elseif option == "solarized"
-	if !empty(glob('~/.vim/plugged/vim-colors-solarized/colors/solarized.vim'))
-		set background=dark
-		let g:solarized_termcolors=256
-		color solarized
-	endif
+    if !empty(glob('~/.vim/plugged/vim-colors-solarized/colors/solarized.vim'))
+        set background=dark
+        let g:solarized_termcolors=256
+        color solarized
+    endif
 endif
 
 " ____            _         ____             __ _
@@ -258,10 +277,10 @@ endif
 "| |_) | (_| \__ \ | (__  | |__| (_) | | | |  _| | (_| |
 "|____/ \__,_|___/_|\___|  \____\___/|_| |_|_| |_|\__, |
 "                                                 |___/
-
+"
 set autoindent                   " 自動縮排
 set backspace=indent,eol,start   " 統一 backsapce 功能
-set colorcolumn=91              " 換行提示線
+set colorcolumn=81               " 換行提示線
 set cursorline                   " 目前游標所在這行反白
 set fileencodings=utf-8,default,big5,ucs-bom,latin1
 set hlsearch                     " 顏色標記被搜尋的文字
@@ -273,18 +292,19 @@ set nowritebackup                " 關閉備份檔案
 set number                       " 顯示行數
 set ruler                        " 游標位置資訊
 set scrolloff=3                  " 游標距離上下 N 行開始捲動螢幕
-set shiftwidth=4                 " tab 寬度
 set showcmd                      " 顯示命令按鍵
 set smartcase                    " 搜尋時自動判斷是否區分大小寫
 set smartindent                  " 自動縮排
 set t_Co=256                     " 啟用256色彩空間
 set tabpagemax=100               " 一次最多可以開多少tab
-set tabstop=4                    " tab寬度
 set timeoutlen=300               " escape delay
 set wildmenu                     " 自動補完選單
-set splitbelow
-set splitright
-" set spell! spelllang=en_us 		 " 拼音檢查
+set splitbelow                   " 切割下方螢幕
+set splitright                   " 切割右方螢幕
+set tabstop=2                    " tab寬度
+set shiftwidth=2                 " tab 寬度
+set expandtab                    " tab 變成 spaces
+" set spell! spelllang=en_us         " 拼音檢查
 
 syntax on
 filetype plugin indent on
@@ -300,11 +320,13 @@ noremap <Leader>P "+p
 "|  _| | | |  __/| || |_| | |_) |  __/ |  _ <  __/ | (_| | ||  __/ (_| |
 "|_|   |_|_|\___||_| \__, | .__/ \___| |_| \_\___|_|\__,_|\__\___|\__,_|
 "                    |___/|_|
-
-autocmd FileType python setlocal et   sw=4 sts=4 cc=91
-autocmd FileType html   setlocal et   sw=2 sts=2
-autocmd FileType ruby   setlocal noet sw=2 sts=2
-autocmd FileType php    setlocal et
+"
+autocmd FileType python       setlocal  ts=4 sw=4 sts=4 cc=80 et
+autocmd FileType c            setlocal  ts=4 sw=4 sts=4 cc=80 et
+autocmd FileType html         setlocal  sw=2 sts=2            et
+autocmd FileType javascript   setlocal  sw=2 sts=2            et
+autocmd FileType ruby         setlocal  sw=2 sts=2            noet
+autocmd FileType php          setlocal                        et
 
 " _  __            __  __                   _
 "| |/ /___ _   _  |  \/  | __ _ _ __  _ __ (_)_ __   __ _
@@ -340,10 +362,10 @@ nnoremap <leader>GJ :Grepper -tool ag<cr>
 
 " reload files
 function! ReloadFilessss()
-	"set autoreload
-	set autoread
-	checktime
-	set noautoread
+    "set autoreload
+    set autoread
+    checktime
+    set noautoread
 endfunction
 
 noremap <F5> :call ReloadFilessss() <CR>
@@ -402,6 +424,10 @@ imap <c-k> <esc>:call emmet#moveNextPrev(1)<CR>
 nmap <Leader>ha :GitGutterStageHunk<CR>
 nmap <Leader>hu :GitGutterRevertHunk<CR>
 nmap <Leader>hv :GitGutterPreviewHunk<CR>
+
+" SrcExpl
+nmap <F10> :SrcExplToggle<CR>
+
 
 " move in panels
 nmap <leader>h <c-w>h
@@ -485,24 +511,51 @@ autocmd filetype javascript nnoremap <leader>r :w <bar> exec '!nodejs '.shellesc
 let g:ctags_statusline = 1
 
 " Arduino
-
 let g:arduino_serial_tmux = ''
 let g:arduino_verify_tmux = ''
 let g:arduino_upload_tmux = ''
 
 " my_file.ino [arduino:avr:uno] [arduino:usbtinyisp] (/dev/ttyACM0:9600)
 function! MyStatusLine()
-  let port = arduino#GetPort()
-  let line = '%f [' . g:arduino_board . '] [' . g:arduino_programmer . ']'
-  if !empty(port)
-    let line = line . ' (' . port . ':' . g:arduino_serial_baud . ')'
-  endif
-  return line
+    let port = arduino#GetPort()
+    let line = '%f [' . g:arduino_board . '] [' . g:arduino_programmer . ']'
+    if !empty(port)
+        let line = line . ' (' . port . ':' . g:arduino_serial_baud . ')'
+    endif
+    return line
 endfunction
 setl statusline=%!MyStatusLine()
 
 autocmd BufNewFile,BufRead *.ino let g:airline_section_x='%{MyStatusLine()}'
 
+" pudb
+"if has('nvim')
+  "let g:python_host_prog='/usr/bin/python3.6'
+  "let g:python3_host_prog='/usr/bin/python3.6'
+  "" set the virtual env python used to launch the debugger
+  "let g:pudb_python='/usr/bin/python3.6'
+  "" set the entry point (script) to use for pudb
+  "let g:pudb_entry_point='~/src/poweruser_tools/test/test_templates.py'
+  "" Unicode symbols work fine (nvim, iterm, tmux, nyovim tested)
+  "let g:pudb_breakpoint_symbol='*'
+"endif
+
+" SrcExpl
+let g:SrcExpl_pluginList = [
+    \"__Tagbar__.1",
+    \"NERD_tree_1"
+    \]
+" // Set the height of Source Explorer window
+let g:SrcExpl_winHeight = 8
+
+" // Set 100 ms for refreshing the Source Explorer
+let g:SrcExpl_refreshTime = 100
+
+" // Set "Enter" key to jump into the exact definition context
+let g:SrcExpl_jumpKey = "<ENTER>"
+
+" // Set "Space" key for back from the definition context
+let g:SrcExpl_gobackKey = "<SPACE>"
 
 " ConqueGDB
 let g:ConqueTerm_Color=2            " 1: strip color after 200 line, 2: always with color
@@ -532,7 +585,9 @@ let g:formatters_javascript = ['custom_js_beautify']
 
 " c/c++
 " apt install clang-format
-let g:formatdef_custom_clang_format = '"clang-format - "'
+"let g:formatdef_custom_clang_format = '"clang-format - -style=\"{BasedOnStyle: Google, AlignTrailingComments: true, UseTab: Never, IndentWidth: 4}\""'
+let g:formatdef_custom_clang_format = '"clang-format - -style=\"{BasedOnStyle: WebKit, AlignTrailingComments: true, UseTab: Never, IndentWidth: 4}\""'
+"let g:formatdef_custom_clang_format = '"clang-format - "'
 let g:formatters_c = ['custom_clang_format']
 
 " Prettier
@@ -541,6 +596,8 @@ let g:prettier#config#tab_width = 2
 
 " Ag
 let g:ag_working_path_mode="r"
+let g:ag_lhandler=""
+ca Ag Ag!
 
 "supertab
 let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
@@ -548,7 +605,7 @@ let g:SuperTabClosePreviewOnPopupClose = 1
 
 " vimwiki
 "let g:vimwiki_list = [{'path': '~/my_site/',
-			"\ 'syntax': 'markdown', 'ext': '.md'}]
+"\ 'syntax': 'markdown', 'ext': '.md'}]
 "# hotkeys
 "Enter - create a new note (cursor must be on a word)
 "Enter - enter into the note
@@ -573,9 +630,9 @@ let g:syntastic_python_pyflakes_exe = 'python3 -m pyflakes'
 "pylint --generate-rcfile > ~/.pylintrc
 
 let g:syntastic_mode_map = {
-			\ "mode": "passive",
-			\ "active_filetypes": [],
-			\ "passive_filetypes": [] }
+            \ "mode": "passive",
+            \ "active_filetypes": [],
+            \ "passive_filetypes": [] }
 
 " let g:syntastic_c_checkers = [ 'gcc' ]
 
@@ -596,7 +653,7 @@ let g:grepper_highlight = 1
 
 " vim-instant-markdown - Instant Markdown previews from Vim
 " https://github.com/suan/vim-instant-markdown
-let g:instant_markdown_autostart = 0	" disable autostart
+let g:instant_markdown_autostart = 0    " disable autostart
 "# hotkeys
 "<leader>md - Open Markdown preview on web browser
 "related tools: gitbook, remarkable
@@ -605,19 +662,20 @@ let g:instant_markdown_autostart = 0	" disable autostart
 let g:user_emmet_expandabbr_key = '<c-e>'
 
 " CtrlP
+let g:ctrlp_working_path_mode = 0
 let g:ctrlp_custom_ignore = {
-			\ 'dir':  '\v[\/](\.(git|hg|svn)|node_modules)$',
-			\ 'file': '\v\.(exe|so|dll|swp|zip|7z|rar|gz|xz|apk|dmg|iso|jpg|png|pdf)$',
-			\ }
+            \ 'dir':  '\v[\/](\.(git|hg|svn)|node_modules)$',
+            \ 'file': '\v\.(exe|so|dll|swp|zip|7z|rar|gz|xz|apk|dmg|iso|jpg|png|pdf)$',
+            \ }
 
 " python-syntax
 let python_highlight_all = 1
 
 " vim-css3-syntax
 augroup VimCSS3Syntax
-	autocmd!
+    autocmd!
 
-	autocmd FileType css setlocal iskeyword+=-
+    autocmd FileType css setlocal iskeyword+=-
 augroup END
 
 " vim-surround
@@ -659,5 +717,5 @@ autocmd BufWinLeave * call clearmatches()
 hi Search ctermfg=16 ctermbg=226
 
 if has("gui_macvim") || has("gui_vimr")
-	set guifont=Menlo:h14
+    set guifont=Menlo:h14
 endif
