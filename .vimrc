@@ -593,6 +593,8 @@ let g:formatters_c = ['custom_clang_format']
 " Prettier
 let g:prettier#config#tab_width = 2
 
+" gitgutter
+set updatetime=100
 
 " Ag
 let g:ag_working_path_mode="r"
