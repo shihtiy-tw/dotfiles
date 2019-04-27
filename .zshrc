@@ -10,7 +10,7 @@
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 #ZSH_THEME="af-magic"
 #ZSH_THEME="fishy"
-ZSH_THEME="amuse"
+ZSH_THEME="ieni"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -71,6 +71,16 @@ plugins=(
   command-not-found
   zsh-autosuggestions
   zsh-syntax-highlighting
+  #auto-color-ls
+  copyzshell
+  #fast-syntax-highlighting
+  fzf-git
+  hacker-quotes
+  #kube-ps1
+  ls
+  mysql-colorize
+  web-search
+  autojump
 )
 
 source $ZSH/oh-my-zsh.sh

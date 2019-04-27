@@ -30,3 +30,14 @@
 [http]
 	sslCAinfo = /etc/ssl/certs/ca-certificates.crt
 	sslverify = false
+[core]
+	pager = diff-so-fancy | less --tabs=4 -RFX
+[pager]
+	show = diff-so-fancy | less --tabs=1,5 -RFX
+[color]
+	ui = true
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22

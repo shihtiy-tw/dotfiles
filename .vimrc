@@ -141,6 +141,7 @@ Plug 'xavierchow/vim-swagger-preview'
 Plug '~/Tool_from_git/fzf/bin/fzf'
 Plug '~/Tool_from_git/fzf/bin/fzf-tmux'
 Plug 'junegunn/fzf.vim'
+Plug 'wannesm/wmgraphviz.vim'
 "Plug 'easymotion/vim-easymotion'
 
 Plug 'mhinz/vim-grepper'
@@ -462,6 +463,23 @@ nmap <F2> :set spell! spelllang=en_us <CR>
 " bash support
 autocmd filetype shell nmap <leader>h :!open ~/.vim/bash-support/doc/bash-hot-keys.pdf <CR>
 
+"wmgraphviz
+"autocmd bufnewfile *.dot call Headerdot()
+function Headerdot()
+   call setline(1,"//usr/bin/dot")
+   call append(1,"digraph G{")
+   call append(2,"")
+   call append(3,"}")
+   normal 3G
+endf
+
+"graphviz
+"let g:WMGraphviz_dot = "dot"
+"let g:WMGraphviz_output = "png"
+"let g:WMGraphviz_viewer = "xdg-open"
+"let g:WMGraphviz_shelloptions = ""
+nmap <leader>ll :GraphvizCompile <CR>
+nmap <leader>lv :GraphvizShow <CR>
 
 " _____                     _   _
 "| ____|_  _____  ___ _   _| |_(_) ___  _ __
