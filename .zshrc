@@ -70,10 +70,10 @@ plugins=(
   colorize
   command-not-found
   zsh-autosuggestions
-  #zsh-syntax-highlighting
-  auto-color-ls
+  zsh-syntax-highlighting
+  #auto-color-ls
   copyzshell
-  fast-syntax-highlighting
+  #fast-syntax-highlighting
   fzf-git
   hacker-quotes
   #kube-ps1
