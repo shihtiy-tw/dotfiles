@@ -10,7 +10,7 @@
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 #ZSH_THEME="af-magic"
 #ZSH_THEME="fishy"
-ZSH_THEME="amuse"
+ZSH_THEME="ieni"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -70,7 +70,17 @@ plugins=(
   colorize
   command-not-found
   zsh-autosuggestions
-  zsh-syntax-highlighting
+  #zsh-syntax-highlighting
+  auto-color-ls
+  copyzshell
+  fast-syntax-highlighting
+  fzf-git
+  hacker-quotes
+  #kube-ps1
+  ls
+  mysql-colorize
+  web-search
+  autojump
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -126,6 +136,7 @@ alias tldr='tldr -t ocean'
 alias rm="trash"
 alias say="spd-say"
 alias vim="nvim"
+alias sudo='sudo '
 
 # source
 source /etc/zsh_command_not_found
