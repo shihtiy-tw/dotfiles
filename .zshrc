@@ -78,7 +78,7 @@ plugins=(
   hacker-quotes
   #kube-ps1
   ls
-  mysql-colorize
+  #mysql-colorize
   web-search
   autojump
 )
@@ -93,11 +93,13 @@ source $ZSH/oh-my-zsh.sh
 # export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+ #if [[ -n $SSH_CONNECTION ]]; then
+   #export EDITOR='nvim'
+   #export VISUAL='nvim'
+ #else
+   #export EDITOR='vim'
+   #export VISUAL='vim'
+ #fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -148,20 +150,23 @@ export GOOGLE_APPLICATION_CREDENTIALS='/home/ieni/Documents/NTUT/patrick/Natural
 #export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64:$LD_LIBRARY_PATH1
 export LD_LIBRARY_PATH=/usr/local/cuda-9.0/lib64
 export TF_CPP_MIN_LOG_LEVEL=2
-export VISUAL=vim
+export VISUAL=nvim
 export EDITOR="$VISUAL"
+export GOROOT='/usr/local/go'
+export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 #export PYTHONPATH=$PATH
-export PYTHONPATH="/usr/local/lib/python3.5/dist-packages"
+#export PYTHONPATH="/usr/local/lib/python3.5/dist-packages"
 #export PYTHONPATH=/usr/local/lib/python3.6/dist-packages:$PYTHONPATH
 #export PYTHONPATH=/usr/local/lib/python3.7/dist-packages:$PYTHONPATH
 export ANDROID_HOME='/home/ieni/Android/Sdk'
 export CATALINA_HOME='/opt/tomcat'
 export PATH=${PATH}:/usr/local/cuda-9.0/bin
-export PATH=${PATH}:/home/ieni/Documents/NTUT/Learning_Project/idea-IU-182.4892.20/bin
-export PATH=${PATH}:/home/ieni/Documents/NTUT/Learning_Project/DataGrip-2018.3/bin
+#export PATH=${PATH}:/home/ieni/Documents/NTUT/Learning_Project/idea-IU-182.4892.20/bin
+#export PATH=${PATH}:/home/ieni/Documents/NTUT/Learning_Project/DataGrip-2018.3/bin
 export PATH=${PATH}:/home/ieni/.cargo/bin
 export PATH=${PATH}:/home/ieni/Tool_from_git/codimd-cli/bin
 export PATH=${PATH}:/home/ieni/arduino-1.8.8
+export PATH=${PATH}:${JAVA_HOME}
 export WORKON_HOME=$HOME/.virtualenvs
 export CODIMD_SERVER='127.0.0.1:3000'
 
@@ -177,7 +182,6 @@ export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 export GROFF_NO_SGR=1                  # for konsole and gnome-terminal
 # added by Anaconda3 installer
 export PATH="/home/ieni/anaconda3/bin:$PATH"
-
 
 # convenience
 if [ -f /home/ieni/.autojump/share/autojump/autojump.zsh ]; then
@@ -239,3 +243,4 @@ function swagger_preview() {
 }
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+fpath=(~/.zsh.d/ $fpath)
