@@ -146,10 +146,12 @@ Plug '~/Tool_from_git/fzf/bin/fzf'
 Plug '~/Tool_from_git/fzf/bin/fzf-tmux'
 Plug 'junegunn/fzf.vim'
 Plug 'wannesm/wmgraphviz.vim'
+Plug 'lilydjwg/colorizer'
+Plug 'luochen1990/rainbow'
+Plug 'inside/vim-search-pulse'
 "Plug 'easymotion/vim-easymotion'
 
 Plug 'mhinz/vim-grepper'
-Plug 'rking/ag.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'alvan/vim-closetag'
@@ -163,6 +165,7 @@ Plug '2072/PHP-Indenting-for-VIm'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+"Plug 'dbeniamine/cheat.sh-vim'
 "Plug 'idanarye/vim-vebugger'
 "Plug 'vim-vdebug/vdebug'
 "https://www.raditha.com/blog/archives/vim-and-python-debug/
@@ -196,6 +199,9 @@ Plug 'prettier/vim-prettier', {
 
 " Plug 'maralla/validator.vim'
 
+Plug 'sakhnik/nvim-gdb'
+Plug 'SkyLeach/pudb.vim'
+Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
 
 " only load these web front-end related plugins when we need them
 if filereadable(expand('~/.frontend.vimenv'))
@@ -237,9 +243,10 @@ Plug 'editorconfig/editorconfig-vim'
 "                                                    |___/
 
 if has('.nvim')
+  "Plug 'Shougo/neocomplete'
   Plug 'sakhnik/nvim-gdb'
   Plug 'SkyLeach/pudb.vim'
-  "Plug 'Shougo/neocomplete'
+  Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
 endif
 
 let local_Vimrc=expand('~/.vimrc.local')
@@ -469,13 +476,13 @@ autocmd filetype shell nmap <leader>h :!open ~/.vim/bash-support/doc/bash-hot-ke
 
 "wmgraphviz
 "autocmd bufnewfile *.dot call Headerdot()
-function Headerdot()
+function! Headerdot()
    call setline(1,"//usr/bin/dot")
    call append(1,"digraph G{")
    call append(2,"")
    call append(3,"}")
    normal 3G
-endf
+endfunction
 
 "graphviz
 "let g:WMGraphviz_dot = "dot"
@@ -528,6 +535,34 @@ autocmd filetype javascript nnoremap <leader>r :w <bar> exec '!nodejs '.shellesc
 "|  __/| | |_| | (_| | | | | \__ \ | |__| (_) | | | |  _| | (_| |
 "|_|   |_|\__,_|\__, |_|_| |_|___/  \____\___/|_| |_|_| |_|\__, |
 "               |___/                                      |___/
+"
+
+" semshi
+function! MyCustomHighlights()
+  hi semshiLocal           ctermfg=209 guifg=#ff875f
+  hi semshiGlobal          ctermfg=214 guifg=#ffaf00
+  hi semshiImported        ctermfg=214 guifg=#ffaf00
+  hi semshiParameter       ctermfg=75  guifg=#5fafff
+  hi semshiParameterUnused ctermfg=117 guifg=#87d7ff cterm=underline gui=underline
+  hi semshiFree            ctermfg=218 guifg=#ffafd7
+  hi semshiBuiltin         ctermfg=207 guifg=#ff5fff
+  hi semshiAttribute       ctermfg=49  guifg=#00ffaf
+  hi semshiSelf            ctermfg=249 guifg=#b2b2b2
+  hi semshiUnresolved      ctermfg=226 guifg=#ffff00 cterm=underline gui=underline
+  "hi semshiSelected        ctermfg=231 guifg=#ffffff ctermbg=161 guibg=#d7005f
+  hi semshiSelected        ctermfg=231 guifg=#ffffff cterm=underline gui=underline
+
+  hi semshiErrorSign       ctermfg=231 guifg=#ffffff ctermbg=160 guibg=#d70000
+  hi semshiErrorChar       ctermfg=231 guifg=#ffffff ctermbg=160 guibg=#d70000
+sign define semshiError text=E> texthl=semshiErrorSign
+endfunction
+
+autocmd FileType python call MyCustomHighlights()
+
+" colorize
+if !hasmapto("<Plug>Colorizer") && (!exists("g:colorizer_nomap") || g:colorizer_nomap == 0)
+  nmap <unique> <Leader>co <Plug>Colorizer
+endif
 
 " Ctags
 let g:ctags_statusline = 1
