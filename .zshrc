@@ -164,7 +164,7 @@ export PATH=${PATH}:/usr/local/cuda-9.0/bin
 #export PATH=${PATH}:/home/ieni/Documents/NTUT/Learning_Project/idea-IU-182.4892.20/bin
 #export PATH=${PATH}:/home/ieni/Documents/NTUT/Learning_Project/DataGrip-2018.3/bin
 export PATH=${PATH}:/home/ieni/.cargo/bin
-export PATH=${PATH}:/home/ieni/Tool_from_git/codimd-cli/bin
+export PATH=${PATH}:/home/ieni/Tools/codimd-cli/bin
 export PATH=${PATH}:/home/ieni/arduino-1.8.8
 export PATH=${PATH}:${JAVA_HOME}
 export WORKON_HOME=$HOME/.virtualenvs
@@ -242,5 +242,6 @@ function swagger_preview() {
     fi
 }
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 fpath=(~/.zsh.d/ $fpath)
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

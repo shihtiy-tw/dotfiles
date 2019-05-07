@@ -243,4 +243,5 @@ export SCM_CHECK=true
 # Load Bash It
 source "$BASH_IT"/bash_it.sh
 
+
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
