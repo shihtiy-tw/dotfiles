@@ -174,7 +174,7 @@ Plug 'stevearc/vim-arduino'
 Plug 'heavenshell/vim-pydocstring'
 Plug 'vim-scripts/DoxygenToolkit.vim'
 
-Plug 'wesleyche/SrcExpl'
+"Plug 'wesleyche/SrcExpl'
 
 
 
@@ -185,7 +185,7 @@ Plug 'vim-syntastic/syntastic'
 Plug 'chr4/nginx.vim'
 Plug 'shawncplus/phpcomplete.vim'
 Plug 'stanangeloff/php.vim'
-Plug 'hdima/python-syntax'
+"Plug 'hdima/python-syntax'
 Plug 'keith/swift.vim'
 Plug 'davidhalter/jedi-vim'
 Plug 'artur-shaik/vim-javacomplete2'
@@ -200,8 +200,19 @@ Plug 'prettier/vim-prettier', {
 " Plug 'maralla/validator.vim'
 
 Plug 'sakhnik/nvim-gdb'
-Plug 'SkyLeach/pudb.vim'
+Plug 'SkyLeach/pudb.vim', {'do': ':UpdateRemotePlugins'}
 Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
+
+" Command Tool
+Plug 'mileszs/ack.vim'
+
+" Misc
+Plug 'mattn/webapi-vim' " dependency for gist-vim
+Plug 'mattn/gist-vim'
+Plug 'editorconfig/editorconfig-vim'
+
+" bash-support
+" https://www.thegeekstuff.com/2009/02/make-vim-as-your-bash-ide-using-bash-support-plugin
 
 " only load these web front-end related plugins when we need them
 if filereadable(expand('~/.frontend.vimenv'))
@@ -222,18 +233,6 @@ if filereadable(expand('~/.frontend.vimenv'))
     Plug 'mattn/emmet-vim'
 
 endif
-
-" Command Tool
-Plug 'mileszs/ack.vim'
-
-
-" Misc
-Plug 'mattn/webapi-vim' " dependency for gist-vim
-Plug 'mattn/gist-vim'
-Plug 'editorconfig/editorconfig-vim'
-" bash-support
-" https://www.thegeekstuff.com/2009/02/make-vim-as-your-bash-ide-using-bash-support-plugin
-
 
 " _   _         __     ___             ____  _             _
 "| \ | | ___  __\ \   / (_)_ __ ___   |  _ \| |_   _  __ _(_)_ __  ___
@@ -437,8 +436,8 @@ nmap <Leader>ha :GitGutterStageHunk<CR>
 nmap <Leader>hu :GitGutterRevertHunk<CR>
 nmap <Leader>hv :GitGutterPreviewHunk<CR>
 
-" SrcExpl
-nmap <F10> :SrcExplToggle<CR>
+"" SrcExpl
+"nmap <F10> :SrcExplToggle<CR>
 
 
 " move in panels
@@ -537,27 +536,53 @@ autocmd filetype javascript nnoremap <leader>r :w <bar> exec '!nodejs '.shellesc
 "               |___/                                      |___/
 "
 
+" ack
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+  cnoreabbrev Ack Ack!
+  cnoreabbrev ack Ack!
+  cnoreabbrev Ag Ack!
+  "nnoremap <Leader>a :Ack!<Space>
+  nnoremap <Leader>a :Ack!<cword><cr>
+  noremap <Leader>A :Ack <Space>
+endif
+
 " semshi
 function! MyCustomHighlights()
+  "hi semshiLocal           ctermfg=209 guifg=#ff875f
+  "hi semshiGlobal          ctermfg=214 guifg=#ffaf00
+  "hi semshiImported        ctermfg=214 guifg=#ffaf00
+  "hi semshiParameter       ctermfg=75  guifg=#5fafff
+  "hi semshiParameterUnused ctermfg=117 guifg=#87d7ff cterm=underline gui=underline
+  "hi semshiFree            ctermfg=218 guifg=#ffafd7
+  "hi semshiBuiltin         ctermfg=207 guifg=#ff5fff
+  "hi semshiAttribute       ctermfg=49  guifg=#00ffaf
+  "hi semshiSelf            ctermfg=249 guifg=#b2b2b2
+  "hi semshiUnresolved      ctermfg=226 guifg=#ffff00 cterm=underline gui=underline
+  ""hi semshiSelected        ctermfg=231 guifg=#ffffff ctermbg=161 guibg=#d7005f
+  "hi semshiSelected        ctermfg=231 guifg=#ffffff ctermbg=161 guibg=#d7005f cterm=underline gui=underline
+  "hi semshiErrorSign       ctermfg=231 guifg=#ffffff ctermbg=160 guibg=#d70000
+  "hi semshiErrorChar       ctermfg=231 guifg=#ffffff ctermbg=160 guibg=#d70000
+
   hi semshiLocal           ctermfg=209 guifg=#ff875f
-  hi semshiGlobal          ctermfg=214 guifg=#ffaf00
-  hi semshiImported        ctermfg=214 guifg=#ffaf00
-  hi semshiParameter       ctermfg=75  guifg=#5fafff
+  hi semshiGlobal          ctermfg=214 guifg=#FFAD69
+  hi semshiImported        ctermfg=214 guifg=#FFAD69
+  hi semshiParameter       ctermfg=75  guifg=#4CBDD3
   hi semshiParameterUnused ctermfg=117 guifg=#87d7ff cterm=underline gui=underline
   hi semshiFree            ctermfg=218 guifg=#ffafd7
   hi semshiBuiltin         ctermfg=207 guifg=#ff5fff
-  hi semshiAttribute       ctermfg=49  guifg=#00ffaf
+  hi semshiAttribute       ctermfg=49  guifg=#89E296
   hi semshiSelf            ctermfg=249 guifg=#b2b2b2
   hi semshiUnresolved      ctermfg=226 guifg=#ffff00 cterm=underline gui=underline
   "hi semshiSelected        ctermfg=231 guifg=#ffffff ctermbg=161 guibg=#d7005f
-  hi semshiSelected        ctermfg=231 guifg=#ffffff cterm=underline gui=underline
-
+  hi semshiSelected        ctermfg=231 guifg=#ffffff ctermbg=161 guibg=#50a9b1 cterm=underline gui=underline
   hi semshiErrorSign       ctermfg=231 guifg=#ffffff ctermbg=160 guibg=#d70000
   hi semshiErrorChar       ctermfg=231 guifg=#ffffff ctermbg=160 guibg=#d70000
 sign define semshiError text=E> texthl=semshiErrorSign
 endfunction
 
 autocmd FileType python call MyCustomHighlights()
+"autocmd ColorScheme * call MyCustomHighlights()
 
 " colorize
 if !hasmapto("<Plug>Colorizer") && (!exists("g:colorizer_nomap") || g:colorizer_nomap == 0)
@@ -597,22 +622,22 @@ autocmd BufNewFile,BufRead *.ino let g:airline_section_x='%{MyStatusLine()}'
   "let g:pudb_breakpoint_symbol='*'
 "endif
 
-" SrcExpl
-let g:SrcExpl_pluginList = [
-    \"__Tagbar__.1",
-    \"NERD_tree_1"
-    \]
-" // Set the height of Source Explorer window
-let g:SrcExpl_winHeight = 8
+"" SrcExpl
+"let g:SrcExpl_pluginList = [
+    "\"__Tagbar__.1",
+    "\"NERD_tree_1"
+    "\]
+"" // Set the height of Source Explorer window
+"let g:SrcExpl_winHeight = 8
 
-" // Set 100 ms for refreshing the Source Explorer
-let g:SrcExpl_refreshTime = 100
+"" // Set 100 ms for refreshing the Source Explorer
+"let g:SrcExpl_refreshTime = 100
 
-" // Set "Enter" key to jump into the exact definition context
-let g:SrcExpl_jumpKey = "<ENTER>"
+"" // Set "Enter" key to jump into the exact definition context
+"let g:SrcExpl_jumpKey = "<ENTER>"
 
-" // Set "Space" key for back from the definition context
-let g:SrcExpl_gobackKey = "<SPACE>"
+"" // Set "Space" key for back from the definition context
+"let g:SrcExpl_gobackKey = "<SPACE>"
 
 " ConqueGDB
 let g:ConqueTerm_Color=2            " 1: strip color after 200 line, 2: always with color
@@ -652,11 +677,6 @@ let g:prettier#config#tab_width = 2
 
 " gitgutter
 set updatetime=100
-
-" Ag
-let g:ag_working_path_mode="r"
-let g:ag_lhandler=""
-ca Ag Ag!
 
 "supertab
 let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
