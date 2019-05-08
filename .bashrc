@@ -1,4 +1,4 @@
-# ~/.bashrc: executed by bash(1) for non-login shells.
+# ${HOME}/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
@@ -74,7 +74,7 @@ esac
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    test -r ${HOME}/.dircolors && eval "$(dircolors -b ${HOME}/.dircolors)" || eval "$(dircolors -b)"
     alias ls='ls --color=auto'
     #alias dir='dir --color=auto'
     #alias vdir='vdir --color=auto'
@@ -87,8 +87,8 @@ fi
 # colored GCC warnings and errors
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
-if [ -f ~/.autojump/share/autojump/autojump.bash ]; then
-	. ~/.autojump/share/autojump/autojump.bash
+if [ -f ${HOME}/.autojump/share/autojump/autojump.bash ]; then
+	. ${HOME}/.autojump/share/autojump/autojump.bash
 fi
 
 # mkdir + cd
@@ -111,7 +111,7 @@ alias cp="rsync -ah --progress"
 alias open="xdg-open"
 alias pingtest="ping 8.8.8.8"
 alias c='clear'
-alias weka='java -jar ~/weka-3-8-1/weka.jar'
+alias weka='java -jar ${HOME}/weka-3-8-1/weka.jar'
 alias python='python3'
 alias pip='pip3'
 alias bkliton='echo 1 | sudo tee /sys/class/leds/asus::kbd_backlight/brightness'
@@ -120,11 +120,11 @@ alias bklitoff='echo 0 | sudo tee /sys/class/leds/asus::kbd_backlight/brightness
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias myip="ifconfig wlp3s0 | grep -m 1 inet | sed 's/^.*inet addr://g' | sed 's/Bcast.*//g'"
 export MYIP=$(myip)
-alias notes='sudo updatedb; locate -r ~/".*notes_.*\.md"'
+alias notes='sudo updatedb; locate -r ${HOME}/".*notes_.*\.md"'
 alias def='definition'
 
 
-export GOOGLE_APPLICATION_CREDENTIALS='~/Documents/NTUT/patrick/Natural_Language/Natural_Language_API-a56f9766faee.json'
+export GOOGLE_APPLICATION_CREDENTIALS='${HOME}/Documents/NTUT/patrick/Natural_Language/Natural_Language_API-a56f9766faee.json'
 
 #export PATH=/usr/local/cuda-8.0/bin:$PATH
 #export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64:$LD_LIBRARY_PATH1
@@ -136,9 +136,9 @@ export EDITOR="$VISUAL"
 export PYTHONPATH=$PATH
 #export PYTHONPATH=/usr/local/lib/python3.5/dist-packages:$PYTHONPATH
 #export PYTHONPATH=$PYTHONPATH:/usr/local/lib/python3.5/dist-packages
-export ANDROID_HOME='~/Android/Sdk'
+export ANDROID_HOME='${HOME}/Android/Sdk'
 export CATALINA_HOME='/opt/tomcat'
-export PATH=${PATH}:~/Documents/NTUT/Learning_Project/idea-IU-182.4892.20/bin
+export PATH=${PATH}:${HOME}/Documents/NTUT/Learning_Project/idea-IU-182.4892.20/bin
 
 # color for man pages
 export LESS_TERMCAP_mb=$'\E[1;31m'     # begin bold
@@ -151,7 +151,7 @@ export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 export GROFF_NO_SGR=1                  # for konsole and gnome-terminal
 
 # JAVA_HOME="/usr/lib/jvm/java-8-oracle"
-# GOOGLE_APPLICATION_CREDENTIALS='~/Documents/NTUT/patrick/Natural_Language/Natural_Language_API-a56f9766faee.json'
+# GOOGLE_APPLICATION_CREDENTIALS='${HOME}/Documents/NTUT/patrick/Natural_Language/Natural_Language_API-a56f9766faee.json'
 # PATH=$PATH:$JAVA_HOME/bin
 # PATH=$PATH:$JAVA_HOME/bin
 # PATH=$PATH:$SPARK_HOME/bin
@@ -168,11 +168,11 @@ export GROFF_NO_SGR=1                  # for konsole and gnome-terminal
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
-# ~/.bash_aliases, instead of adding them here directly.11
+# ${HOME}/.bash_aliases, instead of adding them here directly.11
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+if [ -f ${HOME}/.bash_aliases ]; then
+    . ${HOME}/.bash_aliases
 fi
 
 # enable programmable completion features (you don't need to enable
@@ -187,10 +187,10 @@ if ! shopt -oq posix; then
 fi
 
 # added by Anaconda3 installer
-export PATH="~/anaconda3/bin:$PATH"
+export PATH="${HOME}/anaconda3/bin:$PATH"
 
 # Path to the bash it configuration
-export BASH_IT="~/.bash_it"
+export BASH_IT="${HOME}/.bash_it"
 
 # Lock and Load a custom theme file
 # location /.bash_it/themes/
@@ -231,7 +231,7 @@ export SCM_CHECK=true
 
 # Set vcprompt executable path for scm advance info in prompt (demula theme)
 # https://github.com/djl/vcprompt
-#export VCPROMPT_EXECUTABLE=~/.vcprompt/bin/vcprompt
+#export VCPROMPT_EXECUTABLE=${HOME}/.vcprompt/bin/vcprompt
 
 # (Advanced): Uncomment this to make Bash-it reload itself automatically
 # after enabling or disabling aliases, plugins, and completions.
@@ -245,4 +245,4 @@ source "$BASH_IT"/bash_it.sh
 
 
 
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+[ -f ${HOME}/.fzf.bash ] && source ${HOME}/.fzf.bash

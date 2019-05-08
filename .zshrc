@@ -2,7 +2,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-  export ZSH="~/.oh-my-zsh"
+  export ZSH="${HOME}/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -14,7 +14,7 @@ ZSH_THEME="ieni"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
+# a theme from this variable instead of looking in ${HOME}/.oh-my-zsh/themes/
 # If set to an empty array, this variable will have no effect.
 # ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
 
@@ -60,8 +60,8 @@ ZSH_THEME="ieni"
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
 # Which plugins would you like to load?
-# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Standard plugins can be found in ${HOME}/.oh-my-zsh/plugins/*
+# Custom plugins may be added to ${HOME}/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
@@ -105,7 +105,7 @@ source $ZSH/oh-my-zsh.sh
 # export ARCHFLAGS="-arch x86_64"
 
 # ssh
-# export SSH_KEY_PATH="~/.ssh/rsa_id"
+# export SSH_KEY_PATH="${HOME}/.ssh/rsa_id"
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -113,8 +113,8 @@ source $ZSH/oh-my-zsh.sh
 # For a full list of active aliases, run `alias`.
 #
 # Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
+# alias zshconfig="mate ${HOME}/.zshrc"
+# alias ohmyzsh="mate ${HOME}/.oh-my-zsh"
 #
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -123,7 +123,7 @@ alias cp="rsync -ah --progress"
 alias open="xdg-open"
 alias pingtest="ping 8.8.8.8"
 alias c='clear'
-alias weka='java -jar ~/weka-3-8-1/weka.jar'
+alias weka='java -jar ${HOME}/weka-3-8-1/weka.jar'
 alias python='python3.6'
 alias pip='pip3'
 alias bkliton='echo 1 | sudo tee /sys/class/leds/asus::kbd_backlight/brightness'
@@ -131,7 +131,7 @@ alias bklitoff='echo 0 | sudo tee /sys/class/leds/asus::kbd_backlight/brightness
 # https://developer.atlassian.com/blog/2016/02/best-way-to-store-dotfiles-git-bare-repo/
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias myip="ifconfig wlp3s0 | grep -m 1 inet | sed 's/^.*inet addr://g' | sed 's/Bcast.*//g'"
-alias notes='sudo updatedb; locate -r ~/".*notes_.*\.md"'
+alias notes='sudo updatedb; locate -r ${HOME}/".*notes_.*\.md"'
 alias def='definition'
 alias weather='curl wttr.in'
 alias tldr='tldr -t ocean'
@@ -145,7 +145,7 @@ source /etc/zsh_command_not_found
 
 # ENV VAR
 export MYIP=$(myip)
-export GOOGLE_APPLICATION_CREDENTIALS='~/Documents/NTUT/patrick/Natural_Language/Natural_Language_API-a56f9766faee.json'
+export GOOGLE_APPLICATION_CREDENTIALS='${HOME}/Documents/NTUT/patrick/Natural_Language/Natural_Language_API-a56f9766faee.json'
 #export PATH=/usr/local/cuda-8.0/bin:$PATH
 #export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64:$LD_LIBRARY_PATH1
 export LD_LIBRARY_PATH=/usr/local/cuda-9.0/lib64
@@ -153,20 +153,20 @@ export TF_CPP_MIN_LOG_LEVEL=2
 export VISUAL=nvim
 export EDITOR="$VISUAL"
 export GOROOT='/usr/local/go'
-export GOPATH="~/go"
+export GOPATH="${HOME}/go"
 export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 #export PYTHONPATH=$PATH
 #export PYTHONPATH="/usr/local/lib/python3.5/dist-packages"
 #export PYTHONPATH=/usr/local/lib/python3.6/dist-packages:$PYTHONPATH
 #export PYTHONPATH=/usr/local/lib/python3.7/dist-packages:$PYTHONPATH
-export ANDROID_HOME='~/Android/Sdk'
+export ANDROID_HOME='${HOME}/Android/Sdk'
 export CATALINA_HOME='/opt/tomcat'
 export PATH=${PATH}:/usr/local/cuda-9.0/bin
-#export PATH=${PATH}:~/Documents/NTUT/Learning_Project/idea-IU-182.4892.20/bin
-#export PATH=${PATH}:~/Documents/NTUT/Learning_Project/DataGrip-2018.3/bin
-export PATH=${PATH}:~/.cargo/bin
-export PATH=${PATH}:~/Tools/codimd-cli/bin
-export PATH=${PATH}:~/arduino-1.8.8
+#export PATH=${PATH}:${HOME}/Documents/NTUT/Learning_Project/idea-IU-182.4892.20/bin
+#export PATH=${PATH}:${HOME}/Documents/NTUT/Learning_Project/DataGrip-2018.3/bin
+export PATH=${PATH}:${HOME}/.cargo/bin
+export PATH=${PATH}:${HOME}/Tools/codimd-cli/bin
+export PATH=${PATH}:${HOME}/arduino-1.8.8
 export PATH=${PATH}:${JAVA_HOME}
 export WORKON_HOME=$HOME/.virtualenvs
 export CODIMD_SERVER='127.0.0.1:3000'
@@ -182,11 +182,11 @@ export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
 export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 export GROFF_NO_SGR=1                  # for konsole and gnome-terminal
 # added by Anaconda3 installer
-export PATH="~/anaconda3/bin:$PATH"
+export PATH="${HOME}/anaconda3/bin:$PATH"
 
 # convenience
-if [ -f ~/.autojump/share/autojump/autojump.zsh ]; then
-	. ~/.autojump/share/autojump/autojump.zsh
+if [ -f ${HOME}/.autojump/share/autojump/autojump.zsh ]; then
+	. ${HOME}/.autojump/share/autojump/autojump.zsh
 fi
 # mkdir + cd
 function mkdircd() {
@@ -243,7 +243,7 @@ function swagger_preview() {
     fi
 }
 
-fpath=(~/.zsh.d/ $fpath)
+fpath=(${HOME}/.zsh.d/ $fpath)
 
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f ${HOME}/.fzf.zsh ] && source ${HOME}/.fzf.zsh
