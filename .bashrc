@@ -87,8 +87,8 @@ fi
 # colored GCC warnings and errors
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
-if [ -f /home/ieni/.autojump/share/autojump/autojump.bash ]; then
-	. /home/ieni/.autojump/share/autojump/autojump.bash
+if [ -f ~/.autojump/share/autojump/autojump.bash ]; then
+	. ~/.autojump/share/autojump/autojump.bash
 fi
 
 # mkdir + cd
@@ -111,7 +111,7 @@ alias cp="rsync -ah --progress"
 alias open="xdg-open"
 alias pingtest="ping 8.8.8.8"
 alias c='clear'
-alias weka='java -jar /home/ieni/weka-3-8-1/weka.jar'
+alias weka='java -jar ~/weka-3-8-1/weka.jar'
 alias python='python3'
 alias pip='pip3'
 alias bkliton='echo 1 | sudo tee /sys/class/leds/asus::kbd_backlight/brightness'
@@ -124,7 +124,7 @@ alias notes='sudo updatedb; locate -r ~/".*notes_.*\.md"'
 alias def='definition'
 
 
-export GOOGLE_APPLICATION_CREDENTIALS='/home/ieni/Documents/NTUT/patrick/Natural_Language/Natural_Language_API-a56f9766faee.json'
+export GOOGLE_APPLICATION_CREDENTIALS='~/Documents/NTUT/patrick/Natural_Language/Natural_Language_API-a56f9766faee.json'
 
 #export PATH=/usr/local/cuda-8.0/bin:$PATH
 #export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64:$LD_LIBRARY_PATH1
@@ -136,9 +136,9 @@ export EDITOR="$VISUAL"
 export PYTHONPATH=$PATH
 #export PYTHONPATH=/usr/local/lib/python3.5/dist-packages:$PYTHONPATH
 #export PYTHONPATH=$PYTHONPATH:/usr/local/lib/python3.5/dist-packages
-export ANDROID_HOME='/home/ieni/Android/Sdk'
+export ANDROID_HOME='~/Android/Sdk'
 export CATALINA_HOME='/opt/tomcat'
-export PATH=${PATH}:/home/ieni/Documents/NTUT/Learning_Project/idea-IU-182.4892.20/bin
+export PATH=${PATH}:~/Documents/NTUT/Learning_Project/idea-IU-182.4892.20/bin
 
 # color for man pages
 export LESS_TERMCAP_mb=$'\E[1;31m'     # begin bold
@@ -151,7 +151,7 @@ export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 export GROFF_NO_SGR=1                  # for konsole and gnome-terminal
 
 # JAVA_HOME="/usr/lib/jvm/java-8-oracle"
-# GOOGLE_APPLICATION_CREDENTIALS='/home/ieni/Documents/NTUT/patrick/Natural_Language/Natural_Language_API-a56f9766faee.json'
+# GOOGLE_APPLICATION_CREDENTIALS='~/Documents/NTUT/patrick/Natural_Language/Natural_Language_API-a56f9766faee.json'
 # PATH=$PATH:$JAVA_HOME/bin
 # PATH=$PATH:$JAVA_HOME/bin
 # PATH=$PATH:$SPARK_HOME/bin
@@ -187,10 +187,10 @@ if ! shopt -oq posix; then
 fi
 
 # added by Anaconda3 installer
-export PATH="/home/ieni/anaconda3/bin:$PATH"
+export PATH="~/anaconda3/bin:$PATH"
 
 # Path to the bash it configuration
-export BASH_IT="/home/ieni/.bash_it"
+export BASH_IT="~/.bash_it"
 
 # Lock and Load a custom theme file
 # location /.bash_it/themes/
@@ -242,6 +242,7 @@ export SCM_CHECK=true
 
 # Load Bash It
 source "$BASH_IT"/bash_it.sh
+
 
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash

@@ -2,7 +2,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-  export ZSH="/home/ieni/.oh-my-zsh"
+  export ZSH="~/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -123,7 +123,7 @@ alias cp="rsync -ah --progress"
 alias open="xdg-open"
 alias pingtest="ping 8.8.8.8"
 alias c='clear'
-alias weka='java -jar /home/ieni/weka-3-8-1/weka.jar'
+alias weka='java -jar ~/weka-3-8-1/weka.jar'
 alias python='python3.6'
 alias pip='pip3'
 alias bkliton='echo 1 | sudo tee /sys/class/leds/asus::kbd_backlight/brightness'
@@ -145,7 +145,7 @@ source /etc/zsh_command_not_found
 
 # ENV VAR
 export MYIP=$(myip)
-export GOOGLE_APPLICATION_CREDENTIALS='/home/ieni/Documents/NTUT/patrick/Natural_Language/Natural_Language_API-a56f9766faee.json'
+export GOOGLE_APPLICATION_CREDENTIALS='~/Documents/NTUT/patrick/Natural_Language/Natural_Language_API-a56f9766faee.json'
 #export PATH=/usr/local/cuda-8.0/bin:$PATH
 #export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64:$LD_LIBRARY_PATH1
 export LD_LIBRARY_PATH=/usr/local/cuda-9.0/lib64
@@ -153,19 +153,20 @@ export TF_CPP_MIN_LOG_LEVEL=2
 export VISUAL=nvim
 export EDITOR="$VISUAL"
 export GOROOT='/usr/local/go'
+export GOPATH="~/go"
 export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 #export PYTHONPATH=$PATH
 #export PYTHONPATH="/usr/local/lib/python3.5/dist-packages"
 #export PYTHONPATH=/usr/local/lib/python3.6/dist-packages:$PYTHONPATH
 #export PYTHONPATH=/usr/local/lib/python3.7/dist-packages:$PYTHONPATH
-export ANDROID_HOME='/home/ieni/Android/Sdk'
+export ANDROID_HOME='~/Android/Sdk'
 export CATALINA_HOME='/opt/tomcat'
 export PATH=${PATH}:/usr/local/cuda-9.0/bin
-#export PATH=${PATH}:/home/ieni/Documents/NTUT/Learning_Project/idea-IU-182.4892.20/bin
-#export PATH=${PATH}:/home/ieni/Documents/NTUT/Learning_Project/DataGrip-2018.3/bin
-export PATH=${PATH}:/home/ieni/.cargo/bin
-export PATH=${PATH}:/home/ieni/Tools/codimd-cli/bin
-export PATH=${PATH}:/home/ieni/arduino-1.8.8
+#export PATH=${PATH}:~/Documents/NTUT/Learning_Project/idea-IU-182.4892.20/bin
+#export PATH=${PATH}:~/Documents/NTUT/Learning_Project/DataGrip-2018.3/bin
+export PATH=${PATH}:~/.cargo/bin
+export PATH=${PATH}:~/Tools/codimd-cli/bin
+export PATH=${PATH}:~/arduino-1.8.8
 export PATH=${PATH}:${JAVA_HOME}
 export WORKON_HOME=$HOME/.virtualenvs
 export CODIMD_SERVER='127.0.0.1:3000'
@@ -181,11 +182,11 @@ export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
 export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 export GROFF_NO_SGR=1                  # for konsole and gnome-terminal
 # added by Anaconda3 installer
-export PATH="/home/ieni/anaconda3/bin:$PATH"
+export PATH="~/anaconda3/bin:$PATH"
 
 # convenience
-if [ -f /home/ieni/.autojump/share/autojump/autojump.zsh ]; then
-	. /home/ieni/.autojump/share/autojump/autojump.zsh
+if [ -f ~/.autojump/share/autojump/autojump.zsh ]; then
+	. ~/.autojump/share/autojump/autojump.zsh
 fi
 # mkdir + cd
 function mkdircd() {
@@ -243,5 +244,6 @@ function swagger_preview() {
 }
 
 fpath=(~/.zsh.d/ $fpath)
+
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
