@@ -12,4 +12,4 @@ let g:python3_host_prog="/usr/bin/python3"
 source $HOME/dotfiles/nvim/plugins.vimrc
 source $HOME/dotfiles/nvim/plugin_config.vimrc
 source $HOME/dotfiles/nvim/keys.vimrc
-source $HOME/dotfiles/vimrc/main.vimrc
+source $HOME/dotfiles/vimrc
