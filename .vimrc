@@ -118,8 +118,23 @@ endif
 
 set nocompatible " Be iMproved
 call plug#begin('~/.vim/plugged')
-"Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 
+if has('nvim')
+  "Plug 'Shougo/neocomplete'
+  Plug 'sakhnik/nvim-gdb', {'do': ':UpdateRemotePlugins'}
+  "Plug 'SkyLeach/pudb.vim', {'do': ':UpdateRemotePlugins'}
+  Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  "Plug 'neomake/neomake'
+
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
+
+"Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+"
 " Vim theme
 Plug 'tomasr/molokai'
 Plug 'miyakogi/seiya.vim'
@@ -160,28 +175,31 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 Plug 'mzlogin/vim-markdown-toc'
+Plug 'shime/vim-livedown'
 Plug 'dhruvasagar/vim-table-mode'
 Plug '2072/PHP-Indenting-for-VIm'
 Plug 'tpope/vim-fugitive'
-Plug 'junegunn/gv.vim'
 Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 "Plug 'dbeniamine/cheat.sh-vim'
-"Plug 'idanarye/vim-vebugger'
-"Plug 'vim-vdebug/vdebug'
-"https://www.raditha.com/blog/archives/vim-and-python-debug/
 
-Plug 'stevearc/vim-arduino'
 Plug 'heavenshell/vim-pydocstring'
 Plug 'vim-scripts/DoxygenToolkit.vim'
 
-"Plug 'wesleyche/SrcExpl'
+Plug 'Chiel92/vim-autoformat'
+Plug 'prettier/vim-prettier', {
+            \ 'do': 'npm install',
+            \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
 
 
 
 " Syntax
 "Plug 'vim-scripts/Conque-GDB'
-Plug 'Valloric/YouCompleteMe'
+Plug 'rhysd/vim-grammarous'
+Plug 'Valloric/YouCompleteMe',{
+            \ 'do': 'python3 install.py --go-completer --ts-completer --java-completer --clang-completer',
+            \ 'for': ['javascript', 'c', 'cpp', 'python', 'go']}
 Plug 'vim-syntastic/syntastic'
+
 Plug 'chr4/nginx.vim'
 Plug 'shawncplus/phpcomplete.vim'
 Plug 'stanangeloff/php.vim'
@@ -192,16 +210,10 @@ Plug 'artur-shaik/vim-javacomplete2'
 Plug 'PProvost/vim-ps1' "ps1
 "Plug 'Rip-Rip/clang_complete'
 Plug 'wookiehangover/jshint.vim'
-Plug 'Chiel92/vim-autoformat'
-Plug 'prettier/vim-prettier', {
-            \ 'do': 'npm install',
-            \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
-
-" Plug 'maralla/validator.vim'
-
-Plug 'sakhnik/nvim-gdb'
-Plug 'SkyLeach/pudb.vim', {'do': ':UpdateRemotePlugins'}
-Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
+Plug 'stevearc/vim-arduino'
+Plug 'junegunn/gv.vim'
+Plug 'hashivim/vim-terraform'
+Plug 'juliosueiras/vim-terraform-completion'
 
 " Command Tool
 Plug 'mileszs/ack.vim'
@@ -216,7 +228,6 @@ Plug 'editorconfig/editorconfig-vim'
 
 " only load these web front-end related plugins when we need them
 if filereadable(expand('~/.frontend.vimenv'))
-
     " syntax
     Plug 'othree/html5.vim'
     Plug 'alvan/vim-closetag' "html tags
@@ -234,19 +245,6 @@ if filereadable(expand('~/.frontend.vimenv'))
 
 endif
 
-" _   _         __     ___             ____  _             _
-"| \ | | ___  __\ \   / (_)_ __ ___   |  _ \| |_   _  __ _(_)_ __  ___
-"|  \| |/ _ \/ _ \ \ / /| | '_ ` _ \  | |_) | | | | |/ _` | | '_ \/ __|
-"| |\  |  __/ (_) \ V / | | | | | | | |  __/| | |_| | (_| | | | | \__ \
-"|_| \_|\___|\___/ \_/  |_|_| |_| |_| |_|   |_|\__,_|\__, |_|_| |_|___/
-"                                                    |___/
-
-if has('.nvim')
-  "Plug 'Shougo/neocomplete'
-  Plug 'sakhnik/nvim-gdb'
-  Plug 'SkyLeach/pudb.vim'
-  Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
-endif
 
 let local_Vimrc=expand('~/.vimrc.local')
 if filereadable(local_Vimrc)
@@ -352,9 +350,8 @@ imap <Leader><Leader> <c-c>
 " pydocstring
 nmap <leader><leader>c <Plug>(pydocstring)
 
-
-" vim-instance-markdown
-map <leader>md :InstantMarkdownPreview<CR>
+" vim-livedown
+nmap <Leader>md :LivedownToggle<CR>
 
 " clear search result
 " nnoremap <c-l> :noh<CR>
@@ -547,6 +544,47 @@ if executable('ag')
   noremap <Leader>A :Ack <Space>
 endif
 
+" terraform
+let g:terraform_fmt_on_save=1
+let g:terraform_align=1
+
+"" neomake
+"" When writing a buffer (no delay).
+"call neomake#configure#automake('w')
+"" When writing a buffer (no delay), and on normal mode changes (after 750ms).
+"call neomake#configure#automake('nw', 750)
+"" When reading a buffer (after 1s), and when writing (no delay).
+"call neomake#configure#automake('rw', 1000)
+"" Full config: when writing or reading a buffer, and on changes in insert and
+"" normal mode (after 1s; no delay when writing).
+"call neomake#configure#automake('nrwi', 500)
+
+" deoplete
+set omnifunc=syntaxcomplete#Complete
+
+autocmd FileType python call deoplete#custom#buffer_option('auto_complete', v:false)
+autocmd FileType c call deoplete#custom#buffer_option('auto_complete', v:false)
+autocmd FileType cpp call deoplete#custom#buffer_option('auto_complete', v:false)
+
+let g:deoplete#omni_patterns = {}
+call deoplete#custom#option('omni_patterns', {
+  \ 'complete_method': 'omnifunc',
+  \ 'terraform': '[^ *\t"{=$]\w*',
+  \})
+let g:deoplete#enable_at_startup = 1
+call deoplete#initialize()
+
+" (Optional)Hide Info(Preview) window after completions
+"autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
+"autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+
+"supertab
+let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
+let g:SuperTabClosePreviewOnPopupClose = 1
+
+autocmd FileType ruby let g:SuperTabDefaultCompletionType = "<C-X><C-K>"
+
+
 " semshi
 function! MyCustomHighlights()
   "hi semshiLocal           ctermfg=209 guifg=#ff875f
@@ -611,38 +649,16 @@ setl statusline=%!MyStatusLine()
 autocmd BufNewFile,BufRead *.ino let g:airline_section_x='%{MyStatusLine()}'
 
 " pudb
-"if has('nvim')
-  "let g:python_host_prog='/usr/bin/python3.6'
-  "let g:python3_host_prog='/usr/bin/python3.6'
-  "" set the virtual env python used to launch the debugger
-  "let g:pudb_python='/usr/bin/python3.6'
-  "" set the entry point (script) to use for pudb
-  "let g:pudb_entry_point='~/src/poweruser_tools/test/test_templates.py'
-  "" Unicode symbols work fine (nvim, iterm, tmux, nyovim tested)
-  "let g:pudb_breakpoint_symbol='*'
-"endif
-
-"" SrcExpl
-"let g:SrcExpl_pluginList = [
-    "\"__Tagbar__.1",
-    "\"NERD_tree_1"
-    "\]
-"" // Set the height of Source Explorer window
-"let g:SrcExpl_winHeight = 8
-
-"" // Set 100 ms for refreshing the Source Explorer
-"let g:SrcExpl_refreshTime = 100
-
-"" // Set "Enter" key to jump into the exact definition context
-"let g:SrcExpl_jumpKey = "<ENTER>"
-
-"" // Set "Space" key for back from the definition context
-"let g:SrcExpl_gobackKey = "<SPACE>"
-
-" ConqueGDB
-let g:ConqueTerm_Color=2            " 1: strip color after 200 line, 2: always with color
-"let g:ConqueTerm_CloseOnEnd=1       " close conque when program ends running
-let g:ConqueTerm_StartMessages=0    " display warning message if conqueTerm is configed incorrect
+if has('nvim')
+  let g:python_host_prog='/usr/bin/python3.6'
+  let g:python3_host_prog='/usr/bin/python3.6'
+  " set the virtual env python used to launch the debugger
+  let g:pudb_python='/usr/bin/python3.6'
+  " set the entry point (script) to use for pudb
+  let g:pudb_entry_point='~/src/poweruser_tools/test/test_templates.py'
+  " Unicode symbols work fine (nvim, iterm, tmux, nyovim tested)
+  let g:pudb_breakpoint_symbol='*'
+endif
 
 " bash support
 let g:BASH_AuthorName = 'Stanley Yuan'
@@ -657,7 +673,7 @@ let verbose=1
 " python
 " pip3 install --upgrade autopep8 --user
 " pip3 install --upgrade black --user
-let g:formatdef_custom_black = '"black -q  - --line-length 91"'
+let g:formatdef_custom_black = '"black -q  - --line-length 79"'
 let g:formatters_python = ['custom_black']
 
 " javascript
@@ -678,9 +694,6 @@ let g:prettier#config#tab_width = 2
 " gitgutter
 set updatetime=100
 
-"supertab
-let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
-let g:SuperTabClosePreviewOnPopupClose = 1
 
 " vimwiki
 "let g:vimwiki_list = [{'path': '~/my_site/',
@@ -730,13 +743,6 @@ let g:clang_library_path = "/usr/lib/llvm-3.8/lib/libclang.so"
 " grepper
 let g:grepper_highlight = 1
 
-" vim-instant-markdown - Instant Markdown previews from Vim
-" https://github.com/suan/vim-instant-markdown
-let g:instant_markdown_autostart = 0    " disable autostart
-"# hotkeys
-"<leader>md - Open Markdown preview on web browser
-"related tools: gitbook, remarkable
-
 " Emmet
 let g:user_emmet_expandabbr_key = '<c-e>'
 
@@ -773,6 +779,9 @@ let g:airline_theme='minimalist'
 " vim-javacomplete2
 autocmd FileType java setlocal omnifunc=javacomplete#Complete
 
+" ruby
+"let g:ruby_host_prog = '/home/chris/.gem/ruby/2.4.0/bin/neovim-ruby-host.ruby2.4'
+let g:ruby_host_prog = '/home/ieni/.gem/ruby/2.5.0/bin/neovim-ruby-host'
 
 "source ~/.vim/neocomplete.config.vim
 "
