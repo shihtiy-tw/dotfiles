@@ -246,3 +246,5 @@ source "$BASH_IT"/bash_it.sh
 
 
 [ -f ${HOME}/.fzf.bash ] && source ${HOME}/.fzf.bash
+export GEM_HOME=~/.ruby
+export PATH="$PATH:~/.ruby/bin"
