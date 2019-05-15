@@ -142,10 +142,11 @@ alias sudo='sudo '
 
 # source
 source /etc/zsh_command_not_found
+source $HOME/.local/bin/aws_bash_completer
 
 # ENV VAR
 export MYIP=$(myip)
-export GOOGLE_APPLICATION_CREDENTIALS='${HOME}/Documents/NTUT/patrick/Natural_Language/Natural_Language_API-a56f9766faee.json'
+#export GOOGLE_APPLICATION_CREDENTIALS='${HOME}/Documents/NTUT/patrick/Natural_Language/Natural_Language_API-a56f9766faee.json'
 #export PATH=/usr/local/cuda-8.0/bin:$PATH
 #export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64:$LD_LIBRARY_PATH1
 export LD_LIBRARY_PATH=/usr/local/cuda-9.0/lib64
@@ -168,6 +169,10 @@ export PATH=${PATH}:${HOME}/.cargo/bin
 export PATH=${PATH}:${HOME}/Tools/codimd-cli/bin
 export PATH=${PATH}:${HOME}/arduino-1.8.8
 export PATH=${PATH}:${JAVA_HOME}
+#export RUBY_HOME=~/.ruby
+export GEM_HOME="~/.gem/ruby/2.5.0/"
+export PATH="$PATH:$GEM_HOME"
+#export PATH="$PATH:~/.ruby/bin"
 export WORKON_HOME=$HOME/.virtualenvs
 export CODIMD_SERVER='127.0.0.1:3000'
 
