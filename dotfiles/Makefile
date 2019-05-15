@@ -1,9 +1,16 @@
 PHONY: help
 
 help:
-	@echo "Usages: \n\
-	  hello: hello\n\
-	  status: show dotfile status\n\
+	@echo "\n\
+	Usages: \n\
+		hello: hello\n\
+		init: download zsh, tmux and config all dotfiles\n\
+		status: show dotfile status\n\
+		diff: show dotfile status\n\
+		add: show dotfile status\n\
+		commit: show dotfile status\n\
+		ls: show dotfiles \n\
+		rm_env: remove env\n\
 	"
 
 hello:
@@ -26,22 +33,57 @@ init:
  \n\
 	"
 
+	# update and upgrade packages
+	sudo apt-get update -y
+	sudo apt upgrade -y
+
+	# zsh
+	sudo apt install zsh -y
+	sudo apt-get install powerline fonts-powerline -y
+
+	# oh-my-zsh
+	git clone https://github.com/robbyrussell/oh-my-zsh.git ${HOME}/.oh-my-zsh
+	git clone https://github.com/zsh-users/zsh-autosuggestions ${HOME}/.oh-my-zsh/custom/plugins
+	git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${HOME}/.oh-my-zsh/custom/plugins
+
+	# tmux
+	sudo apt install tmux -y
+
+	# neovim
+	sudo apt-get install neovim -y
+	sudo apt-get install python3-neovim -y
+	sudo apt install build-essential cmake python3-dev -y
+
+	# dotfiles
+	git clone git@github.com:stanleyuan/dotfiles.git ${HOME}
+
+	mkdir -p ${HOME}/.config/nvim/
+	ln -sf ${HOME}/dotfiles/zshrc ${HOME}/.zshrc
+	ln -sf ${HOME}/dotfiles/zsh/ieni.zsh-theme ${HOME}/.oh-my-zsh/custom/themes/ieni.zsh-theme
+	ln -sf ${HOME}/dotfiles/bashrc ${HOME}/.bashrc
+	ln -sf ${HOME}/dotfiles/tmux.conf ${HOME}/.tmux.conf
+	ln -sf ${HOME}/dotfiles/gitconfig ${HOME}/.gitconfig
+	ln -sf ${HOME}/dotfiles/init.vim ${HOME}/.config/nvim/init.vim
+	ln -sf ${HOME}/dotfiles/nvim/init.vim ${HOME}/.config/nvim/init.vim
+
+	@echo "\ndone\n"
+
 status:
-	@/usr/bin/git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME} status
+	/usr/bin/git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME} status
 
 diff:
-	@/usr/bin/git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME} diff
+	/usr/bin/git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME} diff
 
 add:
-	@/usr/bin/git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME} add
+	/usr/bin/git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME} add
 
 commit:
-	@/usr/bin/git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME} commit -v
+	/usr/bin/git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME} commit -v
 
 ls:
-	@/usr/bin/git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME} ls-tree --full-tree -r HEAD
+	/usr/bin/git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME} ls-tree --full-tree -r HEAD
 
-remove:
+remove_env:
 	@echo "\n\
  ____                                 ___           _   _____\n\
 |  _ \ ___ _ __ ___   _____   _____  |_ _|___ _ __ (_) | ____|_ ____   __\n\
