@@ -26,6 +26,14 @@ nnoremap <A-j> <C-w>j
 nnoremap <A-k> <C-w>k
 nnoremap <A-l> <C-w>l
 
+
+"__ __|                  _)             |
+"   |  _ \  __| __ `__ \  | __ \   _` | |
+"   |  __/ |    |   |   | | |   | (   | |
+"  _|\___|_|   _|  _|  _|_|_|  _|\__,_|_|
+"
+"terminal
+
 function! VspTerm()
   vsp term://zsh
 endfunction
@@ -51,3 +59,13 @@ inoremap <A-t> :Tt <cr>
 nnoremap <A-v> :Vspt <cr>
 nnoremap <A-s> :Spt <cr>
 nnoremap <A-t> :Tt <cr>
+
+
+"  ___|                      |    _)
+"\___ \   _ \ __ `__ \   __| __ \  |
+"      |  __/ |   |   |\__ \ | | | |
+"_____/ \___|_|  _|  _|____/_| |_|_|
+"
+" semshi
+
+nnoremap <leader>rn :Semshi rename <space>
