@@ -56,7 +56,7 @@ let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
 "autocmd filetype cpp        nnoremap <leader>r :w <bar> exec '!g++ '.shellescape('%').' -std=c++11 -O2 ; and  ./a.out'<CR>
 "autocmd filetype php        nnoremap <leader>r :w <bar> exec '!php -f '.shellescape('%') <CR>
 "autocmd filetype java       nnoremap <leader>r :w <bar> exec '!javac '.shellescape('%').'; and java '.shellescape('%:r') <CR>
-autocmd filetype c          nnoremap <leader>r :w <bar> exec '!gcc '.shellescape('%').' -O2 &&  ./a.out'<CR>
+autocmd filetype c          nnoremap <leader>r :w <bar> exec '!gcc -Wall -g  '.shellescape('%').' &&  ./a.out'<CR>
 autocmd filetype cs         nnoremap <leader>r :w <bar> exec '!mcs '.shellescape('%').' &&  mono '.shellescape('%:r').'.exe'<CR>
 autocmd filetype cpp        nnoremap <leader>r :w <bar> exec '!g++ '.shellescape('%').' -std=c++11 -O2 &&  ./a.out'<CR>
 autocmd filetype php        nnoremap <leader>r :w <bar> exec '!php -f '.shellescape('%') <CR>
