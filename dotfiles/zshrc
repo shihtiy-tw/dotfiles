@@ -152,6 +152,7 @@ export MYIP=$(myip)
 export LD_LIBRARY_PATH=/usr/local/cuda-9.0/lib64
 export TF_CPP_MIN_LOG_LEVEL=2
 export VISUAL=nvim
+export MYVIMRC="${HOME}/.vimrc"
 export EDITOR="$VISUAL"
 export GOROOT='/usr/local/go'
 export GOPATH="${HOME}/go"
