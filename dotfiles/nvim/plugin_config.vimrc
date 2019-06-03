@@ -33,6 +33,14 @@ endfunction
 autocmd FileType python call MyCustomHighlights()
 "autocmd ColorScheme * call MyCustomHighlights()
 
+"  ___| __ \  __ )
+" |     |   | __ \
+" |   | |   | |   |
+"\____|____/ ____/
+"
+"gdb
+
+
 
 "  _ \            | |
 " |   | |   |  _` | __ \
@@ -41,6 +49,14 @@ autocmd FileType python call MyCustomHighlights()
 "
 "pudb
 
+
+" :PUDBToggleBreakPoint - Toggles a breakpoint on the current line (requires ft=python)
+" :PUDBClearAllBreakpoints - Clears all currently set breakpoitns on the current file (requires ft=python)
+" :PUDBUpdateBreakPoints - Updates any breakpoints set outside of neovim (such as in the debugger itself)
+" :PUDBStatus - Shows a status printout (in :messages) for the plugin
+" :PUDBLaunchDebuggerTab - Launches pudb in a new tab.<Paste>
+" :PUDBSetEntrypointVENV: Sets both the entrypoint (script to be run) and the python to use (virtual environment) if it can be determined.
+" :PUDBSetEntrypoint: Sets only the entrypoint (script to be run) when you launch the debugger. Useful if your breakpoint is in a different file.
 
 " set the virtual env python used to launch the debugger
 let g:pudb_python='/usr/bin/python3.6'

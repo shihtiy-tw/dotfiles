@@ -69,3 +69,30 @@ nnoremap <A-t> :Tt <cr>
 " semshi
 
 nnoremap <leader>rn :Semshi rename <space>
+
+"  ___| __ \  __ )
+" |     |   | __ \
+" |   | |   | |   |
+"\____|____/ ____/
+"
+"gdb
+"
+" <Leader>dd	:GdbStart gdb -q ./a.out	Start debugging session, allows editing the launching command
+" <Leader>dl	:GdbStartLLDB lldb ./a.out	Start debugging session, allows editing the launching command
+" <Leader>dp	:GdbStartPDB python -m pdb main.py	Start Python debugging session, allows editing the launching command
+" <F8>	      :GdbBreakpointToggle	Toggle breakpoint in the coursor line
+" <F4>	      :GdbUntil	Continue execution until a given line (until in gdb)
+" <F5>	      :GdbContinue	Continue execution (continue in gdb)
+" <F10>	      :GdbNext	Step over the next statement (next in gdb)
+" <F11>	      :GdbStep	Step into the next statement (step in gdb)
+" <F12>	      :GdbFinish	Step out the current frame (finish in gdb)
+" <c-p>	      :GdbFrameUp	Navigate one frame up (up in gdb)
+" <c-n>	      :GdbFrameDown	Navigate one frame down (down in gdb)
+
+
+"  _ \  |   | __ \  __ )
+" |   | |   | |   | __ \
+" ___/  |   | |   | |   |
+"_|    \___/ ____/ ____/
+"
+"pudb
