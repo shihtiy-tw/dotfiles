@@ -14,10 +14,10 @@ endif
 set nocompatible " Be iMproved
 call plug#begin('~/.local/share/nvim/plugged')
 
-Plug 'sakhnik/nvim-gdb', {'do': ':UpdateRemotePlugins'}
-Plug 'SkyLeach/pudb.vim', {'do': ':UpdateRemotePlugins'}
-Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'SkyLeach/pudb.vim'
+Plug 'numirias/semshi'
+Plug 'Shougo/deoplete.nvim'
+Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh \| UpdateRemotePlugins' }
 
 "Plug 'Shougo/neocomplete'
 "Plug 'neomake/neomake'
