@@ -12,7 +12,7 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 set nocompatible " Be iMproved
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'sakhnik/nvim-gdb', {'do': ':UpdateRemotePlugins'}
 Plug 'SkyLeach/pudb.vim', {'do': ':UpdateRemotePlugins'}
@@ -28,5 +28,7 @@ if filereadable(local_Vimrc)
     source ~/.vimrc.local
 endif
 
-call plug#end()
+" end at vimrc
+"call plug#end()
+
 filetype plugin indent on
