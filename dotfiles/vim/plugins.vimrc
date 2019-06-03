@@ -15,10 +15,6 @@ set nocompatible " Be iMproved
 
 if !has('nvim')
   call plug#begin('~/.vim/plugged')
-
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
 endif
 
 "Plug 'Shougo/vimproc.vim', {'do' : 'make'}
@@ -39,6 +35,12 @@ Plug 'altercation/vim-colors-solarized'
 "  \ \ /    |  |   |    |  |   | |   | |
 "   \_/   ___|_|  _|   _| \___/ \___/ _____|
 "
+if !has('nvim')
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
+
 Plug 'vim-scripts/Auto-Pairs'
 Plug 'kien/ctrlp.vim'
 Plug 'scrooloose/nerdtree'
@@ -86,6 +88,11 @@ Plug 'prettier/vim-prettier', {
 "      |   |   |\  |   |  ___ \    \
 "_____/   _|  _| \_|  _|_/    _\_/\_\
 "
+
+if !has('nvim')
+  Plug 'stamblerre/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
+endif
+
 Plug 'plasticboy/vim-markdown'
 Plug 'mzlogin/vim-markdown-toc'
 Plug 'shime/vim-livedown'
@@ -110,6 +117,16 @@ Plug 'mattn/webapi-vim' " dependency for gist-vim
 Plug 'mattn/gist-vim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'ekalinin/Dockerfile.vim'
+
+" for deoplete
+Plug 'deoplete-plugins/deoplete-go', { 'do': 'make'}
+Plug 'Shougo/neco-vim'
+Plug 'deoplete-plugins/deoplete-jedi'
+
+
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'wellle/tmux-complete.vim'
 
 "Plug 'shawncplus/phpcomplete.vim'
 "Plug 'stanangeloff/php.vim'

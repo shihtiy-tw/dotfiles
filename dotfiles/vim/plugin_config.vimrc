@@ -340,3 +340,24 @@ autocmd FileType java setlocal omnifunc=javacomplete#Complete
 
 "let g:ruby_host_prog = '/home/chris/.gem/ruby/2.4.0/bin/neovim-ruby-host.ruby2.4'
 let g:ruby_host_prog = '/home/ieni/.gem/ruby/2.5.0/bin/neovim-ruby-host'
+
+
+"__ __|                                                     |      |
+"   | __ `__ \  |   |\ \  /       __|  _ \  __ `__ \  __ \  |  _ \ __|  _ \
+" | |   |   | |   | `  <_____| (    (   | |   |   | |   | |  __/ |    __/
+"  _|_|  _|  _|\__,_| _/\_\     \___|\___/ _|  _|  _| .__/ _|\___|\__|\___|
+"                                                    _|
+" tmux-complete
+
+let g:tmuxcomplete#asyncomplete_source_options = {
+            \ 'name':      'tmuxcomplete',
+            \ 'whitelist': ['*'],
+            \ 'config': {
+            \     'splitmode':      'words',
+            \     'filter_prefix':   1,
+            \     'show_incomplete': 1,
+            \     'sort_candidates': 0,
+            \     'scrollback':      0,
+            \     'truncate':        0
+            \     }
+            \ }

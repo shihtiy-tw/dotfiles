@@ -14,10 +14,25 @@ endif
 set nocompatible " Be iMproved
 call plug#begin('~/.local/share/nvim/plugged')
 
+"
+"__ __| _ \   _ \  |
+"   |  |   | |   | |
+"   |  |   | |   | |
+"  _| \___/ \___/ _____|
+"
 Plug 'SkyLeach/pudb.vim'
 Plug 'numirias/semshi'
 Plug 'Shougo/deoplete.nvim'
 Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh \| UpdateRemotePlugins' }
+
+"
+"  ___|\ \   /  \  |__ __|  \  \ \  /
+"\___ \ \   /    \ |   |   _ \  \  /
+"      |   |   |\  |   |  ___ \    \
+"_____/   _|  _| \_|  _|_/    _\_/\_\
+"
+
+Plug 'stamblerre/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' }
 
 "Plug 'Shougo/neocomplete'
 "Plug 'neomake/neomake'
