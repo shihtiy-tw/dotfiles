@@ -25,25 +25,24 @@ let g:deoplete#enable_at_startup = 1
 " semshi
 
 function! MyCustomHighlights()
-  hi semshiLocal           ctermfg=209 guifg=#ff875f
-  hi semshiGlobal          ctermfg=214 guifg=#FFAD69
-  hi semshiImported        ctermfg=214 guifg=#FFAD69
-  hi semshiParameter       ctermfg=75  guifg=#4CBDD3
-  hi semshiParameterUnused ctermfg=117 guifg=#87d7ff cterm=underline gui=underline
-  hi semshiFree            ctermfg=218 guifg=#ffafd7
-  hi semshiBuiltin         ctermfg=207 guifg=#ff5fff
-  hi semshiAttribute       ctermfg=49  guifg=#89E296
-  hi semshiSelf            ctermfg=249 guifg=#b2b2b2
-  hi semshiUnresolved      ctermfg=226 guifg=#ffff00 cterm=underline gui=underline
-  "hi semshiSelected        ctermfg=231 guifg=#ffffff ctermbg=161 guibg=#d7005f
-  hi semshiSelected        ctermfg=231 guifg=#ffffff ctermbg=161 guibg=#50a9b1 cterm=underline gui=underline
+  hi semshiLocal           ctermfg=175 guifg=#d787af
+  hi semshiGlobal          ctermfg=208 guifg=#ff8700
+  hi semshiImported        ctermfg=208 guifg=#ff8700
+  hi semshiParameter       ctermfg=73  guifg=#5fafaf
+  hi semshiParameterUnused ctermfg=148 guifg=#afd700 cterm=underline gui=underline
+  hi semshiFree            ctermfg=212 guifg=#ff87d7
+  hi semshiBuiltin         ctermfg=126 guifg=#af0087
+  hi semshiAttribute       ctermfg=72  guifg=#5faf87
+  hi semshiSelf            ctermfg=245 guifg=#8a8a8a
+  hi semshiUnresolved      ctermfg=226 guifg=#fabd2f cterm=underline gui=underline
+  hi semshiSelected        ctermfg=231 guifg=#ffffff ctermbg=235 guibg=#262626 cterm=underline gui=underline
   hi semshiErrorSign       ctermfg=231 guifg=#ffffff ctermbg=160 guibg=#d70000
   hi semshiErrorChar       ctermfg=231 guifg=#ffffff ctermbg=160 guibg=#d70000
 sign define semshiError text=E> texthl=semshiErrorSign
 endfunction
 
 autocmd FileType python call MyCustomHighlights()
-"autocmd ColorScheme * call MyCustomHighlights()
+autocmd ColorScheme * call MyCustomHighlights()
 
 "  ___| __ \  __ )
 " |     |   | __ \

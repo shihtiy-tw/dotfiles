@@ -21,7 +21,7 @@ call plug#begin('~/.local/share/nvim/plugged')
 "  _| \___/ \___/ _____|
 "
 Plug 'SkyLeach/pudb.vim'
-Plug 'numirias/semshi'
+Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
 Plug 'Shougo/deoplete.nvim'
 Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh \| UpdateRemotePlugins' }
 
