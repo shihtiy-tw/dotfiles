@@ -30,6 +30,7 @@ elseif option == "solarized"
     endif
 elseif option == "gruvbox"
     if !empty(glob(plugged_directory.'/gruvbox/colors/gruvbox.vim'))
+        set background=dark
         color gruvbox
     endif
 endif
