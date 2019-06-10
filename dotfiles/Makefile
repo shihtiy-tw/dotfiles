@@ -57,27 +57,47 @@ install:
 
 	# oh-my-zsh
 	git clone https://github.com/robbyrussell/oh-my-zsh.git ${HOME}/.oh-my-zsh
-	git clone https://github.com/zsh-users/zsh-autosuggestions ${HOME}/.oh-my-zsh/custom/plugins
-	git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${HOME}/.oh-my-zsh/custom/plugins
+	git clone https://github.com/zsh-users/zsh-autosuggestions ${HOME}/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+	git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${HOME}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting.git
 
 	# tmux
 	sudo apt install tmux -y
+
+	# vim
+	sudo apt-get install vim -y
 
 	# neovim
 	sudo apt-get install neovim -y
 	sudo apt-get install python3-neovim -y
 	sudo apt install build-essential cmake python3-dev -y
 
+
+init:
+	@echo " \n\
+ ___       _ _     ___           _   _____\n\
+|_ _|_ __ (_) |_  |_ _|___ _ __ (_) | ____|_ ____   __\n\
+ | || '_ \| | __|  | |/ _ \ '_ \| | |  _| | '_ \ \ / /\n\
+ | || | | | | |_   | |  __/ | | | | | |___| | | \ V /\n\
+|___|_| |_|_|\__| |___\___|_| |_|_| |_____|_| |_|\_/\n\
+ \n\
+	"
+
+
 	# dotfiles
-	git clone git@github.com:stanleyuan/dotfiles.git ${HOME}
+
+	git clone https://github.com/stanleyuan/dotfiles.git ${HOME}/
 
 	mkdir -p ${HOME}/.config/nvim/
+
+	if [ -e ${HOME}/.zshrc ]; then \
+		mv ${HOME}/.zshrc ${HOME}/.zshrc_backup; \
+	fi
 	ln -sf ${HOME}/dotfiles/zshrc ${HOME}/.zshrc
 	ln -sf ${HOME}/dotfiles/zsh/ieni.zsh-theme ${HOME}/.oh-my-zsh/custom/themes/ieni.zsh-theme
 	ln -sf ${HOME}/dotfiles/bashrc ${HOME}/.bashrc
 	ln -sf ${HOME}/dotfiles/tmux.conf ${HOME}/.tmux.conf
 	ln -sf ${HOME}/dotfiles/gitconfig ${HOME}/.gitconfig
-	ln -sf ${HOME}/dotfiles/init.vim ${HOME}/.config/nvim/init.vim
+	ln -sf ${HOME}/dotfiles/vimrc ${HOME}/.vimrc
 	ln -sf ${HOME}/dotfiles/nvim/init.vim ${HOME}/.config/nvim/init.vim
 
 	@echo "\ndone\n"
