@@ -28,6 +28,7 @@ Plug 'tomasr/molokai'
 Plug 'miyakogi/seiya.vim'
 Plug 'crusoexia/vim-monokai'
 Plug 'altercation/vim-colors-solarized'
+Plug 'morhetz/gruvbox'
 
 "
 "\ \     /_ _|  \  | __ __| _ \   _ \  |
