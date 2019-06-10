@@ -123,12 +123,14 @@ Plug 'ekalinin/Dockerfile.vim'
 Plug 'deoplete-plugins/deoplete-go', { 'do': 'make'}
 Plug 'Shougo/neco-vim'
 Plug 'deoplete-plugins/deoplete-jedi'
+Plug 'deoplete-plugins/deoplete-dictionary'
+Plug 'deoplete-plugins/deoplete-docker'
 
 
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'wellle/tmux-complete.vim'
 
+"Plug 'wellle/tmux-complete.vim'
 "Plug 'shawncplus/phpcomplete.vim'
 "Plug 'stanangeloff/php.vim'
 "Plug 'Rip-Rip/clang_complete'
