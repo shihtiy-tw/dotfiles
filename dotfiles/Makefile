@@ -1,3 +1,17 @@
+# variable
+ZSHRCPATH = "${HOME}/.zshrc"
+ZSHRCBACKUPPATH = "${HOME}/.zshrc_backup"
+BASHRCPATH = "${HOME}/.bashrc"
+BASHRCBACKUPPATH = "${HOME}/.bashrc_backup"
+TMUXCONFPATH = "${HOME}/.tmux.conf"
+TMUXCONFBACKUPPATH = "${HOME}/.tmux.conf_backup"
+GITCONFIGPATH = "${HOME}/.gitconfig"
+GITCONFIGBACKUPPATH = "${HOME}/.gitconfig_backup"
+VIMRCPATH = "${HOME}/.vimrc"
+VIMRCBACKUPPATH = "${HOME}/.vimrc_backup"
+INITVIMPATH = "${HOME}/.config/nvim/init.vim"
+INITVIMBACKUPPATH = "${HOME}/.config/nvim/init.vim_backup"
+
 PHONY: help
 
 help:
