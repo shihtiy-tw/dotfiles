@@ -37,15 +37,15 @@ hello:
 	\n\
 	"
 
-init:
-	@echo " \n\
- ___       _ _     ___           _   _____\n\
-|_ _|_ __ (_) |_  |_ _|___ _ __ (_) | ____|_ ____   __\n\
- | || '_ \| | __|  | |/ _ \ '_ \| | |  _| | '_ \ \ / /\n\
- | || | | | | |_   | |  __/ | | | | | |___| | | \ V /\n\
-|___|_| |_|_|\__| |___\___|_| |_|_| |_____|_| |_|\_/\n\
- \n\
-	"
+install:
+
+	# zsh
+	wget -O zsh.tar.xz https://sourceforge.net/projects/zsh/files/latest/download
+	mkdir zsh && unxz zsh.tar.xz && tar -xvf zsh.tar -C zsh --strip-components 1
+	cd zsh
+	./configure --prefix=$HOME
+	make
+	make install
 
 	# update and upgrade packages
 	sudo apt-get update -y
