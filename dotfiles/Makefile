@@ -38,6 +38,15 @@ hello:
 	"
 
 install:
+	@echo "\n\
+ ___           _        _ _   _____           _
+|_ _|_ __  ___| |_ __ _| | | |_   _|__   ___ | |___ \n\
+ | || '_ \/ __| __/ _` | | |   | |/ _ \ / _ \| / __|\n\
+ | || | | \__ \ || (_| | | |   | | (_) | (_) | \__ \\n\
+|___|_| |_|___/\__\__,_|_|_|   |_|\___/ \___/|_|___/\n\
+	\n\
+	"
+
 
 	# zsh
 	wget -O zsh.tar.xz https://sourceforge.net/projects/zsh/files/latest/download
@@ -89,6 +98,18 @@ init:
 
 	mkdir -p ${HOME}/.config/nvim/
 
+	if [ -e ${HOME}/.zshrc ]; then \
+		mv ${HOME}/.zshrc ${HOME}/.zshrc_backup; \
+	fi
+	if [ -e ${HOME}/.bashrc ]; then \
+		mv ${HOME}/.zshrc ${HOME}/.zshrc_backup; \
+	fi
+	if [ -e ${HOME}/.zshrc ]; then \
+		mv ${HOME}/.zshrc ${HOME}/.zshrc_backup; \
+	fi
+	if [ -e ${HOME}/.zshrc ]; then \
+		mv ${HOME}/.zshrc ${HOME}/.zshrc_backup; \
+	fi
 	if [ -e ${HOME}/.zshrc ]; then \
 		mv ${HOME}/.zshrc ${HOME}/.zshrc_backup; \
 	fi

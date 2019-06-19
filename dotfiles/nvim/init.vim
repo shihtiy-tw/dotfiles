@@ -14,5 +14,6 @@ let g:python3_host_prog='/usr/bin/python3.6'
 
 source $HOME/dotfiles/nvim/plugins.vimrc
 source $HOME/dotfiles/nvim/plugin_config.vimrc
+source $HOME/dotfiles/nvim/general.vimrc
 source $HOME/dotfiles/vimrc
 source $HOME/dotfiles/nvim/keys.vimrc
