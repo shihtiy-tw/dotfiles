@@ -6,6 +6,17 @@
 "               |___/                                      |___/
 "
 
+"  ___|
+" |     __ \  __ \  __ `__ \   _` | __ \
+" |     |   | |   | |   |   | (   | |   |
+"\____| .__/  .__/ _|  _|  _|\__,_|_|  _|
+"      _|    _|
+"
+"cppman
+
+command! -nargs=+ Cppman silent! call system("tmux split-window cppman " . expand(<q-args>))
+autocmd FileType cpp nnoremap <silent><buffer> K <Esc>:Cppman <cword><CR>
+
 
 "    \         |
 "   _ \    __| |  /
@@ -17,6 +28,16 @@
 if executable('ag')
   let g:ackprg = 'ag --vimgrep'
 endif
+
+"     |          |_)
+"     |  _ \  _` | |
+" \   |  __/ (   | |
+"\___/ \___|\__,_|_|
+"
+"jedi
+
+let g:jedi#rename_command = "<leader>rn"
+
 
 "__ __|                    _|
 "   |  _ \  __|  __| _` | |    _ \   __| __ `__ \

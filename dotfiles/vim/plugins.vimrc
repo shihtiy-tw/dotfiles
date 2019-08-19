@@ -42,6 +42,7 @@ if !has('nvim')
   Plug 'roxma/vim-hug-neovim-rpc'
 endif
 
+Plug 'benmills/vimux'
 Plug 'vim-scripts/Auto-Pairs'
 Plug 'kien/ctrlp.vim'
 Plug 'scrooloose/nerdtree'
@@ -118,6 +119,7 @@ Plug 'mattn/webapi-vim' " dependency for gist-vim
 Plug 'mattn/gist-vim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'ekalinin/Dockerfile.vim'
+Plug 'junegunn/vader.vim'
 
 " for deoplete
 Plug 'deoplete-plugins/deoplete-go', { 'do': 'make'}

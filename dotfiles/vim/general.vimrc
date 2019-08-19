@@ -65,7 +65,3 @@ autocmd FileType html         setlocal  sw=2 sts=2            et
 autocmd FileType javascript   setlocal  sw=2 sts=2            et
 autocmd FileType ruby         setlocal  sw=2 sts=2            noet
 autocmd FileType php          setlocal                        et
-
-if !has('nvim')
-  autocmd FileType cpp          set keywordprg=cppman
-endif
