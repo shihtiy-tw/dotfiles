@@ -37,9 +37,9 @@ Plug 'morhetz/gruvbox'
 "   \_/   ___|_|  _|   _| \___/ \___/ _____|
 "
 if !has('nvim')
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
+  "Plug 'Shougo/deoplete.nvim'
+  "Plug 'roxma/nvim-yarp'
+  "Plug 'roxma/vim-hug-neovim-rpc'
 endif
 
 Plug 'benmills/vimux'
@@ -57,7 +57,7 @@ Plug 'tpope/vim-surround'
 Plug 'triglav/vim-visual-increment'
 Plug 'vim-scripts/Buffergator'
 Plug 'vim-scripts/matchit.zip'
-Plug 'xavierchow/vim-swagger-preview'
+Plug 'xavierchow/vim-swagger-preview' {'for': ['yaml']}
 Plug '~/Tool_from_git/fzf/bin/fzf'
 Plug '~/Tool_from_git/fzf/bin/fzf-tmux'
 Plug 'junegunn/fzf.vim'
@@ -92,45 +92,44 @@ Plug 'prettier/vim-prettier', {
 "
 
 if !has('nvim')
-  Plug 'stamblerre/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
+  "Plug 'stamblerre/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
+
+  " for deoplete
+  "Plug 'deoplete-plugins/deoplete-go', { 'do': 'make'}
+  "Plug 'Shougo/neco-vim'
+  "Plug 'deoplete-plugins/deoplete-jedi'
+  "Plug 'deoplete-plugins/deoplete-dictionary'
+  "Plug 'deoplete-plugins/deoplete-docker'
 endif
 
+Plug 'fatih/vim-go'
 Plug 'plasticboy/vim-markdown'
 Plug 'mzlogin/vim-markdown-toc'
 Plug 'shime/vim-livedown'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'rhysd/vim-grammarous'
-Plug 'Valloric/YouCompleteMe',{
-            \ 'do': 'python3 install.py --go-completer --ts-completer --java-completer --clang-completer',
-            \ 'for': ['javascript', 'c', 'cpp', 'python', 'go']}
 Plug 'vim-syntastic/syntastic'
 Plug 'heavenshell/vim-pydocstring'
 Plug '2072/PHP-Indenting-for-VIm'
 Plug 'chr4/nginx.vim'
-Plug 'davidhalter/jedi-vim'
-Plug 'artur-shaik/vim-javacomplete2'
 Plug 'PProvost/vim-ps1' "ps1
 Plug 'wookiehangover/jshint.vim'
 Plug 'stevearc/vim-arduino'
 Plug 'junegunn/gv.vim'
-Plug 'hashivim/vim-terraform'
-Plug 'juliosueiras/vim-terraform-completion'
 Plug 'mattn/webapi-vim' " dependency for gist-vim
 Plug 'mattn/gist-vim'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'junegunn/vader.vim'
+"Plug 'davidhalter/jedi-vim'
+Plug 'neoclide/coc.nvim', {'tag': '*', 'branch': 'release'}
+Plug 'hashivim/vim-terraform'
+"Plug 'Valloric/YouCompleteMe',{
+            "\ 'do': 'python3 install.py --go-completer --ts-completer --java-completer --clang-completer',
+            "\ 'for': ['javascript', 'c', 'cpp', 'python', 'go']}
 
-" for deoplete
-Plug 'deoplete-plugins/deoplete-go', { 'do': 'make'}
-Plug 'Shougo/neco-vim'
-Plug 'deoplete-plugins/deoplete-jedi'
-Plug 'deoplete-plugins/deoplete-dictionary'
-Plug 'deoplete-plugins/deoplete-docker'
-
-
-Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/asyncomplete.vim'
+"Plug 'prabirshrestha/async.vim'
+"Plug 'prabirshrestha/asyncomplete.vim'
 
 "Plug 'wellle/tmux-complete.vim'
 "Plug 'shawncplus/phpcomplete.vim'
@@ -139,6 +138,8 @@ Plug 'prabirshrestha/asyncomplete.vim'
 "Plug 'hdima/python-syntax'
 "Plug 'keith/swift.vim'
 "Plug 'vim-scripts/Conque-GDB'
+"Plug 'artur-shaik/vim-javacomplete2'
+"Plug 'juliosueiras/vim-terraform-completion'
 
 " bash-support
 " https://www.thegeekstuff.com/2009/02/make-vim-as-your-bash-ide-using-bash-support-plugin

@@ -17,6 +17,43 @@
 command! -nargs=+ Cppman silent! call system("tmux split-window cppman " . expand(<q-args>))
 autocmd FileType cpp nnoremap <silent><buffer> K <Esc>:Cppman <cword><CR>
 
+"  ___|  _ \   ___|
+" |     |   | |
+" |     |   | |
+"\____|\___/ \____|
+"
+"coc
+let g:coc_node_path = "/usr/bin/nodejs"
+
+function! SetupCommandAbbrs(from, to)
+  exec 'cnoreabbrev <expr> '.a:from
+        \ .' ((getcmdtype() ==# ":" && getcmdline() ==# "'.a:from.'")'
+        \ .'? ("'.a:to.'") : ("'.a:from.'"))'
+endfunction
+
+" Use C to open coc config
+call SetupCommandAbbrs('C', 'CocConfig')
+
+" if hidden is not set, TextEdit might fail.
+set hidden
+
+" Some servers have issues with backup files, see #649
+set nobackup
+set nowritebackup
+
+" Better display for messages
+set cmdheight=2
+
+" You will have bad experience for diagnostic messages when it's default 4000.
+set updatetime=300
+
+" don't give |ins-completion-menu| messages.
+set shortmess+=c
+
+" always show signcolumns
+set signcolumn=yes
+
+
 
 "    \         |
 "   _ \    __| |  /
