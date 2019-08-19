@@ -9,8 +9,8 @@ set runtimepath^=~/.vim runtimepath+=~/.vim/after
 let &packpath=&runtimepath
 let g:python_host_prog='/usr/bin/python3.6'
 let g:python3_host_prog='/usr/bin/python3.6'
-
-"let g:python3_host_prog="/usr/bin/python3"
+"let g:python_host_prog=system("which python3")
+"let g:python3_host_prog=system("which python3")
 
 source $HOME/dotfiles/nvim/plugins.vimrc
 source $HOME/dotfiles/nvim/plugin_config.vimrc

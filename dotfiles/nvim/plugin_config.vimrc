@@ -70,7 +70,8 @@ autocmd ColorScheme * call MyCustomHighlights()
 " :PUDBSetEntrypoint: Sets only the entrypoint (script to be run) when you launch the debugger. Useful if your breakpoint is in a different file.
 
 " set the virtual env python used to launch the debugger
-let g:pudb_python='/usr/bin/python3.6'
+"let g:pudb_python=system("which python3")
+let g:pudb_python_launcher=trim(system('which python3'))
 
 " set the entry point (script) to use for pudb
 " let g:pudb_entry_point='~/src/poweruser_tools/test/test_templates.py'
