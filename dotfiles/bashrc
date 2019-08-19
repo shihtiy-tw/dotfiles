@@ -119,26 +119,54 @@ alias bklitoff='echo 0 | sudo tee /sys/class/leds/asus::kbd_backlight/brightness
 # https://developer.atlassian.com/blog/2016/02/best-way-to-store-dotfiles-git-bare-repo/
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias myip="ifconfig wlp3s0 | grep -m 1 inet | sed 's/^.*inet addr://g' | sed 's/Bcast.*//g'"
-export MYIP=$(myip)
 alias notes='sudo updatedb; locate -r ${HOME}/".*notes_.*\.md"'
 alias def='definition'
+alias weather='curl wttr.in'
+alias tldr='tldr -t ocean'
+alias rm="trash"
+alias say="spd-say"
+alias vim="nvim"
 
 
-export GOOGLE_APPLICATION_CREDENTIALS='${HOME}/Documents/NTUT/patrick/Natural_Language/Natural_Language_API-a56f9766faee.json'
-
-#export PATH=/usr/local/cuda-8.0/bin:$PATH
-#export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64:$LD_LIBRARY_PATH1
-export PATH=${PATH}:/usr/local/cuda-9.0/bin
+# export
+export MYIP=$(myip)
+export PATH=${PATH}:${HOME}/.local/bin
+export PATH=${PATH}:${HOME}/.local/share/bin
+export PATH=${PATH}:${HOME}/.local/share/
 export LD_LIBRARY_PATH=/usr/local/cuda-9.0/lib64
 export TF_CPP_MIN_LOG_LEVEL=2
-export VISUAL=vim
+export VISUAL=nvim
+export MYVIMRC="${HOME}/.vimrc"
 export EDITOR="$VISUAL"
-export PYTHONPATH=$PATH
-#export PYTHONPATH=/usr/local/lib/python3.5/dist-packages:$PYTHONPATH
-#export PYTHONPATH=$PYTHONPATH:/usr/local/lib/python3.5/dist-packages
+export GOROOT='/usr/local/go'
+export GOPATH="${HOME}/go"
+export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 export ANDROID_HOME='${HOME}/Android/Sdk'
 export CATALINA_HOME='/opt/tomcat'
-export PATH=${PATH}:${HOME}/Documents/NTUT/Learning_Project/idea-IU-182.4892.20/bin
+export PATH=${PATH}:/usr/local/cuda-9.0/bin
+export PATH=${PATH}:${HOME}/.cargo/bin
+export PATH=${PATH}:${HOME}/Tools/codimd-cli/bin
+export PATH=${PATH}:${HOME}/arduino-1.8.8
+export PATH=${PATH}:${JAVA_HOME}
+export GEM_HOME="~/.gem/ruby/2.5.0/"
+export PATH="$PATH:$GEM_HOME"
+export PATH="$PATH:${HOME}/Tools/Sonar/sonar-scanner-4.0.0.1744-linux/bin"
+export WORKON_HOME=$HOME/.virtualenvs
+export CODIMD_SERVER='127.0.0.1:3000'
+export GEM_HOME=~/.ruby
+export PATH="$PATH:~/.ruby/bin"
+
+#export GOOGLE_APPLICATION_CREDENTIALS='${HOME}/Documents/NTUT/patrick/Natural_Language/Natural_Language_API-a56f9766faee.json'
+#export PATH=/usr/local/cuda-8.0/bin:$PATH
+#export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64:$LD_LIBRARY_PATH1
+#export PATH="$PATH:~/.ruby/bin"
+#export RUBY_HOME=~/.ruby
+#export PATH=${PATH}:${HOME}/Documents/NTUT/Learning_Project/idea-IU-182.4892.20/bin
+#export PATH=${PATH}:${HOME}/Documents/NTUT/Learning_Project/DataGrip-2018.3/bin
+#export PYTHONPATH=$PATH
+#export PYTHONPATH="/usr/local/lib/python3.5/dist-packages"
+#export PYTHONPATH=/usr/local/lib/python3.6/dist-packages:$PYTHONPATH
+#export PYTHONPATH=/usr/local/lib/python3.7/dist-packages:$PYTHONPATH
 
 # color for man pages
 export LESS_TERMCAP_mb=$'\E[1;31m'     # begin bold
@@ -194,7 +222,7 @@ export BASH_IT="${HOME}/.bash_it"
 
 # Lock and Load a custom theme file
 # location /.bash_it/themes/
-export BASH_IT_THEME='clean'
+export BASH_IT_THEME='fish'
 
 # (Advanced): Change this to the name of your remote repo if you
 # cloned bash-it with a remote other than origin such as `bash-it`.
@@ -243,8 +271,4 @@ export SCM_CHECK=true
 # Load Bash It
 source "$BASH_IT"/bash_it.sh
 
-
-
 [ -f ${HOME}/.fzf.bash ] && source ${HOME}/.fzf.bash
-export GEM_HOME=~/.ruby
-export PATH="$PATH:~/.ruby/bin"
