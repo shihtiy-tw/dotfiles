@@ -66,7 +66,7 @@ ZSH_THEME="ieni"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   git
-  django
+  #django
   colorize
   command-not-found
   zsh-autosuggestions
@@ -75,11 +75,10 @@ plugins=(
   copyzshell
   #fast-syntax-highlighting
   fzf-git
-  hacker-quotes
+  #hacker-quotes
   #kube-ps1
-  ls
-  #mysql-colorize
-  web-search
+  #ls
+  #web-search
   autojump
 )
 
@@ -143,6 +142,15 @@ alias sudo='sudo '
 # source
 source /etc/zsh_command_not_found
 source $HOME/.local/bin/aws_bash_completer
+[ -f ${HOME}/.fzf.zsh ] && source ${HOME}/.fzf.zsh
+
+# kubectl
+#echo "if [ $commands[kubectl] ]; then source <(kubectl completion zsh); fi" >> ~/.zshrc
+if [ /usr/local/bin/kubectl ]; then source <(kubectl completion zsh); fi
+
+# helm
+#echo "if [ $commands[helm] ]; then source <(helm completion zsh); fi" >> ~/.zshrc
+if [ /usr/local/bin/helm ]; then source <(helm completion zsh); fi
 
 # ENV VAR
 export MYIP=$(myip)
@@ -176,6 +184,7 @@ export PATH=${PATH}:${JAVA_HOME}
 #export RUBY_HOME=~/.ruby
 export GEM_HOME="~/.gem/ruby/2.5.0/"
 export PATH="$PATH:$GEM_HOME"
+export PATH="$PATH:${HOME}/Tools/Sonar/sonar-scanner-4.0.0.1744-linux/bin"
 #export PATH="$PATH:~/.ruby/bin"
 export WORKON_HOME=$HOME/.virtualenvs
 export CODIMD_SERVER='127.0.0.1:3000'
@@ -253,6 +262,3 @@ function swagger_preview() {
 }
 
 fpath=(${HOME}/.zsh.d/ $fpath)
-
-
-[ -f ${HOME}/.fzf.zsh ] && source ${HOME}/.fzf.zsh
