@@ -39,7 +39,7 @@ hello:
 
 install:
 	@echo "\n\
- ___           _        _ _   _____           _
+ ___           _        _ _   _____           _\n\
 |_ _|_ __  ___| |_ __ _| | | |_   _|__   ___ | |___ \n\
  | || '_ \/ __| __/ _` | | |   | |/ _ \ / _ \| / __|\n\
  | || | | \__ \ || (_| | | |   | | (_) | (_) | \__ \\n\
@@ -98,7 +98,7 @@ init:
 
 	# dotfiles
 
-	git clone https://github.com/stanleyuan/dotfiles.git ${HOME}/
+	git clone https://github.com/stanleyuan/dotfiles.git ${HOME}
 
 	mkdir -p ${HOME}/.config/nvim/
 
@@ -154,22 +154,22 @@ remove_env:
 	"
 
 	if [ -e ${HOME}/.zshrc.backup ]; then \
-		rm ${HOME}/.zshrc
-		mv ${HOME}/.zshrc.backup; ${HOME}/.zshrc \
+		rm ${HOME}/.zshrc \
+		mv ${HOME}/.zshrc.backup ${HOME}/.zshrc; \
 	fi
 	if [ -e ${HOME}/.bashrc.backup ]; then \
-		rm ${HOME}/.bashrc
-		mv ${HOME}/.bash.backup; ${HOME}/.bashrc \
+		rm ${HOME}/.bashrc \
+		mv ${HOME}/.bash.backup ${HOME}/.bashrc; \
 	fi
 	if [ -e ${HOME}/.tmux.conf.backup ]; then \
-		rm ${HOME}/.tmux.conf.backup
-		mv ${HOME}/.tmux.conf.backup; ${HOME}/.tmux.conf \
+		rm ${HOME}/.tmux.conf.backup \
+		mv ${HOME}/.tmux.conf.backup ${HOME}/.tmux.conf; \
 	fi
 	if [ -e ${HOME}/.gitconfig.backup ]; then \
-		rm ${HOME}/.gitconfig
-		mv ${HOME}/.gitconfig.backup; ${HOME}/.gitconfig \
+		rm ${HOME}/.gitconfig \
+		mv ${HOME}/.gitconfig.backup ${HOME}/.gitconfig; \
 	fi
 	if [ -e ${HOME}/.config/nvim/init.vim.backup ]; then \
-		rm ${HOME}/.config/nvim/init.vim
-		mv ${HOME}/.config/nvim/init.vim.backup; ${HOME}/.config/nvim/init.vim \
+		rm ${HOME}/.config/nvim/init.vim \
+		mv ${HOME}/.config/nvim/init.vim.backup ${HOME}/.config/nvim/init.vim; \
 	fi
