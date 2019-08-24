@@ -49,12 +49,12 @@ install:
 
 
 	# zsh
-	wget -O zsh.tar.xz https://sourceforge.net/projects/zsh/files/latest/download
-	mkdir zsh && unxz zsh.tar.xz && tar -xvf zsh.tar -C zsh --strip-components 1
-	cd zsh
-	./configure --prefix=$HOME
-	make
-	make install
+	#wget -O zsh.tar.xz https://sourceforge.net/projects/zsh/files/latest/download
+	#mkdir zsh && unxz zsh.tar.xz && tar -xvf zsh.tar -C zsh --strip-components 1
+	#cd zsh
+	#./configure --prefix=$HOME
+	#make
+	#make install
 
 	# update and upgrade packages
 	sudo apt-get update -y
@@ -68,6 +68,10 @@ install:
 	git clone https://github.com/robbyrussell/oh-my-zsh.git ${HOME}/.oh-my-zsh
 	git clone https://github.com/zsh-users/zsh-autosuggestions ${HOME}/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 	git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${HOME}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting.git
+
+	# bash-it
+	git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it
+	~/.bash_it/install.sh
 
 	# tmux
 	sudo apt install tmux -y
@@ -99,20 +103,21 @@ init:
 	mkdir -p ${HOME}/.config/nvim/
 
 	if [ -e ${HOME}/.zshrc ]; then \
-		mv ${HOME}/.zshrc ${HOME}/.zshrc_backup; \
+		mv ${HOME}/.zshrc ${HOME}/.zshrc.backup; \
 	fi
 	if [ -e ${HOME}/.bashrc ]; then \
-		mv ${HOME}/.zshrc ${HOME}/.zshrc_backup; \
+		mv ${HOME}/.bashrc ${HOME}/.bash.backup; \
 	fi
-	if [ -e ${HOME}/.zshrc ]; then \
-		mv ${HOME}/.zshrc ${HOME}/.zshrc_backup; \
+	if [ -e ${HOME}/.tmux.conf ]; then \
+		mv ${HOME}/.tmux.conf ${HOME}/.tmux.conf.backup; \
 	fi
-	if [ -e ${HOME}/.zshrc ]; then \
-		mv ${HOME}/.zshrc ${HOME}/.zshrc_backup; \
+	if [ -e ${HOME}/.gitconfig ]; then \
+		mv ${HOME}/.gitconfig ${HOME}/.gitconfig.backup; \
 	fi
-	if [ -e ${HOME}/.zshrc ]; then \
-		mv ${HOME}/.zshrc ${HOME}/.zshrc_backup; \
+	if [ -e ${HOME}/.config/nvim/init.vim ]; then \
+		mv ${HOME}/.config/nvim/init.vim ${HOME}/.config/nvim/init.vim.backup; \
 	fi
+
 	ln -sf ${HOME}/dotfiles/zshrc ${HOME}/.zshrc
 	ln -sf ${HOME}/dotfiles/zsh/ieni.zsh-theme ${HOME}/.oh-my-zsh/custom/themes/ieni.zsh-theme
 	ln -sf ${HOME}/dotfiles/bashrc ${HOME}/.bashrc
@@ -148,3 +153,23 @@ remove_env:
 \n\
 	"
 
+	if [ -e ${HOME}/.zshrc.backup ]; then \
+		rm ${HOME}/.zshrc
+		mv ${HOME}/.zshrc.backup; ${HOME}/.zshrc \
+	fi
+	if [ -e ${HOME}/.bashrc.backup ]; then \
+		rm ${HOME}/.bashrc
+		mv ${HOME}/.bash.backup; ${HOME}/.bashrc \
+	fi
+	if [ -e ${HOME}/.tmux.conf.backup ]; then \
+		rm ${HOME}/.tmux.conf.backup
+		mv ${HOME}/.tmux.conf.backup; ${HOME}/.tmux.conf \
+	fi
+	if [ -e ${HOME}/.gitconfig.backup ]; then \
+		rm ${HOME}/.gitconfig
+		mv ${HOME}/.gitconfig.backup; ${HOME}/.gitconfig \
+	fi
+	if [ -e ${HOME}/.config/nvim/init.vim.backup ]; then \
+		rm ${HOME}/.config/nvim/init.vim
+		mv ${HOME}/.config/nvim/init.vim.backup; ${HOME}/.config/nvim/init.vim \
+	fi
