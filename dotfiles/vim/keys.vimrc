@@ -200,7 +200,7 @@ noremap <F5> :call ReloadFilessss() <CR>
 " Synstatic
 
 nnoremap <F4> :SyntasticToggleMode <CR>
-"nnoremap <F4> :SyntasticCheck <CR>
+nnoremap <F4> :SyntasticCheck <CR>
 
 "    \          |          _|                            |
 "   _ \   |   | __|  _ \  |    _ \   __| __ `__ \   _` | __|
@@ -218,8 +218,8 @@ nnoremap <F3> :Autoformat <CR>
 "                                       _|
 " YouCompleteMe
 
-nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration <CR>
-nnoremap <leader>gy :YcmCompleter GoToReferences <CR>
+"nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration <CR>
+"nnoremap <leader>gy :YcmCompleter GoToReferences <CR>
 " python3 install.py --go-completer --ts-completer --java-completer --clang-completer --cs-completer
 
 "    \            |      _)

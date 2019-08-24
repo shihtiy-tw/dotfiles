@@ -17,36 +17,36 @@ if !has('nvim')
   call plug#begin('~/.vim/plugged')
 endif
 
-"Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+""Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 
-"
-"\ \     /_ _|  \  | __ __| |   | ____|  \  | ____|
-" \ \   /   |  |\/ |    |   |   | __|   |\/ | __|
-"  \ \ /    |  |   |    |   ___ | |     |   | |
-"   \_/   ___|_|  _|   _|  _|  _|_____|_|  _|_____|
+""
+""\ \     /_ _|  \  | __ __| |   | ____|  \  | ____|
+"" \ \   /   |  |\/ |    |   |   | __|   |\/ | __|
+""  \ \ /    |  |   |    |   ___ | |     |   | |
+""   \_/   ___|_|  _|   _|  _|  _|_____|_|  _|_____|
 Plug 'tomasr/molokai'
 Plug 'miyakogi/seiya.vim'
 Plug 'crusoexia/vim-monokai'
 Plug 'altercation/vim-colors-solarized'
 Plug 'morhetz/gruvbox'
 
-"
-"\ \     /_ _|  \  | __ __| _ \   _ \  |
-" \ \   /   |  |\/ |    |  |   | |   | |
-"  \ \ /    |  |   |    |  |   | |   | |
-"   \_/   ___|_|  _|   _| \___/ \___/ _____|
-"
-if !has('nvim')
-  "Plug 'Shougo/deoplete.nvim'
-  "Plug 'roxma/nvim-yarp'
-  "Plug 'roxma/vim-hug-neovim-rpc'
-endif
+""
+""\ \     /_ _|  \  | __ __| _ \   _ \  |
+"" \ \   /   |  |\/ |    |  |   | |   | |
+""  \ \ /    |  |   |    |  |   | |   | |
+""   \_/   ___|_|  _|   _| \___/ \___/ _____|
+""
+""if !has('nvim')
+  ""Plug 'Shougo/deoplete.nvim'
+  ""Plug 'roxma/nvim-yarp'
+  ""Plug 'roxma/vim-hug-neovim-rpc'
+""endif
 
 Plug 'benmills/vimux'
 Plug 'vim-scripts/Auto-Pairs'
 Plug 'kien/ctrlp.vim'
 Plug 'scrooloose/nerdtree'
-Plug 'ervandew/supertab'
+"Plug 'ervandew/supertab'
 Plug 'majutsushi/tagbar'
 Plug 'junegunn/vim-easy-align'
 Plug 'airblade/vim-gitgutter'
@@ -57,7 +57,7 @@ Plug 'tpope/vim-surround'
 Plug 'triglav/vim-visual-increment'
 Plug 'vim-scripts/Buffergator'
 Plug 'vim-scripts/matchit.zip'
-Plug 'xavierchow/vim-swagger-preview' {'for': ['yaml']}
+Plug 'xavierchow/vim-swagger-preview', {'for': ['yaml']}
 Plug '~/Tool_from_git/fzf/bin/fzf'
 Plug '~/Tool_from_git/fzf/bin/fzf-tmux'
 Plug 'junegunn/fzf.vim'
@@ -91,7 +91,7 @@ Plug 'prettier/vim-prettier', {
 "_____/   _|  _| \_|  _|_/    _\_/\_\
 "
 
-if !has('nvim')
+"if !has('nvim')
   "Plug 'stamblerre/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
 
   " for deoplete
@@ -100,8 +100,9 @@ if !has('nvim')
   "Plug 'deoplete-plugins/deoplete-jedi'
   "Plug 'deoplete-plugins/deoplete-dictionary'
   "Plug 'deoplete-plugins/deoplete-docker'
-endif
+"endif
 
+Plug 'zxqfl/tabnine-vim'
 Plug 'fatih/vim-go'
 Plug 'plasticboy/vim-markdown'
 Plug 'mzlogin/vim-markdown-toc'

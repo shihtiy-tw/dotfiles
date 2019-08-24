@@ -35,11 +35,11 @@ nnoremap <A-l> <C-w>l
 "terminal
 
 function! VspTerm()
-  vsp term://zsh
+  vsp term://bash
 endfunction
 
 function! SpTerm()
-  sp term://zsh
+  sp term://bash
 endfunction
 
 function! TTerm()
