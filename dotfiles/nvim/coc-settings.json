@@ -1,0 +1,141 @@
+{
+  /* "coc.preferences.hoverTarget": "echo", */
+  /* "coc.preferences.enableFloatHighlight": false, */
+  "coc.preferences.formatOnType": true,
+  "coc.preferences.hoverTarget": "preview",
+  "coc.preferences.formatOnSaveFiletypes": [
+    "go",
+    "typescript",
+    "json",
+    "jsonc"
+  ],
+  "codeLens.enable": true,
+  "diagnostic.virtualText": true,
+  "diagnostic.checkCurrentLine": true,
+  "signature.target": "echo",
+  "suggest.autoTrigger": "always",
+  "python.jediEnabled": true,
+  "python.jediPath": "/home/ieni/.local/lib/python3.6/site-packages/",
+  "list.normalMappings": {
+    "<C-c>": "do:exit"
+  },
+  "list.insertMappings": {
+    "<C-c>": "do:exit"
+  },
+  "languageserver": {
+    "gopls": {
+      "command": "gopls",
+      "filetypes": [
+        "go"
+      ],
+      "rootPatterns": [
+        "go.mod",
+        ".git/"
+      ]
+    },
+    "dart": {
+      "command": "dart",
+      "args": [
+        "/usr/local/opt/dart/libexec/bin/snapshots/analysis_server.dart.snapshot",
+        "--lsp"
+      ],
+      "filetypes": [
+        "dart"
+      ]
+    },
+    "ccls": {
+      "command": "ccls",
+      "filetypes": [
+        "c",
+        "cpp",
+        "cuda",
+        "objc",
+        "objcpp"
+      ],
+      "rootPatterns": [
+        "compile_commands.json",
+        ".ccls",
+        ".root",
+        ".git/"
+      ],
+      "initializationOptions": {
+        "cacheDirectory": "/tmp/ccls"
+      }
+    },
+    "bash": {
+      "command": "bash-language-server",
+      "filetypes": [
+        "sh"
+      ],
+      "args": [
+        "start"
+      ],
+      "ignoredRootPaths": [
+        "~"
+      ]
+    },
+    "golang": {
+      "command": "gopls",
+      "args": [
+        "serve",
+        "-debug",
+        "0.0.0.0:8484",
+        "-rpc.trace"
+      ],
+      "rootPatterns": [
+        "go.mod"
+      ],
+      "filetypes": [
+        "go"
+      ]
+    },
+    "dockerfile": {
+      "command": "docker-langserver",
+      "filetypes": [
+        "dockerfile"
+      ],
+      "args": [
+        "--stdio"
+      ]
+    },
+    "intelephense": {
+      "command": "intelephense",
+      "args": [
+        "--stdio"
+      ],
+      "filetypes": [
+        "php"
+      ],
+      "initializationOptions": {
+        "storagePath": "/tmp/intelephense"
+      }
+    },
+    "efm": {
+      "command": "efm-langserver",
+      "args": [],
+      // custom config path
+      // "args": ["-c", "/path/to/your/config.yaml"],
+      "filetypes": [
+        "vim",
+        "eruby",
+        "markdown"
+      ]
+    },
+    "terraform": {
+      "command": "terraform-lsp",
+      "filetypes": [
+        "terraform"
+      ],
+      "initializationOptions": {}
+    },
+    "rust": {
+      "command": "ra_lsp_server",
+      "filetypes": [
+        "rust"
+      ],
+      "rootPatterns": [
+        "Cargo.toml"
+      ]
+    }
+  }
+}
