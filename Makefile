@@ -107,7 +107,7 @@ init:
 
 	# dotfiles
 
-	git clone https://github.com/stanleyuan/dotfiles.git ${HOME}
+	#git clone https://github.com/stanleyuan/dotfiles.git ${HOME}
 
 	mkdir -p ${HOME}/.config/nvim/
 
