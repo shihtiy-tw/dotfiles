@@ -18,7 +18,8 @@ help:
 	@echo "\n\
 	Usages: \n\
 		hello: hello\n\
-		init: download zsh, tmux and config all dotfiles\n\
+		install: download applications\n\
+		init: config all dotfiles\n\
 		status: show dotfile status\n\
 		diff: show dotfile status\n\
 		add: show dotfile status\n\
@@ -28,24 +29,24 @@ help:
 	"
 
 hello:
-	@echo " \n\
- _   _      _ _        __        __         _     _ \n\
-| | | | ___| | | ___   \ \      / /__  _ __| | __| |\n\
-| |_| |/ _ \ | |/ _ \   \ \ /\ / / _ \| '__| |/ _\` |\n\
-|  _  |  __/ | | (_) |   \ V  V / (_) | |  | | (_| |\n\
-|_| |_|\___|_|_|\___/     \_/\_/ \___/|_|  |_|\__,_|\n\
-	\n\
-	"
+	#@echo " \n\
+ #_   _      _ _        __        __         _     _ \n\
+#| | | | ___| | | ___   \ \      / /__  _ __| | __| |\n\
+#| |_| |/ _ \ | |/ _ \   \ \ /\ / / _ \| '__| |/ _\` |\n\
+#|  _  |  __/ | | (_) |   \ V  V / (_) | |  | | (_| |\n\
+#|_| |_|\___|_|_|\___/     \_/\_/ \___/|_|  |_|\__,_|\n\
+	#\n\
+	#"
 
 install:
-	@echo "\n\
- ___           _        _ _   _____           _\n\
-|_ _|_ __  ___| |_ __ _| | | |_   _|__   ___ | |___ \n\
- | || '_ \/ __| __/ _` | | |   | |/ _ \ / _ \| / __|\n\
- | || | | \__ \ || (_| | | |   | | (_) | (_) | \__ \\n\
-|___|_| |_|___/\__\__,_|_|_|   |_|\___/ \___/|_|___/\n\
-	\n\
-	"
+	#@echo "\n\
+ #___           _        _ _   _____           _\n\
+#|_ _|_ __  ___| |_ __ _| | | |_   _|__   ___ | |___ \n\
+ #| || '_ \/ __| __/ _` | | |   | |/ _ \ / _ \| / __|\n\
+ #| || | | \__ \ || (_| | | |   | | (_) | (_) | \__ \\n\
+#|___|_| |_|___/\__\__,_|_|_|   |_|\___/ \___/|_|___/\n\
+	#\n\
+	#"
 
 
 	# zsh
@@ -84,25 +85,26 @@ install:
 	sudo apt-get install nodejs
 
 	# neovim
-	wget https://github.com/neovim/neovim/releases/download/v0.3.8/nvim.appimage
-	chmod u+x nvim.appimage && ./nvim.appimage
-	sudo ln -s ${HOME}/nvim.appimage /usr/bin/nvim
-
 	sudo apt-get install python3-neovim -y
 	sudo apt install build-essential cmake python3-dev -y
+	wget https://github.com/neovim/neovim/releases/download/v0.3.8/nvim.appimage
+	chmod u+x nvim.appimage
+	sudo rm /usr/bin/nvim
+	sudo ln -s ${HOME}/nvim.appimage /usr/bin/nvim
+	nvim -c "call coc#util#install()"
 
 #
 
 
 init:
-	@echo " \n\
- ___       _ _     ___           _   _____\n\
-|_ _|_ __ (_) |_  |_ _|___ _ __ (_) | ____|_ ____   __\n\
- | || '_ \| | __|  | |/ _ \ '_ \| | |  _| | '_ \ \ / /\n\
- | || | | | | |_   | |  __/ | | | | | |___| | | \ V /\n\
-|___|_| |_|_|\__| |___\___|_| |_|_| |_____|_| |_|\_/\n\
- \n\
-	"
+	#@echo " \n\
+ #___       _ _     ___           _   _____\n\
+#|_ _|_ __ (_) |_  |_ _|___ _ __ (_) | ____|_ ____   __\n\
+ #| || '_ \| | __|  | |/ _ \ '_ \| | |  _| | '_ \ \ / /\n\
+ #| || | | | | |_   | |  __/ | | | | | |___| | | \ V /\n\
+#|___|_| |_|_|\__| |___\___|_| |_|_| |_____|_| |_|\_/\n\
+ #\n\
+	#"
 
 
 	# dotfiles
@@ -153,14 +155,14 @@ ls:
 	/usr/bin/git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME} ls-tree --full-tree -r HEAD
 
 remove_env:
-	@echo "\n\
- ____                                 ___           _   _____\n\
-|  _ \ ___ _ __ ___   _____   _____  |_ _|___ _ __ (_) | ____|_ ____   __\n\
-| |_) / _ \ '_ \` _ \ / _ \ \ / / _ \  | |/ _ \ '_ \| | |  _| | '_ \ \ / /\n\
-|  _ <  __/ | | | | | (_) \ V /  __/  | |  __/ | | | | | |___| | | \ V /\n\
-|_| \_\___|_| |_| |_|\___/ \_/ \___| |___\___|_| |_|_| |_____|_| |_|\_/\n\
-\n\
-	"
+	#@echo "\n\
+ #____                                 ___           _   _____\n\
+#|  _ \ ___ _ __ ___   _____   _____  |_ _|___ _ __ (_) | ____|_ ____   __\n\
+#| |_) / _ \ '_ \` _ \ / _ \ \ / / _ \  | |/ _ \ '_ \| | |  _| | '_ \ \ / /\n\
+#|  _ <  __/ | | | | | (_) \ V /  __/  | |  __/ | | | | | |___| | | \ V /\n\
+#|_| \_\___|_| |_| |_|\___/ \_/ \___| |___\___|_| |_|_| |_____|_| |_|\_/\n\
+#\n\
+	#"
 
 	if [ -e ${HOME}/.zshrc.backup ]; then \
 		rm ${HOME}/.zshrc \
