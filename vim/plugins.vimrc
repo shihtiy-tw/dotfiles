@@ -123,7 +123,7 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'junegunn/vader.vim'
 "Plug 'davidhalter/jedi-vim'
-Plug 'neoclide/coc.nvim', {'tag': '*', 'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'hashivim/vim-terraform'
 "Plug 'Valloric/YouCompleteMe',{
             "\ 'do': 'python3 install.py --go-completer --ts-completer --java-completer --clang-completer',

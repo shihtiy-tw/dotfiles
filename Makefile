@@ -79,10 +79,19 @@ install:
 	# vim
 	sudo apt-get install vim -y
 
+	# node
+	curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+	sudo apt-get install nodejs
+
 	# neovim
-	sudo apt-get install neovim -y
+	wget https://github.com/neovim/neovim/releases/download/v0.3.8/nvim.appimage
+	chmod u+x nvim.appimage && ./nvim.appimage
+	sudo ln -s ${HOME}/nvim.appimage /usr/bin/nvim
+
 	sudo apt-get install python3-neovim -y
 	sudo apt install build-essential cmake python3-dev -y
+
+#
 
 
 init:
