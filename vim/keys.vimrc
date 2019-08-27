@@ -24,6 +24,9 @@ imap <Leader><Leader> <c-c>
 
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+
+if filereadable($HOME."/.vim/plugged/coc.nvim/plugin/coc.vim")
+
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
@@ -125,6 +128,8 @@ nnoremap <silent> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+
+endif
 
 "  _ \            |                 |       _)
 " |   | |   |  _` |  _ \   __|  __| __|  __| | __ \   _` |
@@ -264,12 +269,16 @@ let NERDTreeIgnore=['__pycache__', '\.o$', '\.pyc$', '\~$', 'node_modules', '\.d
 "
 " ack
 
+if filereadable($HOME."/.vim/plugged/ack.vim/plugin/ack.vim")
+
 cnoreabbrev Ack Ack!
 cnoreabbrev ack Ack!
 cnoreabbrev Ag Ack!
 "nnoremap <Leader>a :Ack!<Space>
 nnoremap <Leader>a :Ack!<cword><cr>
 noremap <Leader>A :Ack <Space>
+
+endif
 
 "  ___|
 "\___ \\ \  \   / _` |  _` |  _` |  _ \  __|

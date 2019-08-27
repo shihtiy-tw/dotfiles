@@ -23,6 +23,9 @@ autocmd FileType cpp nnoremap <silent><buffer> K <Esc>:Cppman <cword><CR>
 "\____|\___/ \____|
 "
 "coc
+
+if filereadable($HOME."/.vim/plugged/coc.nvim/plugin/coc.vim")
+
 let g:coc_node_path = "/usr/bin/nodejs"
 
 function! SetupCommandAbbrs(from, to)
@@ -53,7 +56,7 @@ set shortmess+=c
 " always show signcolumns
 set signcolumn=yes
 
-
+endif
 
 "    \         |
 "   _ \    __| |  /
@@ -62,8 +65,12 @@ set signcolumn=yes
 "
 " ack
 
+if filereadable($HOME."/.vim/plugged/ack.vim/plugin/ack.vim")
+
 if executable('ag')
   let g:ackprg = 'ag --vimgrep'
+endif
+
 endif
 
 "     |          |_)
@@ -95,7 +102,8 @@ let g:terraform_align=1
 "
 " deoplete
 
-if !has('nvim')
+if !has('nvim') && filereadable($HOME."/.vim/plugged/deoplete.nvim/plugin/deoplete.vim")
+
   set omnifunc=syntaxcomplete#Complete
 
   autocmd FileType python call deoplete#custom#buffer_option('auto_complete', v:false)
@@ -123,12 +131,14 @@ endif
 "
 "supertab
 
+if filereadable($HOME."/.vim/plugged/supertab/plugin/supertab.vim")
+
 let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
 let g:SuperTabClosePreviewOnPopupClose = 1
 
 autocmd FileType ruby let g:SuperTabDefaultCompletionType = "<C-X><C-K>"
 
-
+endif
 
 "  ___|       |           _)
 " |      _ \  |  _ \   __| |_  /  _ \
@@ -137,10 +147,13 @@ autocmd FileType ruby let g:SuperTabDefaultCompletionType = "<C-X><C-K>"
 "
 " colorize
 
+if filereadable($HOME."/.vim/plugged/colorizer/plugin/colorizer.vim")
+
 if !hasmapto("<Plug>Colorizer") && (!exists("g:colorizer_nomap") || g:colorizer_nomap == 0)
   nmap <unique> <Leader>co <Plug>Colorizer
 endif
 
+endif
 
 "  ___| |
 " |     __|  _` |  _` |  __|

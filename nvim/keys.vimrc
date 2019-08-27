@@ -68,7 +68,11 @@ nnoremap <A-t> :Tt <cr>
 "
 " semshi
 
+if filereadable($HOME."/.vim/plugged/semshi/plugin/semshi.vim")
+
 nnoremap <leader>rn :Semshi rename <space>
+
+endif
 
 "  ___| __ \  __ )
 " |     |   | __ \

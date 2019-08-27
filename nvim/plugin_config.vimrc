@@ -24,6 +24,8 @@ let g:deoplete#enable_at_startup = 1
 "
 " semshi
 
+if filereadable($HOME."/.vim/plugged/semshi/plugin/semshi.vim")
+
 function! MyCustomHighlights()
   hi semshiLocal           ctermfg=175 guifg=#d787af
   hi semshiGlobal          ctermfg=208 guifg=#ff8700
@@ -44,6 +46,8 @@ endfunction
 autocmd FileType python call MyCustomHighlights()
 autocmd ColorScheme * call MyCustomHighlights()
 
+endif
+
 "  ___| __ \  __ )
 " |     |   | __ \
 " |   | |   | |   |
@@ -60,6 +64,8 @@ autocmd ColorScheme * call MyCustomHighlights()
 "
 "pudb
 
+
+if filereadable($HOME."/.vim/plugged/pudb.vim/plugin/pudb.vim")
 
 " :PUDBToggleBreakPoint - Toggles a breakpoint on the current line (requires ft=python)
 " :PUDBClearAllBreakpoints - Clears all currently set breakpoitns on the current file (requires ft=python)
@@ -78,3 +84,5 @@ let g:pudb_python_launcher=trim(system('which python3'))
 
 " Unicode symbols work fine (nvim, iterm, tmux, nyovim tested)
 let g:pudb_breakpoint_symbol='*'
+
+endif
