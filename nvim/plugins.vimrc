@@ -12,7 +12,8 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 set nocompatible " Be iMproved
-call plug#begin('~/.local/share/nvim/plugged')
+"call plug#begin('~/.local/share/nvim/plugged')
+call plug#begin('~/.vim/plugged')
 
 "
 "__ __| _ \   _ \  |
