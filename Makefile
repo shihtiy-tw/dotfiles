@@ -137,6 +137,7 @@ init:
 	ln -sf ${HOME}/dotfiles/nvim/init.vim ${HOME}/.config/nvim/init.vim
 
 	# neovim
+	nvim -c "PlugInstall"
 	nvim -c "call coc#util#install()"
 	nvim -c "CocInstall coc-dictionary"
 	nvim -c "CocInstall coc-json coc-css coc-python coc-yaml coc-tabnine"
