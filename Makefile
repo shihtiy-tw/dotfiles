@@ -90,8 +90,7 @@ install:
 	wget https://github.com/neovim/neovim/releases/download/v0.3.8/nvim.appimage
 	chmod u+x nvim.appimage
 	sudo rm /usr/bin/nvim
-	sudo ln -s ${HOME}/nvim.appimage /usr/bin/nvim
-	nvim -c "call coc#util#install()"
+	sudo ln -s ${HOME}/dotfiles/nvim.appimage /usr/bin/nvim
 
 #
 
@@ -136,6 +135,12 @@ init:
 	ln -sf ${HOME}/dotfiles/gitconfig ${HOME}/.gitconfig
 	ln -sf ${HOME}/dotfiles/vimrc ${HOME}/.vimrc
 	ln -sf ${HOME}/dotfiles/nvim/init.vim ${HOME}/.config/nvim/init.vim
+
+	# neovim
+	nvim -c "call coc#util#install()"
+	nvim -c "CocInstall coc-dictionary"
+	nvim -c "CocInstall coc-json coc-css coc-python coc-yaml coc-tabnine"
+	nvim -c "CocInstall coc-python coc-yaml coc-tabnine"
 
 	@echo "\ndone\n"
 
