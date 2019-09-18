@@ -67,14 +67,15 @@ ZSH_THEME="ieni"
 plugins=(
   git
   #django
+  aws
   colorize
   command-not-found
   zsh-autosuggestions
   zsh-syntax-highlighting
   #auto-color-ls
-  copyzshell
+  #copyzshell
   #fast-syntax-highlighting
-  fzf-git
+  #fzf-git
   #hacker-quotes
   #kube-ps1
   #ls
@@ -129,31 +130,52 @@ alias bkliton='echo 1 | sudo tee /sys/class/leds/asus::kbd_backlight/brightness'
 alias bklitoff='echo 0 | sudo tee /sys/class/leds/asus::kbd_backlight/brightness'
 # https://developer.atlassian.com/blog/2016/02/best-way-to-store-dotfiles-git-bare-repo/
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-alias myip="ifconfig wlp3s0 | grep -m 1 inet | sed 's/^.*inet addr://g' | sed 's/Bcast.*//g'"
 alias notes='sudo updatedb; locate -r ${HOME}/".*notes_.*\.md"'
 alias def='definition'
 alias weather='curl wttr.in'
 alias tldr='tldr -t ocean'
-alias rm="trash"
-alias say="spd-say"
 alias vim="nvim"
 alias sudo='sudo '
 
+if [ $(uname -s) != "Darwin" ]; then
+  alias rm="trash"
+  alias say="spd-say"
+  alias myip="ifconfig wlp3s0 | grep -m 1 inet | sed 's/^.*inet addr://g' | sed 's/Bcast.*//g'"
+  export MYIP=$(myip)
+fi
+
 # source
-source /etc/zsh_command_not_found
-source $HOME/.local/bin/aws_bash_completer
+# awless
+if [[ $(which awless) == 1 ]]; then source <(awless completion zsh); fi
+
+#source /etc/zsh_command_not_found
+#source $HOME/.local/bin/aws_bash_completer
 [ -f ${HOME}/.fzf.zsh ] && source ${HOME}/.fzf.zsh
 
 # kubectl
 #echo "if [ $commands[kubectl] ]; then source <(kubectl completion zsh); fi" >> ~/.zshrc
-if [ /usr/local/bin/kubectl ]; then source <(kubectl completion zsh); fi
+if [[ $(which kubectl) == 1 ]]; then source <(kubectl completion zsh); fi
 
 # helm
 #echo "if [ $commands[helm] ]; then source <(helm completion zsh); fi" >> ~/.zshrc
-if [ /usr/local/bin/helm ]; then source <(helm completion zsh); fi
+if [[ $(which helm) == 1 ]]; then source <(helm completion zsh); fi
+
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+h=()
+if [[ -r ~/.ssh/config ]]; then
+  h=($h ${${${(@M)${(f)"$(cat ~/.ssh/config)"}:#Host *}#Host }:#*[*?]*})
+fi
+if [[ -r ~/.ssh/known_hosts ]]; then
+  h=($h ${${${(f)"$(cat ~/.ssh/known_hosts{,2} || true)"}%%\ *}%%,*}) 2>/dev/null
+fi
+if [[ $#h -gt 0 ]]; then
+  zstyle ':completion:*:ssh:*' hosts $h
+  zstyle ':completion:*:slogin:*' hosts $h
+fi
 
 # ENV VAR
-export MYIP=$(myip)
+export LC_ALL=en_US.UTF-8
 export PATH=${PATH}:${HOME}/.local/bin
 export PATH=${PATH}:${HOME}/.local/share/bin
 export PATH=${PATH}:${HOME}/.local/share/
@@ -203,12 +225,22 @@ export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 export GROFF_NO_SGR=1                  # for konsole and gnome-terminal
 
 # convenience
+if [ -d $HOME/Library/Python/3.7/bin ]; then
+    export PATH=$HOME/Library/Python/3.7/bin:$PATH
+fi
+
 if [ -f ${HOME}/.autojump/share/autojump/autojump.zsh ]; then
 	. ${HOME}/.autojump/share/autojump/autojump.zsh
 fi
+[[ -s $(brew --prefix)/etc/profile.d/autojump.sh ]] && . $(brew --prefix)/etc/profile.d/autojump.sh
 # mkdir + cd
 function mkdircd() {
 	command mkdir $1 && cd $1
+}
+
+# curl cheat.sh
+function cheat() {
+  command curl cheat.sh/$1
 }
 
 # swagger-edit
@@ -262,3 +294,12 @@ function swagger_preview() {
 }
 
 fpath=(${HOME}/.zsh.d/ $fpath)
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
+nvm alias default 11.14.0
+nvm use v11.14.0
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+

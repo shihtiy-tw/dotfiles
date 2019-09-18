@@ -119,19 +119,23 @@ alias bkliton='echo 1 | sudo tee /sys/class/leds/asus::kbd_backlight/brightness'
 alias bklitoff='echo 0 | sudo tee /sys/class/leds/asus::kbd_backlight/brightness'
 # https://developer.atlassian.com/blog/2016/02/best-way-to-store-dotfiles-git-bare-repo/
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME/dotfiles'
-alias myip="ifconfig wlp3s0 | grep -m 1 inet | sed 's/^.*inet addr://g' | sed 's/Bcast.*//g'"
 alias notes='sudo updatedb; locate -r ${HOME}/".*notes_.*\.md"'
 alias def='definition'
 alias weather='curl wttr.in'
 alias tldr='tldr -t ocean'
-alias rm="trash"
-alias say="spd-say"
 alias vim="nvim"
 alias pbcopy="xclip -sel clip"
 
+# for linux
+if [ $(uname -s) != "Darwin" ]; then
+  alias myip="ifconfig wlp3s0 | grep -m 1 inet | sed 's/^.*inet addr://g' | sed 's/Bcast.*//g'"
+  alias rm="trash"
+  alias say="spd-say"
+  export MYIP=$(myip)
+fi
 
 # export
-export MYIP=$(myip)
+export LC_ALL=en_US.UTF-8
 export PATH=${PATH}:${HOME}/.local/bin
 export PATH=${PATH}:${HOME}/.local/share/bin
 export PATH=${PATH}:${HOME}/.local/share/
@@ -141,6 +145,7 @@ export VISUAL=nvim
 export MYVIMRC="${HOME}/.vimrc"
 export EDITOR="$VISUAL"
 export GOROOT='/usr/local/go'
+export GOROOT='/usr/local/opt/go/libexec'
 export GOPATH="${HOME}/go"
 export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 export ANDROID_HOME='${HOME}/Android/Sdk'
@@ -157,6 +162,11 @@ export WORKON_HOME=$HOME/.virtualenvs
 export CODIMD_SERVER='127.0.0.1:3000'
 export GEM_HOME=~/.ruby
 export PATH="$PATH:~/.ruby/bin"
+export PYTHON3PATH=$(which python3)
+
+if [ -d $HOME/Library/Python/3.7/bin ]; then
+    export PATH=$HOME/Library/Python/3.7/bin:$PATH
+fi
 
 #export GOOGLE_APPLICATION_CREDENTIALS='${HOME}/Documents/NTUT/patrick/Natural_Language/Natural_Language_API-a56f9766faee.json'
 #export PATH=/usr/local/cuda-8.0/bin:$PATH
@@ -208,6 +218,7 @@ fi
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
+
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then
     . /usr/share/bash-completion/bash_completion
@@ -276,11 +287,19 @@ source "$BASH_IT"/bash_it.sh
 [ -f ${HOME}/.fzf.bash ] && source ${HOME}/.fzf.bash
 # kubectl
 #echo "if [ $commands[kubectl] ]; then source <(kubectl completion zsh); fi" >> ~/.zshrc
-if [ /usr/local/bin/kubectl ]; then source <(kubectl completion bash); fi
+if [[ $(which kubectl) == 1 ]]; then source <(kubectl completion bash); fi
 
 # helm
 #echo "if [ $commands[helm] ]; then source <(helm completion zsh); fi" >> ~/.zshrc
-if [ /usr/local/bin/helm ]; then source <(helm completion bash); fi
+if [[ $(which helm) == 1 ]]; then source <(helm completion bash); fi
+
+if [[ $(which awless) == 1 ]]; then source <(awless completion bash); fi
+
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+if [ -f $(brew --prefix)/etc/bash_completion ]; then
+. $(brew --prefix)/etc/bash_completion
+fi
 
 
 # explain.sh begins
@@ -299,5 +318,5 @@ explain () {
   fi
 }
 
-export NVM_DIR="/home/ieni/.nvm"
+export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
