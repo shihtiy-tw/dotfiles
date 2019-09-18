@@ -148,6 +148,9 @@ source $HOME/.local/bin/aws_bash_completer
 #echo "if [ $commands[kubectl] ]; then source <(kubectl completion zsh); fi" >> ~/.zshrc
 if [ /usr/local/bin/kubectl ]; then source <(kubectl completion zsh); fi
 
+# minikube
+if [ /usr/local/bin/minikube ]; then source <(minikube completion zsh); fi
+
 # helm
 #echo "if [ $commands[helm] ]; then source <(helm completion zsh); fi" >> ~/.zshrc
 if [ /usr/local/bin/helm ]; then source <(helm completion zsh); fi
