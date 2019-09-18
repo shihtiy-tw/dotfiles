@@ -6,10 +6,11 @@
 
 
 let g:rehash256 = 1
-let option = "gruvbox"
+let option = "molokai"
 
 if has('nvim')
   let plugged_directory = '~/.local/share/nvim/plugged'
+  let plugged_directory = '~/.vim/plugged'
 else
   let plugged_directory = '~/.vim/plugged'
 endif
