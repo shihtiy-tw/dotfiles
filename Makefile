@@ -73,6 +73,7 @@ install:
 	# bash-it
 	git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it
 	~/.bash_it/install.sh
+	mkdir -p ~/.bash_it/custom/themes
 
 	# tmux
 	sudo apt install tmux -y
@@ -86,6 +87,8 @@ install:
 
 	# neovim
 	sudo apt-get install python3-neovim -y
+	nmp install -g neovim
+	pip3 install pynvim --user
 	sudo apt install build-essential cmake python3-dev -y
 	wget https://github.com/neovim/neovim/releases/download/v0.3.8/nvim.appimage
 	chmod u+x nvim.appimage
@@ -129,12 +132,17 @@ init:
 	fi
 
 	ln -sf ${HOME}/dotfiles/zshrc ${HOME}/.zshrc
-	ln -sf ${HOME}/dotfiles/zsh/ieni.zsh-theme ${HOME}/.oh-my-zsh/custom/themes/ieni.zsh-theme
+	# ln -sf ${HOME}/dotfiles/zsh/ieni.zsh-theme ${HOME}/.oh-my-zsh/custom/themes/ieni.zsh-theme
+	ln -sf ${HOME}/dotfiles/bash/themes/fish ${HOME}/.bash_it/custom/themes/fish
 	ln -sf ${HOME}/dotfiles/bashrc ${HOME}/.bashrc
+	ln -sf ${HOME}/dotfiles/bashrc ${HOME}/.bash_profile
 	ln -sf ${HOME}/dotfiles/tmux.conf ${HOME}/.tmux.conf
 	ln -sf ${HOME}/dotfiles/gitconfig ${HOME}/.gitconfig
 	ln -sf ${HOME}/dotfiles/vimrc ${HOME}/.vimrc
 	ln -sf ${HOME}/dotfiles/nvim/init.vim ${HOME}/.config/nvim/init.vim
+
+	ln -sf ${HOME}/dotfiles/nvim/coc-settings.json ${HOME}/.config/nvim/coc-settings.json
+	npm i -g bash-language-server
 
 	# neovim
 	nvim -c "PlugInstall"
