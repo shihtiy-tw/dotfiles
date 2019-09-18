@@ -72,7 +72,8 @@ install:
 
 	# bash-it
 	git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it
-	~/.bash_it/install.sh
+
+	~/.bash_it/install.sh --slient
 	mkdir -p ~/.bash_it/custom/themes
 
 	# tmux
@@ -94,8 +95,6 @@ install:
 	chmod u+x nvim.appimage
 	sudo rm /usr/bin/nvim
 	sudo ln -s ${HOME}/dotfiles/nvim.appimage /usr/bin/nvim
-
-#
 
 
 init:
@@ -145,11 +144,11 @@ init:
 	npm i -g bash-language-server
 
 	# neovim
-	nvim -c "PlugInstall"
-	nvim -c "call coc#util#install()"
-	nvim -c "CocInstall coc-dictionary"
-	nvim -c "CocInstall coc-json coc-css coc-python coc-yaml coc-tabnine"
-	nvim -c "CocInstall coc-python coc-yaml coc-tabnine"
+	#nvim -c "PlugInstall"
+	#nvim -c "call coc#util#install()"
+	#nvim -c "CocInstall coc-dictionary"
+	#nvim -c "CocInstall coc-json coc-css coc-python coc-yaml coc-tabnine"
+	#nvim -c "CocInstall coc-python coc-yaml coc-tabnine"
 
 	@echo "\ndone\n"
 

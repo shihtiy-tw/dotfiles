@@ -285,6 +285,10 @@ export SCM_CHECK=true
 source "$BASH_IT"/bash_it.sh
 
 [ -f ${HOME}/.fzf.bash ] && source ${HOME}/.fzf.bash
+
+# minikube
+if [ /usr/local/bin/minikube ]; then source <(minikube completion bash); fi
+
 # kubectl
 #echo "if [ $commands[kubectl] ]; then source <(kubectl completion zsh); fi" >> ~/.zshrc
 if [[ $(which kubectl) == 1 ]]; then source <(kubectl completion bash); fi
