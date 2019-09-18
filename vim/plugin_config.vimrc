@@ -26,7 +26,7 @@ autocmd FileType cpp nnoremap <silent><buffer> K <Esc>:Cppman <cword><CR>
 
 if filereadable($HOME."/.vim/plugged/coc.nvim/plugin/coc.vim")
 
-let g:coc_node_path = "/usr/bin/nodejs"
+let g:coc_node_path = "/usr/local/bin/node"
 
 function! SetupCommandAbbrs(from, to)
   exec 'cnoreabbrev <expr> '.a:from

@@ -17,31 +17,33 @@ if !has('nvim')
   call plug#begin('~/.vim/plugged')
 endif
 
-""Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+"Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 
-""
-""\ \     /_ _|  \  | __ __| |   | ____|  \  | ____|
-"" \ \   /   |  |\/ |    |   |   | __|   |\/ | __|
-""  \ \ /    |  |   |    |   ___ | |     |   | |
-""   \_/   ___|_|  _|   _|  _|  _|_____|_|  _|_____|
+"
+"\ \     /_ _|  \  | __ __| |   | ____|  \  | ____|
+" \ \   /   |  |\/ |    |   |   | __|   |\/ | __|
+"  \ \ /    |  |   |    |   ___ | |     |   | |
+"   \_/   ___|_|  _|   _|  _|  _|_____|_|  _|_____|
+"
 Plug 'tomasr/molokai'
 Plug 'miyakogi/seiya.vim'
 Plug 'crusoexia/vim-monokai'
 Plug 'altercation/vim-colors-solarized'
 Plug 'morhetz/gruvbox'
 
-""
-""\ \     /_ _|  \  | __ __| _ \   _ \  |
-"" \ \   /   |  |\/ |    |  |   | |   | |
-""  \ \ /    |  |   |    |  |   | |   | |
-""   \_/   ___|_|  _|   _| \___/ \___/ _____|
-""
-""if !has('nvim')
-  ""Plug 'Shougo/deoplete.nvim'
-  ""Plug 'roxma/nvim-yarp'
-  ""Plug 'roxma/vim-hug-neovim-rpc'
-""endif
+"
+"\ \     /_ _|  \  | __ __| _ \   _ \  |
+" \ \   /   |  |\/ |    |  |   | |   | |
+"  \ \ /    |  |   |    |  |   | |   | |
+"   \_/   ___|_|  _|   _| \___/ \___/ _____|
+"
+"if !has('nvim')
+  "Plug 'Shougo/deoplete.nvim'
+  "Plug 'roxma/nvim-yarp'
+  "Plug 'roxma/vim-hug-neovim-rpc'
+"endif
 
+Plug 'easymotion/vim-easymotion'
 Plug 'benmills/vimux'
 Plug 'vim-scripts/Auto-Pairs'
 Plug 'kien/ctrlp.vim'
@@ -80,7 +82,6 @@ Plug 'prettier/vim-prettier', {
             \ 'do': 'npm install',
             \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
 
-"Plug 'easymotion/vim-easymotion'
 "Plug 'vimwiki/vimwiki'
 "Plug 'dbeniamine/cheat.sh-vim'
 
@@ -102,7 +103,7 @@ Plug 'prettier/vim-prettier', {
   "Plug 'deoplete-plugins/deoplete-docker'
 "endif
 
-Plug 'zxqfl/tabnine-vim'
+"Plug 'zxqfl/tabnine-vim'
 Plug 'fatih/vim-go'
 Plug 'plasticboy/vim-markdown'
 Plug 'mzlogin/vim-markdown-toc'

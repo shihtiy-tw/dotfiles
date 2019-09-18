@@ -131,6 +131,32 @@ nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
 endif
 
+"                                       |  _)
+"  _ \  _` |  __| |   | __ `__ \   _ \  __| |  _ \  __ \
+"  __/ (   |\__ \ |   | |   |   | (   | |   | (   | |   |
+"\___|\__,_|____/\__, |_|  _|  _|\___/ \__|_|\___/ _|  _|
+"                ____/
+"
+"easymotion
+
+map f <Plug>(easymotion-prefix)
+" <Leader>f{char} to move to {char}
+map  ff <Plug>(easymotion-bd-f)
+nmap ff <Plug>(easymotion-overwin-f)
+
+" s{char}{char} to move to {char}{char}
+nmap fs <Plug>(easymotion-overwin-f2)
+
+" Move to line
+map fl <Plug>(easymotion-bd-jk)
+nmap fl <Plug>(easymotion-overwin-line)
+
+" Move to word
+map  fw <Plug>(easymotion-bd-w)
+nmap fw <Plug>(easymotion-overwin-w)
+
+
+
 "  _ \            |                 |       _)
 " |   | |   |  _` |  _ \   __|  __| __|  __| | __ \   _` |
 " ___/  |   | (   | (   | (   \__ \ |   |    | |   | (   |
@@ -287,7 +313,7 @@ endif
 "                     |___/ |___/
 "
 "swagger
-nmap <unique> <leader>r <Plug>GenerateDiagram
+"nmap <unique> <leader>r <Plug>GenerateDiagram
 
 "  ____|                     \    |_)
 "  __|    _` |  __| |   |   _ \   | |  _` | __ \
