@@ -144,26 +144,40 @@ if [ $(uname -s) != "Darwin" ]; then
   export MYIP=$(myip)
 fi
 
-# source
-# awless
-if [[ $(which awless) == 1 ]]; then source <(awless completion zsh); fi
 
 #source /etc/zsh_command_not_found
 #source $HOME/.local/bin/aws_bash_completer
 [ -f ${HOME}/.fzf.zsh ] && source ${HOME}/.fzf.zsh
 
+# awless
+if [ -f "$(which awless)" ]; then source <(awless completion zsh); fi
+
 # kubectl
-#echo "if [ $commands[kubectl] ]; then source <(kubectl completion zsh); fi" >> ~/.zshrc
-if [[ $(which kubectl) == 1 ]]; then source <(kubectl completion zsh); fi
+if [ -f "$(which kubectl)" ]; then source <(kubectl completion zsh); fi
 
 # minikube
-if [[ $(which minikube) == 1 ]]; then source <(minikube completion zsh); fi
+if [ -f "$(which minikube)" ]; then source <(minikube completion zsh); fi
 
 # helm
-#echo "if [ $commands[helm] ]; then source <(helm completion zsh); fi" >> ~/.zshrc
-if [[ $(which helm) == 1 ]]; then source <(helm completion zsh); fi
+if [ -f "$(which helm)" ]; then source <(helm completion zsh); fi
 
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+#[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+# explain.sh begins
+explain () {
+  if [ "$#" -eq 0 ]; then
+    while read  -p "Command: " cmd; do
+      curl -Gs "https://www.mankier.com/api/explain/?cols="$(tput cols) --data-urlencode "q=$cmd"
+    done
+    echo "Bye!"
+  elif [ "$#" -eq 1 ]; then
+    curl -Gs "https://www.mankier.com/api/explain/?cols="$(tput cols) --data-urlencode "q=$1"
+  else
+    echo "Usage"
+    echo "explain                  interactive mode."
+    echo "explain 'cmd -o | ...'   one quoted command to explain it."
+  fi
+}
 
 h=()
 if [[ -r ~/.ssh/config ]]; then
@@ -235,7 +249,7 @@ fi
 if [ -f ${HOME}/.autojump/share/autojump/autojump.zsh ]; then
 	. ${HOME}/.autojump/share/autojump/autojump.zsh
 fi
-[[ -s $(brew --prefix)/etc/profile.d/autojump.sh ]] && . $(brew --prefix)/etc/profile.d/autojump.sh
+
 # mkdir + cd
 function mkdircd() {
 	command mkdir $1 && cd $1
@@ -298,11 +312,14 @@ function swagger_preview() {
 
 fpath=(${HOME}/.zsh.d/ $fpath)
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
-nvm alias default 11.14.0
-nvm use v11.14.0
+if [ $(uname -s) = "Darwin" ]; then
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+  [[ -s $(brew --prefix)/etc/profile.d/autojump.sh  ]] && . $(brew --prefix)/etc/profile.d/autojump.sh
+  nvm alias default 11.14.0
+  nvm use v11.14.0
+fi
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 

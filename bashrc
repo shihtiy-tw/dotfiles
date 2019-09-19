@@ -286,24 +286,20 @@ source "$BASH_IT"/bash_it.sh
 
 [ -f ${HOME}/.fzf.bash ] && source ${HOME}/.fzf.bash
 
-# minikube
-if [ /usr/local/bin/minikube ]; then source <(minikube completion bash); fi
+# awless
+if [ -f "$(which awless)" ]; then source <(awless completion bash); fi
 
 # kubectl
-#echo "if [ $commands[kubectl] ]; then source <(kubectl completion zsh); fi" >> ~/.zshrc
-if [[ $(which kubectl) == 1 ]]; then source <(kubectl completion bash); fi
+if [ -f "$(which kubectl)" ]; then source <(kubectl completion bash); fi
+
+# minikube
+if [ -f "$(which minikube)" ]; then source <(minikube completion bash); fi
 
 # helm
-#echo "if [ $commands[helm] ]; then source <(helm completion zsh); fi" >> ~/.zshrc
-if [[ $(which helm) == 1 ]]; then source <(helm completion bash); fi
+if [ -f "$(which helm)" ]; then source <(helm completion bash); fi
 
-if [[ $(which awless) == 1 ]]; then source <(awless completion bash); fi
 
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-if [ -f $(brew --prefix)/etc/bash_completion ]; then
-. $(brew --prefix)/etc/bash_completion
-fi
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 
 # explain.sh begins
