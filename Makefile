@@ -38,7 +38,64 @@ hello:
 	#\n\
 	#"
 
-install:
+install-aws:
+	#@echo "\n\
+ #___           _        _ _   _____           _\n\
+#|_ _|_ __  ___| |_ __ _| | | |_   _|__   ___ | |___ \n\
+ #| || '_ \/ __| __/ _` | | |   | |/ _ \ / _ \| / __|\n\
+ #| || | | \__ \ || (_| | | |   | | (_) | (_) | \__ \\n\
+#|___|_| |_|___/\__\__,_|_|_|   |_|\___/ \___/|_|___/\n\
+	#\n\
+	#"
+
+	# update and upgrade packages
+	sudo yum update -y
+	sudo yum upgrade -y
+
+	# zsh
+	sudo yum install zsh -y
+
+	# oh-my-zsh
+	git clone https://github.com/robbyrussell/oh-my-zsh.git ${HOME}/.oh-my-zsh
+	git clone https://github.com/zsh-users/zsh-autosuggestions ${HOME}/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+	git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${HOME}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting.git
+
+	# bash-it
+	git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it
+
+	~/.bash_it/install.sh --slient
+	mkdir -p ~/.bash_it/custom/themes
+
+	# tmux
+	sudo yum install tmux -y
+
+	# vim
+	sudo yum install vim -y
+
+	# node
+	sudo yum install -y gcc-c++ make
+	curl -sL https://rpm.nodesource.com/setup_12.x | sudo -E bash -
+	sudo yum install nodejs -y
+
+	# python
+	sudo yum -y groupinstall development
+	sudo yum -y install https://centos7.iuscommunity.org/ius-release.rpm
+	sudo yum -y install python36u
+	sudo yum -y install python36u-pip
+
+
+	# neovim
+	sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+	sudo yum install -y neovim python3-neovim
+
+	pip3.6 install pynvim --user
+	sudo yum install build-essential cmake python3-dev -y
+	wget https://github.com/neovim/neovim/releases/download/v0.3.8/nvim.appimage
+	chmod u+x nvim.appimage
+	sudo rm /usr/bin/nvim
+	sudo ln -s ${HOME}/dotfiles/nvim.appimage /usr/bin/nvim
+
+install-ubuntu:
 	#@echo "\n\
  #___           _        _ _   _____           _\n\
 #|_ _|_ __  ___| |_ __ _| | | |_   _|__   ___ | |___ \n\
