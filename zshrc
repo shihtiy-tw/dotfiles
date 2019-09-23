@@ -118,6 +118,15 @@ source $ZSH/oh-my-zsh.sh
 #
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
+#
+if [ $(uname -s) = "Darwin" ]; then
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+  [[ -s $(brew --prefix)/etc/profile.d/autojump.sh  ]] && . $(brew --prefix)/etc/profile.d/autojump.sh
+  nvm alias default 11.14.0
+  nvm use v11.14.0
+fi
+
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias cp="rsync -ah --progress"
 alias open="xdg-open"
@@ -313,13 +322,5 @@ function swagger_preview() {
 fpath=(${HOME}/.zsh.d/ $fpath)
 
 
-if [ $(uname -s) = "Darwin" ]; then
-  export NVM_DIR="$HOME/.nvm"
-  [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-  [[ -s $(brew --prefix)/etc/profile.d/autojump.sh  ]] && . $(brew --prefix)/etc/profile.d/autojump.sh
-  nvm alias default 11.14.0
-  nvm use v11.14.0
-fi
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
