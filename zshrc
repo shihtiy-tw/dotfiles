@@ -6,8 +6,10 @@ export ZSH="${HOME}/.oh-my-zsh"
 export DOTFILE="${HOME}/dotfiles"
 
 
-source $DOTFILE/zsh/antigen.zsh
-source $HOME/.antigenrc
+#source $DOTFILE/zsh/antigen.zsh
+# Load Antigen configurations
+#antigen init $HOME/.antigenrc
+#source $HOME/.antigenrc
 
 source $HOME/dotfiles/zsh/omzsh.zsh
 

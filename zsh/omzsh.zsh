@@ -4,7 +4,7 @@
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 #ZSH_THEME="af-magic"
 #ZSH_THEME="fishy"
-ZSH_THEME="ieni"
+ZSH_THEME="spaceship"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -58,15 +58,15 @@ ZSH_THEME="ieni"
 # Custom plugins may be added to ${HOME}/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-#plugins=(
+plugins=(
   #git
   #django
-  #aws
+  aws
   #colorize
-  #command-not-found
-  #zsh-completions
-  #zsh-autosuggestions
-  #zsh-syntax-highlighting
+  command-not-found
+  zsh-completions
+  zsh-autosuggestions
+  zsh-syntax-highlighting
   #auto-color-ls
   #copyzshell
   #fast-syntax-highlighting
@@ -75,9 +75,7 @@ ZSH_THEME="ieni"
   #kube-ps1
   #ls
   #web-search
-  #autojump
-#)
+  autojump
+)
 
-#source $ZSH/oh-my-zsh.sh
-
-
+source $ZSH/oh-my-zsh.sh
