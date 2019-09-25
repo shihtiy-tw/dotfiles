@@ -299,7 +299,7 @@ if [ -f "$(which minikube)" ]; then source <(minikube completion bash); fi
 if [ -f "$(which helm)" ]; then source <(helm completion bash); fi
 
 
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+#[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 
 # explain.sh begins
@@ -318,5 +318,5 @@ explain () {
   fi
 }
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+#export NVM_DIR="$HOME/.nvm"
+#[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
