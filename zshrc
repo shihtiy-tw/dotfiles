@@ -70,6 +70,7 @@ plugins=(
   aws
   colorize
   command-not-found
+  zsh-completions
   zsh-autosuggestions
   zsh-syntax-highlighting
   #auto-color-ls
@@ -136,6 +137,7 @@ alias weather='curl wttr.in'
 alias tldr='tldr -t ocean'
 alias vim="nvim"
 alias sudo='sudo '
+alias vbm="VBoxManage"
 
 if [ $(uname -s) != "Darwin" ]; then
   alias rm="trash"
