@@ -3,6 +3,7 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH="${HOME}/.oh-my-zsh"
+export DOTFILE="${HOME}/dotfiles"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -64,15 +65,15 @@ ZSH_THEME="ieni"
 # Custom plugins may be added to ${HOME}/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(
-  git
+#plugins=(
+  #git
   #django
-  aws
-  colorize
-  command-not-found
-  zsh-completions
-  zsh-autosuggestions
-  zsh-syntax-highlighting
+  #aws
+  #colorize
+  #command-not-found
+  #zsh-completions
+  #zsh-autosuggestions
+  #zsh-syntax-highlighting
   #auto-color-ls
   #copyzshell
   #fast-syntax-highlighting
@@ -81,10 +82,13 @@ plugins=(
   #kube-ps1
   #ls
   #web-search
-  autojump
-)
+  #autojump
+#)
 
 source $ZSH/oh-my-zsh.sh
+source $DOTFILE/zsh/antigen.zsh
+
+antigen init ~/.antigenrc
 
 # User configuration
 

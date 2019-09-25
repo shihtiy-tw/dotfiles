@@ -198,6 +198,7 @@ init:
 	ln -sf ${HOME}/dotfiles/gitconfig ${HOME}/.gitconfig
 	ln -sf ${HOME}/dotfiles/vimrc ${HOME}/.vimrc
 	ln -sf ${HOME}/dotfiles/nvim/init.vim ${HOME}/.config/nvim/init.vim
+	ln -sf ${HOME}/dotfiles/zsh/antigenrc ${HOME}/.antigenrc
 
 	ln -sf ${HOME}/dotfiles/nvim/coc-settings.json ${HOME}/.config/nvim/coc-settings.json
 	npm i -g bash-language-server
