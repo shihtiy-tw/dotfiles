@@ -5,6 +5,7 @@
 #ZSH_THEME="af-magic"
 #ZSH_THEME="fishy"
 ZSH_THEME="spaceship"
+#ZSH_THEME="ieni"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -63,7 +64,7 @@ plugins=(
   #django
   aws
   #colorize
-  command-not-found
+  #command-not-found
   zsh-completions
   zsh-autosuggestions
   zsh-syntax-highlighting
