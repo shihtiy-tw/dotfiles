@@ -59,7 +59,7 @@ Plug 'tpope/vim-surround'
 Plug 'triglav/vim-visual-increment'
 Plug 'vim-scripts/Buffergator'
 Plug 'vim-scripts/matchit.zip'
-Plug 'xavierchow/vim-swagger-preview', {'for': ['yaml']}
+"Plug 'xavierchow/vim-swagger-preview', {'for': ['yaml']}
 Plug '~/Tool_from_git/fzf/bin/fzf'
 Plug '~/Tool_from_git/fzf/bin/fzf-tmux'
 Plug 'junegunn/fzf.vim'
