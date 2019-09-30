@@ -27,7 +27,7 @@ alias sudo='sudo '
 alias vbm="VBoxManage"
 
 if [ $(uname -s) != "Darwin" ]; then
-  alias rm="trash"
+  #alias rm="trash"
   alias say="spd-say"
   alias myip="ifconfig wlp3s0 | grep -m 1 inet | sed 's/^.*inet addr://g' | sed 's/Bcast.*//g'"
   export MYIP=$(myip)

@@ -30,7 +30,7 @@ alias pbcopy="xclip -sel clip"
 # for linux
 if [ $(uname -s) != "Darwin" ]; then
   alias myip="ifconfig wlp3s0 | grep -m 1 inet | sed 's/^.*inet addr://g' | sed 's/Bcast.*//g'"
-  alias rm="trash"
+  #alias rm="trash"
   alias say="spd-say"
   export MYIP=$(myip)
 fi
