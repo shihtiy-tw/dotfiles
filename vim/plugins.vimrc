@@ -43,6 +43,7 @@ Plug 'morhetz/gruvbox'
   "Plug 'roxma/vim-hug-neovim-rpc'
 "endif
 
+Plug 'Yggdroot/indentLine'
 Plug 'easymotion/vim-easymotion'
 Plug 'benmills/vimux'
 Plug 'vim-scripts/Auto-Pairs'
