@@ -68,6 +68,7 @@ plugins=(
   zsh-completions
   zsh-autosuggestions
   zsh-syntax-highlighting
+  zsh-vim-mode
   #auto-color-ls
   #copyzshell
   #fast-syntax-highlighting
