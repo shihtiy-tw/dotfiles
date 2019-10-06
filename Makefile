@@ -54,10 +54,9 @@ install-aws:
 	sudo yum -y groupinstall development
 
 	# python
-	sudo yum -y install https://centos7.iuscommunity.org/ius-release.rpm
-	sudo yum -y install python36u
-	sudo yum -y install python36u-pip
-	sudo yum -y install python36u-devel
+	# sudo yum -y install python3.x86_64
+	# sudo yum -y install python3-devel.x86_64
+	sudo yum -y install python3*
 
 	# zsh
 	sudo yum install zsh -y
