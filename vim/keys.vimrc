@@ -174,7 +174,26 @@ nmap <leader><leader>c <Plug>(pydocstring)
 "
 " vim-livedown
 
-nmap <Leader>md :LivedownToggle<CR>
+"nmap <Leader>md :LivedownToggle<CR>
+
+
+"  _ \                 _)
+" |   |  __| _ \\ \   / |  _ \\ \  \   /
+" ___/  |    __/ \ \ /  |  __/ \ \  \ /
+"_|    _|  \___|  \_/  _|\___|  \_/\_/
+"
+"preview
+
+" normal/insert
+"<Plug>MarkdownPreview
+"<Plug>MarkdownPreviewStop
+"<Plug>MarkdownPreviewToggle
+
+" example
+"nmap <Leader>md <Plug>MarkdownPreview
+"nmap <Leader>md <Plug>MarkdownPreviewStop
+nmap <Leader>md <Plug>MarkdownPreviewToggle
+
 
 "  ___| |                                           |
 " |     |  _ \  _` |  __|   __|  _ \  _` |  __| __| __ \
