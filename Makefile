@@ -82,6 +82,11 @@ install-aws:
 		cd ./autojump && ./install.py; \
 	fi
 
+	if [ ! -d $ZSH_CUSTOM/themes/spaceship-prompt ]; then \
+		git clone https://github.com/denysdovhan/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt"; \
+		ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"; \
+	fi
+
 	# bash-it
 	if [ ! -d ${HOME}/.bash_it ]; then \
 		git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it; \
@@ -89,6 +94,7 @@ install-aws:
 
 	~/.bash_it/install.sh --slient
 	mkdir -p ~/.bash_it/custom/themes
+	suod npm i -g bash-language-server
 
 	# tmux
 	sudo yum install tmux -y
@@ -109,8 +115,10 @@ install-aws:
 	sudo yum install build-essential cmake python3-dev -y
 	wget https://github.com/neovim/neovim/releases/download/v0.3.8/nvim.appimage
 	chmod u+x nvim.appimage
+	./nvim.appimage --appimage-extract
 	sudo rm /usr/bin/nvim
-	sudo ln -s ${HOME}/dotfiles/nvim.appimage /usr/bin/nvim
+	#sudo ln -s ${HOME}/dotfiles/nvim.appimage /usr/bin/nvim
+	sudo ln -sf ${HOME}/dotfiles/squashfs-root/usr/bin/nvim /usr/bin/nvim
 
 install-ubuntu:
 	#@echo "\n\
@@ -146,25 +154,33 @@ install-ubuntu:
 	if [ ! -d ${HOME}/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]; then \
 		git clone https://github.com/zsh-users/zsh-autosuggestions ${HOME}/.oh-my-zsh/custom/plugins/zsh-autosuggestions; \
 	fi
-	if [ -! d ${HOME}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]; then \
+	if [ ! -d ${HOME}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]; then \
 		git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${HOME}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting; \
 	fi
-	if [ -! d ${HOME}/.oh-my-zsh/custom/plugins/zsh-completions ]; then \
+	if [ ! -d ${HOME}/.oh-my-zsh/custom/plugins/zsh-completions ]; then \
 		git clone https://github.com/zsh-users/zsh-completions ${HOME}/.oh-my-zsh/custom/plugins/zsh-completions; \
 	fi
-	if [ -! d ${HOME}/.oh-my-zsh/custom/plugins/zsh-vim-mode ]; then \
+	if [ ! -d ${HOME}/.oh-my-zsh/custom/plugins/zsh-vim-mode ]; then \
 		git clone https://github.com/softmoth/zsh-vim-mode.git ${HOME}/.oh-my-zsh/custom/plugins/zsh-vim-mode; \
 	fi
-	if [ -! d ./autojump ]; then \
+	if [ ! -d ./autojump ]; then \
 		git clone git://github.com/joelthelion/autojump.git; \
 		cd ./autojump && ./install.py; \
 	fi
 
+	if [ ! -d $ZSH_CUSTOM/themes/spaceship-prompt ]; then \
+		git clone https://github.com/denysdovhan/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt"; \
+		ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"; \
+	fi
+
 	# bash-it
-	git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it
+	if [ ! -d ${HOME}/.bash_it ]; then \
+		git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it; \
+	fi
 
 	~/.bash_it/install.sh --slient
 	mkdir -p ~/.bash_it/custom/themes
+	npm i -g bash-language-server
 
 	# tmux
 	sudo apt install tmux -y
@@ -232,7 +248,7 @@ init:
 	ln -sf ${HOME}/dotfiles/zsh/antigenrc ${HOME}/.antigenrc
 
 	ln -sf ${HOME}/dotfiles/nvim/coc-settings.json ${HOME}/.config/nvim/coc-settings.json
-	npm i -g bash-language-server
+	#npm i -g bash-language-server
 
 	# neovim
 	#nvim -c "PlugInstall"

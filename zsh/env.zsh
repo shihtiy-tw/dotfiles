@@ -24,6 +24,7 @@ export WORKON_HOME=$HOME/.virtualenvs
 export CODIMD_SERVER='127.0.0.1:3000'
 # added by Anaconda3 installer
 export PATH="${HOME}/anaconda3/bin:$PATH"
+export NODEPATH="$(which node)"
 
 # convenience
 if [ -d $HOME/Library/Python/3.7/bin ]; then
