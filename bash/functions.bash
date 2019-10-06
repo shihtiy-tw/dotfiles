@@ -16,5 +16,9 @@ explain () {
 
 # mkdir + cd
 function mkdircd() {
-	command mkdir $1 && cd $1
+  command mkdir $1 && cd $1
 }
+
+if [[ -z "$TMUX" ]] && [ "$SSH_CONNECTION" != "" ]; then
+  tmux attach-session -t main || tmux new-session -s ssh_tmux
+fi
