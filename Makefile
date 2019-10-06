@@ -62,16 +62,30 @@ install-aws:
 	sudo yum install zsh -y
 
 	# oh-my-zsh
-	git clone https://github.com/robbyrussell/oh-my-zsh.git ${HOME}/.oh-my-zsh
-	git clone https://github.com/zsh-users/zsh-autosuggestions ${HOME}/.oh-my-zsh/custom/plugins/zsh-autosuggestions
-	git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${HOME}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
-	git clone https://github.com/zsh-users/zsh-completions ${HOME}/.oh-my-zsh/custom/plugins/zsh-completions
-	git clone https://github.com/softmoth/zsh-vim-mode.git ${HOME}/.oh-my-zsh/custom/plugins/zsh-vim-mode
-	git clone git://github.com/joelthelion/autojump.git
-	./autojump/install.py
+	if [ ! -d ${HOME}/.oh-my-zsh ]; then \
+		git clone https://github.com/robbyrussell/oh-my-zsh.git ${HOME}/.oh-my-zsh; \
+	fi
+	if [ ! -d ${HOME}/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]; then \
+		git clone https://github.com/zsh-users/zsh-autosuggestions ${HOME}/.oh-my-zsh/custom/plugins/zsh-autosuggestions; \
+	fi
+	if [ ! -d ${HOME}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]; then \
+		git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${HOME}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting; \
+	fi
+	if [ ! -d ${HOME}/.oh-my-zsh/custom/plugins/zsh-completions ]; then \
+		git clone https://github.com/zsh-users/zsh-completions ${HOME}/.oh-my-zsh/custom/plugins/zsh-completions; \
+	fi
+	if [ ! -d ${HOME}/.oh-my-zsh/custom/plugins/zsh-vim-mode ]; then \
+		git clone https://github.com/softmoth/zsh-vim-mode.git ${HOME}/.oh-my-zsh/custom/plugins/zsh-vim-mode; \
+	fi
+	if [ ! -d ./autojump ]; then \
+		git clone git://github.com/joelthelion/autojump.git; \
+		cd ./autojump && ./install.py; \
+	fi
 
 	# bash-it
-	git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it
+	if [ ! -d ${HOME}/.bash_it ]; then \
+		git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it; \
+	fi
 
 	~/.bash_it/install.sh --slient
 	mkdir -p ~/.bash_it/custom/themes
@@ -91,7 +105,7 @@ install-aws:
 	sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 	sudo yum install -y neovim python3-neovim
 
-	pip3.6 install pynvim --user
+	pip3 install pynvim --user
 	sudo yum install build-essential cmake python3-dev -y
 	wget https://github.com/neovim/neovim/releases/download/v0.3.8/nvim.appimage
 	chmod u+x nvim.appimage
@@ -126,13 +140,25 @@ install-ubuntu:
 	sudo apt-get install powerline fonts-powerline -y
 
 	# oh-my-zsh
-	git clone https://github.com/robbyrussell/oh-my-zsh.git ${HOME}/.oh-my-zsh
-	git clone https://github.com/zsh-users/zsh-autosuggestions ${HOME}/.oh-my-zsh/custom/plugins/zsh-autosuggestions
-	git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${HOME}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
-	git clone https://github.com/zsh-users/zsh-completions ${HOME}/.oh-my-zsh/custom/plugins/zsh-completions
-	git clone https://github.com/softmoth/zsh-vim-mode.git ${HOME}/.oh-my-zsh/custom/plugins/zsh-vim-mode
-	git clone git://github.com/joelthelion/autojump.git
-	./autojump/install.py
+	if [ ! -d ${HOME}/.oh-my-zsh ]; then \
+		git clone https://github.com/robbyrussell/oh-my-zsh.git ${HOME}/.oh-my-zsh; \
+	fi
+	if [ ! -d ${HOME}/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]; then \
+		git clone https://github.com/zsh-users/zsh-autosuggestions ${HOME}/.oh-my-zsh/custom/plugins/zsh-autosuggestions; \
+	fi
+	if [ -! d ${HOME}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]; then \
+		git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${HOME}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting; \
+	fi
+	if [ -! d ${HOME}/.oh-my-zsh/custom/plugins/zsh-completions ]; then \
+		git clone https://github.com/zsh-users/zsh-completions ${HOME}/.oh-my-zsh/custom/plugins/zsh-completions; \
+	fi
+	if [ -! d ${HOME}/.oh-my-zsh/custom/plugins/zsh-vim-mode ]; then \
+		git clone https://github.com/softmoth/zsh-vim-mode.git ${HOME}/.oh-my-zsh/custom/plugins/zsh-vim-mode; \
+	fi
+	if [ -! d ./autojump ]; then \
+		git clone git://github.com/joelthelion/autojump.git; \
+		cd ./autojump && ./install.py; \
+	fi
 
 	# bash-it
 	git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it
