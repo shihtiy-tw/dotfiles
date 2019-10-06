@@ -51,6 +51,13 @@ install-aws:
 	# update and upgrade packages
 	sudo yum update -y
 	sudo yum upgrade -y
+	sudo yum -y groupinstall development
+
+	# python
+	sudo yum -y install https://centos7.iuscommunity.org/ius-release.rpm
+	sudo yum -y install python36u
+	sudo yum -y install python36u-pip
+	sudo yum -y install python36u-devel
 
 	# zsh
 	sudo yum install zsh -y
@@ -80,13 +87,6 @@ install-aws:
 	sudo yum install -y gcc-c++ make
 	curl -sL https://rpm.nodesource.com/setup_12.x | sudo -E bash -
 	sudo yum install nodejs -y
-
-	# python
-	sudo yum -y groupinstall development
-	sudo yum -y install https://centos7.iuscommunity.org/ius-release.rpm
-	sudo yum -y install python36u
-	sudo yum -y install python36u-pip
-
 
 	# neovim
 	sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
