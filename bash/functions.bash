@@ -19,6 +19,13 @@ function mkdircd() {
   command mkdir $1 && cd $1
 }
 
+# markdown table generator
+function mdtable() {
+  if [ $(uname -s) = "Darwin" ]; then
+    command open -a "Google Chrome" ~/Tools/Markdown-Table-Generator/index.html
+  fi
+}
+
 if [[ -z "$TMUX" ]] && [ "$SSH_CONNECTION" != "" ]; then
   tmux attach-session -t main || tmux new-session -s ssh_tmux
 fi

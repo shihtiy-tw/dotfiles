@@ -31,6 +31,13 @@ function mkdircd() {
 	command mkdir $1 && cd $1
 }
 
+# markdown table generator
+function mdtable() {
+  if [ $(uname -s) = "Darwin" ]; then
+    command open -a "Google Chrome" ~/Tools/Markdown-Table-Generator/index.html
+  fi
+}
+
 # curl cheat.sh
 function cheat() {
   command curl cheat.sh/$1
