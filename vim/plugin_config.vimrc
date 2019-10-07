@@ -6,6 +6,19 @@
 "               |___/                                      |___/
 "
 
+"  \  |     |      _)                                        |
+" |\/ |  _` |       | __ `__ \   _` |       __ \   _` |  __| __|  _ \
+" |   | (   |_____| | |   |   | (   |_____| |   | (   |\__ \ |    __/
+"_|  _|\__,_|      _|_|  _|  _|\__, |       .__/ \__,_|____/\__|\___|
+"                              |___/       _|
+"
+"md-img-paste
+
+autocmd FileType markdown nmap <silent> <leader>P :call mdip#MarkdownClipboardImage()<CR>
+" there are some defaults for image directory and image name, you can change them
+" let g:mdip_imgdir = 'img'
+" let g:mdip_imgname = 'image'
+
 "  \  |            |        |
 " |\/ |  _` |  __| |  /  _` |  _ \\ \  \   / __ \
 " |   | (   | |      <  (   | (   |\ \  \ /  |   |

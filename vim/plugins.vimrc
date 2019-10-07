@@ -108,8 +108,9 @@ Plug 'prettier/vim-prettier', {
 "Plug 'zxqfl/tabnine-vim'
 Plug 'fatih/vim-go'
 Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
-Plug 'mzlogin/vim-markdown-toc'
+Plug 'plasticboy/vim-markdown', {'for': ['markdown']}
+Plug 'mzlogin/vim-markdown-toc', {'for': ['markdown']}
+Plug 'ferrine/md-img-paste.vim', {'for': ['markdown']}
 "Plug 'shime/vim-livedown'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 Plug 'dhruvasagar/vim-table-mode'
