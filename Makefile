@@ -94,7 +94,6 @@ install-aws:
 
 	~/.bash_it/install.sh --slient
 	mkdir -p ~/.bash_it/custom/themes
-	suod npm i -g bash-language-server
 
 	# tmux
 	sudo yum install tmux -y
@@ -106,6 +105,7 @@ install-aws:
 	sudo yum install -y gcc-c++ make
 	curl -sL https://rpm.nodesource.com/setup_12.x | sudo -E bash -
 	sudo yum install nodejs -y
+	sudo npm i -g bash-language-server
 
 	# neovim
 	sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
@@ -180,7 +180,6 @@ install-ubuntu:
 
 	~/.bash_it/install.sh --slient
 	mkdir -p ~/.bash_it/custom/themes
-	npm i -g bash-language-server
 
 	# tmux
 	sudo apt install tmux -y
@@ -191,6 +190,7 @@ install-ubuntu:
 	# node
 	curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
 	sudo apt-get install nodejs
+	sudo npm i -g bash-language-server
 
 	# neovim
 	sudo apt-get install python3-neovim -y
@@ -248,7 +248,6 @@ init:
 	ln -sf ${HOME}/dotfiles/zsh/antigenrc ${HOME}/.antigenrc
 
 	ln -sf ${HOME}/dotfiles/nvim/coc-settings.json ${HOME}/.config/nvim/coc-settings.json
-	#npm i -g bash-language-server
 
 	# neovim
 	#nvim -c "PlugInstall"
