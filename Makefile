@@ -82,9 +82,8 @@ install-aws:
 		cd ./autojump && ./install.py; \
 	fi
 
-	if [ ! -d $ZSH_CUSTOM/themes/spaceship-prompt ]; then \
-		git clone https://github.com/denysdovhan/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt"; \
-		ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"; \
+	if [ ! -d ${HOME}/.oh-my-zsh/custom/themes/spaceship-prompt ]; then \
+		git clone https://github.com/denysdovhan/spaceship-prompt.git "${HOME}/.oh-my-zsh/custom/themes/spaceship-prompt"; \
 	fi
 
 	# bash-it
@@ -168,9 +167,8 @@ install-ubuntu:
 		cd ./autojump && ./install.py; \
 	fi
 
-	if [ ! -d $ZSH_CUSTOM/themes/spaceship-prompt ]; then \
-		git clone https://github.com/denysdovhan/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt"; \
-		ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"; \
+	if [ ! -d ${HOME}/.oh-my-zsh/custom/themes/spaceship-prompt ]; then \
+		git clone https://github.com/denysdovhan/spaceship-prompt.git "${HOME}/.oh-my-zsh/custom/themes/spaceship-prompt"; \
 	fi
 
 	# bash-it
@@ -246,8 +244,8 @@ init:
 	ln -sf ${HOME}/dotfiles/vimrc ${HOME}/.vimrc
 	ln -sf ${HOME}/dotfiles/nvim/init.vim ${HOME}/.config/nvim/init.vim
 	ln -sf ${HOME}/dotfiles/zsh/antigenrc ${HOME}/.antigenrc
-
 	ln -sf ${HOME}/dotfiles/nvim/coc-settings.json ${HOME}/.config/nvim/coc-settings.json
+	ln -sf ${HOME}/dotfiles/zsh/spaceship-prompt/spaceship.zsh-theme" "${HOME}/.oh-my-zsh/custom/themes/spaceship.zsh-theme
 
 	# neovim
 	#nvim -c "PlugInstall"
