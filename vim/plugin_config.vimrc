@@ -121,6 +121,16 @@ autocmd FileType cpp nnoremap <silent><buffer> K <Esc>:Cppman <cword><CR>
 "
 "indentline
 
+" let g:indentLine_enabled = 1
+" let g:vim_json_syntax_conceal = 0
+" let g:indentLine_noConcealCursor='nc'
+" let g:vim_json_syntax_conceal = 0
+" :e $VIMRUNTIME/syntax/json.vim
+" :g/if has('conceal')/s//& \&\& 0/
+" :wq
+" https://github.com/Yggdroot/indentLine/issues/140
+
+
 
 "  ___|  _ \   ___|
 " |     |   | |
