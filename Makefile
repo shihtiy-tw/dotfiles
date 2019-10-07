@@ -118,6 +118,7 @@ install-aws:
 	sudo rm /usr/bin/nvim
 	#sudo ln -s ${HOME}/dotfiles/nvim.appimage /usr/bin/nvim
 	sudo ln -sf ${HOME}/dotfiles/squashfs-root/usr/bin/nvim /usr/bin/nvim
+	sudo ln -sf ${HOME}/dotfiles/git/diff-so-fancy.sh /usr/local/bin/diff-so-fancy
 
 install-ubuntu:
 	#@echo "\n\
