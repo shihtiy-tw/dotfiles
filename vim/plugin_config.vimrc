@@ -143,6 +143,35 @@ autocmd FileType cpp nnoremap <silent><buffer> K <Esc>:Cppman <cword><CR>
 " :wq
 " https://github.com/Yggdroot/indentLine/issues/140
 
+"    \    |     ____|
+"   _ \   |     __|
+"  ___ \  |     |
+"_/    _\_____|_____|
+"
+"ale
+
+let g:ale_echo_msg_format = '%linter% says %s'
+
+" Set this. Airline will handle the rest.
+let g:airline#extensions#ale#enabled = 1
+
+function! LinterStatus() abort
+    let l:counts = ale#statusline#Count(bufnr(''))
+
+    let l:all_errors = l:counts.error + l:counts.style_error
+    let l:all_non_errors = l:counts.total - l:all_errors
+
+    return l:counts.total == 0 ? 'OK' : printf(
+    \   '%dW %dE',
+    \   all_non_errors,
+    \   all_errors
+    \)
+endfunction
+
+set statusline=%{LinterStatus()}
+
+" Show 5 lines of errors (default: 10)
+let g:ale_list_window_size = 5
 
 
 "  ___|  _ \   ___|
