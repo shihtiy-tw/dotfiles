@@ -85,5 +85,5 @@ bindkey '^x' edit-command-line
 
 # start tmux while ssh
 if [[ -z "$TMUX" ]] && [ "$SSH_CONNECTION" != "" ]; then
-  tmux attach-session -t main || tmux new-session -s ssh_tmux
+  tmux attach-session -t main || tmux new-session -s main
 fi
