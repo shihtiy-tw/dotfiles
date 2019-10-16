@@ -246,7 +246,7 @@ init:
 	ln -sf ${HOME}/dotfiles/nvim/init.vim ${HOME}/.config/nvim/init.vim
 	ln -sf ${HOME}/dotfiles/zsh/antigenrc ${HOME}/.antigenrc
 	ln -sf ${HOME}/dotfiles/nvim/coc-settings.json ${HOME}/.config/nvim/coc-settings.json
-	ln -sf ${HOME}/dotfiles/zsh/spaceship-prompt/spaceship.zsh-theme" "${HOME}/.oh-my-zsh/custom/themes/spaceship.zsh-theme
+	ln -sf ${HOME}/dotfiles/zsh/spaceship-prompt/spaceship.zsh ${HOME}/.oh-my-zsh/custom/themes/spaceship.zsh-theme
 
 	# neovim
 	#nvim -c "PlugInstall"
