@@ -56,7 +56,11 @@ install-aws:
 	# python
 	# sudo yum -y install python3.x86_64
 	# sudo yum -y install python3-devel.x86_64
-	sudo yum -y install python3*
+
+	if [ ${USER} = 'root' ]; then \
+		sudo yum -y install python3*; \
+		sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm; \
+	fi
 
 	# zsh
 	sudo yum install zsh -y
@@ -104,7 +108,6 @@ install-aws:
 	sudo npm i -g bash-language-server
 
 	# neovim
-	sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 	sudo yum install -y neovim python3-neovim
 
 	pip3 install pynvim --user
@@ -117,13 +120,15 @@ install-aws:
 	sudo ln -sf ${HOME}/dotfiles/squashfs-root/usr/bin/nvim /usr/bin/nvim
 	sudo ln -sf ${HOME}/dotfiles/git/diff-so-fancy.sh /usr/local/bin/diff-so-fancy
 
-	git clone --depth 1 https://github.com/junegunn/fzf.git ${HOME}/.fzf
-	${HOME}/.fzf/install
+	if [ ! -d ${HOMW}/.fzf ]; then\
+		git clone --depth 1 https://github.com/junegunn/fzf.git ${HOME}/.fzf; \
+		${HOME}/.fzf/install; \
+	fi
 
 	mkdir -p ${HOME}/.local/share/bin
 	curl https://beyondgrep.com/ack-v3.1.2 > ${HOME}/.local/share/bin/ack && chmod 0755 ${HOME}/.local/share/bin/ack
 
-	if [ ! -d ./autojump ]; then \
+	if [ ! -d ${HOME}/.autojump ]; then \
 		git clone git://github.com/joelthelion/autojump.git ${HOME}/.autojump; \
 		python3 ${HOME}/.autojump/install.py; \
 	fi
