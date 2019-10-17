@@ -57,7 +57,7 @@ install-aws:
 	# sudo yum -y install python3.x86_64
 	# sudo yum -y install python3-devel.x86_64
 
-	if [ "$(whoami)" = "root" ]; then \
+	if [ "${HOME}" = "/root" ]; then \
 		sudo yum -y install python3*; \
 		sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm; \
 	fi
