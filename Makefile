@@ -79,11 +79,6 @@ install-aws:
 		git clone https://github.com/softmoth/zsh-vim-mode.git ${HOME}/.oh-my-zsh/custom/plugins/zsh-vim-mode; \
 	fi
 
-	if [ ! -d ./autojump ]; then \
-		git clone git://github.com/joelthelion/autojump.git ${HOME}/.autojump; \
-		${HOME}/.autojump/install.py; \
-	fi
-
 	if [ ! -d ${HOME}/.oh-my-zsh/custom/themes/spaceship-prompt ]; then \
 		git clone https://github.com/denysdovhan/spaceship-prompt.git "${HOME}/.oh-my-zsh/custom/themes/spaceship-prompt"; \
 	fi
@@ -127,6 +122,11 @@ install-aws:
 
 	mkdir -p ${HOME}/.local/share/bin
 	curl https://beyondgrep.com/ack-v3.1.2 > ${HOME}/.local/share/bin/ack && chmod 0755 ${HOME}/.local/share/bin/ack
+
+	if [ ! -d ./autojump ]; then \
+		git clone git://github.com/joelthelion/autojump.git ${HOME}/.autojump; \
+		python3 ${HOME}/.autojump/install.py; \
+	fi
 
 
 install-ubuntu:
@@ -172,10 +172,6 @@ install-ubuntu:
 	if [ ! -d ${HOME}/.oh-my-zsh/custom/plugins/zsh-vim-mode ]; then \
 		git clone https://github.com/softmoth/zsh-vim-mode.git ${HOME}/.oh-my-zsh/custom/plugins/zsh-vim-mode; \
 	fi
-	if [ ! -d ./autojump ]; then \
-		git clone git://github.com/joelthelion/autojump.git; \
-		${HOME}/.autojump/install.py; \
-	fi
 
 	if [ ! -d ${HOME}/.oh-my-zsh/custom/themes/spaceship-prompt ]; then \
 		git clone https://github.com/denysdovhan/spaceship-prompt.git "${HOME}/.oh-my-zsh/custom/themes/spaceship-prompt"; \
@@ -215,6 +211,11 @@ install-ubuntu:
 
 	mkdir -p ${HOME}/.local/share/bin
 	curl https://beyondgrep.com/ack-v3.1.2 > ${HOME}/.local/share/bin/ack && chmod 0755 ${HOME}/.local/share/bin/ack
+
+	if [ ! -d ./autojump ]; then \
+		git clone git://github.com/joelthelion/autojump.git; \
+		python3 ${HOME}/.autojump/install.py; \
+	fi
 
 init:
 	#@echo " \n\
