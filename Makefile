@@ -74,12 +74,14 @@ install-aws:
 	if [ ! -d ${HOME}/.oh-my-zsh/custom/plugins/zsh-completions ]; then \
 		git clone https://github.com/zsh-users/zsh-completions ${HOME}/.oh-my-zsh/custom/plugins/zsh-completions; \
 	fi
+
 	if [ ! -d ${HOME}/.oh-my-zsh/custom/plugins/zsh-vim-mode ]; then \
 		git clone https://github.com/softmoth/zsh-vim-mode.git ${HOME}/.oh-my-zsh/custom/plugins/zsh-vim-mode; \
 	fi
+
 	if [ ! -d ./autojump ]; then \
-		git clone git://github.com/joelthelion/autojump.git; \
-		cd ./autojump && ./install.py; \
+		git clone git://github.com/joelthelion/autojump.git ${HOME}/.autojump; \
+		${HOME}/.autojump/install.py; \
 	fi
 
 	if [ ! -d ${HOME}/.oh-my-zsh/custom/themes/spaceship-prompt ]; then \
@@ -88,11 +90,11 @@ install-aws:
 
 	# bash-it
 	if [ ! -d ${HOME}/.bash_it ]; then \
-		git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it; \
+		git clone --depth=1 https://github.com/Bash-it/bash-it.git ${HOME}/.bash_it; \
 	fi
 
-	~/.bash_it/install.sh --slient
-	mkdir -p ~/.bash_it/custom/themes
+	${HOME}/.bash_it/install.sh --slient
+	mkdir -p ${HOME}/.bash_it/custom/themes
 
 	# tmux
 	sudo yum install tmux -y
@@ -119,6 +121,13 @@ install-aws:
 	#sudo ln -s ${HOME}/dotfiles/nvim.appimage /usr/bin/nvim
 	sudo ln -sf ${HOME}/dotfiles/squashfs-root/usr/bin/nvim /usr/bin/nvim
 	sudo ln -sf ${HOME}/dotfiles/git/diff-so-fancy.sh /usr/local/bin/diff-so-fancy
+
+	git clone --depth 1 https://github.com/junegunn/fzf.git ${HOME}/.fzf
+	${HOME}/.fzf/install
+
+	mkdir -p ${HOME}/.local/share/bin
+	curl https://beyondgrep.com/ack-v3.1.2 > ${HOME}/.local/share/bin/ack && chmod 0755 ${HOME}/.local/share/bin/ack
+
 
 install-ubuntu:
 	#@echo "\n\
@@ -165,7 +174,7 @@ install-ubuntu:
 	fi
 	if [ ! -d ./autojump ]; then \
 		git clone git://github.com/joelthelion/autojump.git; \
-		cd ./autojump && ./install.py; \
+		${HOME}/.autojump/install.py; \
 	fi
 
 	if [ ! -d ${HOME}/.oh-my-zsh/custom/themes/spaceship-prompt ]; then \
@@ -174,11 +183,11 @@ install-ubuntu:
 
 	# bash-it
 	if [ ! -d ${HOME}/.bash_it ]; then \
-		git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it; \
+		git clone --depth=1 https://github.com/Bash-it/bash-it.git ${HOME}/.bash_it; \
 	fi
 
-	~/.bash_it/install.sh --slient
-	mkdir -p ~/.bash_it/custom/themes
+	${HOME}/bash_it/install.sh --slient
+	mkdir -p ${HOME}/.bash_it/custom/themes
 
 	# tmux
 	sudo apt install tmux -y
@@ -201,6 +210,11 @@ install-ubuntu:
 	sudo rm /usr/bin/nvim
 	sudo ln -s ${HOME}/dotfiles/nvim.appimage /usr/bin/nvim
 
+	git clone --depth 1 https://github.com/junegunn/fzf.git ${HOME}/.fzf
+	${HOME}/.fzf/install
+
+	mkdir -p ${HOME}/.local/share/bin
+	curl https://beyondgrep.com/ack-v3.1.2 > ${HOME}/.local/share/bin/ack && chmod 0755 ${HOME}/.local/share/bin/ack
 
 init:
 	#@echo " \n\
@@ -237,7 +251,7 @@ init:
 
 	ln -sf ${HOME}/dotfiles/zshrc ${HOME}/.zshrc
 	# ln -sf ${HOME}/dotfiles/zsh/ieni.zsh-theme ${HOME}/.oh-my-zsh/custom/themes/ieni.zsh-theme
-	ln -sf ${HOME}/dotfiles/bash/themes/fish ${HOME}/.bash_it/custom/themes/fish
+	#ln -sf ${HOME}/dotfiles/bash/themes/fish ${HOME}/.bash_it/custom/themes/fish
 	ln -sf ${HOME}/dotfiles/bashrc ${HOME}/.bashrc
 	ln -sf ${HOME}/dotfiles/bashrc ${HOME}/.bash_profile
 	ln -sf ${HOME}/dotfiles/tmux.conf ${HOME}/.tmux.conf
