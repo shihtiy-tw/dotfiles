@@ -142,6 +142,7 @@ autocmd FileType cpp nnoremap <silent><buffer> K <Esc>:Cppman <cword><CR>
 " :g/if has('conceal')/s//& \&\& 0/
 " :wq
 " https://github.com/Yggdroot/indentLine/issues/140
+let g:indentLine_concealcursor = ""
 
 "    \    |     ____|
 "   _ \   |     __|
