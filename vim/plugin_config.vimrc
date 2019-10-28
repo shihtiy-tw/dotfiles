@@ -19,6 +19,20 @@ autocmd FileType markdown nmap <silent> <leader>P :call mdip#MarkdownClipboardIm
 " let g:mdip_imgdir = 'img'
 " let g:mdip_imgname = 'image'
 
+"       |    |                   _) |        |
+"\ \  / |  / __ \   __|\ \  \   / | __|  __| __ \
+" `  <    <  |   |\__ \ \ \  \ /  | |   (    | | |
+" _/\_\_|\_\_.__/ ____/  \_/\_/  _|\__|\___|_| |_|
+"
+" xkbuswitch
+
+let g:XkbSwitchEnabled = 1
+"let g:XkbSwitchLib = '/usr/local/lib/libxkbswitch.dylib'
+
+" smarttim
+
+let g:smartim_default = 'com.apple.keylayout.ABC'
+
 "  \  |            |        |
 " |\/ |  _` |  __| |  /  _` |  _ \\ \  \   / __ \
 " |   | (   | |      <  (   | (   |\ \  \ /  |   |
@@ -116,6 +130,11 @@ let g:mkdp_port = ''
 " ${name} will be replace with the file name
 let g:mkdp_page_title = '「${name}」'
 
+function! g:Open_browser(url)
+    silent exe 'silent !open -a "Safari" ' . a:url
+endfunction
+let g:mkdp_browserfunc = 'g:Open_browser'
+
 "  ___|
 " |     __ \  __ \  __ `__ \   _` | __ \
 " |     |   | |   | |   |   | (   | |   |
@@ -150,6 +169,11 @@ let g:indentLine_concealcursor = ""
 "_/    _\_____|_____|
 "
 "ale
+"
+
+" Write this in your vimrc file
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 0
 
 let g:ale_echo_msg_format = '%linter% says %s'
 

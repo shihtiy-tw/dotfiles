@@ -43,6 +43,9 @@ Plug 'morhetz/gruvbox'
   "Plug 'roxma/vim-hug-neovim-rpc'
 "endif
 
+Plug 'ybian/smartim'
+"Plug 'rlue/vim-barbaric'
+Plug 'lyokha/vim-xkbswitch'
 Plug 'Yggdroot/indentLine'
 Plug 'easymotion/vim-easymotion'
 Plug 'benmills/vimux'
@@ -65,7 +68,7 @@ Plug 'vim-scripts/matchit.zip'
 Plug '~/Tool_from_git/fzf/bin/fzf'
 Plug '~/Tool_from_git/fzf/bin/fzf-tmux'
 Plug 'junegunn/fzf.vim'
-Plug 'wannesm/wmgraphviz.vim'
+Plug 'wannesm/wmgraphviz.vim', {'for': ['dot']}
 Plug 'lilydjwg/colorizer'
 Plug 'luochen1990/rainbow'
 Plug 'inside/vim-search-pulse'

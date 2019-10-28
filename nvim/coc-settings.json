@@ -3,6 +3,7 @@
   /* "coc.preferences.enableFloatHighlight": false, */
   "coc.preferences.formatOnType": true,
   "coc.preferences.hoverTarget": "preview",
+  "coc.preferences.diagnostic.displayByAle": true,
   "coc.preferences.formatOnSaveFiletypes": [
     "go",
     "typescript",
