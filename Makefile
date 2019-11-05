@@ -106,6 +106,7 @@ install-aws:
 	curl -sL https://rpm.nodesource.com/setup_12.x | sudo -E bash -
 	sudo yum install nodejs -y
 	sudo npm i -g bash-language-server
+	sudo npm install -g markdownlint-cli
 
 	# neovim
 	sudo yum install -y neovim python3-neovim
@@ -200,6 +201,7 @@ install-ubuntu:
 	curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
 	sudo apt-get install nodejs
 	sudo npm i -g bash-language-server
+	sudo npm install -g markdownlint-cli
 
 	# neovim
 	sudo apt-get install python3-neovim -y
