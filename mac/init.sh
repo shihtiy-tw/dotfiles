@@ -4,6 +4,7 @@
 
 brew update
 
+brew tap Homebrew/bundle
 brew tap homebrew/cask-fonts
 brew cask install font-hack-nerd-font
 brew install fontforge
