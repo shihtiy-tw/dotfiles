@@ -25,6 +25,7 @@ alias tldr='tldr -t ocean'
 alias vim="nvim"
 alias sudo='sudo '
 alias vbm="VBoxManage"
+alias l="exa -lahF"
 
 if [ $(uname -s) != "Darwin" ]; then
   #alias rm="trash"
