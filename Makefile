@@ -95,11 +95,40 @@ install-aws:
 	${HOME}/.bash_it/install.sh --slient
 	mkdir -p ${HOME}/.bash_it/custom/themes
 
+	# tig
+	sudo yum install ncurses-devel ncurses
+	git clone git://github.com/jonas/tig.git
+	$(MAKE) -C tig
+	$(MAKE) -C tig install
+
+	# ccls
+	yum provides '*/libncurses.so.5'
+	sudo yum install ncurses-compat-libs
+	git clone --depth=1 --recursive https://github.com/MaskRay/ccls
+	cd ccls; && \
+		wget -c http://releases.llvm.org/8.0.0/clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04.tar.xz; && \
+		tar xf clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04.tar.xz; && \
+		cmake -H. -BRelease -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=$PWD/clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04; && \
+		cmake --build Release; \
+		sudo ln -sf $PWD/Release/ccls /usr/local/bin/ccls
+
+	# go
+	wget https://dl.google.com/go/go1.13.linux-amd64.tar.gz
+	sudo tar -C /usr/local -xzf go1.13.linux-amd64.tar.gz
+
+	# efm LSP
+	go get github.com/mattn/efm-langserver
+
 	# tmux
 	sudo yum install tmux -y
 
 	# vim
 	sudo yum install vim -y
+
+	# diff-so-fancy
+	wget https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy
+	chmod a+x diff-so-fancy
+	ln -sf ${PWD}/diff-so-fancy /usr/local/bin/diff-so-fancy
 
 	# node
 	sudo yum install -y gcc-c++ make
