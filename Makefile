@@ -96,14 +96,14 @@ install-aws:
 	mkdir -p ${HOME}/.bash_it/custom/themes
 
 	# tig
-	sudo yum install ncurses-devel ncurses
+	sudo yum install ncurses-devel ncurses -y
 	git clone git://github.com/jonas/tig.git
-	$(MAKE) -C tig
-	$(MAKE) -C tig install
+	make -C tig
+	make -C tig install
 
 	# ccls
 	yum provides '*/libncurses.so.5'
-	sudo yum install ncurses-compat-libs
+	sudo yum install ncurses-compat-libs -y
 	git clone --depth=1 --recursive https://github.com/MaskRay/ccls
 	cd ccls; && \
 		wget -c http://releases.llvm.org/8.0.0/clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04.tar.xz; && \
