@@ -87,7 +87,7 @@ install-aws:
 		git clone https://github.com/denysdovhan/spaceship-prompt.git "${HOME}/.oh-my-zsh/custom/themes/spaceship-prompt"; \
 	fi
 
-	# bash-it
+	 bash-it
 	if [ ! -d ${HOME}/.bash_it ]; then \
 		git clone --depth=1 https://github.com/Bash-it/bash-it.git ${HOME}/.bash_it; \
 	fi
