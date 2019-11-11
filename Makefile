@@ -137,6 +137,9 @@ install-aws:
 	sudo npm i -g bash-language-server
 	sudo npm install -g markdownlint-cli
 
+	# iperf
+	sudo yum install -y iperf
+
 	# hping3
 	sudo yum install -y hping3
 
