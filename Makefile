@@ -143,6 +143,9 @@ install-aws:
 	# atop
 	sudo yum install -y atop
 
+	# jq
+	sudo yum install -y jq
+
 	# neovim
 	sudo yum install -y neovim python3-neovim
 
