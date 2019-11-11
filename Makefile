@@ -87,7 +87,7 @@ install-aws:
 		git clone https://github.com/denysdovhan/spaceship-prompt.git "${HOME}/.oh-my-zsh/custom/themes/spaceship-prompt"; \
 	fi
 
-	# bash-it
+	 bash-it
 	if [ ! -d ${HOME}/.bash_it ]; then \
 		git clone --depth=1 https://github.com/Bash-it/bash-it.git ${HOME}/.bash_it; \
 	fi
@@ -96,14 +96,14 @@ install-aws:
 	mkdir -p ${HOME}/.bash_it/custom/themes
 
 	# tig
-	sudo yum install ncurses-devel ncurses
+	sudo yum install ncurses-devel ncurses -y
 	git clone git://github.com/jonas/tig.git
-	$(MAKE) -C tig
-	$(MAKE) -C tig install
+	make -C tig
+	make -C tig install
 
 	# ccls
 	yum provides '*/libncurses.so.5'
-	sudo yum install ncurses-compat-libs
+	sudo yum install ncurses-compat-libs -y
 	git clone --depth=1 --recursive https://github.com/MaskRay/ccls
 	cd ccls; && \
 		wget -c http://releases.llvm.org/8.0.0/clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04.tar.xz; && \
