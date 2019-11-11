@@ -137,6 +137,12 @@ install-aws:
 	sudo npm i -g bash-language-server
 	sudo npm install -g markdownlint-cli
 
+	# hping3
+	sudo yum install -y hping3
+
+	# atop
+	sudo yum install -y atop
+
 	# neovim
 	sudo yum install -y neovim python3-neovim
 
