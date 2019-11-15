@@ -109,8 +109,8 @@ install-aws:
 		wget -c http://releases.llvm.org/8.0.0/clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04.tar.xz; && \
 		tar xf clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04.tar.xz; && \
 		cmake -H. -BRelease -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=$PWD/clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04; && \
-		cmake --build Release; \
-		sudo ln -sf $PWD/Release/ccls /usr/local/bin/ccls
+		cmake --build Release; && \
+		sudo ln -sf $PWD/Release/ccls /usr/local/bin/ccls;
 
 	# go
 	wget https://dl.google.com/go/go1.13.linux-amd64.tar.gz
@@ -164,7 +164,7 @@ install-aws:
 
 	if [ ! -d ${HOMW}/.fzf ]; then\
 		git clone --depth 1 https://github.com/junegunn/fzf.git ${HOME}/.fzf; \
-		${HOME}/.fzf/install; \
+		yes | ${HOME}/.fzf/install; \
 	fi
 
 	mkdir -p ${HOME}/.local/share/bin
@@ -172,6 +172,7 @@ install-aws:
 
 	if [ ! -d ${HOME}/.autojump ]; then \
 		git clone git://github.com/joelthelion/autojump.git ${HOME}/.autojump; \
+		cd ${HOME}/.autojump/; \
 		python3 ${HOME}/.autojump/install.py; \
 	fi
 
