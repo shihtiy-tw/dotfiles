@@ -97,28 +97,29 @@ install-aws:
 
 	# tig
 	sudo yum install ncurses-devel ncurses -y
-	if [ ! -d ${HOMW}/tig ]; then \
-		git clone git://github.com/jonas/tig.git ${HOME}/tig; \
-		make -C tig
-		make -C tig install
+	if [ ! -d ${HOMW}/dotfiles/tig ]; then \
+		git clone git://github.com/jonas/tig.git ${HOME}/dotfiles/tig; \
+		make -C tig; \
+		make -C tig install; \
 	fi
 
 	# ccls
 	yum provides '*/libncurses.so.5'
 	sudo yum install ncurses-compat-libs -y
-	if [ ! -d ${HOME}/ccls ]; then \
-		git clone --depth=1 --recursive https://github.com/MaskRay/ccls; \
+	if [ ! -d ${HOME}/dotfiles/ccls ]; then \
+		git clone --depth=1 --recursive https://github.com/MaskRay/ccls; ${HOME}/dotfiles/ccls\
 		cd ccls; \
-			wget -c http://releases.llvm.org/8.0.0/clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04.tar.xz; \
+			wget -c http://releases.llvm.org/8.0.0/clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04.tar.xz ${HOME}/dotfiles/ccls; \
 			tar xf clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04.tar.xz; \
 			cmake -H. -BRelease -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=$PWD/clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04; \
 			cmake --build Release; \
-			sudo ln -sf $PWD/Release/ccls /usr/local/bin/ccls;
+			sudo ln -sf $PWD/Release/ccls /usr/local/bin/ccls; \
 	fi
 
 	# go
 	wget https://dl.google.com/go/go1.13.linux-amd64.tar.gz
 	sudo tar -C /usr/local -xzf go1.13.linux-amd64.tar.gz
+	export PATH=$PATH:/usr/local/go/bin
 
 	# efm LSP
 	go get github.com/mattn/efm-langserver
@@ -142,9 +143,10 @@ install-aws:
 	sudo npm install -g markdownlint-cli
 
 	# iperf
-	sudo yum install -y iperf
+	sudo yum install -y iperf3
 
 	# hping3
+	sudo amazon-linux-extras install epel -y
 	sudo yum install -y hping3
 
 	# atop
@@ -173,10 +175,10 @@ install-aws:
 	mkdir -p ${HOME}/.local/share/bin
 	curl https://beyondgrep.com/ack-v3.1.2 > ${HOME}/.local/share/bin/ack && chmod 0755 ${HOME}/.local/share/bin/ack
 
-	if [ ! -d ${HOME}/.autojump ]; then \
-		git clone git://github.com/joelthelion/autojump.git ${HOME}/.autojump; \
-		cd ${HOME}/.autojump/; \
-		python3 ${HOME}/.autojump/install.py; \
+	if [ ! -d ${HOME}/dotfiles/autojump ]; then \
+		git clone git://github.com/joelthelion/autojump.git ${HOME}/dotfiles/autojump; \
+		cd ${HOME}/dotfiles/autojump/; \
+		python3 ${HOME}/dotfiles/autojump/install.py; \
 	fi
 
 
