@@ -97,20 +97,24 @@ install-aws:
 
 	# tig
 	sudo yum install ncurses-devel ncurses -y
-	git clone git://github.com/jonas/tig.git
-	make -C tig
-	make -C tig install
+	if [ ! -d ${HOMW}/tig ]; then \
+		git clone git://github.com/jonas/tig.git ${HOME}/tig; \
+		make -C tig
+		make -C tig install
+	fi
 
 	# ccls
 	yum provides '*/libncurses.so.5'
 	sudo yum install ncurses-compat-libs -y
-	git clone --depth=1 --recursive https://github.com/MaskRay/ccls
-	cd ccls; && \
-		wget -c http://releases.llvm.org/8.0.0/clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04.tar.xz; && \
-		tar xf clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04.tar.xz; && \
-		cmake -H. -BRelease -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=$PWD/clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04; && \
-		cmake --build Release; && \
-		sudo ln -sf $PWD/Release/ccls /usr/local/bin/ccls;
+	if [ ! -d ${HOME}/ccls ]; then \
+		git clone --depth=1 --recursive https://github.com/MaskRay/ccls; \
+		cd ccls; \
+			wget -c http://releases.llvm.org/8.0.0/clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04.tar.xz; \
+			tar xf clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04.tar.xz; \
+			cmake -H. -BRelease -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=$PWD/clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04; \
+			cmake --build Release; \
+			sudo ln -sf $PWD/Release/ccls /usr/local/bin/ccls;
+	fi
 
 	# go
 	wget https://dl.google.com/go/go1.13.linux-amd64.tar.gz
@@ -128,7 +132,7 @@ install-aws:
 	# diff-so-fancy
 	wget https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy
 	chmod a+x diff-so-fancy
-	ln -sf ${PWD}/diff-so-fancy /usr/local/bin/diff-so-fancy
+	sudo ln -sf ${PWD}/diff-so-fancy /usr/local/bin/diff-so-fancy
 
 	# node
 	sudo yum install -y gcc-c++ make
@@ -153,7 +157,6 @@ install-aws:
 	sudo yum install -y neovim python3-neovim
 
 	pip3 install pynvim --user
-	sudo yum install build-essential cmake python3-dev -y
 	wget https://github.com/neovim/neovim/releases/download/v0.3.8/nvim.appimage
 	chmod u+x nvim.appimage
 	./nvim.appimage --appimage-extract
