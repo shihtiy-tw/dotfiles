@@ -39,4 +39,6 @@ if [ -f ${HOME}/.autojump/share/autojump/autojump.zsh ]; then
 	. ${HOME}/.autojump/share/autojump/autojump.zsh
 fi
 
+[[ -s /home/shihtiy/.autojump/etc/profile.d/autojump.sh ]] && source /home/shihtiy/.autojump/etc/profile.d/autojump.sh
+
 fpath=(${HOME}/.zsh.d/ $fpath)
