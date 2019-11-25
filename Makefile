@@ -12,6 +12,9 @@ VIMRCBACKUPPATH = "${HOME}/.vimrc_backup"
 INITVIMPATH = "${HOME}/.config/nvim/init.vim"
 INITVIMBACKUPPATH = "${HOME}/.config/nvim/init.vim_backup"
 
+GOPATH := /usr/local/go
+PATH := ${PATH}:${GOPATH}/bin
+
 PHONY: help
 
 help:
@@ -119,7 +122,6 @@ install-aws:
 	# go
 	wget https://dl.google.com/go/go1.13.linux-amd64.tar.gz
 	sudo tar -C /usr/local -xzf go1.13.linux-amd64.tar.gz
-	export PATH=$PATH:/usr/local/go/bin
 
 	# efm LSP
 	go get github.com/mattn/efm-langserver
