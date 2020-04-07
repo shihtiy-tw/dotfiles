@@ -43,9 +43,10 @@ Plug 'morhetz/gruvbox'
   "Plug 'roxma/vim-hug-neovim-rpc'
 "endif
 
-Plug 'ybian/smartim'
+"Plug 'ybian/smartim'
 "Plug 'rlue/vim-barbaric'
-Plug 'lyokha/vim-xkbswitch'
+"Plug 'lyokha/vim-xkbswitch'
+Plug 'junegunn/vim-peekaboo'
 Plug 'Yggdroot/indentLine'
 Plug 'easymotion/vim-easymotion'
 Plug 'benmills/vimux'
