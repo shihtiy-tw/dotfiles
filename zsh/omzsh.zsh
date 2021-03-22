@@ -79,6 +79,7 @@ plugins=(
   #ls
   #web-search
   autojump
+  fzf-tab
 )
 
 source $ZSH/oh-my-zsh.sh

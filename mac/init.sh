@@ -2,41 +2,53 @@
 
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
-brew update
+# Mac Setup Script
 
-brew tap Homebrew/bundle
-brew tap homebrew/cask-fonts
-brew cask install font-hack-nerd-font
-brew install fontforge
-brew cask install fontforge
+# dotfile
 
-brew cask install iterm2
-git clone https://github.com/dracula/iterm.git
+git clone https://github.com/stanleyuan/dotfiles.git "${HOME}"/dotfiles
 
-brew install git-secrets
+# brew
 
-brew cask install sublime-text
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 
-brew install ctags
+cd ${HOME}/dotfiles/mac || exit
 
-brew install awscli
-brew tap wallix/awless; brew install awless
-pip install aws-shell --user
+brew bundle
 
-brew install tmux
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-tmux source ~/.tmux.conf
-
-brew install jq
+# oh my zsh
 
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-mkdir -p ~/.oh-my-zsh/custom/themes/ieni
-ln -s ~/dotfiles/zsh/ieni.zsh-theme ~/.oh-my-zsh/custom/themes/ieni/ieni.zsh-theme
 
-git clone https://github.com/zsh-users/zsh-syntax-highlighting $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
-git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-autosuggestions ${HOME}/.oh-my-zsh/custom/plugins/zsh-autosuggestions; \
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${HOME}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting; \
+git clone https://github.com/zsh-users/zsh-completions ${HOME}/.oh-my-zsh/custom/plugins/zsh-completions; \
+git clone https://github.com/softmoth/zsh-vim-mode.git ${HOME}/.oh-my-zsh/custom/plugins/zsh-vim-mode; \
+git clone https://github.com/denysdovhan/spaceship-prompt.git "${HOME}/.oh-my-zsh/custom/themes/spaceship-prompt"; \
+git clone https://github.com/Aloxaf/fzf-tab ${HOME}/.oh-my-zsh/custom/plugins/fzf-tab
 
-brew install node
+ln -sf ${HOME}/dotfiles/zsh/spaceship-prompt/spaceship.zsh ${HOME}/.oh-my-zsh/custom/themes/spaceship.zsh-theme
+
+## Autojump
+
+git clone git://github.com/joelthelion/autojump.git ${HOME}/dotfiles/autojump; \
+cd ${HOME}/dotfiles/autojump/ || exit; \
+python3 ${HOME}/dotfiles/autojump/install.py; \
+
+## neovim
+
+mkdir ~/.config/nvim
+ln -sf ${HOME}/dotfiles/vimrc ${HOME}/.vimrc
+ln -sf ${HOME}/dotfiles/nvim/init.vim ${HOME}/.config/nvim/init.vim
+ln -sf ${HOME}/dotfiles/nvim/coc-settings.json ${HOME}/.config/nvim/coc-settings.json
+
+## tmux
+
+ln -sf ${HOME}/dotfiles/tmux.conf ${HOME}/.tmux.conf
+
+## git
+
+ln -sf ${HOME}/dotfiles/gitconfig ${HOME}/.gitconfig
 
 brew install golang
 export GOPATH=$HOME/go-workspace # don't forget to change your path correctly!
@@ -48,9 +60,6 @@ $HOME/.config/efm-langserver/config.yaml
 mkdir $HOME/.config/efm-langserver
 ln -s $HOME/dotfiles/nvim/efm-langserver-config.yaml
 
-brew install fzf
-$(brew --prefix)/opt/fzf/install
-
 mkdir ~/.nvm
 wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
 source $HOME/.bashrc
@@ -59,14 +68,6 @@ nvm use v11.14.0
 nvm alias default 11.14.0
 npm install -g bash-language-server
 
-
-brew install bash-completion
-if [ -f $(brew --prefix)/etc/bash_completion ]; then
-. $(brew --prefix)/etc/bash_completion
-fi
-
-brew install the_silver_searcher
-brew install autojump
 
 pip3 install awscli --upgrade --user
 
