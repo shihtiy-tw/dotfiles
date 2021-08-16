@@ -455,6 +455,9 @@ set updatetime=100
 
 set diffopt+=vertical
 
+" diff for all file
+": Git! diff
+
 "  ___|                   |         |  _)
 "\___ \  |   | __ \   __| __|  _` | __| |  __|
 "      | |   | |   |\__ \ |   (   | |   | (
