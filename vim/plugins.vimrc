@@ -43,56 +43,72 @@ Plug 'morhetz/gruvbox'
   "Plug 'roxma/vim-hug-neovim-rpc'
 "endif
 
+"IDE
+Plug 'dense-analysis/ale'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'vim-syntastic/syntastic'
 
-Plug 'junegunn/vim-peekaboo'
-Plug 'easymotion/vim-easymotion'
+Plug 'junegunn/vim-peekaboo' "see the content of registers
+Plug 'easymotion/vim-easymotion' "align text ga
+Plug 'godlygeek/tabular' "aligning text :Tab/:
 Plug 'scrooloose/nerdtree'
 Plug 'junegunn/vim-easy-align'
-Plug 'junegunn/fzf.vim'
-" Plug 'vim-scripts/Buffergator'
+Plug 'mg979/vim-visual-multi'
 
+Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+
+Plug 'triglav/vim-visual-increment'
+
+"Input switch
 "Plug 'ybian/smartim'
 "Plug 'rlue/vim-barbaric'
 "Plug 'lyokha/vim-xkbswitch'
-Plug 'Yggdroot/indentLine'
-" Plug 'benmills/vimux'
-Plug 'vim-scripts/Auto-Pairs'
-" Plug 'ctrlpvim/ctrlp.vim'
-" Plug 'ctrlpvim/ctrlp.vim'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-"Plug 'ervandew/supertab'
-Plug 'majutsushi/tagbar'
-Plug 'airblade/vim-gitgutter'
-" Plug 'terryma/vim-multiple-cursors'
-Plug 'mg979/vim-visual-multi'
+
+"NERDTree
 Plug 'jistr/vim-nerdtree-tabs'
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-surround'
-Plug 'triglav/vim-visual-increment'
-Plug 'vim-scripts/matchit.zip'
-"Plug 'xavierchow/vim-swagger-preview', {'for': ['yaml']}
-"Plug '~/Tool_from_git/fzf/bin/fzf'
-"Plug '~/Tool_from_git/fzf/bin/fzf-tmux'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-" Plug 'wannesm/wmgraphviz.vim', {'for': ['dot']}
-Plug 'lilydjwg/colorizer'
-Plug 'luochen1990/rainbow'
-Plug 'inside/vim-search-pulse'
-" Plug 'mhinz/vim-grepper'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'scrooloose/nerdcommenter'
+
+"Git
+Plug 'junegunn/gv.vim' " git commiter browser
+Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
-Plug 'Shougo/vimproc.vim', {'do' : 'make'}
-Plug 'vim-scripts/DoxygenToolkit.vim'
-" Plug 'mileszs/ack.vim'
+
+"Pretty
+Plug 'Yggdroot/indentLine' "display the vertical lines at each indentation level
+Plug 'vim-scripts/Auto-Pairs'
+Plug 'RRethy/vim-hexokinase' "show colow for colowcode
+Plug 'luochen1990/rainbow' "colorize parentheses
+Plug 'vvim-airline/vim-airlineim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-surround' "Change the surround parentheses
+
+Plug 'vim-scripts/matchit.zip' "to configure % to match more than just single characters
+Plug 'inside/vim-search-pulse' "highlight the search
+Plug 'Shougo/vimproc.vim', {'do' : 'make'} "vimproc is a great asynchronous execution library for Vim
+" 
+
+"Format
+Plug 'editorconfig/editorconfig-vim'
 Plug 'Chiel92/vim-autoformat'
 Plug 'prettier/vim-prettier', {
             \ 'do': 'npm install',
             \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
 
+
+"Plug 'ervandew/supertab' "Supertab is a vim plugin which allows you to use <Tab> for all your insert completion needs
+"Plug 'vim-scripts/Buffergator'
 "Plug 'vimwiki/vimwiki'
+"Plug 'mileszs/ack.vim'
+"Plug 'ctrlpvim/ctrlp.vim'
 "Plug 'dbeniamine/cheat.sh-vim'
+"Plug 'mhinz/vim-grepper'
+"Plug 'wannesm/wmgraphviz.vim', {'for': ['dot']}
+"Plug '~/Tool_from_git/fzf/bin/fzf'
+"Plug '~/Tool_from_git/fzf/bin/fzf-tmux'
 
 "
 "  ___|\ \   /  \  |__ __|  \  \ \  /
@@ -113,39 +129,49 @@ Plug 'prettier/vim-prettier', {
 "endif
 
 "Plug 'zxqfl/tabnine-vim'
-Plug 'fatih/vim-go'
-Plug 'godlygeek/tabular'
+
+"GO
+Plug 'fatih/vim-go', {'for': ['go']}
+
+"Markdown
 Plug 'plasticboy/vim-markdown', {'for': ['markdown']}
 Plug 'mzlogin/vim-markdown-toc', {'for': ['markdown']}
-Plug 'ferrine/md-img-paste.vim', {'for': ['markdown']}
-"Plug 'shime/vim-livedown'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 Plug 'dhruvasagar/vim-table-mode'
+"Plug 'ferrine/md-img-paste.vim', {'for': ['markdown']}
+"Plug 'shime/vim-livedown'
+
+"Swagger API
+"Plug 'xavierchow/vim-swagger-preview', {'for': ['yaml']}
+
+"Grammar
 Plug 'rhysd/vim-grammarous'
-Plug 'vim-syntastic/syntastic'
+
+"Python
 Plug 'heavenshell/vim-pydocstring'
-Plug '2072/PHP-Indenting-for-VIm'
-Plug 'chr4/nginx.vim'
-Plug 'PProvost/vim-ps1' "ps1
-Plug 'wookiehangover/jshint.vim'
+
+"Nginx
+Plug 'chr4/nginx.vim' "nginx config highlight
+
+"Arduino
 " Plug 'stevearc/vim-arduino'
-Plug 'junegunn/gv.vim'
-Plug 'mattn/webapi-vim' " dependency for gist-vim
-Plug 'mattn/gist-vim'
-Plug 'editorconfig/editorconfig-vim'
-Plug 'ekalinin/Dockerfile.vim'
-Plug 'junegunn/vader.vim'
-"Plug 'davidhalter/jedi-vim'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'dense-analysis/ale'
+
+"Terraform
 Plug 'hashivim/vim-terraform'
+
+"Docker
+Plug 'ekalinin/Dockerfile.vim'
+
+" Vimscript test
+Plug 'junegunn/vader.vim'
+
 "Plug 'Valloric/YouCompleteMe',{
             "\ 'do': 'python3 install.py --go-completer --ts-completer --java-completer --clang-completer',
             "\ 'for': ['javascript', 'c', 'cpp', 'python', 'go']}
 
+"Plug 'davidhalter/jedi-vim'
 "Plug 'prabirshrestha/async.vim'
 "Plug 'prabirshrestha/asyncomplete.vim'
-
 "Plug 'wellle/tmux-complete.vim'
 "Plug 'shawncplus/phpcomplete.vim'
 "Plug 'stanangeloff/php.vim'
@@ -155,6 +181,8 @@ Plug 'hashivim/vim-terraform'
 "Plug 'vim-scripts/Conque-GDB'
 "Plug 'artur-shaik/vim-javacomplete2'
 "Plug 'juliosueiras/vim-terraform-completion'
+" Plug '2072/PHP-Indenting-for-VIm'
+" Plug 'wookiehangover/jshint.vim'
 
 " bash-support
 " https://www.thegeekstuff.com/2009/02/make-vim-as-your-bash-ide-using-bash-support-plugin

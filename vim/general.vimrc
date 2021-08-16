@@ -60,6 +60,9 @@ noremap <Leader>p "*p
 noremap <Leader>Y "+y
 noremap <Leader>P "+p
 
+"trim_trailing_whitespace
+autocmd FileType c,cpp,java,php,markdown,python,vim autocmd BufWritePre <buffer> %s/\s\+$//e
+
 " _____ _ _     _____                   ____      _       _           _
 "|  ___(_) | __|_   _|   _ _ __   ___  |  _ \ ___| | __ _| |_ ___  __| |
 "| |_  | | |/ _ \| || | | | '_ \ / _ \ | |_) / _ \ |/ _` | __/ _ \/ _` |

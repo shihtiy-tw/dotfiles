@@ -540,10 +540,11 @@ set nrformats=alpha
 "  __| /  __|
 " _| ___|_|
 "
-"
+" fzf
 
 nmap <Leader>ff :Files<CR>
 nmap <Leader>fs :Ag<CR>
+nmap <Leader>fc :Commands<CR>
 nmap <Leader>fb :Buffers<CR>
 nmap <Leader>fgc :Commits<CR>
 nmap <Leader>fgb :BCommits<CR>
