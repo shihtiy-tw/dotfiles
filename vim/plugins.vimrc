@@ -78,9 +78,9 @@ Plug 'tpope/vim-fugitive'
 "Pretty
 Plug 'Yggdroot/indentLine' "display the vertical lines at each indentation level
 Plug 'vim-scripts/Auto-Pairs'
-Plug 'RRethy/vim-hexokinase' "show colow for colowcode
+Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' }  "show colow for colowcode
 Plug 'luochen1990/rainbow' "colorize parentheses
-Plug 'vvim-airline/vim-airlineim-airline/vim-airline'
+Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
 Plug 'tpope/vim-repeat'
@@ -89,7 +89,7 @@ Plug 'tpope/vim-surround' "Change the surround parentheses
 Plug 'vim-scripts/matchit.zip' "to configure % to match more than just single characters
 Plug 'inside/vim-search-pulse' "highlight the search
 Plug 'Shougo/vimproc.vim', {'do' : 'make'} "vimproc is a great asynchronous execution library for Vim
-" 
+"
 
 "Format
 Plug 'editorconfig/editorconfig-vim'

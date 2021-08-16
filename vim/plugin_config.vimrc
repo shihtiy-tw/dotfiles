@@ -337,13 +337,17 @@ endif
 "
 " colorize
 
-if filereadable($HOME."/.vim/plugged/colorizer/plugin/colorizer.vim")
+"if filereadable($HOME."/.vim/plugged/colorizer/plugin/colorizer.vim")
+"
+"if !hasmapto("<Plug>Colorizer") && (!exists("g:colorizer_nomap") || g:colorizer_nomap == 0)
+"  nmap <unique> <Leader>co <Plug>Colorizer
+"endif
+"
+"endif
 
-if !hasmapto("<Plug>Colorizer") && (!exists("g:colorizer_nomap") || g:colorizer_nomap == 0)
-  nmap <unique> <Leader>co <Plug>Colorizer
-endif
+let g:Hexokinase_highlighters = ['backgroundfull']
+set termguicolors
 
-endif
 
 "  ___| |
 " |     __|  _` |  _` |  __|
