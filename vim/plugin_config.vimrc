@@ -473,16 +473,27 @@ set statusline+=%*
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+let g:syntastic_check_on_wq = 1
+let g:syntastic_aggregate_errors = 1
+
 let g:syntastuc_javascript_checkers = ['jshint']
+
+"Python
 let g:syntastic_python_pylint_args = "--load-plugins pylint_django"
 let g:syntastic_python_flake8_post_args='--ignore=F821,E302,E501,F403,F405,E731,W503'
 let g:syntastic_python_pyflakes_exe = 'python3 -m pyflakes'
 let g:syntastic_python_python_exec = 'python3'
 "pylint --generate-rcfile > ~/.pylintrc
 
+"C
+let g:syntastic_clang_check_config_file = ['clang_check', 'gcc']
+
+"Go
+let g:syntastic_go_checkers = ['go', 'golint', 'errcheck']
+
+" mode:passive
 let g:syntastic_mode_map = {
-            \ "mode": "passive",
+            \ "mode": "active",
             \ "active_filetypes": [],
             \ "passive_filetypes": [] }
 
@@ -499,6 +510,23 @@ autocmd filetype c let g:ycm_global_ycm_extra_conf = "~/.vim/.ycm_extra_conf.py"
 autocmd filetype cpp let g:ycm_global_ycm_extra_conf = "~/.vim/.ycm_extra_conf_cpp.py"
 let g:clang_use_library = 1
 let g:clang_library_path = "/usr/lib/llvm-3.8/lib/libclang.so"
+
+"   ___|
+"  |      _ \
+"  |   | (   |
+" \____|\___/
+"
+" vim-go
+
+" use goimports for formatting
+let g:go_fmt_command = "goimports"
+
+" turn highlighting on
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_build_constraints = 1
 
 "  ___|
 " |      __| _ \ __ \  __ \   _ \  __|

@@ -44,8 +44,8 @@ Plug 'morhetz/gruvbox'
 "endif
 
 "IDE
-Plug 'dense-analysis/ale'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"Plug 'dense-analysis/ale'
+"Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'vim-syntastic/syntastic'
 
 Plug 'junegunn/vim-peekaboo' "see the content of registers
@@ -132,6 +132,7 @@ Plug 'prettier/vim-prettier', {
 
 "GO
 Plug 'fatih/vim-go', {'for': ['go']}
+" brew install gopls
 
 "Markdown
 Plug 'plasticboy/vim-markdown', {'for': ['markdown']}
