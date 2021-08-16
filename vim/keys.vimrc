@@ -314,16 +314,16 @@ let NERDTreeIgnore=['__pycache__', '\.o$', '\.pyc$', '\~$', 'node_modules', '\.d
 "
 " ack
 
-if filereadable($HOME."/.vim/plugged/ack.vim/plugin/ack.vim")
-
-cnoreabbrev Ack Ack!
-cnoreabbrev ack Ack!
-cnoreabbrev Ag Ack!
-"nnoremap <Leader>a :Ack!<Space>
-nnoremap <Leader>a :Ack!<cword><cr>
-noremap <Leader>A :Ack <Space>
-
-endif
+" if filereadable($HOME."/.vim/plugged/ack.vim/plugin/ack.vim")
+"
+" cnoreabbrev Ack Ack!
+" cnoreabbrev ack Ack!
+" cnoreabbrev Ag Ack!
+" "nnoremap <Leader>a :Ack!<Space>
+" nnoremap <Leader>a :Ack!<cword><cr>
+" noremap <Leader>A :Ack <Space>
+"
+" endif
 
 "  ___|
 "\___ \\ \  \   / _` |  _` |  _` |  _ \  __|
@@ -356,10 +356,10 @@ vmap <Enter> <Plug>(EasyAlign)
 "Ctrl+] - go to definition  -> shift-k //show definition
 "Ctrl+T - Jump back from the definition.
 "Ctrl+W Ctrl+] - Open the definition in a horizontal split
-nmap <Leader>f :CtrlP<CR>
-nmap <leader>. :CtrlPTag<CR>
-nmap <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
-nmap <A-]> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
+" nmap <Leader>f :CtrlP<CR>
+" nmap <leader>. :CtrlPTag<CR>
+" nmap <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
+" nmap <A-]> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
 
 "__ __|     |
 "   |  _` | __ \   __|
@@ -500,6 +500,53 @@ endfunction
 "let g:WMGraphviz_output = "png"
 "let g:WMGraphviz_viewer = "xdg-open"
 "let g:WMGraphviz_shelloptions = ""
-nmap <leader>ll :GraphvizCompile <CR>
-nmap <leader>lv :GraphvizShow <CR>
+" nmap <leader>ll :GraphvizCompile <CR>
+" nmap <leader>lv :GraphvizShow <CR>
 
+"                                    |_)
+"   _ \  _` |  __| |   |        _` | | |  _` | __ \
+"   __/ (   |\__ \ |   |_____| (   | | | (   | |   |
+" \___|\__,_|____/\__, |      \__,_|_|_|\__, |_|  _|
+"                 ____/                 |___/
+"
+" vim-easy-align
+
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+
+"        _)                  |                       | |  _)
+" \ \   / |  __| |   |  _` | |       __ `__ \  |   | | __| |
+"  \ \ /  |\__ \ |   | (   | |_____| |   |   | |   | | |   |
+"   \_/  _|____/\__,_|\__,_|_|      _|  _|  _|\__,_|_|\__|_|
+"
+" vim-visual-multi
+"
+" select words with Ctrl-N (like Ctrl-d in Sublime Text/VS Code)
+
+" _)                                          |
+"  | __ \   __|  __| _ \ __ `__ \   _ \ __ \  __|
+"  | |   | (    |    __/ |   |   |  __/ |   | |
+" _|_|  _|\___|_|  \___|_|  _|  _|\___|_|  _|\__|
+"
+"vim-visual-increment
+
+set nrformats=alpha
+
+"   _|     _|
+"  | _  / |
+"  __| /  __|
+" _| ___|_|
+"
+"
+
+nmap <Leader>ff :Files<CR>
+nmap <Leader>fs :Ag<CR>
+nmap <Leader>fb :Buffers<CR>
+nmap <Leader>fgc :Commits<CR>
+nmap <Leader>fgb :BCommits<CR>
+nmap <Leader>fgf :GFiles?<CR>
+nmap <Leader>fhc :History:<CR>
+nmap <Leader>fhs :History/<CR>

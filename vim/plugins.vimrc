@@ -7,7 +7,7 @@
 
 if empty(glob('~/.vim/autoload/plug.vim'))
     silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-                \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+                \ gttps://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     autocmd VimEnter * PlugInstall | source $MYVIMRC
 endif
 
@@ -43,46 +43,49 @@ Plug 'morhetz/gruvbox'
   "Plug 'roxma/vim-hug-neovim-rpc'
 "endif
 
+
+Plug 'junegunn/vim-peekaboo'
+Plug 'easymotion/vim-easymotion'
+Plug 'scrooloose/nerdtree'
+Plug 'junegunn/vim-easy-align'
+Plug 'junegunn/fzf.vim'
+" Plug 'vim-scripts/Buffergator'
+
 "Plug 'ybian/smartim'
 "Plug 'rlue/vim-barbaric'
 "Plug 'lyokha/vim-xkbswitch'
-Plug 'junegunn/vim-peekaboo'
 Plug 'Yggdroot/indentLine'
-Plug 'easymotion/vim-easymotion'
-Plug 'benmills/vimux'
+" Plug 'benmills/vimux'
 Plug 'vim-scripts/Auto-Pairs'
-Plug 'kien/ctrlp.vim'
-Plug 'scrooloose/nerdtree'
+" Plug 'ctrlpvim/ctrlp.vim'
+" Plug 'ctrlpvim/ctrlp.vim'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 "Plug 'ervandew/supertab'
 Plug 'majutsushi/tagbar'
-Plug 'junegunn/vim-easy-align'
 Plug 'airblade/vim-gitgutter'
-Plug 'terryma/vim-multiple-cursors'
+" Plug 'terryma/vim-multiple-cursors'
+Plug 'mg979/vim-visual-multi'
 Plug 'jistr/vim-nerdtree-tabs'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'triglav/vim-visual-increment'
-Plug 'vim-scripts/Buffergator'
 Plug 'vim-scripts/matchit.zip'
 "Plug 'xavierchow/vim-swagger-preview', {'for': ['yaml']}
-Plug '~/Tool_from_git/fzf/bin/fzf'
-Plug '~/Tool_from_git/fzf/bin/fzf-tmux'
-Plug 'junegunn/fzf.vim'
-Plug 'wannesm/wmgraphviz.vim', {'for': ['dot']}
+"Plug '~/Tool_from_git/fzf/bin/fzf'
+"Plug '~/Tool_from_git/fzf/bin/fzf-tmux'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+" Plug 'wannesm/wmgraphviz.vim', {'for': ['dot']}
 Plug 'lilydjwg/colorizer'
 Plug 'luochen1990/rainbow'
 Plug 'inside/vim-search-pulse'
-Plug 'mhinz/vim-grepper'
+" Plug 'mhinz/vim-grepper'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'scrooloose/nerdcommenter'
-Plug 'godlygeek/tabular'
 Plug 'tpope/vim-fugitive'
-Plug 'slim-template/vim-slim'
 Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 Plug 'vim-scripts/DoxygenToolkit.vim'
-Plug 'mileszs/ack.vim'
+" Plug 'mileszs/ack.vim'
 Plug 'Chiel92/vim-autoformat'
 Plug 'prettier/vim-prettier', {
             \ 'do': 'npm install',
@@ -125,7 +128,7 @@ Plug '2072/PHP-Indenting-for-VIm'
 Plug 'chr4/nginx.vim'
 Plug 'PProvost/vim-ps1' "ps1
 Plug 'wookiehangover/jshint.vim'
-Plug 'stevearc/vim-arduino'
+" Plug 'stevearc/vim-arduino'
 Plug 'junegunn/gv.vim'
 Plug 'mattn/webapi-vim' " dependency for gist-vim
 Plug 'mattn/gist-vim'

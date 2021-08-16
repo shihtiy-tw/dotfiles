@@ -5,7 +5,6 @@
 "|_|   |_|\__,_|\__, |_|_| |_|___/  \____\___/|_| |_|_| |_|\__, |
 "               |___/                                      |___/
 "
-
 "  \  |     |      _)                                        |
 " |\/ |  _` |       | __ `__ \   _` |       __ \   _` |  __| __|  _ \
 " |   | (   |_____| | |   |   | (   |_____| |   | (   |\__ \ |    __/
@@ -18,6 +17,15 @@ autocmd FileType markdown nmap <silent> <leader>P :call mdip#MarkdownClipboardIm
 " there are some defaults for image directory and image name, you can change them
 " let g:mdip_imgdir = 'img'
 " let g:mdip_imgname = 'image'
+
+
+"                  |          |
+"  __ \   _ \  _ \ |  /  _` | __ \   _ \   _ \
+"  |   |  __/  __/   <  (   | |   | (   | (   |
+"  .__/ \___|\___|_|\_\\__,_|_.__/ \___/ \___/
+" _|
+
+" Peekaboo extends " and @ in normal mode and <CTRL-R> in insert mode so you can see the contents of the registers.
 
 "       |    |                   _) |        |
 "\ \  / |  / __ \   __|\ \  \   / | __|  __| __ \
@@ -517,6 +525,23 @@ let g:ctrlp_custom_ignore = {
             \ 'file': '\v\.(exe|so|dll|swp|zip|7z|rar|gz|xz|apk|dmg|iso|jpg|png|pdf)$',
             \ }
 
+" Basic Usage
+" Run :CtrlP or :CtrlP [starting-directory] to invoke CtrlP in find file mode.
+" Run :CtrlPBuffer or :CtrlPMRU to invoke CtrlP in find buffer or find MRU file mode.
+" Run :CtrlPMixed to search in Files, Buffers and MRU files at the same time.
+" Check :help ctrlp-commands and :help ctrlp-extensions for other commands.
+"
+" Once CtrlP is open:
+" Press <F5> to purge the cache for the current directory to get new files, remove deleted files and apply new ignore options.
+" Press <c-f> and <c-b> to cycle between modes.
+" Press <c-d> to switch to filename only search instead of full path.
+" Press <c-r> to switch to regexp mode.
+" Use <c-j>, <c-k> or the arrow keys to navigate the result list.
+" Use <c-t> or <c-v>, <c-x> to open the selected entry in a new tab or in a new split.
+" Use <c-n>, <c-p> to select the next/previous string in the prompt's history.
+" Use <c-y> to create a new file and its parent directories.
+" Use <c-z> to mark/unmark multiple files and <c-o> to open them.
+
 "  _ \        |   |                                   |
 " |   | |   | __| __ \   _ \  __ \    __| |   | __ \  __|  _` |\ \  /
 " ___/  |   | |   | | | (   | |   | \__ \ |   | |   | |   (   | `  <
@@ -614,3 +639,11 @@ let g:tmuxcomplete#asyncomplete_source_options = {
             \     'truncate':        0
             \     }
             \ }
+
+"  _|     _|
+" | _  / |
+" __| /  __|
+"_| ___|_|
+"
+"fzf
+
