@@ -1,6 +1,4 @@
 {
-  /* "coc.preferences.hoverTarget": "echo", */
-  /* "coc.preferences.enableFloatHighlight": false, */
   "coc.preferences.formatOnType": true,
   "coc.preferences.hoverTarget": "preview",
   "coc.preferences.diagnostic.displayByAle": true,
@@ -20,7 +18,8 @@
   "signature.target": "echo",
   "suggest.autoTrigger": "always",
   "python.jediEnabled": true,
-  "python.jediPath": "/home/ieni/.local/lib/python3.6/site-packages/",
+  "python.jediPath": "/usr/local/lib/python3.9/site-packages",
+  "python.globalModuleInstallation": true,
   "list.normalMappings": {
     "<C-c>": "do:exit"
   },

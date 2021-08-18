@@ -45,7 +45,7 @@ Plug 'morhetz/gruvbox'
 
 "IDE
 "Plug 'dense-analysis/ale'
-"Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'vim-syntastic/syntastic'
 
 Plug 'junegunn/vim-peekaboo' "see the content of registers

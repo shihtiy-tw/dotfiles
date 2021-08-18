@@ -35,6 +35,12 @@ Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh \| UpdateRemotePlugins' }
 
 Plug 'stamblerre/gocode', { 'rtp': 'nvim', 'do': '~/.config/nvim/plugged/gocode/nvim/symlink.sh' }
 
+Plug 'pappasam/coc-jedi', { 'do': 'yarn install --frozen-lockfile && yarn build' }
+Plug 'clangd/coc-clangd'
+Plug 'josa42/coc-go'
+Plug 'josa42/coc-sh'
+
+
 "Plug 'Shougo/neocomplete'
 "Plug 'neomake/neomake'
 
