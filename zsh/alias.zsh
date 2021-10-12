@@ -8,7 +8,7 @@ fi
 
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias cp="rsync -ah --progress"
-alias open="xdg-open"
+# alias open="xdg-open"
 alias pingtest="ping 8.8.8.8"
 alias c='clear'
 alias weka='java -jar ${HOME}/weka-3-8-1/weka.jar'

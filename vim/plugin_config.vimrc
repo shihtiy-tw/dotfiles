@@ -682,6 +682,15 @@ let g:tmuxcomplete#asyncomplete_source_options = {
 "
 "fzf
 
+" https://stackoverflow.com/questions/48726172/fzf-to-read-file-into-nvim-buffer
+let g:pathToTemplates='/Users/shihtiy/aws-notes/Template/'
+function! GoSink(file)
+    execute ':r '.g:pathToTemplates.a:file
+endfunction
+command! Go call fzf#run({
+    \  'source': 'ls '.g:pathToTemplates,
+    \  'sink':    function('GoSink')})
+
 " |         |     |                                |
 " __|  _` | __ \  |  _ \       __ `__ \   _ \   _` |  _ \
 " |   (   | |   | |  __/_____| |   |   | (   | (   |  __/
