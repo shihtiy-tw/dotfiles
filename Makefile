@@ -1,19 +1,6 @@
-# variable
-ZSHRCPATH = "${HOME}/.zshrc"
-ZSHRCBACKUPPATH = "${HOME}/.zshrc_backup"
-BASHRCPATH = "${HOME}/.bashrc"
-BASHRCBACKUPPATH = "${HOME}/.bashrc_backup"
-TMUXCONFPATH = "${HOME}/.tmux.conf"
-TMUXCONFBACKUPPATH = "${HOME}/.tmux.conf_backup"
-GITCONFIGPATH = "${HOME}/.gitconfig"
-GITCONFIGBACKUPPATH = "${HOME}/.gitconfig_backup"
-VIMRCPATH = "${HOME}/.vimrc"
-VIMRCBACKUPPATH = "${HOME}/.vimrc_backup"
-INITVIMPATH = "${HOME}/.config/nvim/init.vim"
-INITVIMBACKUPPATH = "${HOME}/.config/nvim/init.vim_backup"
-
-GOPATH := /usr/local/go
-PATH := ${PATH}:${GOPATH}/bin
+#!make
+include ./make/envfile
+export $(shell sed 's/=.*//' ./make/envfile)
 
 PHONY: help
 
@@ -31,6 +18,23 @@ help:
 		rm_env: remove env\n\
 	"
 
+env:
+		@echo ${ZSHRCPATH}
+		@echo ${ZSHRCPATH}
+		@echo ${ZSHRCBACKUPPATH}
+		@echo ${BASHRCPATH}
+		@echo ${BASHRCBACKUPPATH}
+		@echo ${TMUXCONFPATH}
+		@echo ${TMUXCONFBACKUPPATH}
+		@echo ${GITCONFIGPATH}
+		@echo ${GITCONFIGBACKUPPATH}
+		@echo ${VIMRCPATH}
+		@echo ${VIMRCBACKUPPATH}
+		@echo ${INITVIMPATH}
+		@echo ${INITVIMBACKUPPATH}
+
+		./make/envtest.sh
+
 hello:
 	#@echo " \n\
  #_   _      _ _        __        __         _     _ \n\
@@ -41,7 +45,7 @@ hello:
 	#\n\
 	#"
 
-install-aws:
+install:
 	#@echo "\n\
  #___           _        _ _   _____           _\n\
 #|_ _|_ __  ___| |_ __ _| | | |_   _|__   ___ | |___ \n\
@@ -50,228 +54,6 @@ install-aws:
 #|___|_| |_|___/\__\__,_|_|_|   |_|\___/ \___/|_|___/\n\
 	#\n\
 	#"
-
-	# update and upgrade packages
-	sudo yum update -y
-	sudo yum upgrade -y
-	sudo yum -y groupinstall development
-
-	# python
-	# sudo yum -y install python3.x86_64
-	# sudo yum -y install python3-devel.x86_64
-
-	if [ "${HOME}" = "/root" ]; then \
-		sudo yum -y install python3*; \
-		sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm; \
-	fi
-
-	# zsh
-	sudo yum install zsh -y
-
-	# oh-my-zsh
-	if [ ! -d ${HOME}/.oh-my-zsh ]; then \
-		git clone https://github.com/robbyrussell/oh-my-zsh.git ${HOME}/.oh-my-zsh; \
-	fi
-	if [ ! -d ${HOME}/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]; then \
-		git clone https://github.com/zsh-users/zsh-autosuggestions ${HOME}/.oh-my-zsh/custom/plugins/zsh-autosuggestions; \
-	fi
-	if [ ! -d ${HOME}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]; then \
-		git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${HOME}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting; \
-	fi
-	if [ ! -d ${HOME}/.oh-my-zsh/custom/plugins/zsh-completions ]; then \
-		git clone https://github.com/zsh-users/zsh-completions ${HOME}/.oh-my-zsh/custom/plugins/zsh-completions; \
-	fi
-
-	if [ ! -d ${HOME}/.oh-my-zsh/custom/plugins/zsh-vim-mode ]; then \
-		git clone https://github.com/softmoth/zsh-vim-mode.git ${HOME}/.oh-my-zsh/custom/plugins/zsh-vim-mode; \
-	fi
-
-	if [ ! -d ${HOME}/.oh-my-zsh/custom/themes/spaceship-prompt ]; then \
-		git clone https://github.com/denysdovhan/spaceship-prompt.git "${HOME}/.oh-my-zsh/custom/themes/spaceship-prompt"; \
-	fi
-
-	# bash-it
-	if [ ! -d ${HOME}/.bash_it ]; then \
-		git clone --depth=1 https://github.com/Bash-it/bash-it.git ${HOME}/.bash_it; \
-	fi
-
-	${HOME}/.bash_it/install.sh --slient
-	mkdir -p ${HOME}/.bash_it/custom/themes
-
-	# tig
-	sudo yum install ncurses-devel ncurses -y
-	if [ ! -d ${HOMW}/dotfiles/tig ]; then \
-		git clone git://github.com/jonas/tig.git ${HOME}/dotfiles/tig; \
-		make -C tig; \
-		make -C tig install; \
-	fi
-
-	# ccls
-	yum provides '*/libncurses.so.5'
-	sudo yum install ncurses-compat-libs -y
-	if [ ! -d ${HOME}/dotfiles/ccls ]; then \
-		git clone --depth=1 --recursive https://github.com/MaskRay/ccls; ${HOME}/dotfiles/ccls\
-		cd ccls; \
-			wget -c http://releases.llvm.org/8.0.0/clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04.tar.xz ${HOME}/dotfiles/ccls; \
-			tar xf clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04.tar.xz; \
-			cmake -H. -BRelease -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=$PWD/clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04; \
-			cmake --build Release; \
-			sudo ln -sf $PWD/Release/ccls /usr/local/bin/ccls; \
-	fi
-
-	# go
-	wget https://dl.google.com/go/go1.13.linux-amd64.tar.gz
-	sudo tar -C /usr/local -xzf go1.13.linux-amd64.tar.gz
-
-	# efm LSP
-	go get github.com/mattn/efm-langserver
-
-	# tmux
-	sudo yum install tmux -y
-
-	# vim
-	sudo yum install vim -y
-
-	# diff-so-fancy
-	wget https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy
-	chmod a+x diff-so-fancy
-	sudo ln -sf ${PWD}/diff-so-fancy /usr/local/bin/diff-so-fancy
-
-	# node
-	sudo yum install -y gcc-c++ make
-	curl -sL https://rpm.nodesource.com/setup_12.x | sudo -E bash -
-	sudo yum install nodejs -y
-	sudo npm i -g bash-language-server
-	sudo npm install -g markdownlint-cli
-
-	# iperf
-	sudo yum install -y iperf3
-
-	# hping3
-	sudo amazon-linux-extras install epel -y
-	sudo yum install -y hping3
-
-	# atop
-	sudo yum install -y atop
-
-	# jq
-	sudo yum install -y jq
-
-	# neovim
-	sudo yum install -y neovim python3-neovim
-
-	pip3 install pynvim --user
-	wget https://github.com/neovim/neovim/releases/download/v0.3.8/nvim.appimage
-	chmod u+x nvim.appimage
-	./nvim.appimage --appimage-extract
-	sudo rm /usr/bin/nvim
-	#sudo ln -s ${HOME}/dotfiles/nvim.appimage /usr/bin/nvim
-	sudo ln -sf ${HOME}/dotfiles/squashfs-root/usr/bin/nvim /usr/bin/nvim
-	sudo ln -sf ${HOME}/dotfiles/git/diff-so-fancy.sh /usr/local/bin/diff-so-fancy
-
-	if [ ! -d ${HOMW}/.fzf ]; then\
-		git clone --depth 1 https://github.com/junegunn/fzf.git ${HOME}/.fzf; \
-		yes | ${HOME}/.fzf/install; \
-	fi
-
-	mkdir -p ${HOME}/.local/share/bin
-	curl https://beyondgrep.com/ack-v3.1.2 > ${HOME}/.local/share/bin/ack && chmod 0755 ${HOME}/.local/share/bin/ack
-
-	if [ ! -d ${HOME}/dotfiles/autojump ]; then \
-		git clone git://github.com/joelthelion/autojump.git ${HOME}/dotfiles/autojump; \
-		cd ${HOME}/dotfiles/autojump/; \
-		python3 ${HOME}/dotfiles/autojump/install.py; \
-	fi
-
-
-install-ubuntu:
-	#@echo "\n\
- #___           _        _ _   _____           _\n\
-#|_ _|_ __  ___| |_ __ _| | | |_   _|__   ___ | |___ \n\
- #| || '_ \/ __| __/ _` | | |   | |/ _ \ / _ \| / __|\n\
- #| || | | \__ \ || (_| | | |   | | (_) | (_) | \__ \\n\
-#|___|_| |_|___/\__\__,_|_|_|   |_|\___/ \___/|_|___/\n\
-	#\n\
-	#"
-
-
-	# zsh
-	#wget -O zsh.tar.xz https://sourceforge.net/projects/zsh/files/latest/download
-	#mkdir zsh && unxz zsh.tar.xz && tar -xvf zsh.tar -C zsh --strip-components 1
-	#cd zsh
-	#./configure --prefix=$HOME
-	#make
-	#make install
-
-	# update and upgrade packages
-	sudo apt-get update -y
-	sudo apt upgrade -y
-
-	# zsh
-	sudo apt install zsh -y
-	sudo apt-get install powerline fonts-powerline -y
-
-	# oh-my-zsh
-	if [ ! -d ${HOME}/.oh-my-zsh ]; then \
-		git clone https://github.com/robbyrussell/oh-my-zsh.git ${HOME}/.oh-my-zsh; \
-	fi
-	if [ ! -d ${HOME}/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]; then \
-		git clone https://github.com/zsh-users/zsh-autosuggestions ${HOME}/.oh-my-zsh/custom/plugins/zsh-autosuggestions; \
-	fi
-	if [ ! -d ${HOME}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]; then \
-		git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${HOME}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting; \
-	fi
-	if [ ! -d ${HOME}/.oh-my-zsh/custom/plugins/zsh-completions ]; then \
-		git clone https://github.com/zsh-users/zsh-completions ${HOME}/.oh-my-zsh/custom/plugins/zsh-completions; \
-	fi
-	if [ ! -d ${HOME}/.oh-my-zsh/custom/plugins/zsh-vim-mode ]; then \
-		git clone https://github.com/softmoth/zsh-vim-mode.git ${HOME}/.oh-my-zsh/custom/plugins/zsh-vim-mode; \
-	fi
-
-	if [ ! -d ${HOME}/.oh-my-zsh/custom/themes/spaceship-prompt ]; then \
-		git clone https://github.com/denysdovhan/spaceship-prompt.git "${HOME}/.oh-my-zsh/custom/themes/spaceship-prompt"; \
-	fi
-
-	# bash-it
-	if [ ! -d ${HOME}/.bash_it ]; then \
-		git clone --depth=1 https://github.com/Bash-it/bash-it.git ${HOME}/.bash_it; \
-	fi
-
-	${HOME}/bash_it/install.sh --slient
-	mkdir -p ${HOME}/.bash_it/custom/themes
-
-	# tmux
-	sudo apt install tmux -y
-
-	# vim
-	sudo apt-get install vim -y
-
-	# node
-	curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
-	sudo apt-get install nodejs
-	sudo npm i -g bash-language-server
-	sudo npm install -g markdownlint-cli
-
-	# neovim
-	sudo apt-get install python3-neovim -y
-	nmp install -g neovim
-	pip3 install pynvim --user
-	sudo apt install build-essential cmake python3-dev -y
-	wget https://github.com/neovim/neovim/releases/download/v0.3.8/nvim.appimage
-	chmod u+x nvim.appimage
-	sudo rm /usr/bin/nvim
-	sudo ln -s ${HOME}/dotfiles/nvim.appimage /usr/bin/nvim
-
-	git clone --depth 1 https://github.com/junegunn/fzf.git ${HOME}/.fzf
-	${HOME}/.fzf/install
-
-	mkdir -p ${HOME}/.local/share/bin
-	curl https://beyondgrep.com/ack-v3.1.2 > ${HOME}/.local/share/bin/ack && chmod 0755 ${HOME}/.local/share/bin/ack
-
-	if [ ! -d ./autojump ]; then \
-		git clone git://github.com/joelthelion/autojump.git; \
-		python3 ${HOME}/.autojump/install.py; \
-	fi
 
 init:
 	#@echo " \n\
@@ -284,50 +66,6 @@ init:
 	#"
 
 
-	# dotfiles
-
-	#git clone https://github.com/stanleyuan/dotfiles.git ${HOME}
-
-	mkdir -p ${HOME}/.config/nvim/
-
-	if [ -e ${HOME}/.zshrc ]; then \
-		mv ${HOME}/.zshrc ${HOME}/.zshrc.backup; \
-	fi
-	#if [ -e ${HOME}/.bashrc ]; then \
-	#	mv ${HOME}/.bashrc ${HOME}/.bash.backup; \
-	#fi
-	if [ -e ${HOME}/.tmux.conf ]; then \
-		mv ${HOME}/.tmux.conf ${HOME}/.tmux.conf.backup; \
-	fi
-	if [ -e ${HOME}/.gitconfig ]; then \
-		mv ${HOME}/.gitconfig ${HOME}/.gitconfig.backup; \
-	fi
-	if [ -e ${HOME}/.config/nvim/init.vim ]; then \
-		mv ${HOME}/.config/nvim/init.vim ${HOME}/.config/nvim/init.vim.backup; \
-	fi
-
-	ln -sf ${HOME}/dotfiles/zshrc ${HOME}/.zshrc
-	# ln -sf ${HOME}/dotfiles/zsh/ieni.zsh-theme ${HOME}/.oh-my-zsh/custom/themes/ieni.zsh-theme
-	#ln -sf ${HOME}/dotfiles/bash/themes/fish ${HOME}/.bash_it/custom/themes/fish
-#	ln -sf ${HOME}/dotfiles/bashrc ${HOME}/.bashrc
-#	ln -sf ${HOME}/dotfiles/bashrc ${HOME}/.bash_profile
-	ln -sf ${HOME}/dotfiles/tmux.conf ${HOME}/.tmux.conf
-	ln -sf ${HOME}/dotfiles/gitconfig ${HOME}/.gitconfig
-	ln -sf ${HOME}/dotfiles/vimrc ${HOME}/.vimrc
-	ln -sf ${HOME}/dotfiles/gitconfig ${HOME}/.gitconfig
-	ln -sf ${HOME}/dotfiles/vim/editorconfig ${HOME}/.editorconfig
-	ln -sf ${HOME}/dotfiles/zsh/antigenrc ${HOME}/.antigenrc
-	ln -sf ${HOME}/dotfiles/nvim/coc-settings.json ${HOME}/.config/nvim/coc-settings.json
-	ln -sf ${HOME}/dotfiles/zsh/spaceship-prompt/spaceship.zsh ${HOME}/.oh-my-zsh/custom/themes/spaceship.zsh-theme
-
-	# neovim
-	#nvim -c "PlugInstall"
-	#nvim -c "call coc#util#install()"
-	#nvim -c "CocInstall coc-dictionary"
-	#nvim -c "CocInstall coc-json coc-css coc-python coc-yaml coc-tabnine"
-	#nvim -c "CocInstall coc-python coc-yaml coc-tabnine"
-
-	@echo "\ndone\n"
 
 status:
 	/usr/bin/git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME} status
