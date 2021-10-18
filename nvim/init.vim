@@ -7,8 +7,8 @@
 
 set runtimepath^=~/.vim runtimepath+=~/.vim/after
 let &packpath=&runtimepath
-let g:python_host_prog=$(which python)
-let g:python3_host_prog=$(which python3)
+let g:python_host_prog=$PATHONPATH
+let g:python3_host_prog=$PYTHON3PATH
 
 source $HOME/dotfiles/nvim/plugins.vimrc
 source $HOME/dotfiles/nvim/plugin_config.vimrc
