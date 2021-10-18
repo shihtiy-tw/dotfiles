@@ -6,12 +6,12 @@ if [ "${platform}" == "Darwin" ]; then
 
 elif cat /etc/os-release | grep "^ID=" | grep -q 'ubuntu'; then
     echo "ubuntu"
-    ./install-ubuntu.sh
+    ${HOME}/dotfiles/make/install-ubuntu.sh
     echo "Done"
 
 elif cat /etc/os-release | grep "^ID=" | grep -q 'amzn'; then
     echo "amzn"
     OS="amzn"
-    ./install-amazon-linux.sh
+    ${HOME}/dotfiles/make/install-amazon-linux.sh
     echo "Done"
 fi
