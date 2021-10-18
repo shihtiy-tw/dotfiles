@@ -92,4 +92,11 @@ sudo ln -s $(which python3) /usr/local/bin/python
 
 [[ -s ${HOME}/.autojump/etc/profile.d/autojump.sh ]] && source ${HOME}/.autojump/etc/profile.d/autojump.sh
 
+# Go
+wget -q -O - https://git.io/vQhTU | bash
+
+# Ag
+sudo apt-get install silversearcher-ag -y
+
+
 cd ${HOME}

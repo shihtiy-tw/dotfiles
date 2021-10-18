@@ -139,4 +139,11 @@ sudo ln -s $(which python3) /usr/local/bin/python
 
 [[ -s ${HOME}/.autojump/etc/profile.d/autojump.sh ]] && source ${HOME}/.autojump/etc/profile.d/autojump.sh
 
+# Go
+wget -q -O - https://git.io/vQhTU | bash
+
+# Ag
+sudo yum install epel-release.noarch the_silver_searcher -y
+
+
 cd ${HOME}
