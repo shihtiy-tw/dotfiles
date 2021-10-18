@@ -110,7 +110,7 @@ sudo yum install -y jq
 
 # neovim
 sudo yum install -y neovim python3-neovim
-npm install -g neovim
+sudo npm install -g neovim
 pip3 install pynvim --user
 wget -O /tmp/nvim.appimage https://github.com/neovim/neovim/releases/download/stable/nvim.appimage
 chmod u+x /tmp/nvim.appimage

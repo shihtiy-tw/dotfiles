@@ -10,6 +10,8 @@ sudo apt-get install -y \
     python3-dev \
     pkg-config unzip
 
+sudo apt-get -y install python3-pip -y
+
 # zsh
 sudo apt install zsh -y
 sudo apt-get install powerline fonts-powerline -y
@@ -62,13 +64,16 @@ sudo npm install -g markdownlint-cli
 
 # neovim
 sudo apt-get install python3-neovim -y
-npm install -g neovim
-pip3 install pynvim --user
+sudo npm install -g neovim
 wget -O /tmp/nvim.appimage https://github.com/neovim/neovim/releases/download/stable/nvim.appimage
 chmod u+x /tmp/nvim.appimage
 sudo rm -f /usr/bin/nvim
 #sudo ln -s ${HOME}/dotfiles/nvim.appimage /usr/bin/nvim
 sudo mv /tmp/nvim.appimage /usr/bin/nvim
+
+python3 -m pip uninstall pynvim neovim --user
+python3 -m pip install pynvim --user
+python3 -m pip install neovim --user
 
 # fzf
 if [ ! -d ${HOMW}/.fzf ]; then\
