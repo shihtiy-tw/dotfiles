@@ -10,6 +10,12 @@ sudo apt-get install -y \
     python3-dev \
     pkg-config unzip
 
+sudo apt-get install -y \
+    make build-essential libssl-dev zlib1g-dev \
+    libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm \
+    libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+
+
 sudo apt-get -y install python3-pip -y
 
 # zsh
@@ -58,7 +64,8 @@ sudo apt-get install vim -y
 # node
 #curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
 #sudo apt-get install nodejs
-sudo snap install node --classic --channel=14
+curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+sudo apt-get install -y nodejs
 sudo npm i -g bash-language-server
 sudo npm install -g markdownlint-cli
 
@@ -74,6 +81,8 @@ sudo mv /tmp/nvim.appimage /usr/bin/nvim
 python3 -m pip uninstall pynvim neovim --user
 python3 -m pip install pynvim --user
 python3 -m pip install neovim --user
+
+pip install vim-vint
 
 # fzf
 if [ ! -d ${HOMW}/.fzf ]; then\
@@ -99,6 +108,9 @@ sudo ln -s $(which python3) /usr/local/bin/python
 
 # Go
 wget -q -O - https://git.io/vQhTU | bash
+
+# efm server
+go install github.com/mattn/efm-langserver@latest
 
 # Ag
 sudo apt-get install silversearcher-ag -y

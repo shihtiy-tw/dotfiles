@@ -14,8 +14,12 @@ export PATH=${PATH}:${HOME}/.local/share/
 
 # Python
 #export PATH=${PATH}:${HOME}/Library/Python/3.9/bin
-export PYTHONPATH=$(which python)
+export PYTHONPATH=$(which python2)
 export PYTHON3PATH=$(which python3)
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+
+eval "$(pyenv virtualenv-init -)"
 
 # convenience
 if [ -d $HOME/Library/Python/3.9/bin ]; then

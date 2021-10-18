@@ -1,7 +1,9 @@
 # update and upgrade packages
 sudo yum update -y
-sudo yum upgrade -y
+
 sudo yum -y groupinstall development
+sudo yum install gcc zlib-devel bzip2 bzip2-devel readline-devel sqlite sqlite-devel openssl-devel tk-devel libffi-devel xz-devel
+
 
 # python
 # sudo yum -y install python3.x86_64
@@ -118,6 +120,11 @@ sudo rm -f /usr/bin/nvim
 #sudo ln -s ${HOME}/dotfiles/nvim.appimage /usr/bin/nvim
 sudo mv /tmp/nvim.appimage /usr/bin/nvim
 
+python3 -m pip uninstall pynvim neovim --user
+python3 -m pip install pynvim --user
+python3 -m pip install neovim --user
+
+pip install vim-vint
 
 if [ ! -d ${HOMW}/.fzf ]; then\
   git clone --depth 1 https://github.com/junegunn/fzf.git ${HOME}/.fzf; \
@@ -142,8 +149,10 @@ sudo ln -s $(which python3) /usr/local/bin/python
 # Go
 wget -q -O - https://git.io/vQhTU | bash
 
+# efm server
+go install github.com/mattn/efm-langserver@latest
+
 # Ag
 sudo yum install epel-release.noarch the_silver_searcher -y
-
 
 cd ${HOME}
