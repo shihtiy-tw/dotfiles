@@ -11,7 +11,7 @@ alias cp="rsync -ah --progress"
 # alias open="xdg-open"
 alias pingtest="ping 8.8.8.8"
 alias c='clear'
-alias weka='java -jar ${HOME}/weka-3-8-1/weka.jar'
+#alias weka='java -jar ${HOME}/weka-3-8-1/weka.jar'
 alias python='python3'
 alias pip='pip3'
 alias bkliton='echo 1 | sudo tee /sys/class/leds/asus::kbd_backlight/brightness'
@@ -33,5 +33,4 @@ if [ $(uname -s) != "Darwin" ]; then
   alias myip="ifconfig wlp3s0 | grep -m 1 inet | sed 's/^.*inet addr://g' | sed 's/Bcast.*//g'"
   export MYIP=$(myip)
 fi
-
-
+[[ -s ${HOME}/.autojump/etc/profile.d/autojump.sh ]] && source ${HOME}/.autojump/etc/profile.d/autojump.sh
