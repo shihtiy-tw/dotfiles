@@ -14,6 +14,8 @@ export PATH=${PATH}:${HOME}/.local/share/
 
 # Python
 #export PATH=${PATH}:${HOME}/Library/Python/3.9/bin
+PATHONPATH=$(which python)
+PYTHON3PATH=$(which ptyhon3)
 
 # convenience
 if [ -d $HOME/Library/Python/3.9/bin ]; then
