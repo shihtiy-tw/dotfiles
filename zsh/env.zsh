@@ -14,7 +14,7 @@ export PATH=${PATH}:${HOME}/.local/share/
 
 # Python
 #export PATH=${PATH}:${HOME}/Library/Python/3.9/bin
-export PATHONPATH=$(which python)
+export PYTHONPATH=$(which python)
 export PYTHON3PATH=$(which python3)
 
 # convenience
