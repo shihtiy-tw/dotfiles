@@ -28,6 +28,8 @@ ln -sf ${HOME}/dotfiles/gitconfig ${HOME}/.gitconfig
 ln -sf ${HOME}/dotfiles/vim/editorconfig ${HOME}/.editorconfig
 ln -sf ${HOME}/dotfiles/zsh/antigenrc ${HOME}/.antigenrc
 ln -sf ${HOME}/dotfiles/nvim/coc-settings.json ${HOME}/.config/nvim/coc-settings.json
+ln -sf "${HOME}/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh-theme" "${HOME}/.oh-my-zsh/custom/themes/spaceship.zsh-theme"
+
 
 # neovim
 #nvim -c "PlugInstall"
