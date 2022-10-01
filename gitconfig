@@ -1,6 +1,6 @@
 [user]
-	name = stanleyuan
-	email = stanley830912@gmail.com
+	name = Shih-Ting, Yuan
+	email = shihtiy.tw@gmail.com
 
 [alias]
 	a = add
@@ -26,7 +26,7 @@
 	default = simple
 
 [github]
-	user = stanleyuan
+	user = shihtiy-tw
 [http]
 	sslCAinfo = /etc/ssl/certs/ca-certificates.crt
 	sslverify = false
@@ -42,3 +42,8 @@
 	oldHighlight = red bold 52
 	newNormal = green bold
 	newHighlight = green bold 22
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
