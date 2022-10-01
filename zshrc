@@ -1,4 +1,6 @@
 # If you come from bash you might have to change your $PATH.
+unset SPACESHIP_ROOT
+
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
@@ -44,3 +46,8 @@ fi
 fpath=(${HOME}/.zsh.d/ $fpath)
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# GoLang
+export GOROOT=/Users/shihtiy/.go
+export PATH=$GOROOT/bin:$PATH
+export GOPATH=/Users/shihtiy/go
+export PATH=$GOPATH/bin:$PATH
