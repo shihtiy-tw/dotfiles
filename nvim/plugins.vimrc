@@ -22,7 +22,7 @@ call plug#begin('~/.vim/plugged')
 "  _| \___/ \___/ _____|
 "
 Plug 'SkyLeach/pudb.vim'
-Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins', 'for': 'python'}
+Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins', 'for': 'python3'}
 "Plug 'Shougo/deoplete.nvim'
 Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh \| UpdateRemotePlugins' }
 
