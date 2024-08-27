@@ -30,11 +30,11 @@
 [http]
 	sslCAinfo = /etc/ssl/certs/ca-certificates.crt
 	sslverify = false
-[core]
-	pager = diff-so-fancy | less --tabs=4 -RFX
-	editor = nvim
-[pager]
-	show = diff-so-fancy | less --tabs=1,5 -RFX
+;[core]
+	;pager = diff-so-fancy | less --tabs=4 -RFX
+	;editor = nvim
+;[pager]
+	;show = diff-so-fancy | less --tabs=1,5 -RFX
 [color]
 	ui = true
 [color "diff-highlight"]
