@@ -78,7 +78,7 @@ Plug 'tpope/vim-fugitive'
 "Pretty
 Plug 'Yggdroot/indentLine' "display the vertical lines at each indentation level
 Plug 'vim-scripts/Auto-Pairs'
-Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' }  "show colow for colowcode
+"Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' }  "show colow for colowcode
 Plug 'luochen1990/rainbow' "colorize parentheses
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
