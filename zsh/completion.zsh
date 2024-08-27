@@ -12,5 +12,10 @@ if [ -f "$(which helm)" ]; then source <(helm completion zsh); fi
 
 #[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
+# node
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
 # https://github.com/zsh-users/antigen/issues/603
 # source /usr/local/share/zsh/site-functions/_awless
