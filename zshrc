@@ -47,7 +47,7 @@ fpath=(${HOME}/.zsh.d/ $fpath)
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 # GoLang
-export GOROOT=/Users/shihtiy/.go
+export GOROOT=/usr/local/go
 export PATH=$GOROOT/bin:$PATH
-export GOPATH=/Users/shihtiy/go
-export PATH=$GOPATH/bin:$PATH
+# export GOPATH=/Users/shihtiy/go
+# export PATH=$GOPATH/bin:$PATH
