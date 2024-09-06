@@ -28,6 +28,7 @@ ln -sf ${HOME}/dotfiles/vim/editorconfig ${HOME}/.editorconfig
 ln -sf ${HOME}/dotfiles/zsh/antigenrc ${HOME}/.antigenrc
 ln -sf ${HOME}/dotfiles/nvim/coc-settings.json ${HOME}/.config/nvim/coc-settings.json
 ln -sf ${HOME}/dotfiles/nvim/init.vim ${HOME}/.config/nvim/init.vim
+ln -sf ${HOME}/dotfiles/aws/config ${HOME}/.aws/config
 ln -sf "${HOME}/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh-theme" "${HOME}/.oh-my-zsh/custom/themes/spaceship.zsh-theme"
 
 

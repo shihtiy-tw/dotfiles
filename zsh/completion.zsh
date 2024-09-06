@@ -13,6 +13,13 @@ if [ -f "$(which helm)" ]; then source <(helm completion zsh); fi
 # eksctl
 if [ -f "$(which eksctl)" ]; then source <(eksctl completion zsh); fi
 
+# eksctl
+if [ -f "$(which aws)" ]; then
+  autoload bashcompinit && bashcompinit
+  autoload -Uz compinit && compinit
+  complete -C '/usr/local/bin/aws_completer' aws
+fi
+
 #[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 # node
