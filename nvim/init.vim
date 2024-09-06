@@ -13,5 +13,5 @@ let g:python3_host_prog=$PYTHON3PATH
 source $HOME/dotfiles/nvim/plugins.vimrc
 source $HOME/dotfiles/nvim/plugin_config.vimrc
 source $HOME/dotfiles/nvim/general.vimrc
-source $HOME/dotfiles/vimrc
+source $HOME/dotfiles/vim/vimrc
 source $HOME/dotfiles/nvim/keys.vimrc
