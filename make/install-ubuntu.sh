@@ -19,8 +19,14 @@ sudo apt install -y \
 #
 #$ curl https://github.com/so-fancy/diff-so-fancy/releases/download/v1.4.4/diff-so-fancy -o /usr/local/bin/diff-so-fancy
 
+# tree
+sudo apt install tree
+
 # zsh
 sudo apt install zsh powerline fonts-powerline -y
+
+sudo apt install shellcheck -y
+
 
 # oh-my-zsh
 if [ ! -d ${HOME}/.oh-my-zsh ]; then \
