@@ -15,9 +15,17 @@ sudo apt install -y \
     libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm \
     libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
 
+# git-sim
+sudo apt install pipx
+sudo apt update
+sudo apt install build-essential python3-dev libcairo2-dev libpango1.0-dev ffmpeg
+pipx install manim
+pipx install git-sim
+
 # git
 #
 #$ curl https://github.com/so-fancy/diff-so-fancy/releases/download/v1.4.4/diff-so-fancy -o /usr/local/bin/diff-so-fancy
+sudo apt install git-extras
 
 # tree
 sudo apt install tree
