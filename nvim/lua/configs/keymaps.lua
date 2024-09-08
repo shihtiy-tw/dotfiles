@@ -23,8 +23,10 @@ vim.api.nvim_set_keymap('n', '<leader>t', '<cmd>TodoTelescope<CR>', { noremap = 
 -- Lazy
 vim.api.nvim_set_keymap('n', '<leader>z', '<cmd>Lazy<CR>', { noremap = true })
 
--- tabs
+-- Mason
+vim.api.nvim_set_keymap('n', '<leader>m', '<cmd>Mason<CR>', { noremap = true })
 
+-- tabs
 vim.api.nvim_set_keymap('n', '<TAB>', 'gt', { noremap = true })
 vim.api.nvim_set_keymap('n', '<S-TAB>', 'gT', { noremap = true })
 --vim.api.nvim_set_keymap('n', '<leader>t', 't :tabedit', { noremap = true })
