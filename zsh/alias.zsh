@@ -31,6 +31,9 @@ alias l="exa -lahF"
 # TODO: test todo command
 # BUG: test bug
 # FIX: test fix
+# NOTE: test note
+# WARNING: test warning
+# HACK: test hack
 alias todo='git grep -I -l -E "TODO|FIX|BUG|NOTE" | while IFS= read -r file; do git blame -f -n -w "$file"; done | awk " (/TODO:/ || /FIX:/ || /BUG:/ || /NOTE:/) && !/TODO\|FIX\|BUG/" | sed "s/.\{9\}//" | sed "s/(.*)[[:space:]]*//"'
 
 #if [ $(uname -s) != "Darwin" ]; then
