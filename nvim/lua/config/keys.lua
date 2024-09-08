@@ -6,6 +6,9 @@ vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
 vim.keymap.set('n', '<leader>fc', builtin.commands, {})
 vim.keymap.set('n', '<leader>fC', builtin.colorscheme, {})
+vim.keymap.set('n', '<leader>fgc', builtin.git_commits	, {})
+vim.keymap.set('n', '<leader>fgb', builtin.git_branches	, {})
+vim.keymap.set('n', '<leader>fgs', builtin.git_status	, {})
 
 -- tree
 -- https://github.com/nvim-tree/nvim-tree.lua/blob/cb57691536702ea479afd294657f6a589d0faae1/doc/nvim-tree-lua.txt#L2329
