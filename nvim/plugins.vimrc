@@ -41,14 +41,13 @@ Plug 'clangd/coc-clangd'
 Plug 'josa42/coc-go'
 Plug 'josa42/coc-sh'
 
-Plug 'nvim-lua/plenary.nvim'
 ": lua require('todo-comments').setup()
 "Plug 'folke/todo-comments.nvim'
-Plug 'folke/trouble.nvim'
-Plug 'ibhagwan/fzf-lua', {'branch': 'main'}
-Plug 'nvim-tree/nvim-web-devicons'
-Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
-Plug 'nvim-lua/plenary.nvim'
+"Plug 'folke/trouble.nvim'
+"Plug 'ibhagwan/fzf-lua', {'branch': 'main'}
+"Plug 'nvim-tree/nvim-web-devicons'
+"Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
+"Plug 'nvim-lua/plenary.nvim'
 
 
 "Plug 'Shougo/neocomplete'
