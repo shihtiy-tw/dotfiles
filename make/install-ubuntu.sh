@@ -17,6 +17,10 @@ sudo apt install -y \
 
 sudo apt-get install ripgrep
 
+# install cargo
+curl https://sh.rustup.rs -sSf | sh
+
+
 # git-sim
 sudo apt install pipx
 sudo apt update

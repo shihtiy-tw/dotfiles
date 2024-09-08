@@ -66,6 +66,9 @@ export PATH=${PATH}:/usr/local/cuda-9.0/bin
 # node
 export NODEPATH="$(which node)"
 
+# rust
+export PATH=${PATH}:$HOME/.cargo/env
+
 # Discard
 #export GOOGLE_APPLICATION_CREDENTIALS='${HOME}/Documents/NTUT/patrick/Natural_Language/Natural_Language_API-a56f9766faee.json'
 #export PATH=/usr/local/cuda-8.0/bin:$PATH
