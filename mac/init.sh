@@ -1,4 +1,4 @@
-#/bin/sh
+#!/bin/sh
 
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
@@ -48,20 +48,6 @@ git clone git://github.com/joelthelion/autojump.git ${HOME}/dotfiles/autojump; \
 cd ${HOME}/dotfiles/autojump/ || exit; \
 python3 ${HOME}/dotfiles/autojump/install.py; \
 
-## neovim
-
-mkdir ~/.config/nvim
-ln -sf ${HOME}/dotfiles/vimrc ${HOME}/.vimrc
-ln -sf ${HOME}/dotfiles/nvim/init.vim ${HOME}/.config/nvim/init.vim
-ln -sf ${HOME}/dotfiles/nvim/coc-settings.json ${HOME}/.config/nvim/coc-settings.json
-
-## tmux
-
-ln -sf ${HOME}/dotfiles/tmux.conf ${HOME}/.tmux.conf
-
-## git
-
-ln -sf ${HOME}/dotfiles/gitconfig ${HOME}/.gitconfig
 
 brew install golang
 export GOPATH=$HOME/go-workspace # don't forget to change your path correctly!
