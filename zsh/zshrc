@@ -24,6 +24,8 @@ source $HOME/dotfiles/zsh/alias.zsh
 #source /etc/zsh_command_not_found
 #source $HOME/.local/bin/aws_bash_completer
 [ -f ${HOME}/.fzf.zsh ] && source ${HOME}/.fzf.zsh
+source <(fzf --zsh)
+
 
 # completions
 source $HOME/dotfiles/zsh/completion.zsh
