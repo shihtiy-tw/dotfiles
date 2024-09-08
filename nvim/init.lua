@@ -1,6 +1,7 @@
 require("config.settings")
 require("config.lazy")
-require("config.key")
+require("config.keys")
+require("config.themes")
 
 --plugin--
 -- TODO: addon obsidian and notion plugin
