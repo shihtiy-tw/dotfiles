@@ -27,6 +27,10 @@ alias sudo='sudo '
 alias vbm="VBoxManage"
 alias l="exa -lahF"
 
+# https://stackoverflow.com/questions/25039242/how-to-list-all-my-current-todo-messages-in-a-git-repository
+alias gittodo='git grep -l TODO | xargs -n1 git blame -f -n -w | grep TODO | sed "s/.\{9\}//" | sed "s/(.*)[[:space:]]*//"'
+
+
 #if [ $(uname -s) != "Darwin" ]; then
   ##alias rm="trash"
   #alias say="spd-say"

@@ -27,6 +27,9 @@ alias tldr='tldr -t ocean'
 alias vim="nvim"
 alias pbcopy="xclip -sel clip"
 
+# https://stackoverflow.com/questions/25039242/how-to-list-all-my-current-todo-messages-in-a-git-repository
+alias gittodo='git grep -l TODO | xargs -n1 git blame -f -n -w | grep TODO | sed "s/.\{9\}//" | sed "s/(.*)[[:space:]]*//"'
+
 # for linux
 if [ $(uname -s) != "Darwin" ]; then
   alias myip="ifconfig wlp3s0 | grep -m 1 inet | sed 's/^.*inet addr://g' | sed 's/Bcast.*//g'"
