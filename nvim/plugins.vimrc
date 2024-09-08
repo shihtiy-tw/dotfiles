@@ -43,7 +43,7 @@ Plug 'josa42/coc-sh'
 
 Plug 'nvim-lua/plenary.nvim'
 ": lua require('todo-comments').setup()
-Plug 'folke/todo-comments.nvim'
+"Plug 'folke/todo-comments.nvim'
 Plug 'folke/trouble.nvim'
 Plug 'ibhagwan/fzf-lua', {'branch': 'main'}
 Plug 'nvim-tree/nvim-web-devicons'
