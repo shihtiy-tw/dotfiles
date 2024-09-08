@@ -28,8 +28,10 @@ alias vbm="VBoxManage"
 alias l="exa -lahF"
 
 # https://stackoverflow.com/questions/25039242/how-to-list-all-my-current-todo-messages-in-a-git-repository
-alias gittodo='git grep -l TODO | xargs -n1 git blame -f -n -w | grep TODO | sed "s/.\{9\}//" | sed "s/(.*)[[:space:]]*//"'
-
+# TODO: test todo command
+# BUG: test bug
+# FIX: test fix
+alias todo='git grep -I -l -E "TODO|FIX|BUG|NOTE" | while IFS= read -r file; do git blame -f -n -w "$file"; done | awk " (/TODO:/ || /FIX:/ || /BUG:/ || /NOTE:/) && !/TODO\|FIX\|BUG/" | sed "s/.\{9\}//" | sed "s/(.*)[[:space:]]*//"'
 
 #if [ $(uname -s) != "Darwin" ]; then
   ##alias rm="trash"

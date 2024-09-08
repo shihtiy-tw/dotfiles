@@ -1,5 +1,5 @@
 # If you come from bash you might have to change your $PATH.
-unset SPACESHIP_ROOT
+#unset SPACESHIP_ROOT
 
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 
