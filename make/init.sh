@@ -25,7 +25,7 @@ ln -sf ${HOME}/dotfiles/tmux/tmux.conf ${HOME}/.tmux.conf
 ln -sf ${HOME}/dotfiles/git/gitconfig ${HOME}/.gitconfig
 ln -sf ${HOME}/dotfiles/vim/vimrc ${HOME}/.vimrc
 ln -sf ${HOME}/dotfiles/vim/editorconfig ${HOME}/.editorconfig
-ln -sf ${HOME}/dotfiles/zsh/antigenrc ${HOME}/.antigenrc
+#ln -sf ${HOME}/dotfiles/zsh/antigenrc ${HOME}/.antigenrc
 ln -sf ${HOME}/dotfiles/nvim/coc-settings.json ${HOME}/.config/nvim/coc-settings.json
 ln -sf ${HOME}/dotfiles/nvim/init.vim ${HOME}/.config/nvim/init.vim
 ln -sf ${HOME}/dotfiles/aws/config ${HOME}/.aws/config
