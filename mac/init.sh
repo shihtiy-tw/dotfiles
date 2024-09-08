@@ -6,7 +6,7 @@
 
 # dotfile
 
-git clone https://github.com/stanleyuan/dotfiles.git "${HOME}"/dotfiles
+git clone https://github.com/shihtiy-tw/dotfiles.git "${HOME}"/dotfiles
 
 # brew
 
@@ -14,7 +14,18 @@ git clone https://github.com/stanleyuan/dotfiles.git "${HOME}"/dotfiles
 
 cd ${HOME}/dotfiles/mac || exit
 
-brew bundle
+if [[ $(uname -m) == 'arm64' ]]; then
+    echo "Running on Apple Silicon (ARM)"
+    # ARM-specific Homebrew packages or settings
+    brew bundle --file Brewfile.arm
+else
+    echo "Running on Intel (x86)"
+    # Intel-specific Homebrew packages or settings
+    brew bundle --file Brewfile.x86
+fi
+
+# Common commands for both architectures
+
 
 # oh my zsh
 
@@ -28,6 +39,8 @@ git clone https://github.com/denysdovhan/spaceship-prompt.git "${HOME}/.oh-my-zs
 git clone https://github.com/Aloxaf/fzf-tab ${HOME}/.oh-my-zsh/custom/plugins/fzf-tab
 
 ln -sf ${HOME}/dotfiles/zsh/spaceship-prompt/spaceship.zsh ${HOME}/.oh-my-zsh/custom/themes/spaceship.zsh-theme
+sed -i '' 's/^SPACESHIP_CHAR_SYMBOL=.*$/SPACESHIP_CHAR_SYMBOL="${SPACESHIP_CHAR_SYMBOL="$ "}"/' ${HOME}/.oh-my-zsh/custom/themes/spaceship-prompt/sections/char.zsh
+
 
 ## Autojump
 
