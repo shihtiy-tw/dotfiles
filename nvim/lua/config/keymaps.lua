@@ -17,11 +17,17 @@ require("nvim-tree").setup {}
 vim.api.nvim_set_keymap('n', '<F9>', '<cmd>NvimTreeFindFileToggle<CR>', { noremap = true })
 vim.api.nvim_set_keymap('i', '<F9>', '<cmd>NvimTreeFindFileToggle<CR>', { noremap = true })
 
+-- TODO
+vim.api.nvim_set_keymap('n', '<leader>t', '<cmd>TodoTelescope<CR>', { noremap = true })
+
+-- Lazy
+vim.api.nvim_set_keymap('n', '<leader>z', '<cmd>Lazy<CR>', { noremap = true })
+
 -- tabs
 
 vim.api.nvim_set_keymap('n', '<TAB>', 'gt', { noremap = true })
 vim.api.nvim_set_keymap('n', '<S-TAB>', 'gT', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>t', 't :tabedit', { noremap = true })
+--vim.api.nvim_set_keymap('n', '<leader>t', 't :tabedit', { noremap = true })
 
 -- move in panels
 vim.api.nvim_set_keymap('n', '<leader>h', '<c-w>h', { noremap = true })
