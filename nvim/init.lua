@@ -1,6 +1,6 @@
 require("config.settings")
 require("config.lazy")
-require("config.keys")
+require("config.keymaps")
 require("config.themes")
 
 --plugin--
