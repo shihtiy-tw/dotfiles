@@ -20,6 +20,10 @@ sudo apt-get install ripgrep
 # install cargo
 curl https://sh.rustup.rs -sSf | sh
 
+# install lua
+sudo apt install luarocks
+
+
 
 # git-sim
 sudo apt install pipx
