@@ -17,11 +17,60 @@ require("nvim-tree").setup {}
 vim.api.nvim_set_keymap('n', '<F9>', '<cmd>NvimTreeFindFileToggle<CR>', { noremap = true })
 vim.api.nvim_set_keymap('i', '<F9>', '<cmd>NvimTreeFindFileToggle<CR>', { noremap = true })
 
+-- tabs
+
+vim.api.nvim_set_keymap('n', '<TAB>', 'gt', { noremap = true })
+vim.api.nvim_set_keymap('n', '<S-TAB>', 'gT', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>t', 't :tabedit', { noremap = true })
+
 -- move in panels
 vim.api.nvim_set_keymap('n', '<leader>h', '<c-w>h', { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>j', '<c-w>j', { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>k', '<c-w>k', { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>l', '<c-w>l', { noremap = true })
+
+
+-- harpoon
+local harpoon = require("harpoon")
+
+-- REQUIRED
+harpoon:setup()
+-- REQUIRED
+
+vim.keymap.set("n", "<leader>a", function() harpoon:list():add() end)
+--vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
+
+vim.keymap.set("n", "<C-h>", function() harpoon:list():select(1) end)
+vim.keymap.set("n", "<C-t>", function() harpoon:list():select(2) end)
+vim.keymap.set("n", "<C-n>", function() harpoon:list():select(3) end)
+vim.keymap.set("n", "<C-s>", function() harpoon:list():select(4) end)
+
+-- Toggle previous & next buffers stored within Harpoon list
+vim.keymap.set("n", "<C-S-P>", function() harpoon:list():prev() end)
+vim.keymap.set("n", "<C-S-N>", function() harpoon:list():next() end)
+
+harpoon:setup({})
+
+-- basic telescope configuration
+local conf = require("telescope.config").values
+local function toggle_telescope(harpoon_files)
+    local file_paths = {}
+    for _, item in ipairs(harpoon_files.items) do
+        table.insert(file_paths, item.value)
+    end
+
+    require("telescope.pickers").new({}, {
+        prompt_title = "Harpoon",
+        finder = require("telescope.finders").new_table({
+            results = file_paths,
+        }),
+        previewer = conf.file_previewer({}),
+        sorter = conf.generic_sorter({}),
+    }):find()
+end
+
+vim.keymap.set("n", "<C-e>", function() toggle_telescope(harpoon:list()) end,
+    { desc = "Open harpoon window" })
 
 -- mini move
   -- `HJKL` for moving visual selection (overrides H, L, J in Visual mode)
