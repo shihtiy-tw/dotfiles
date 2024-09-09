@@ -7,11 +7,11 @@
 : CheckHealth lisp
 ```
 
-## Required:
+## Required
 
 ```sh
-$ npm install -g neovim
-$ pip3 uninstall pynvim neovim
+npm install -g neovim
+pip3 uninstall pynvim neovim
 ```
 
 ## Coc
