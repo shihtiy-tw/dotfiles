@@ -19,11 +19,11 @@ The dotfiles includes the dotfiles of the following tools:
 ## Getting Start
 
 ```bash
-$ git clone https://github.com/shihtiy-tw/dotfiles.git
+git clone https://github.com/shihtiy-tw/dotfiles.git
 
-$ make install
+make install
 
-$ make init
+make init
 ```
 
 ## Reference
