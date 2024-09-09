@@ -10,6 +10,9 @@ vim.keymap.set('n', '<leader>fgc', builtin.git_commits	, {})
 vim.keymap.set('n', '<leader>fgb', builtin.git_branches	, {})
 vim.keymap.set('n', '<leader>fgs', builtin.git_status	, {})
 
+-- url-open
+vim.keymap.set("n", "gx", "<esc>:URLOpenUnderCursor<cr>")
+
 -- hop
 -- place this in one of your configuration file(s)
 local hop = require('hop')
