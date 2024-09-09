@@ -58,7 +58,22 @@ return {
     config = function()
       require "configs.lspconfig"
     end
-  }
+  },
+  {
+  "mfussenegger/nvim-lint",
+  event = { "BufReadPre", "BufNewFile" },
+  config = function()
+    require "configs.lint"
+  end,
+},{
+   'WhoIsSethDaniel/mason-tool-installer.nvim',
+  config = function()
+    require "configs.mason-tool-installer"
+  end,
+ },{
+   'rshkarin/mason-nvim-lint'
+ }
+
 }
 
 
