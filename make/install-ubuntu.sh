@@ -1,3 +1,6 @@
+# Version
+RUBY_GEM_VERSION=3.4.8
+
 # update and upgrade packages
 sudo apt update -y
 sudo apt upgrade -y
@@ -23,6 +26,13 @@ curl https://sh.rustup.rs -sSf | sh
 # install lua
 sudo apt install luarocks
 
+
+# install ruby
+sudo apt install ruby -y
+sudo apt-get install ruby-dev -y
+wget https://rubygems.org/rubygems/rubygems-${RUBY_GEM_VERSION}.tgz
+tar xvzf rubygems-${RUBY_GEM_VERSION}.tgz
+cd rubygems-${RUBY_GEM_VERSION}; ruby setup.rb; cd
 
 
 # git-sim
