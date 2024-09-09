@@ -26,7 +26,31 @@ lsp_zero.extend_lspconfig({
 require('mason').setup({})
 
 require('mason-lspconfig').setup({
-  ensure_installed = {},
+  ensure_installed = {
+    'lua-language-server',
+    'dockerls',
+    'jsonls',
+    'gopls',
+    'dockerfile-language-server'
+  },
+  -- ensure_installed = {
+  --   'sumneko_lua',
+  --   'rust_analyzer',
+  --   'clangd',
+  --   'neocmake',
+  --   'dockerls',
+  --   'html',
+  --   'jsonls',
+  --   'tsserver',
+  --   'pylsp',
+  --   'rnix',
+  --   'sqlls',
+  --   'taplo',
+  --   'vuels',
+  --   'lemminx',
+  --   'yamlls'
+  -- },
+  automatic_installation = true,
   handlers = {
     -- this first function is the "default handler"
     -- it applies to every language server without a "custom handler"
@@ -50,3 +74,5 @@ cmp.setup({
   },
   mapping = cmp.mapping.preset.insert({}),
 })
+
+
