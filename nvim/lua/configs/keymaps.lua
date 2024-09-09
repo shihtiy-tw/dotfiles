@@ -17,6 +17,10 @@ require("nvim-tree").setup {}
 vim.api.nvim_set_keymap('n', '<F9>', '<cmd>NvimTreeFindFileToggle<CR>', { noremap = true })
 vim.api.nvim_set_keymap('i', '<F9>', '<cmd>NvimTreeFindFileToggle<CR>', { noremap = true })
 
+-- Notion
+vim.keymap.set("n", "<leader>no", function () require"notion".openMenu() end)
+
+
 -- TODO
 vim.api.nvim_set_keymap('n', '<leader>t', '<cmd>TodoTelescope<CR>', { noremap = true })
 
