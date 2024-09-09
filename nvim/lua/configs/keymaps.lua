@@ -17,6 +17,10 @@ require("nvim-tree").setup {}
 vim.api.nvim_set_keymap('n', '<F9>', '<cmd>NvimTreeFindFileToggle<CR>', { noremap = true })
 vim.api.nvim_set_keymap('i', '<F9>', '<cmd>NvimTreeFindFileToggle<CR>', { noremap = true })
 
+-- clear search result
+vim.api.nvim_set_keymap('n', '<leader>m', '<cmd>noh<CR>', { noremap = true })
+vim.api.nvim_set_keymap('i', '<leader>m', '<cmd>noh<CR>', { noremap = true })
+
 -- Notion
 vim.keymap.set("n", "<leader>no", function () require"notion".openMenu() end)
 
@@ -28,7 +32,7 @@ vim.api.nvim_set_keymap('n', '<leader>t', '<cmd>TodoTelescope<CR>', { noremap = 
 vim.api.nvim_set_keymap('n', '<leader>z', '<cmd>Lazy<CR>', { noremap = true })
 
 -- Mason
-vim.api.nvim_set_keymap('n', '<leader>m', '<cmd>Mason<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>M', '<cmd>Mason<CR>', { noremap = true })
 
 -- tabs
 vim.api.nvim_set_keymap('n', '<TAB>', 'gt', { noremap = true })
