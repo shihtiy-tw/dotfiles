@@ -27,11 +27,12 @@ require('mason').setup({})
 
 require('mason-lspconfig').setup({
   ensure_installed = {
-    'lua-language-server',
+    'lua_ls',
     'dockerls',
     'jsonls',
     'gopls',
-    'dockerfile-language-server'
+    'dockerls',
+    'yamlls'
   },
   -- ensure_installed = {
   --   'sumneko_lua',
@@ -74,5 +75,3 @@ cmp.setup({
   },
   mapping = cmp.mapping.preset.insert({}),
 })
-
-
