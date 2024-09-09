@@ -1,5 +1,9 @@
 mkdir -p ${HOME}/.config/nvim/
 
+# tmux support .config
+# https://unix.stackexchange.com/questions/644819/is-it-possible-to-move-tmux-conf-to-config-folder
+mkdir -p ${HOME}/.config/tmux/
+
 if [ -e ${HOME}/.zshrc ]; then \
   mv ${HOME}/.zshrc ${HOME}/.zshrc.backup; \
 fi
@@ -21,7 +25,8 @@ fi
 #ln -sf ${HOME}/dotfiles/bashrc ${HOME}/.bashrc
 #ln -sf ${HOME}/dotfiles/bashrc ${HOME}/.bash_profile
 ln -sf ${HOME}/dotfiles/zsh/zshrc ${HOME}/.zshrc
-ln -sf ${HOME}/dotfiles/tmux/tmux.conf ${HOME}/.tmux.conf
+ln -sf ${HOME}/dotfiles/tmux/tmux.conf ${HOME}/.config/tmux/tmux.conf
+ln -sf ${HOME}/dotfiles/tmux/themes ${HOME}/.tmux/themes
 ln -sf ${HOME}/dotfiles/git/gitconfig ${HOME}/.gitconfig
 ln -sf ${HOME}/dotfiles/vim/vimrc ${HOME}/.vimrc
 ln -sf ${HOME}/dotfiles/vim/editorconfig ${HOME}/.editorconfig

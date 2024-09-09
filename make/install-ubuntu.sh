@@ -83,6 +83,10 @@ fi
 # tmux
 sudo apt install tmux -y
 
+# install tpm
+# https://github.com/tmux-plugins/tpm
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
 # vim
 # sudo apt-get install vim -y
 
