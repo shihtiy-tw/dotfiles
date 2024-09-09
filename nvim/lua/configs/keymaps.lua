@@ -10,6 +10,25 @@ vim.keymap.set('n', '<leader>fgc', builtin.git_commits	, {})
 vim.keymap.set('n', '<leader>fgb', builtin.git_branches	, {})
 vim.keymap.set('n', '<leader>fgs', builtin.git_status	, {})
 
+-- hop
+-- place this in one of your configuration file(s)
+local hop = require('hop')
+local directions = require('hop.hint').HintDirection
+vim.keymap.set('', 'f', function()
+  hop.hint_char1({ direction = nil, current_line_only = false, multi_windows = true })
+end, {remap=true})
+vim.keymap.set('', 'F', function()
+  hop.hint_char2({ direction = nil, current_line_only = false, multi_windows = true})
+end, {remap=true})
+vim.keymap.set('', 'fw', function()
+  hop.hint_words({ direction = nil, current_line_only = false, hint_offset = -1, multi_windows = true })
+end, {remap=true})
+vim.keymap.set('', 'fp', function()
+  hop.hint_patterns({ direction = nil, current_line_only = false, hint_offset = 1, multi_windows = true })
+end, {remap=true})
+vim.keymap.set('', 'fl', function() hop.hint_lines({ multi_windows = true })
+end, {remap=true})
+
 -- tree
 -- https://github.com/nvim-tree/nvim-tree.lua/blob/cb57691536702ea479afd294657f6a589d0faae1/doc/nvim-tree-lua.txt#L2329
 
