@@ -49,25 +49,23 @@ cd ${HOME}/dotfiles/autojump/ || exit; \
 python3 ${HOME}/dotfiles/autojump/install.py; \
 
 
-brew install golang
-export GOPATH=$HOME/go-workspace # don't forget to change your path correctly!
-export GOROOT=/usr/local/opt/go/libexec
-export PATH=$PATH:$GOPATH/bin
-export PATH=$PATH:$GOROOT/bin
-go get github.com/mattn/efm-langserver
-$HOME/.config/efm-langserver/config.yaml
-mkdir $HOME/.config/efm-langserver
-ln -s $HOME/dotfiles/nvim/efm-langserver-config.yaml
+# brew install golang
+# export GOPATH=$HOME/go-workspace # don't forget to change your path correctly!
+# export GOROOT=/usr/local/opt/go/libexec
+# export PATH=$PATH:$GOPATH/bin
+# export PATH=$PATH:$GOROOT/bin
+# go get github.com/mattn/efm-langserver
+# $HOME/.config/efm-langserver/config.yaml
+# mkdir $HOME/.config/efm-langserver
+# ln -s $HOME/dotfiles/nvim/efm-langserver-config.yaml
+#
+# mkdir ~/.nvm
+# wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+# source $HOME/.bashrc
+# nvm install 11.14.0
+# nvm use v11.14.0
+# nvm alias default 11.14.0
+# npm install -g bash-language-server
 
-mkdir ~/.nvm
-wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
-source $HOME/.bashrc
-nvm install 11.14.0
-nvm use v11.14.0
-nvm alias default 11.14.0
-npm install -g bash-language-server
-
-
-pip3 install awscli --upgrade --user
 
 brew cleanup
