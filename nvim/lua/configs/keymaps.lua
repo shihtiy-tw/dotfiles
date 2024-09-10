@@ -13,6 +13,15 @@ vim.keymap.set('n', '<leader>fgs', builtin.git_status, {})
 -- url-open
 vim.keymap.set("n", "gx", "<esc>:URLOpenUnderCursor<cr>")
 
+
+-- schema companion
+vim.keymap.set("n", "<leader>sy", function()
+  return require("telescope").extensions.schema_companion.select_from_matching_schemas()
+end, { desc = "Select from Matching Schema" })
+vim.keymap.set("n", "<leader>sY", function()
+  return require("telescope").extensions.schema_companion.select_schema()
+end, { desc = "Select from Schema" })
+
 -- hop
 -- place this in one of your configuration file(s)
 local hop = require('hop')
@@ -61,6 +70,9 @@ vim.api.nvim_set_keymap('n', '<leader>M', '<cmd>Mason<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<TAB>', 'gt', { noremap = true })
 vim.api.nvim_set_keymap('n', '<S-TAB>', 'gT', { noremap = true })
 --vim.api.nvim_set_keymap('n', '<leader>t', 't :tabedit', { noremap = true })
+
+-- change input
+-- vim.api.nvim_set_keymap('n', '<ESC>', '<c-space>', { noremap = true })
 
 -- move in panels
 vim.api.nvim_set_keymap('n', '<leader>h', '<c-w>h', { noremap = true })

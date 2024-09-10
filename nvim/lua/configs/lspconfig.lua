@@ -61,6 +61,76 @@ require('mason-lspconfig').setup({
   }
 })
 
+
+-- yamlls config
+-- https://www.arthurkoziel.com/json-schemas-in-neovim/
+
+require("lspconfig").yamlls.setup(require("schema-companion").setup_client({
+  -- TODO: check how to exclude the file name so the k8s yaml will not be mapped to other schema
+
+  schemas = require('schemastore').yaml.schemas {
+    -- select subset from the JSON schema catalog
+    select = {
+      'kustomization.yaml',
+      'docker-compose.yml'
+    },
+  },
+  yaml = {
+    validate = true,
+    schemas = {
+      kubernetes = { 'k8s**.yaml', 'kube*/*.yaml' },
+    }
+  }
+  --
+  -- your yaml language server configuration
+  -- settings = {
+  --   yaml = {
+  --   NOTE: this will set a 1.22 global one
+  --
+  --     schemas = { kubernetes = "globPattern" },
+  --   }
+  -- }
+}))
+
+-- local cfg = require("schema-companion").setup {
+--
+--   -- Additional schemas available in Telescope picker
+--   schemas = {
+--     {
+--       name = "Flux GitRepository",
+--       uri = "https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/gitrepository-source-v1.json",
+--     },
+--     {
+--       name = "Kubernetes 1.29",
+--       uri = "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.29.3-standalone-strict/all.json",
+--     }
+--   },
+--
+--   -- Pass any additional options that will be merged in the final LSP config
+--   -- Defaults: https://github.com/someone-stole-my-name/yaml-companion.nvim/blob/main/lua/yaml-companion/config.lua
+--   lspconfig = {
+--     settings = {
+--       yaml = {
+--         validate = true,
+--         schemaStore = {
+--           enable = false,
+--           url = "",
+--         },
+--         schemas = {
+--           ['https://json.schemastore.org/github-workflow.json'] = '.github/workflows/*.{yml,yaml}',
+--           ['https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.29.3-standalone-strict/all.json'] = 'deployment.yaml',
+--         }
+--       }
+--     }
+--   }
+-- }
+
+-- require("lspconfig")["yamlls"].setup(cfg)
+
+
+
+-- cmp config
+
 local cmp = require('cmp')
 
 cmp.setup({
