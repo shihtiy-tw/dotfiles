@@ -6,13 +6,13 @@
 
 # dotfile
 
-git clone https://github.com/shihtiy-tw/dotfiles.git "${HOME}"/dotfiles
+git clone https://github.com/shihtiy-tw/dotfiles.git "$HOME"/dotfiles
 
 # brew
 
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 
-cd ${HOME}/dotfiles/mac || exit
+cd "$HOME"/dotfiles/mac || exit
 
 if [[ $(uname -m) == 'arm64' ]]; then
     echo "Running on Apple Silicon (ARM)"
@@ -31,22 +31,26 @@ fi
 
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
-git clone https://github.com/zsh-users/zsh-autosuggestions ${HOME}/.oh-my-zsh/custom/plugins/zsh-autosuggestions; \
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${HOME}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting; \
-git clone https://github.com/zsh-users/zsh-completions ${HOME}/.oh-my-zsh/custom/plugins/zsh-completions; \
-git clone https://github.com/softmoth/zsh-vim-mode.git ${HOME}/.oh-my-zsh/custom/plugins/zsh-vim-mode; \
+git clone https://github.com/zsh-users/zsh-autosuggestions "$HOME"/.oh-my-zsh/custom/plugins/zsh-autosuggestions; \
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$HOME"/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting; \
+git clone https://github.com/zsh-users/zsh-completions "$HOME"/.oh-my-zsh/custom/plugins/zsh-completions; \
+git clone https://github.com/softmoth/zsh-vim-mode.git "$HOME"/.oh-my-zsh/custom/plugins/zsh-vim-mode; \
 git clone https://github.com/denysdovhan/spaceship-prompt.git "${HOME}/.oh-my-zsh/custom/themes/spaceship-prompt"; \
-git clone https://github.com/Aloxaf/fzf-tab ${HOME}/.oh-my-zsh/custom/plugins/fzf-tab
+git clone https://github.com/Aloxaf/fzf-tab "$HOME"/.oh-my-zsh/custom/plugins/fzf-tab
 
-ln -sf ${HOME}/dotfiles/zsh/spaceship-prompt/spaceship.zsh ${HOME}/.oh-my-zsh/custom/themes/spaceship.zsh-theme
-sed -i '' 's/^SPACESHIP_CHAR_SYMBOL=.*$/SPACESHIP_CHAR_SYMBOL="${SPACESHIP_CHAR_SYMBOL="$ "}"/' ${HOME}/.oh-my-zsh/custom/themes/spaceship-prompt/sections/char.zsh
+ln -sf "$HOME"/dotfiles/zsh/spaceship-prompt/spaceship.zsh "$HOME"/.oh-my-zsh/custom/themes/spaceship.zsh-theme
+sed -i '' 's/^SPACESHIP_CHAR_SYMBOL=.*$/SPACESHIP_CHAR_SYMBOL="${SPACESHIP_CHAR_SYMBOL="$ "}"/' "$HOME"/.oh-my-zsh/custom/themes/spaceship-prompt/sections/char.zsh
 
 
 ## Autojump
 
-git clone git://github.com/joelthelion/autojump.git ${HOME}/dotfiles/autojump; \
-cd ${HOME}/dotfiles/autojump/ || exit; \
-python3 ${HOME}/dotfiles/autojump/install.py; \
+git clone git://github.com/joelthelion/autojump.git "$HOME"/dotfiles/autojump; \
+cd "$HOME"/dotfiles/autojump/ || exit; \
+python3 "$HOME"/dotfiles/autojump/install.py; \
+
+## Rust and Cargo
+curl https://sh.rustup.rs -sSf | sh -s -- -y
+
 
 
 # brew install golang
