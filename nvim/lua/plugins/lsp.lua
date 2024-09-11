@@ -1,37 +1,37 @@
 return {
-     {
+  {
     'williamboman/mason.nvim',
-      lazy = false,
-      config = true,
-      config = function()
-        require("mason").setup {}
-      end,
-    },
-    "williamboman/mason-lspconfig.nvim",
-    'mhartington/formatter.nvim',
-    {
+    lazy = false,
+    config = true,
+    config = function()
+      require("mason").setup {}
+    end,
+  },
+  "williamboman/mason-lspconfig.nvim",
+  'mhartington/formatter.nvim',
+  {
     'VonHeikemen/lsp-zero.nvim',
-      branch = 'v4.x',
-      lazy = true,
-      config = false,
-      config = function()
-        require("lsp-zero").setup {}
-      end,
-    },
-    -- TODO: setup auto complete for python
-    {'hrsh7th/cmp-nvim-lsp'},
-    {
+    branch = 'v4.x',
+    lazy = true,
+    config = false,
+    config = function()
+      require("lsp-zero").setup {}
+    end,
+  },
+  -- TODO: setup auto complete for python
+  { 'hrsh7th/cmp-nvim-lsp' },
+  {
     'hrsh7th/nvim-cmp',
     event = 'InsertEnter',
     dependencies = {
-      {'L3MON4D3/LuaSnip'},
+      { 'L3MON4D3/LuaSnip' },
     },
     config = function()
       local cmp = require('cmp')
 
       cmp.setup({
         sources = {
-          {name = 'nvim_lsp'},
+          { name = 'nvim_lsp' },
         },
         mapping = cmp.mapping.preset.insert({
           ['<C-Space>'] = cmp.mapping.complete(),
@@ -48,31 +48,31 @@ return {
   },
   {
     'neovim/nvim-lspconfig',
-    cmd = {'LspInfo', 'LspInstall', 'LspStart'},
-    event = {'BufReadPre', 'BufNewFile'},
+    cmd = { 'LspInfo', 'LspInstall', 'LspStart' },
+    event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
-      {'hrsh7th/cmp-nvim-lsp'},
-      {'williamboman/mason.nvim'},
-      {'williamboman/mason-lspconfig.nvim'},
+      { 'hrsh7th/cmp-nvim-lsp' },
+      { 'williamboman/mason.nvim' },
+      { 'williamboman/mason-lspconfig.nvim' },
     },
     config = function()
-      require "configs.lspconfig"
+      require "configs.lsp"
     end
   },
   {
-  "mfussenegger/nvim-lint",
-  event = { "BufReadPre", "BufNewFile" },
-  config = function()
-    require "configs.lint"
-  end,
-},{
-   'WhoIsSethDaniel/mason-tool-installer.nvim',
+    "mfussenegger/nvim-lint",
+    event = { "BufReadPre", "BufNewFile" },
+    config = function()
+      require "configs.lint"
+    end,
+  }, {
+  'WhoIsSethDaniel/mason-tool-installer.nvim',
   config = function()
     require "configs.mason-tool-installer"
   end,
- },{
-   'rshkarin/mason-nvim-lint'
- }
+}, {
+  'rshkarin/mason-nvim-lint'
+}
 
 }
 

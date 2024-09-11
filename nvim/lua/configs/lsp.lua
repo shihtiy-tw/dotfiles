@@ -67,7 +67,7 @@ require('mason-lspconfig').setup({
 
 require("lspconfig").yamlls.setup(require("schema-companion").setup_client({
   -- TODO: check how to exclude the file name so the k8s yaml will not be mapped to other schema
-
+  --
   schemas = require('schemastore').yaml.schemas {
     -- select subset from the JSON schema catalog
     select = {
@@ -77,6 +77,8 @@ require("lspconfig").yamlls.setup(require("schema-companion").setup_client({
   },
 
   settings = {
+    formatting = false,
+
     yaml = {
       schemas = {
         -- use this if you want to match all '*.yaml' files
