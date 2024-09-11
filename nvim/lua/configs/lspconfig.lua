@@ -75,22 +75,28 @@ require("lspconfig").yamlls.setup(require("schema-companion").setup_client({
       'docker-compose.yml'
     },
   },
-  yaml = {
-    validate = true,
-    schemas = {
-      kubernetes = { 'k8s**.yaml', 'kube*/*.yaml' },
+
+  settings = {
+    yaml = {
+      schemas = {
+        -- use this if you want to match all '*.yaml' files
+        [require('kubernetes').yamlls_schema()] = "k8s-*.yaml",
+        -- or this to only match '*.<resource>.yaml' files. ex: 'app.deployment.yaml', 'app.argocd.yaml', ...
+        [require('kubernetes').yamlls_schema()] = require('kubernetes').yamlls_filetypes()
+      }
     }
   }
-  --
-  -- your yaml language server configuration
-  -- settings = {
-  --   yaml = {
-  --   NOTE: this will set a 1.22 global one
-  --
-  --     schemas = { kubernetes = "globPattern" },
-  --   }
-  -- }
-}))
+}
+--
+-- your yaml language server configuration
+-- settings = {
+--   yaml = {
+--   NOTE: this will set a 1.22 global one
+--
+--     schemas = { kubernetes = "globPattern" },
+--   }
+-- }
+))
 
 -- local cfg = require("schema-companion").setup {
 --
