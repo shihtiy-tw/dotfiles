@@ -20,6 +20,9 @@ sudo apt install -y \
 
 sudo apt-get install ripgrep
 
+# install fcitx5 for input switch
+sudo apt install fcitx5
+
 # install cargo
 curl https://sh.rustup.rs -sSf | sh -s -- -y
 
@@ -46,6 +49,8 @@ pipx install git-sim
 #
 #$ curl https://github.com/so-fancy/diff-so-fancy/releases/download/v1.4.4/diff-so-fancy -o /usr/local/bin/diff-so-fancy
 sudo apt install git-extras
+
+sudo apt install git-lfs
 
 # tree
 sudo apt install tree
