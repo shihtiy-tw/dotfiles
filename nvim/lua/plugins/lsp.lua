@@ -12,7 +12,7 @@ return {
   {
     'VonHeikemen/lsp-zero.nvim',
     branch = 'v4.x',
-    lazy = true,
+    lazy = false,
     config = false,
     config = function()
       require("lsp-zero").setup {}
@@ -25,19 +25,54 @@ return {
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
+      "hrsh7th/cmp-cmdline",
+      "saadparwaiz1/cmp_luasnip",
+      'L3MON4D3/LuaSnip'
     },
     event = 'InsertEnter',
-    dependencies = {
-      { 'L3MON4D3/LuaSnip' },
-    },
+    lazy = false,
+    priority = 100,
     config = function(_, opts)
+      local luasnip = require('luasnip')
       local cmp = require('cmp')
+
+
+      local has_words_before = function()
+        unpack = unpack or table.unpack
+        local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+        return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+      end
       local cmp_keybind = {
-        ['<S-TAB>'] = cmp.mapping.select_prev_item(),
-        ['<TAB>'] = cmp.mapping.select_next_item(),
+        ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-f>'] = cmp.mapping.scroll_docs(4),
+        -- ['<S-TAB>'] = cmp.mapping.select_prev_item(),
+        -- ['<TAB>'] = cmp.mapping.select_next_item(),
         -- complete
         -- ['<TAB'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
         -- cancel
+        ["<Tab>"] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.select_next_item()
+          elseif luasnip.expand_or_locally_jumpable() then
+            luasnip.expand_or_jump()
+            -- elseif has_words_before() then
+            --   cmp.complete()
+          else
+            fallback()
+          end
+        end, { "i", "s" }),
+        ["<S-Tab>"] = cmp.mapping(function(fallback)
+          -- local copilot_keys = vim.fn["copilot#Accept"]()
+          if cmp.visible() then
+            cmp.select_prev_item()
+          elseif luasnip.jumpable(-1) then
+            luasnip.jump(-1)
+            -- elseif copilot_keys ~= "" and type(copilot_keys) == "string" then
+            --   vim.api.nvim_feedkeys(copilot_keys, "i", true)
+          else
+            fallback()
+          end
+        end, { "i", "s" }),
         ['<A-,>'] = cmp.mapping({
           i = cmp.mapping.abort(),
           c = cmp.mapping.close(),
@@ -77,8 +112,8 @@ return {
 
         mapping = cmp_keybind,
       }
-      cmp.setup(cmpsetup)
       cmp.setup.cmdline({ '/', '?' }, {
+        mapping = cmp.mapping.preset.cmdline(),
         sources = {
           { name = 'buffer' }
         }
