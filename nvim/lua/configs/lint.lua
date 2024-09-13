@@ -6,7 +6,7 @@ lint.linters_by_ft = {
   python = { "pylint" },
   ruby = { "rubocop" },
   terraform = { "tflint" },
-  sh = { "shellcheck" },
+  -- sh = { "shellcheck" },
   dockerfile = { "hadolint" },
   yaml = { "yamllint" },
 
