@@ -51,7 +51,7 @@ vim.api.nvim_set_keymap('i', '<F9>', '<cmd>NvimTreeFindFileToggle<CR>', { norema
 
 -- clear search result
 vim.api.nvim_set_keymap('n', '<leader>m', '<cmd>noh<CR>', { noremap = true })
-vim.api.nvim_set_keymap('i', '<leader>m', '<cmd>noh<CR>', { noremap = true })
+-- vim.api.nvim_set_keymap('i', '<leader>m', '<cmd>noh<CR>', { noremap = true })
 
 -- Notion
 vim.keymap.set("n", "<leader>no", function() require "notion".openMenu() end)
