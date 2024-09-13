@@ -4,10 +4,21 @@ local o = vim.opt
 -- optionally enable 24-bit colour
 vim.opt.termguicolors = true
 
-
 -- auto saving
+-- Define a function to check the buffer type and write the buffer if allowed
+local function auto_write_buffer()
+  local buffer_type = vim.bo.buftype
+
+  -- Check if the buffer type is empty or 'acwrite'
+  if buffer_type == '' or buffer_type == 'acwrite' then
+    -- Write the buffer silently
+    vim.cmd('silent write')
+  end
+end
+
+-- Set up an autocmd to call the auto_write_buffer function when leaving the buffer
 vim.api.nvim_create_autocmd({ 'TextChanged', 'TextChangedI' }, {
-  callback = function() vim.cmd 'silent write' end,
+  callback = auto_write_buffer,
 })
 
 -- Editor options
