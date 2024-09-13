@@ -5,6 +5,11 @@ local o = vim.opt
 vim.opt.termguicolors = true
 
 
+-- auto saving
+vim.api.nvim_create_autocmd({ 'TextChanged', 'TextChangedI' }, {
+  callback = function() vim.cmd 'silent write' end,
+})
+
 -- Editor options
 -- https://dev.to/slydragonn/ultimate-neovim-setup-guide-lazynvim-plugin-manager-23b7
 
@@ -32,6 +37,9 @@ o.splitright = true
 o.splitbelow = true         -- When on, splitting a window will put the new window below the current one
 o.termguicolors = true
 o.conceallevel = 1
+o.swapfile = false
+
+
 
 -- tree
 -- disable netrw at the very start of your init.lua
