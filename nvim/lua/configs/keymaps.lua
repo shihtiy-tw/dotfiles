@@ -13,6 +13,18 @@ vim.keymap.set('n', '<leader>fgs', builtin.git_status, {})
 -- url-open
 vim.keymap.set("n", "gx", "<esc>:URLOpenUnderCursor<cr>")
 
+-- snippets
+local ls = require("luasnip")
+
+vim.keymap.set({ "i" }, "<C-K>", function() ls.expand() end, { silent = true })
+vim.keymap.set({ "i", "s" }, "<C-L>", function() ls.jump(1) end, { silent = true })
+vim.keymap.set({ "i", "s" }, "<C-J>", function() ls.jump(-1) end, { silent = true })
+
+vim.keymap.set({ "i", "s" }, "<C-E>", function()
+  if ls.choice_active() then
+    ls.change_choice(1)
+  end
+end, { silent = true })
 
 -- schema companion
 vim.keymap.set("n", "<leader>sy", function()

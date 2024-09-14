@@ -27,7 +27,8 @@ return {
       "hrsh7th/cmp-path",
       "hrsh7th/cmp-cmdline",
       "saadparwaiz1/cmp_luasnip",
-      'L3MON4D3/LuaSnip'
+      'L3MON4D3/LuaSnip',
+      "rafamadriz/friendly-snippets"
     },
     event = 'InsertEnter',
     lazy = false,
@@ -35,7 +36,6 @@ return {
     config = function(_, opts)
       local luasnip = require('luasnip')
       local cmp = require('cmp')
-
 
       local has_words_before = function()
         unpack = unpack or table.unpack
@@ -55,8 +55,8 @@ return {
             cmp.select_next_item()
           elseif luasnip.expand_or_locally_jumpable() then
             luasnip.expand_or_jump()
-            -- elseif has_words_before() then
-            --   cmp.complete()
+          elseif has_words_before() then
+            cmp.complete()
           else
             fallback()
           end
@@ -89,10 +89,10 @@ return {
         -- }),
       }
 
-      cmpsetup = {
+      cmp.setup {
         snippet = {
           expand = function(args)
-            -- require('luasnip').lsp_expand(args.body)
+            luasnip.lsp_expand(args.body)
           end,
         },
 
@@ -103,7 +103,7 @@ return {
 
         sources = cmp.config.sources({
             { name = 'nvim_lsp' },
-            -- { name = 'luasnip' },
+            { name = 'luasnip' },
           },
           {
             { name = 'buffer' },
