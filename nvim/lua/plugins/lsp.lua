@@ -22,20 +22,20 @@ return {
   {
     'hrsh7th/nvim-cmp',
     dependencies = {
+      'L3MON4D3/LuaSnip',
+      "rafamadriz/friendly-snippets",
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
       "hrsh7th/cmp-cmdline",
       "saadparwaiz1/cmp_luasnip",
-      'L3MON4D3/LuaSnip',
-      "rafamadriz/friendly-snippets"
     },
     event = 'InsertEnter',
     lazy = false,
     priority = 100,
     config = function(_, opts)
-      local luasnip = require('luasnip')
       local cmp = require('cmp')
+      local luasnip = require('luasnip')
 
       local has_words_before = function()
         unpack = unpack or table.unpack
@@ -93,6 +93,7 @@ return {
         snippet = {
           expand = function(args)
             luasnip.lsp_expand(args.body)
+            vim.snippet.expand(args.body)
           end,
         },
 
@@ -103,7 +104,7 @@ return {
 
         sources = cmp.config.sources({
             { name = 'nvim_lsp' },
-            { name = 'luasnip' },
+            { name = 'luasnip', option = { show_autosnippets = true } },
           },
           {
             { name = 'buffer' },

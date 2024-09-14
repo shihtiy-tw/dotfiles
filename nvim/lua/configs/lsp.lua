@@ -140,22 +140,22 @@ require("lspconfig").yamlls.setup(require("schema-companion").setup_client({
 
 -- cmp config
 
-local cmp = require('cmp')
+-- local cmp = require('cmp')
 
-cmp.setup({
-  sources = {
-    { name = 'nvim_lsp' },
-  },
-  -- snippet = {
-  --   expand = function(args)
-  --     -- You need Neovim v0.10 to use vim.snippet
-  --     vim.snippet.expand(args.body)
-  --   end,
-  -- },
-  snippet = {
-    expand = function(args)
-      require("luasnip").lsp_expand(args.body)
-    end,
-  },
-  mapping = cmp.mapping.preset.insert({}),
-})
+-- cmp.setup({
+--   sources = {
+--     { name = 'nvim_lsp' },
+--   },
+--   -- snippet = {
+--   --   expand = function(args)
+--   --     -- You need Neovim v0.10 to use vim.snippet
+--   --     vim.snippet.expand(args.body)
+--   --   end,
+--   -- },
+--   snippet = {
+--     expand = function(args)
+--       require("luasnip").lsp_expand(args.body)
+--     end,
+--   },
+--   mapping = cmp.mapping.preset.insert({}),
+-- })
