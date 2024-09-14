@@ -43,7 +43,11 @@ require('lualine').setup {
           return ("%s"):format(require("schema-companion.context").get_buffer_schema(0).name)
         end,
         cond = function()
-          return package.loaded["schema-companion"]
+          if package.loaded["schema-companion"] then
+            return true
+          else
+            return false
+          end
         end,
       },
     },
