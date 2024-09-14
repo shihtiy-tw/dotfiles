@@ -82,6 +82,7 @@ require("lspconfig").yamlls.setup(require("schema-companion").setup_client({
 
     yaml = {
       schemas = {
+        -- TODO: setup the schmea for eksctl, terraform, cloudformaion etc and setup the naming convension
         -- use this if you want to match all '*.yaml' files
         [require('kubernetes').yamlls_schema()] = "k8s-*.yaml",
         -- or this to only match '*.<resource>.yaml' files. ex: 'app.deployment.yaml', 'app.argocd.yaml', ...
