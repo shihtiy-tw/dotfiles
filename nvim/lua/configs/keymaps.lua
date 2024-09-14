@@ -10,6 +10,17 @@ vim.keymap.set('n', '<leader>fgc', builtin.git_commits, {})
 vim.keymap.set('n', '<leader>fgb', builtin.git_branches, {})
 vim.keymap.set('n', '<leader>fgs', builtin.git_status, {})
 
+-- git fugitive
+vim.keymap.set("n", "<leader>gg", ":Git ", { silent = true })
+vim.keymap.set("n", "<leader>gs", ":Git<cr>", { silent = true })
+vim.keymap.set("n", "<leader>ga", ":Git add %:p<cr><cr>", { silent = true })
+vim.keymap.set("n", "<leader>gd", ":Gdiff<cr>", { silent = true })
+vim.keymap.set("n", "<leader>ge", ":Gedit<cr>", { silent = true })
+vim.keymap.set("n", "<leader>gw", ":Gwrite<cr>", { silent = true })
+vim.keymap.set("n", "<leader>gc", ":Git commit<cr>", { silent = true })
+vim.keymap.set("n", "<leader>gb", ":Gblame<cr>", { silent = true })
+vim.keymap.set("n", "<leader>gl", ":Git log<cr>", { silent = true })
+
 -- url-open
 vim.keymap.set("n", "gx", "<esc>:URLOpenUnderCursor<cr>")
 
