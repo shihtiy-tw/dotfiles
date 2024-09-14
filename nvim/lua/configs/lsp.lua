@@ -33,7 +33,8 @@ require('mason-lspconfig').setup({
     'gopls',
     'dockerls',
     'yamlls',
-    'bashls'
+    'bashls',
+    'marksman'
   },
   -- ensure_installed = {
   --   'sumneko_lua',
