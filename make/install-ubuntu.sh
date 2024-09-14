@@ -48,8 +48,12 @@ pipx install git-sim
 # git
 #
 #$ curl https://github.com/so-fancy/diff-so-fancy/releases/download/v1.4.4/diff-so-fancy -o /usr/local/bin/diff-so-fancy
-sudo apt install git-extras
 
+LATEST_VERSION=$(curl -s https://api.github.com/repos/so-fancy/diff-so-fancy/releases/latest | grep -Po '"tag_name": "v\K[^"]*')
+sudo curl -L -o /usr/local/bin/diff-so-fancy "https://github.com/so-fancy/diff-so-fancy/releases/download/v${LATEST_VERSION}/diff-so-fancy"
+sudo chmod +x /usr/local/bin/diff-so-fancy
+
+sudo apt install git-extras
 sudo apt install git-lfs
 
 # tree

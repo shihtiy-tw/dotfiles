@@ -48,3 +48,15 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
+[core]
+	pager = diff-so-fancy | less --tabs=4 -RF
+[interactive]
+	diffFilter = diff-so-fancy --patch
+[color "diff"]
+	meta = 11
+	frag = magenta bold
+	func = 146 bold
+	commit = yellow bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
