@@ -1,6 +1,8 @@
 return {
   'diogo464/kubernetes.nvim',
   config = function()
-    require('kubernetes').setup()
+    if vim.g.os == "Linux" then
+      require('kubernetes').setup()
+    end
   end
 }

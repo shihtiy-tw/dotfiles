@@ -33,13 +33,23 @@ return {
         overrides = {
           notes_subdir = vim.NIL, -- have to use 'vim.NIL' instead of 'nil'
           new_notes_location = "current_dir",
+          -- templates = {
+          --   folder = 'Atlas/Utilities/Templates',
+          -- },
           templates = {
-            folder = 'Atlas/Utilities/Templates',
+            folder = (function()
+              local template_folder
+              if vim.g.os == "Darwin" then
+                template_folder = "Atlas/Utilities/Templates"
+              else
+                template_folder = vim.NIL
+              end
+              return template_folder
+            end)(),
           },
           disable_frontmatter = false,
         },
       },
     },
-    -- see below for full list of options 👇
   },
 }

@@ -1,5 +1,6 @@
 local global = vim.g
 local o = vim.opt
+vim.g.os = vim.loop.os_uname().sysname
 
 -- optionally enable 24-bit colour
 vim.opt.termguicolors = true
