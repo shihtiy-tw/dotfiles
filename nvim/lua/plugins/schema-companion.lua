@@ -9,6 +9,7 @@ return {
   },
   config = function()
     require("schema-companion").setup({
+      -- log_level = vim.log.levels.DEBUG,
       -- if you have telescope you can register the extension
       enable_telescope = true,
       matchers = {
@@ -16,6 +17,10 @@ return {
         -- require("schema-companion.matchers.kubernetes").setup({ version = "master" }),
       },
       schemas = {
+        {
+          name = "Kubernetes Main",
+          uri = require('kubernetes').yamlls_schema()
+        },
         {
           name = "Kubernetes v1.30",
           uri =

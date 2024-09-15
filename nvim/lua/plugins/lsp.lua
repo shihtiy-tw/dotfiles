@@ -163,11 +163,19 @@ return {
     config = function()
       -- https://github.com/hyperter96/nvim/blob/94b6824cd57c13eec1467c10f9973f4e70ff0ff7/lua/plugins/extras/lang/yaml.lua#L69
       require("lspconfig").yamlls.setup(require("schema-companion").setup_client({
+        -- lazy-load schemastore when needed
+        on_new_config = function(new_config)
+          new_config.settings.yaml.schemas =
+              vim.tbl_deep_extend("force", new_config.settings.yaml.schemas or {}, require("schemastore").yaml.schemas())
+        end,
         settings = {
           yaml = {
             format = {
               enable = true,
             },
+            validate = true,
+            completion = true,
+            keyOrdering = false,
             schemaStore = {
               -- Must disable built-in schemaStore support to use
               -- schemas from SchemaStore.nvim plugin
@@ -175,6 +183,13 @@ return {
               -- Avoid TypeError: Cannot read properties of undefined (reading 'length')
               url = "",
             },
+            -- schemaStore = {
+            --   -- Must disable built-in schemaStore support to use
+            --   -- schemas from SchemaStore.nvim plugin
+            --   enable = true,
+            --   -- Avoid TypeError: Cannot read properties of undefined (reading 'length')
+            --   url = "https://www.schemastore.org/api/json/catalog.json",
+            -- },
             schemas = require('schemastore').yaml.schemas {
               -- select subset from the JSON schema catalog
               extra = {
@@ -185,6 +200,11 @@ return {
                   url = require('kubernetes').yamlls_schema(),
                 },
               },
+              ignore = {
+                "dotnet-tools.json",
+                "dotnet Release Index manifest",
+                "Crowdsec scenario config"
+              }
               -- select = {
               --   'kustomization.yaml',
               --   'docker-compose.yml'
