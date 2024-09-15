@@ -67,97 +67,145 @@ require('mason-lspconfig').setup({
 -- yamlls config
 -- https://www.arthurkoziel.com/json-schemas-in-neovim/
 
-require("lspconfig").yamlls.setup(require("schema-companion").setup_client({
-  -- TODO: check how to exclude the file name so the k8s yaml will not be mapped to other schema
-  --
-  schemas = require('schemastore').yaml.schemas {
-    -- select subset from the JSON schema catalog
-    select = {
-      'kustomization.yaml',
-      'docker-compose.yml'
-    },
-  },
-
-  settings = {
-    formatting = false,
-
-    yaml = {
-      schemas = {
-        -- TODO: setup the schmea for eksctl, terraform, cloudformaion etc and setup the naming convension
-        -- use this if you want to match all '*.yaml' files
-        [require('kubernetes').yamlls_schema()] = "k8s-*.yaml",
-        -- or this to only match '*.<resource>.yaml' files. ex: 'app.deployment.yaml', 'app.argocd.yaml', ...
-        [require('kubernetes').yamlls_schema()] = require('kubernetes').yamlls_filetypes()
-      }
-    }
-  }
-}
---
--- your yaml language server configuration
--- settings = {
---   yaml = {
---   NOTE: this will set a 1.22 global one
---
---     schemas = { kubernetes = "globPattern" },
---   }
--- }
-))
-
--- local cfg = require("schema-companion").setup {
---
---   -- Additional schemas available in Telescope picker
---   schemas = {
---     {
---       name = "Flux GitRepository",
---       uri = "https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/gitrepository-source-v1.json",
---     },
---     {
---       name = "Kubernetes 1.29",
---       uri = "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.29.3-standalone-strict/all.json",
---     }
---   },
---
---   -- Pass any additional options that will be merged in the final LSP config
---   -- Defaults: https://github.com/someone-stole-my-name/yaml-companion.nvim/blob/main/lua/yaml-companion/config.lua
---   lspconfig = {
---     settings = {
---       yaml = {
---         validate = true,
---         schemaStore = {
---           enable = false,
---           url = "",
+-- require("lspconfig").yamlls.setup(require("schema-companion").setup_client({
+--   -- TODO: check how to exclude the file name so the k8s yaml will not be mapped to other schema
+--   --
+--   settings = {
+--     redhat = { telemetry = { enabled = false } },
+--     yaml = {
+--       keyOrdering = false,
+--       format = {
+--         enable = true,
+--       },
+--       validate = true,
+--       completion = true,
+--       schemaStore = {
+--         -- Must disable built-in schemaStore support to use
+--         -- schemas from SchemaStore.nvim plugin
+--         enable = false,
+--         -- Avoid TypeError: Cannot read properties of undefined (reading 'length')
+--         url = "",
+--       },
+--       schemas = require('schemastore').yaml.schemas {
+--         -- select subset from the JSON schema catalog
+--         extra = {
+--           {
+--             description = 'Current Kubernetes Schemas',
+--             fileMatch = require('kubernetes').yamlls_filetypes(),
+--             name = 'Kubernetes',
+--             url = require('kubernetes').yamlls_schema(),
+--           },
 --         },
---         schemas = {
---           ['https://json.schemastore.org/github-workflow.json'] = '.github/workflows/*.{yml,yaml}',
---           ['https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.29.3-standalone-strict/all.json'] = 'deployment.yaml',
---         }
---       }
---     }
---   }
+--         select = {
+--           'kustomization.yaml',
+--           'docker-compose.yml'
+--         },
+--       },
+--       -- schemas = {
+--       --   kubernetes = { "k8s**.yaml", "kube*/*.yaml" },
+--       --   ["~/.config/nvim/schemas/protolint.json"] = ".protolint.{yml,yaml}",
+--       --   ["http://json.schemastore.org/github-workflow"] = ".github/workflows/*",
+--       --   ["http://json.schemastore.org/github-action"] = ".github/action.{yml,yaml}",
+--       --   ["https://raw.githubusercontent.com/microsoft/azure-pipelines-vscode/master/service-schema.json"] =
+--       --   "azure-pipelines.yml",
+--       --   ["http://json.schemastore.org/ansible-stable-2.9"] = "roles/tasks/*.{yml,yaml}",
+--       --   ["http://json.schemastore.org/prettierrc"] = ".prettierrc.{yml,yaml}",
+--       --   ["http://json.schemastore.org/kustomization"] = "kustomization.{yml,yaml}",
+--       --   ["http://json.schemastore.org/ansible-playbook"] = "*play*.{yml,yaml}",
+--       --   ["http://json.schemastore.org/chart"] = "Chart.{yml,yaml}",
+--       --   ["https://json.schemastore.org/dependabot-v2"] = ".github/dependabot.{yml,yaml}",
+--       --   ["https://gitlab.com/gitlab-org/gitlab/-/raw/master/app/assets/javascripts/editor/schema/ci.json"] =
+--       --   "*gitlab-ci*.{yml,yaml}",
+--       --   ["https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/schemas/v3.1/schema.json"] =
+--       --   "*api*.{yml,yaml}",
+--       --   ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] =
+--       --   "*docker-compose*.{yml,yaml}",
+--       --   ["https://raw.githubusercontent.com/argoproj/argo-workflows/master/api/jsonschema/schema.json"] =
+--       --   "*flow*.{yml,yaml}",
+--       -- },
+--     },
+--   },
+--
+--   -- settings = {
+--   --   formatting = false,
+--   --
+--   --   yaml = {
+--   --     schemas = {
+--   --       -- TODO: setup the schmea for eksctl, terraform, cloudformaion etc and setup the naming convension
+--   --       -- use this if you want to match all '*.yaml' files
+--   --       [require('kubernetes').yamlls_schema()] = "k8s-*.yaml",
+--   --       -- or this to only match '*.<resource>.yaml' files. ex: 'app.deployment.yaml', 'app.argocd.yaml', ...
+--   --       [require('kubernetes').yamlls_schema()] = require('kubernetes').yamlls_filetypes()
+--   --     }
+--   --   }
+--   -- }
 -- }
-
--- require("lspconfig")["yamlls"].setup(cfg)
-
-
-
--- cmp config
-
--- local cmp = require('cmp')
-
--- cmp.setup({
---   sources = {
---     { name = 'nvim_lsp' },
---   },
---   -- snippet = {
---   --   expand = function(args)
---   --     -- You need Neovim v0.10 to use vim.snippet
---   --     vim.snippet.expand(args.body)
---   --   end,
---   -- },
---   snippet = {
---     expand = function(args)
---       require("luasnip").lsp_expand(args.body)
---     end,
---   },
---   mapping = cmp.mapping.preset.insert({}),
--- })
+-- --
+-- -- your yaml language server configuration
+-- -- settings = {
+-- --   yaml = {
+-- --   NOTE: this will set a 1.22 global one
+-- --
+-- --     schemas = { kubernetes = "globPattern" },
+-- --   }
+-- -- }
+-- ))
+--
+-- -- local cfg = require("schema-companion").setup {
+-- --
+-- --   -- Additional schemas available in Telescope picker
+-- --   schemas = {
+-- --     {
+-- --       name = "Flux GitRepository",
+-- --       uri = "https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/gitrepository-source-v1.json",
+-- --     },
+-- --     {
+-- --       name = "Kubernetes 1.29",
+-- --       uri = "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.29.3-standalone-strict/all.json",
+-- --     }
+-- --   },
+-- --
+-- --   -- Pass any additional options that will be merged in the final LSP config
+-- --   -- Defaults: https://github.com/someone-stole-my-name/yaml-companion.nvim/blob/main/lua/yaml-companion/config.lua
+-- --   lspconfig = {
+-- --     settings = {
+-- --       yaml = {
+-- --         validate = true,
+-- --         schemaStore = {
+-- --           enable = false,
+-- --           url = "",
+-- --         },
+-- --         schemas = {
+-- --           ['https://json.schemastore.org/github-workflow.json'] = '.github/workflows/*.{yml,yaml}',
+-- --           ['https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.29.3-standalone-strict/all.json'] = 'deployment.yaml',
+-- --         }
+-- --       }
+-- --     }
+-- --   }
+-- -- }
+--
+-- -- require("lspconfig")["yamlls"].setup(cfg)
+--
+--
+--
+-- -- cmp config
+--
+-- -- local cmp = require('cmp')
+--
+-- -- cmp.setup({
+-- --   sources = {
+-- --     { name = 'nvim_lsp' },
+-- --   },
+-- --   -- snippet = {
+-- --   --   expand = function(args)
+-- --   --     -- You need Neovim v0.10 to use vim.snippet
+-- --   --     vim.snippet.expand(args.body)
+-- --   --   end,
+-- --   -- },
+-- --   snippet = {
+-- --     expand = function(args)
+-- --       require("luasnip").lsp_expand(args.body)
+-- --     end,
+-- --   },
+-- --   mapping = cmp.mapping.preset.insert({}),
+-- -- })

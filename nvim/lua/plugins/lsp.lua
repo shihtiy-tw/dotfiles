@@ -13,7 +13,6 @@ return {
     'VonHeikemen/lsp-zero.nvim',
     branch = 'v4.x',
     lazy = false,
-    config = false,
     config = function()
       require("lsp-zero").setup {}
     end,
@@ -159,10 +158,75 @@ return {
       { 'hrsh7th/cmp-nvim-lsp' },
       { 'williamboman/mason.nvim' },
       { 'williamboman/mason-lspconfig.nvim' },
+      { 'cenk1cenk2/schema-companion.nvim' },
     },
     config = function()
-      require "configs.lsp"
-    end
+      -- https://github.com/hyperter96/nvim/blob/94b6824cd57c13eec1467c10f9973f4e70ff0ff7/lua/plugins/extras/lang/yaml.lua#L69
+      require("lspconfig").yamlls.setup(require("schema-companion").setup_client({
+        settings = {
+          yaml = {
+            format = {
+              enable = true,
+            },
+            schemaStore = {
+              -- Must disable built-in schemaStore support to use
+              -- schemas from SchemaStore.nvim plugin
+              enable = false,
+              -- Avoid TypeError: Cannot read properties of undefined (reading 'length')
+              url = "",
+            },
+            schemas = require('schemastore').yaml.schemas {
+              -- select subset from the JSON schema catalog
+              extra = {
+                {
+                  description = 'Current Kubernetes Schemas',
+                  fileMatch = "k8s-*.yaml",
+                  name = 'Kubernetes',
+                  url = require('kubernetes').yamlls_schema(),
+                },
+              },
+              -- select = {
+              --   'kustomization.yaml',
+              --   'docker-compose.yml'
+              -- },
+            },
+            -- schemas = {
+            -- ["~/.config/nvim/schemas/protolint.json"] = ".protolint.{yml,yaml}",
+            -- ["http://json.schemastore.org/github-workflow"] = ".github/workflows/*",
+            -- ["http://json.schemastore.org/github-action"] = ".github/action.{yml,yaml}",
+            -- ["https://raw.githubusercontent.com/microsoft/azure-pipelines-vscode/master/service-schema.json"] =
+            -- "azure-pipelines.yml",
+            -- ["http://json.schemastore.org/ansible-stable-2.9"] = "roles/tasks/*.{yml,yaml}",
+            -- ["http://json.schemastore.org/prettierrc"] = ".prettierrc.{yml,yaml}",
+            -- ["http://json.schemastore.org/kustomization"] = "kustomization.{yml,yaml}",
+            -- ["http://json.schemastore.org/ansible-playbook"] = "*play*.{yml,yaml}",
+            -- ["http://json.schemastore.org/chart"] = "Chart.{yml,yaml}",
+            -- ["https://json.schemastore.org/dependabot-v2"] = ".github/dependabot.{yml,yaml}",
+            -- ["https://gitlab.com/gitlab-org/gitlab/-/raw/master/app/assets/javascripts/editor/schema/ci.json"] =
+            -- "*gitlab-ci*.{yml,yaml}",
+            -- ["https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/schemas/v3.1/schema.json"] =
+            -- "*api*.{yml,yaml}",
+            -- ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] =
+            -- "*docker-compose*.{yml,yaml}",
+            -- ["https://raw.githubusercontent.com/argoproj/argo-workflows/master/api/jsonschema/schema.json"] =
+            -- "*flow*.{yml,yaml}",
+            -- },
+          },
+        },
+      }))
+    end,
+    opts = {
+      setup = {
+        yamlls = function()
+          -- Neovim < 0.10 does not have dynamic registration for formatting
+          if vim.fn.has("nvim-0.10") == 0 then
+            LazyVim.lsp.on_attach(function(client, _)
+              client.server_capabilities.documentFormattingProvider = true
+            end, "yamlls")
+          end
+        end,
+      },
+    },
   },
   {
     "mfussenegger/nvim-lint",
