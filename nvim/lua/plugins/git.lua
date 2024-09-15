@@ -1,2 +1,1 @@
-return { { "tpope/vim-fugitive" } }
--- TODO: add diffview plugin
+return { { "tpope/vim-fugitive" }, { "sindrets/diffview.nvim" } }
