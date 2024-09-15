@@ -10,6 +10,15 @@ vim.keymap.set('n', '<leader>fj', builtin.jumplist, {})
 vim.keymap.set('n', '<leader>fo', builtin.oldfiles, {})
 vim.keymap.set('n', '<leader>fC', builtin.colorscheme, {})
 
+-- kustomize
+vim.keymap.set("n", "<leader>Kb", "<cmd>lua require('kustomize').build()<cr>", { noremap = true })
+vim.keymap.set("n", "<leader>Kk", "<cmd>lua require('kustomize').kinds()<cr>", { noremap = true })
+vim.keymap.set("n", "<leader>Kl", "<cmd>lua require('kustomize').list_resources()<cr>", { noremap = true })
+vim.keymap.set("n", "<leader>Kp", "<cmd>lua require('kustomize').print_resources()<cr>", { noremap = true })
+vim.keymap.set("n", "<leader>Kv", "<cmd>lua require('kustomize').validate()<cr>", { noremap = true })
+vim.keymap.set("n", "<leader>Kd", "<cmd>lua require('kustomize').deprecations()<cr>", { noremap = true })
+
+
 -- telescope for lsp
 vim.keymap.set('n', '<leader>fgc', builtin.git_commits, {})
 vim.keymap.set('n', '<leader>flr', builtin.lsp_references, {}) -- Lists LSP references for the word under the cursor
