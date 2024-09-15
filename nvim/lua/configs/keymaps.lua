@@ -4,22 +4,42 @@ vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
 vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
 vim.keymap.set('n', '<leader>fh', builtin.command_history, {})
+vim.keymap.set('n', '<leader>fk', builtin.keymaps, {})
 vim.keymap.set('n', '<leader>fc', builtin.commands, {})
 vim.keymap.set('n', '<leader>fC', builtin.colorscheme, {})
 vim.keymap.set('n', '<leader>fgc', builtin.git_commits, {})
 vim.keymap.set('n', '<leader>fgb', builtin.git_branches, {})
 vim.keymap.set('n', '<leader>fgs', builtin.git_status, {})
 
+-- alternative file and other plugin
+vim.keymap.set('n','[e', '<C-^>', {})
+
+
+vim.api.nvim_set_keymap("n", "<leader>ll", "<cmd>:Other<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>ltn", "<cmd>:OtherTabNew<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>lp", "<cmd>:OtherSplit<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>lv", "<cmd>:OtherVSplit<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>lc", "<cmd>:OtherClear<CR>", { noremap = true, silent = true })
+
+-- Context specific bindings
+vim.api.nvim_set_keymap("n", "<leader>lt", "<cmd>:Other test<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>ls", "<cmd>:Other scss<CR>", { noremap = true, silent = true })
+
+-- oil
+vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+
 -- git fugitive
 vim.keymap.set("n", "<leader>gg", ":Git ", { silent = true })
 vim.keymap.set("n", "<leader>gs", ":Git<cr>", { silent = true })
 vim.keymap.set("n", "<leader>ga", ":Git add %:p<cr><cr>", { silent = true })
+vim.keymap.set("n", "<leader>gp", ":Git add -p %:p<cr><cr>", { silent = true })
+vim.keymap.set("n", "<leader>gS", ":Git diff --staged %:p<cr><cr>", { silent = true })
 vim.keymap.set("n", "<leader>gd", ":Gvdiffsplit<cr>", { silent = true })
 vim.keymap.set("n", "<leader>ge", ":Gedit<cr>", { silent = true })
 vim.keymap.set("n", "<leader>gw", ":Gwrite<cr>", { silent = true })
 vim.keymap.set("n", "<leader>gc", ":Git commit<cr>", { silent = true })
 vim.keymap.set("n", "<leader>gb", ":Gblame<cr>", { silent = true })
-vim.keymap.set("n", "<leader>gl", ":Git log<cr>", { silent = true })
+vim.keymap.set("n", "<leader>gl", ":Git log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%ai%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all<cr>", { silent = true })
 
 -- url-open
 vim.keymap.set("n", "gx", "<esc>:URLOpenUnderCursor<cr>")
