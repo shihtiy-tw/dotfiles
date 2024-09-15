@@ -51,6 +51,13 @@ o.termguicolors = true
 o.conceallevel = 1
 o.swapfile = false
 
+-- set list
+-- set listchars=tab:\\t
+-- vim.o.listchars = 'space:_,tab:>~'
+vim.o.listchars = 'tab:\\t'
+
+
+
 
 
 -- tree

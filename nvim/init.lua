@@ -23,5 +23,3 @@ require("configs.keymaps")
 require("configs.themes")
 require("configs.windows")
 
---plugin--
--- TODO: addon obsidian and notion plugin

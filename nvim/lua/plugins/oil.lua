@@ -1,3 +1,4 @@
+-- TODO: add other plugins for nevigation
 return {
   'stevearc/oil.nvim',
   ---@module 'oil'
