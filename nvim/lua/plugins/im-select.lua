@@ -20,7 +20,7 @@ return {
       -- For macOS, default: "im-select"
       -- For Linux, default: "fcitx5-remote" or "fcitx-remote" or "ibus"
       -- default_command         = "fcitx5",
-      default_command         = (function()
+      default_command         = function()
         local command
         if vim.g.os == "Darwin" then
           command = "im-select"
@@ -28,7 +28,7 @@ return {
           command = "fcitx5"
         end
         return command
-      end),
+      end,
 
       -- Restore the default input method state when the following events are triggered
       set_default_events      = { "VimEnter", "FocusGained", "InsertLeave", "CmdlineLeave" },
