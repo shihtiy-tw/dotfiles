@@ -12,8 +12,8 @@ vim.keymap.set('n', '<leader>fC', builtin.colorscheme, {})
 
 -- kustomize
 vim.keymap.set("n", "<leader>Kb", "<cmd>lua require('kustomize').build()<cr>", { noremap = true })
-vim.keymap.set("n", "<leader>Kk", "<cmd>lua require('kustomize').kinds()<cr>", { noremap = true })
-vim.keymap.set("n", "<leader>Kl", "<cmd>lua require('kustomize').list_resources()<cr>", { noremap = true })
+vim.keymap.set("n", "<leader>KK", "<cmd>lua require('kustomize').kinds()<cr>", { noremap = true })
+vim.keymap.set("n", "<leader>KL", "<cmd>lua require('kustomize').list_resources()<cr>", { noremap = true })
 vim.keymap.set("n", "<leader>Kp", "<cmd>lua require('kustomize').print_resources()<cr>", { noremap = true })
 vim.keymap.set("n", "<leader>Kv", "<cmd>lua require('kustomize').validate()<cr>", { noremap = true })
 vim.keymap.set("n", "<leader>Kd", "<cmd>lua require('kustomize').deprecations()<cr>", { noremap = true })
@@ -21,15 +21,15 @@ vim.keymap.set("n", "<leader>Kd", "<cmd>lua require('kustomize').deprecations()<
 
 -- telescope for lsp
 vim.keymap.set('n', '<leader>fgc', builtin.git_commits, {})
-vim.keymap.set('n', '<leader>flr', builtin.lsp_references, {}) -- Lists LSP references for the word under the cursor
-vim.keymap.set('n', '<leader>fli', builtin.lsp_incoming_calls, {}) -- Lists LSP incoming calls for the word under the cursor
-vim.keymap.set('n', '<leader>flo', builtin.lsp_outgoing_calls, {}) -- Lists LSP outgoing calls for the word under the cursor
-vim.keymap.set('n', '<leader>fls', builtin.lsp_document_symbols, {}) -- Lists LSP document symbols in the current buffer
-vim.keymap.set('n', '<leader>flw', builtin.lsp_workspace_symbols, {}) -- Lists LSP document symbols in the current workspace
+vim.keymap.set('n', '<leader>flr', builtin.lsp_references, {})                -- Lists LSP references for the word under the cursor
+vim.keymap.set('n', '<leader>fli', builtin.lsp_incoming_calls, {})            -- Lists LSP incoming calls for the word under the cursor
+vim.keymap.set('n', '<leader>flo', builtin.lsp_outgoing_calls, {})            -- Lists LSP outgoing calls for the word under the cursor
+vim.keymap.set('n', '<leader>fls', builtin.lsp_document_symbols, {})          -- Lists LSP document symbols in the current buffer
+vim.keymap.set('n', '<leader>flw', builtin.lsp_workspace_symbols, {})         -- Lists LSP document symbols in the current workspace
 vim.keymap.set('n', '<leader>flD', builtin.lsp_dynamic_workspace_symbols, {}) -- Dynamically Lists LSP for all workspace symbols
-vim.keymap.set('n', '<leader>flm', builtin.lsp_implementations, {}) -- Goto the implementation of the word under the cursor if there's only one, otherwise show all options in Telescope
-vim.keymap.set('n', '<leader>fld', builtin.lsp_definitions, {}) -- Goto the definition of the word under the cursor, if there's only one, otherwise show all options in Telescope
-vim.keymap.set('n', '<leader>flt', builtin.lsp_type_definitions, {}) -- Goto the definition of the type of the word under the cursor, if there's only one, otherwise show all options in Telescope
+vim.keymap.set('n', '<leader>flm', builtin.lsp_implementations, {})           -- Goto the implementation of the word under the cursor if there's only one, otherwise show all options in Telescope
+vim.keymap.set('n', '<leader>fld', builtin.lsp_definitions, {})               -- Goto the definition of the word under the cursor, if there's only one, otherwise show all options in Telescope
+vim.keymap.set('n', '<leader>flt', builtin.lsp_type_definitions, {})          -- Goto the definition of the type of the word under the cursor, if there's only one, otherwise show all options in Telescope
 
 
 -- telescope for git
@@ -38,7 +38,7 @@ vim.keymap.set('n', '<leader>fgb', builtin.git_branches, {})
 vim.keymap.set('n', '<leader>fgs', builtin.git_status, {})
 
 -- alternative file and other plugin
-vim.keymap.set('n','[e', '<C-^>', {})
+vim.keymap.set('n', '[e', '<C-^>', {})
 
 
 vim.api.nvim_set_keymap("n", "<leader>ll", "<cmd>:Other<CR>", { noremap = true, silent = true })
@@ -65,7 +65,9 @@ vim.keymap.set("n", "<leader>ge", ":Gedit<cr>", { silent = true })
 vim.keymap.set("n", "<leader>gw", ":Gwrite<cr>", { silent = true })
 vim.keymap.set("n", "<leader>gc", ":Git commit<cr>", { silent = true })
 vim.keymap.set("n", "<leader>gb", ":Gblame<cr>", { silent = true })
-vim.keymap.set("n", "<leader>gl", ":Git log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%ai%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all<cr>", { silent = true })
+vim.keymap.set("n", "<leader>gl",
+  ":Git log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%ai%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all<cr>",
+  { silent = true })
 
 -- url-open
 vim.keymap.set("n", "gx", "<esc>:URLOpenUnderCursor<cr>")
