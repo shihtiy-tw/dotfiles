@@ -2,6 +2,8 @@
 include ./make/envfile
 export $(shell sed 's/=.*//' ./make/envfile)
 
+# ascii: 3D-ASCII
+
 # Define color codes
 GREEN=\033[0;32m
 YELLOW=\033[0;33m
@@ -83,6 +85,25 @@ install:
 		"
 
 		@./make/install-init.sh
+
+dark:
+	@echo "$(PURPLE) ____             _     __        __         _     _   \n\
+|  _ \\  __ _ _ __| | __ \\ \\      / /__  _ __| | __| | \n\
+| | | |/ _\` | '__| |/ /  \\ \\ /\\ / / _ \\| '__| |/ _\` | \n\
+| |_| | (_| | |  |   <    \\ V  V / (_) | |  | | (_| | \n\
+|____/ \\__,_|_|  |_|\\_\\    \\_/\\_/ \\___/|_|  |_|\\__,_| \n $(RESET)"
+	@./make/color-theme.sh dark
+
+light:
+	@echo "$(YELLOW) \n\
+  _     _       _     _    __        __         _     _ \n\
+ | |   (_) __ _| |__ | |_  \ \      / /__  _ __| | __| | \n\
+ | |   | |/ _\` | '_ \| __|  \ \ /\ / / _ \| '__| |/ _\` | \n\
+ | |___| | (_| | | | | |_    \ V  V / (_) | |  | | (_| | \n\
+ |_____|_|\__, |_| |_|\__|    \_/\_/ \___/|_|  |_|\__,_| \n\
+          |___/ $(RESET)"
+
+	@./make/color-theme.sh light
 
 init:
 		@echo " \n\

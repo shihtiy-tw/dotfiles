@@ -36,6 +36,9 @@ source $HOME/dotfiles/zsh/function.zsh
 # ENV VAR
 source $HOME/dotfiles/zsh/env.zsh
 
+# THEME
+source ${HOME}/dotfiles/zsh/theme.zsh
+
 # color for man pages
 source $HOME/dotfiles/zsh/man.zsh
 
