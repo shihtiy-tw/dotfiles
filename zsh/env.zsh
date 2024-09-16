@@ -1,6 +1,6 @@
 # General
 export LC_ALL=en_US.UTF-8
-export VISUAL=nvim
+export VISUAL=vi
 export EDITOR="$VISUAL"
 export MYVIMRC="${HOME}/.vimrc"
 
