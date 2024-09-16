@@ -6,7 +6,10 @@ return {
       require("mason").setup {}
     end,
   },
-  "williamboman/mason-lspconfig.nvim",
+  {
+    "williamboman/mason-lspconfig.nvim",
+    dependencies = { 'nvim-treesitter/nvim-treesitter' },
+  },
   'mhartington/formatter.nvim',
   {
     'VonHeikemen/lsp-zero.nvim',

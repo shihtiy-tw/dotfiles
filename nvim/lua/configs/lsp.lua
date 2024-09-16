@@ -1,4 +1,7 @@
 local lsp_zero = require('lsp-zero')
+local lsp_config = require('lspconfig')
+local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
+
 
 -- lsp_attach is where you enable features that only work
 -- if there is a language server active in the file
@@ -24,6 +27,8 @@ lsp_zero.extend_lspconfig({
 })
 
 require('mason-lspconfig').setup({
+  -- See mapping
+  -- https://github.com/williamboman/mason-lspconfig.nvim/blob/25c11854aa25558ee6c03432edfa0df0217324be/lua/mason-lspconfig/mappings/server.lua
   ensure_installed = {
     'lua_ls',
     'dockerls',
@@ -33,9 +38,11 @@ require('mason-lspconfig').setup({
     'yamlls',
     'bashls',
     'marksman',
-    'autotools_ls',
-    -- 'java_language_server'
+    -- autotools_ls is broken
+    -- https://github.com/jwmatthews/treesitter_example/issues/1
+    -- 'autotools_ls',
     -- for java, just use java.nvim
+    -- 'java_language_server'
   },
   -- ensure_installed = {
   --   'sumneko_lua',
@@ -59,7 +66,7 @@ require('mason-lspconfig').setup({
     -- this first function is the "default handler"
     -- it applies to every language server without a "custom handler"
     function(server_name)
-      require('lspconfig')[server_name].setup({})
+      lsp_config[server_name].setup({})
     end,
   }
 })
@@ -83,6 +90,7 @@ require('mason-lspconfig').setup({
 --   },
 -- }
 
+-- yaml
 -- https://github.com/hyperter96/nvim/blob/94b6824cd57c13eec1467c10f9973f4e70ff0ff7/lua/plugins/extras/lang/yaml.lua#L69
 require("lspconfig").yamlls.setup(require("schema-companion").setup_client({
   -- lazy-load schemastore when needed
@@ -125,7 +133,15 @@ require("lspconfig").yamlls.setup(require("schema-companion").setup_client({
 }))
 
 
-require('lspconfig').jdtls.setup({})
+-- java
+-- https://github.com/nvim-java/nvim-java?tab=readme-ov-file#custom-configuration-instructions
+lsp_config.jdtls.setup({})
+
+-- Makefiles
+-- https://github.com/MrTreev/nvim-config/blob/eb4e7dbe08a82d12ca896032f143967baad46571/lua/core/lsp/autotools_ls.lua#L4
+-- lsp_config.autotools_ls.setup {
+--   capabilities = lsp_capabilities,
+-- }
 
 -- https://github.com/hyperter96/nvim/blob/94b6824cd57c13eec1467c10f9973f4e70ff0ff7/lua/plugins/extras/lang/yaml.lua#L69
 -- require("lspconfig").yamlls.setup(require("schema-companion").setup_client({
