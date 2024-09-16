@@ -10,6 +10,7 @@ require("conform").setup({
     markdown = { "markdownlint-cli2", stop_after_first = true },
     sh = { "shellharden" },
     yaml = { "prettierd", "prettier", stop_after_first = true },
+    -- java = { "google-java-format", stop_after_first = true },
 
   },
   format_on_save = {

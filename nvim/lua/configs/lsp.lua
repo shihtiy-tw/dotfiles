@@ -33,7 +33,9 @@ require('mason-lspconfig').setup({
     'yamlls',
     'bashls',
     'marksman',
-    'autotools_ls'
+    'autotools_ls',
+    -- 'java_language_server'
+    -- for java, just use java.nvim
   },
   -- ensure_installed = {
   --   'sumneko_lua',
@@ -121,6 +123,9 @@ require("lspconfig").yamlls.setup(require("schema-companion").setup_client({
     },
   },
 }))
+
+
+require('lspconfig').jdtls.setup({})
 
 -- https://github.com/hyperter96/nvim/blob/94b6824cd57c13eec1467c10f9973f4e70ff0ff7/lua/plugins/extras/lang/yaml.lua#L69
 -- require("lspconfig").yamlls.setup(require("schema-companion").setup_client({
