@@ -37,3 +37,13 @@ else
     echo "color-scheme should be 'dark' or 'light'"
     exit 1
 fi
+if [ "$OS" == "Mac" ]; then
+    open /Applications/ToggleDarkMode.app
+
+    if [ ! -d /Applications/ToggleDarkMode.app ]; then
+        echo "Follow the doc to create a ToggleDarkMode.app!"
+        echo "https://medium.com/@geert.cuppens/macos-keyboard-shortcut-to-toggle-dark-mode-2724c9f7fbfe"
+        open "$HOME"/dotfiles/make/mac/ToggleDarkMode.app.scpt
+    fi
+fi
+
