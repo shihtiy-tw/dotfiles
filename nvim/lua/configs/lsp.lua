@@ -32,7 +32,8 @@ require('mason-lspconfig').setup({
     'dockerls',
     'yamlls',
     'bashls',
-    'marksman'
+    'marksman',
+    'autotools_ls'
   },
   -- ensure_installed = {
   --   'sumneko_lua',

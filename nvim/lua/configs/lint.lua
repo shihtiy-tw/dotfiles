@@ -9,6 +9,7 @@ lint.linters_by_ft = {
   -- sh = { "shellcheck" },
   dockerfile = { "hadolint" },
   yaml = { "yamllint" },
+  make = { "checkmake" },
 
 }
 

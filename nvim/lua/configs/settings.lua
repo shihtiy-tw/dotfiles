@@ -54,7 +54,8 @@ o.swapfile = false
 -- set list
 -- set listchars=tab:\\t
 -- vim.o.listchars = 'space:_,tab:>~'
-vim.o.listchars = 'tab:\\t'
+vim.o.listchars = 'tab:^I'
+vim.opt.list = true
 
 
 
