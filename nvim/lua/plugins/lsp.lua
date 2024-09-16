@@ -1,4 +1,3 @@
--- FIX: why lua file use yaml lsp
 return {
   {
     'williamboman/mason.nvim',
