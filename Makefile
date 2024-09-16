@@ -2,21 +2,49 @@
 include ./make/envfile
 export $(shell sed 's/=.*//' ./make/envfile)
 
-PHONY: help
+# Define color codes
+GREEN=\033[0;32m
+YELLOW=\033[0;33m
+BLUE=\033[0;34m
+PURPLE=\033[0;35m
+CYAN=\033[0;36m
+RESET=\033[0m
+
+.PHONY: help
+.PHONY: test
+.PHONY: clean
+.PHONY: all
+
+defaulttt: help
 
 help:
-	@echo "\n\
-	Usages: \n\
-		hello: hello\n\
-		install: download applications\n\
-		init: config all dotfiles\n\
-		status: show dotfile status\n\
-		diff: show dotfile status\n\
-		add: show dotfile status\n\
-		commit: show dotfile status\n\
-		ls: show dotfiles \n\
-		rm_env: remove env\n\
-	"
+	@echo " $(CYAN)Usage: make [target]$(RESET)\n "
+		@echo " $(GREEN)Targets:$(RESET) "
+		@echo "  $(YELLOW)hello$(RESET):            hello"
+		@echo "  $(YELLOW)install$(RESET):          download applications"
+		@echo "  $(YELLOW)init$(RESET):             config all dotfiles"
+		@echo "  $(YELLOW)status$(RESET):           show dotfile status"
+		@echo "  $(YELLOW)diff$(RESET):             show dotfile diff"
+		@echo "  $(YELLOW)add$(RESET):              add changes to git"
+		@echo "  $(YELLOW)commit$(RESET):           commit changes"
+		@echo "  $(YELLOW)ls$(RESET):               show dotfiles"
+		@echo "  $(YELLOW)rm_env$(RESET):           remove env"
+
+# PHONY: help
+
+# help:
+# 	@echo "\n\
+# 	Usages: \n\
+# 		hello: hello\n\
+# 		install: download applications\n\
+# 		init: config all dotfiles\n\
+# 		status: show dotfile status\n\
+# 		diff: show dotfile status\n\
+# 		add: show dotfile status\n\
+# 		commit: show dotfile status\n\
+# 		ls: show dotfiles \n\
+# 		rm_env: remove env\n\
+# 	"
 
 env:
 		@echo ${ZSHRCPATH}
