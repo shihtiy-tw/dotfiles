@@ -29,21 +29,31 @@ color_scheme="$1"
 # tool: tmux, neovim
 # mac: iterm, scheme, diable bluelight filter, vscode
 if [ "$color_scheme" == "dark" ]; then
-    sed -i "/^export THEME/s/light/dark/g" "$HOME"/dotfiles/zsh/theme.zsh
+    if [ "$OS" == "Mac" ]; then
+        sed -i '' "/^export THEME/s/light/dark/g" "$HOME"/dotfiles/zsh/theme.zsh
+    else
+        sed -i "/^export THEME/s/light/dark/g" "$HOME"/dotfiles/zsh/theme.zsh
+    fi
+
 elif [ "$color_scheme" == "light" ]; then
-    sed -i "/^export THEME/s/dark/light/g" "$HOME"/dotfiles/zsh/theme.zsh
+    if [ "$OS" == "Mac" ]; then
+        sed -i '' "/^export THEME/s/dark/light/g" "$HOME"/dotfiles/zsh/theme.zsh
+    else
+        sed -i "/^export THEME/s/dark/light/g" "$HOME"/dotfiles/zsh/theme.zsh
+    fi
 else
     echo "Invalid color-scheme: $color_scheme"
     echo "color-scheme should be 'dark' or 'light'"
     exit 1
 fi
-if [ "$OS" == "Mac" ]; then
-    open /Applications/ToggleDarkMode.app
 
+if [ "$OS" == "Mac" ]; then
     if [ ! -d /Applications/ToggleDarkMode.app ]; then
         echo "Follow the doc to create a ToggleDarkMode.app!"
         echo "https://medium.com/@geert.cuppens/macos-keyboard-shortcut-to-toggle-dark-mode-2724c9f7fbfe"
         open "$HOME"/dotfiles/make/mac/ToggleDarkMode.app.scpt
+    else
+        open /Applications/ToggleDarkMode.app
     fi
 fi
 
