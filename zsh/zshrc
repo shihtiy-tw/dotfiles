@@ -56,3 +56,8 @@ export GOROOT=/usr/local/go
 export PATH=$GOROOT/bin:$PATH
 # export GOPATH=/Users/shihtiy/go
 # export PATH=$GOPATH/bin:$PATH
+
+# start tmux while ssh
+if [[ -z "$TMUX" ]] && [ "$SSH_CONNECTION" != "" ]; then
+  tmux new-session -A -s main
+fi

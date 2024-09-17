@@ -83,7 +83,3 @@ bindkey -s '^o' 'lfcd\n'
 autoload edit-command-line; zle -N edit-command-line
 bindkey '^x' edit-command-line
 
-# start tmux while ssh
-if [[ -z "$TMUX" ]] && [ "$SSH_CONNECTION" != "" ]; then
-  tmux new-session -A -s main
-fi

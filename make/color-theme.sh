@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 # Function to change variable values in a file
 change_variable_value() {
@@ -28,18 +28,43 @@ color_scheme="$1"
 # Set the variable values based on the color-scheme
 # tool: tmux, neovim
 # mac: iterm, scheme, diable bluelight filter, vscode
-if [ "$color_scheme" == "dark" ]; then
-    if [ "$OS" == "Mac" ]; then
+if [ "$color_scheme" = "dark" ]; then
+    if [ "$OS" = "Mac" ]; then
         sed -i '' "/^export THEME/s/light/dark/g" "$HOME"/dotfiles/zsh/theme.zsh
+        # remove comments for gruvbox
+        sed -i.bak --follow-symlinks '' 's/^# \(set -g @plugin .*gruvbox.*\)/\1/' ~/.tmux.conf
+        sed -i.bak --follow-symlinks '' 's/^# \(set -g @tmux-gruvbox .*\)/\1/' ~/.tmux.conf
+        # add comments for solarized ''
+        sed -i.bak --follow-symlinks '' 's/^\(set -g @plugin .*solarized.*\)/#\ \1/' ~/.tmux.conf
+        sed -i.bak --follow-symlinks '' 's/^\(set -g @colors-solarized .*\)/#\ \1 /' ~/.tmux.conf
+
     else
         sed -i "/^export THEME/s/light/dark/g" "$HOME"/dotfiles/zsh/theme.zsh
+        # remove comments for gruvbox
+        sed -i.bak --follow-symlinks 's/^# \(set -g @plugin .*gruvbox.*\)/\1/' ~/.tmux.conf
+        sed -i.bak --follow-symlinks 's/^# \(set -g @tmux-gruvbox .*\)/\1/' ~/.tmux.conf
+        # add comments for solarized
+        sed -i.bak --follow-symlinks 's/^\(set -g @plugin .*solarized.*\)/#\ \1/' ~/.tmux.conf
+        sed -i.bak --follow-symlinks 's/^\(set -g @colors-solarized .*\)/#\ \1 /' ~/.tmux.conf
     fi
 
-elif [ "$color_scheme" == "light" ]; then
-    if [ "$OS" == "Mac" ]; then
+elif [ "$color_scheme" = "light" ]; then
+    if [ "$OS" = "Mac" ]; then
         sed -i '' "/^export THEME/s/dark/light/g" "$HOME"/dotfiles/zsh/theme.zsh
+        # add comments for gruvbox
+        sed -i.bak --follow-symlinks '' 's/^\(set -g @plugin .*gruvbox.*\)/#\ \1/' ~/.tmux.conf
+        sed -i.bak --follow-symlinks '' 's/^\(set -g @tmux-gruvbox .*\)/#\ \1 /' ~/.tmux.conf
+        # remove comments for solari ''zed
+        sed -i.bak --follow-symlinks '' 's/^# \(set -g @plugin .*solarized.*\)/\1/' ~/.tmux.conf
+        sed -i.bak --follow-symlinks '' 's/^# \(set -g @colors-solarized .*\)/\1/' ~/.tmux.conf
     else
         sed -i "/^export THEME/s/dark/light/g" "$HOME"/dotfiles/zsh/theme.zsh
+        # add comments for gruvbox
+        sed -i.bak --follow-symlinks 's/^\(set -g @plugin .*gruvbox.*\)/#\ \1/' ~/.tmux.conf
+        sed -i.bak --follow-symlinks 's/^\(set -g @tmux-gruvbox .*\)/#\ \1 /' ~/.tmux.conf
+        # remove comments for solarized
+        sed -i.bak --follow-symlinks 's/^# \(set -g @plugin .*solarized.*\)/\1/' ~/.tmux.conf
+        sed -i.bak --follow-symlinks 's/^# \(set -g @colors-solarized .*\)/\1/' ~/.tmux.conf
     fi
 else
     echo "Invalid color-scheme: $color_scheme"
@@ -47,7 +72,10 @@ else
     exit 1
 fi
 
-if [ "$OS" == "Mac" ]; then
+rm ${HOME}/dotfiles/tmux/tmux.conf.bak
+source "$HOME"/.zshrc
+
+if [ "$OS" = "Mac" ]; then
     if [ ! -d /Applications/ToggleDarkMode.app ]; then
         echo "Follow the doc to create a ToggleDarkMode.app!"
         echo "https://medium.com/@geert.cuppens/macos-keyboard-shortcut-to-toggle-dark-mode-2724c9f7fbfe"
