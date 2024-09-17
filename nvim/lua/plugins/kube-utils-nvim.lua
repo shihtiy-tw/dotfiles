@@ -14,12 +14,14 @@ return {
       { '<leader>Kb', '<cmd>HelmDependencyBuildFromBuffer<CR>',  desc = 'Helm Dependency Build' },
       { '<leader>Kd', '<cmd>HelmDeployFromBuffer<CR>',           desc = 'Helm Deploy Buffer to Context' },
       { '<leader>Kk', '<cmd>OpenK9s<CR>',                        desc = 'Open K9s' },
-      { '<leader>Kl', '<cmd>ToggleYamlHelm<CR>',                 desc = 'Toggle YAML/Helm' },
+      { '<leader>KY', '<cmd>ToggleYamlHelm<CR>',                 desc = 'Toggle YAML/Helm' },
+      { '<leader>Kl', '<cmd>ViewPodLogs<CR>',                    desc = 'View Pod Logs' },
       { '<leader>Kr', '<cmd>RemoveDeployment<CR>',               desc = 'Helm Remove Deployment From Buffer' },
       { '<leader>Kt', '<cmd>HelmTemplateFromBuffer<CR>',         desc = 'Helm Template From Buffer' },
       { '<leader>Ku', '<cmd>HelmDependencyUpdateFromBuffer<CR>', desc = 'Helm Dependency Update' },
     }
     local wk = require 'which-key'
     wk.add(helm_mappings)
+    require("kube-utils-nvim").setup()
   end
 }
