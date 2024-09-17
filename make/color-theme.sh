@@ -32,11 +32,11 @@ if [ "$color_scheme" = "dark" ]; then
     if [ "$OS" = "Mac" ]; then
         sed -i '' "/^export THEME/s/light/dark/g" "$HOME"/dotfiles/zsh/theme.zsh
         # remove comments for gruvbox
-        sed -i '' -E '' 's/^# \(set -g @plugin .*gruvbox.*\)/\1/' ${HOME}/dotfiles/tmux/tmux.conf
-        sed -i '' -E '' 's/^# \(set -g @tmux-gruvbox .*\)/\1/' ${HOME}/dotfiles/tmux/tmux.conf
+        sed -i '' -E 's/^# \(set -g @plugin .*gruvbox.*\)/\1/' ${HOME}/dotfiles/tmux/tmux.conf
+        sed -i '' -E 's/^# \(set -g @tmux-gruvbox .*\)/\1/' ${HOME}/dotfiles/tmux/tmux.conf
         # add comments for solarized ''
-        sed -i '' -E '' 's/^\(set -g @plugin .*solarized.*\)/#\ \1/' ${HOME}/dotfiles/tmux/tmux.conf
-        sed -i '' -E '' 's/^\(set -g @colors-solarized .*\)/#\ \1 /' ${HOME}/dotfiles/tmux/tmux.conf
+        sed -i '' -E 's/^\(set -g @plugin .*solarized.*\)/#\ \1/' ${HOME}/dotfiles/tmux/tmux.conf
+        sed -i '' -E 's/^\(set -g @colors-solarized .*\)/#\ \1 /' ${HOME}/dotfiles/tmux/tmux.conf
 
     else
         sed -i "/^export THEME/s/light/dark/g" "$HOME"/dotfiles/zsh/theme.zsh
@@ -56,7 +56,7 @@ elif [ "$color_scheme" = "light" ]; then
         sed -i '' -E 's/^\(set -g @tmux-gruvbox .*\)/#\ \1 /' ${HOME}/dotfiles/tmux/tmux.conf
         # remove comments for solari ''zed
         sed -i '' -E 's/^# \(set -g @plugin .*solarized.*\)/\1/' ${HOME}/dotfiles/tmux/tmux.conf
-        sed -i '' -E '' 's/^# \(set -g @colors-solarized .*\)/\1/' ${HOME}/dotfiles/tmux/tmux.conf
+        sed -i '' -E 's/^# \(set -g @colors-solarized .*\)/\1/' ${HOME}/dotfiles/tmux/tmux.conf
     else
         sed -i "/^export THEME/s/dark/light/g" "$HOME"/dotfiles/zsh/theme.zsh
         # add comments for gruvbox
