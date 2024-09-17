@@ -61,3 +61,6 @@ export PATH=$GOROOT/bin:$PATH
 if [[ -z "$TMUX" ]] && [ "$SSH_CONNECTION" != "" ]; then
   tmux new-session -A -s main
 fi
+
+# Generated for envman. Do not edit.
+[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
