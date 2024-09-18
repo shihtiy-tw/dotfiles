@@ -80,6 +80,10 @@ export NODEPATH="$(which node)"
 # rust
 export PATH=${PATH}:$HOME/.cargo/env
 
+# kubectl
+# krew
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+
 # Discard
 #export GOOGLE_APPLICATION_CREDENTIALS='${HOME}/Documents/NTUT/patrick/Natural_Language/Natural_Language_API-a56f9766faee.json'
 #export PATH=/usr/local/cuda-8.0/bin:$PATH
