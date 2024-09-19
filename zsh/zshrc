@@ -20,13 +20,12 @@ source $HOME/dotfiles/zsh/config.zsh
 
 # alias
 source $HOME/dotfiles/zsh/alias.zsh
-source $HOME/.kubectl_aliases
+[ -f ~/.kubectl_aliases ] && source ~/.kubectl_aliases
 
 #source /etc/zsh_command_not_found
 #source $HOME/.local/bin/aws_bash_completer
 [ -f ${HOME}/.fzf.zsh ] && source ${HOME}/.fzf.zsh
 source <(fzf --zsh)
-
 
 # completions
 source $HOME/dotfiles/zsh/completion.zsh

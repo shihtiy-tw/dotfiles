@@ -31,6 +31,10 @@ function mkdircd() {
 	command mkdir $1 && cd $1
 }
 
+# kube-alias
+function kubectl() { echo "+ kubectl $@">&2; command kubectl $@; }
+
+
 # markdown table generator
 function mdtable() {
   if [ $(uname -s) = "Darwin" ]; then
