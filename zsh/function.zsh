@@ -32,8 +32,9 @@ function mkdircd() {
 }
 
 # kube-alias
-function kubectl() { echo "+ kubectl $@">&2; command kubectl $@; }
-
+# not working with auto-complete https://github.com/ahmetb/kubectl-aliases/issues/41
+# function kubectl() { echo "+ kubectl $@">&2; command kubectl "$@"; }
+function k() { echo "+ kubectl $@">&2; command k "$@"; }
 
 # markdown table generator
 function mdtable() {

@@ -34,3 +34,6 @@ alias l="exa -lahF"
   #export MYIP=$(myip)
 #fi
 [[ -s ${HOME}/.autojump/etc/profile.d/autojump.sh ]] && source ${HOME}/.autojump/etc/profile.d/autojump.sh
+
+[ -f ~/.kubectl_aliases ] && source ~/.kubectl_aliases
+complete -o default -F __start_kubectl k
