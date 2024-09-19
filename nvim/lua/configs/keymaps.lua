@@ -18,6 +18,8 @@ vim.keymap.set("n", "<leader>Kp", "<cmd>lua require('kustomize').print_resources
 vim.keymap.set("n", "<leader>Kv", "<cmd>lua require('kustomize').validate()<cr>", { noremap = true })
 vim.keymap.set("n", "<leader>Kd", "<cmd>lua require('kustomize').deprecations()<cr>", { noremap = true })
 
+-- inc-rename
+vim.keymap.set("n", "<leader>rn", ":IncRename ")
 
 -- telescope for lsp
 vim.keymap.set('n', '<leader>fgc', builtin.git_commits, {})
