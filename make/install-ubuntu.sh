@@ -39,22 +39,25 @@ cd rubygems-"$RUBY_GEM_VERSION"; ruby setup.rb; cd
 
 
 # git-sim
-sudo apt install pipx
+sudo apt install pipx -y
 sudo apt update
-sudo apt install build-essential python3-dev libcairo2-dev libpango1.0-dev ffmpeg
+sudo apt install build-essential python3-dev libcairo2-dev libpango1.0-dev ffmpeg -y
 pipx install manim
 pipx install git-sim
 
 # git
 #
 #$ curl https://github.com/so-fancy/diff-so-fancy/releases/download/v1.4.4/diff-so-fancy -o /usr/local/bin/diff-so-fancy
-
 LATEST_VERSION=$(curl -s https://api.github.com/repos/so-fancy/diff-so-fancy/releases/latest | grep -Po '"tag_name": "v\K[^"]*')
 sudo curl -L -o /usr/local/bin/diff-so-fancy "https://github.com/so-fancy/diff-so-fancy/releases/download/v${LATEST_VERSION}/diff-so-fancy"
 sudo chmod +x /usr/local/bin/diff-so-fancy
 
 sudo apt install git-extras
+
 sudo apt install git-lfs
+
+# precommit
+sudo apt install pre-commit -y
 
 # tree
 sudo apt install tree
@@ -183,5 +186,8 @@ newgrp docker
 
 # k9s
 curl -sS https://webinstall.dev/k9s | bash
+
+# kube-alias
+curl -o "$HOME"/.kubectl_aliases https://raw.githubusercontent.com/ahmetb/kubectl-aliases/master/.kubectl_aliases
 
 cd "$HOME"
