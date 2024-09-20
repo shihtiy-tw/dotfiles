@@ -22,16 +22,33 @@ vim.keymap.set("n", "<leader>Kd", "<cmd>lua require('kustomize').deprecations()<
 vim.keymap.set("n", "<leader>rn", ":IncRename ")
 
 -- telescope for lsp
-vim.keymap.set('n', '<leader>fgc', builtin.git_commits, {})
-vim.keymap.set('n', '<leader>flr', builtin.lsp_references, {})                -- Lists LSP references for the word under the cursor
-vim.keymap.set('n', '<leader>fli', builtin.lsp_incoming_calls, {})            -- Lists LSP incoming calls for the word under the cursor
-vim.keymap.set('n', '<leader>flo', builtin.lsp_outgoing_calls, {})            -- Lists LSP outgoing calls for the word under the cursor
-vim.keymap.set('n', '<leader>fls', builtin.lsp_document_symbols, {})          -- Lists LSP document symbols in the current buffer
-vim.keymap.set('n', '<leader>flw', builtin.lsp_workspace_symbols, {})         -- Lists LSP document symbols in the current workspace
-vim.keymap.set('n', '<leader>flD', builtin.lsp_dynamic_workspace_symbols, {}) -- Dynamically Lists LSP for all workspace symbols
-vim.keymap.set('n', '<leader>flm', builtin.lsp_implementations, {})           -- Goto the implementation of the word under the cursor if there's only one, otherwise show all options in Telescope
-vim.keymap.set('n', '<leader>fld', builtin.lsp_definitions, {})               -- Goto the definition of the word under the cursor, if there's only one, otherwise show all options in Telescope
-vim.keymap.set('n', '<leader>flt', builtin.lsp_type_definitions, {})          -- Goto the definition of the type of the word under the cursor, if there's only one, otherwise show all options in Telescope
+vim.keymap.set('n', '<leader>flr', builtin.lsp_references,
+  { desc = "Lists LSP references for the word under the cursor" })
+vim.keymap.set('n', '<leader>fli', builtin.lsp_incoming_calls,
+  { desc = "Lists LSP incoming calls for the word under the cursor" })
+vim.keymap.set('n', '<leader>flo', builtin.lsp_outgoing_calls,
+  { desc = "Lists LSP outgoing calls for the word under the cursor" })
+vim.keymap.set('n', '<leader>fls', builtin.lsp_document_symbols,
+  { desc = "Lists LSP document symbols in the current buffer" })
+vim.keymap.set('n', '<leader>flw', builtin.lsp_workspace_symbols,
+  { desc = "Lists LSP document symbols in the current workspace" })
+vim.keymap.set('n', '<leader>flD', builtin.lsp_dynamic_workspace_symbols,
+  { desc = "Dynamically Lists LSP for all workspace symbols" })
+vim.keymap.set('n', '<leader>flm', builtin.lsp_implementations,
+  {
+    desc =
+    "Goto the implementation of the word under the cursor if there's only one, otherwise show all options in Telescope"
+  })
+vim.keymap.set('n', '<leader>fld', builtin.lsp_definitions,
+  {
+    desc =
+    "Goto the definition of the word under the cursor, if there's only one, otherwise show all options in Telescope"
+  })
+vim.keymap.set('n', '<leader>flt', builtin.lsp_type_definitions,
+  {
+    desc =
+    "Goto the definition of the type of the word under the cursor, if there's only one, otherwise show all options in Telescope"
+  })
 
 
 -- telescope for git
