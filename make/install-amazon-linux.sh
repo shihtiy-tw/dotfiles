@@ -10,7 +10,7 @@ sudo yum install -y fuse
 # sudo yum -y install python3.x86_64
 # sudo yum -y install python3-devel.x86_64
 
-if [ "${HOME}" = "/root" ]; then \
+if [ "$HOME" = "/root" ]; then \
   sudo yum -y install python3*; \
   sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm; \
 fi
@@ -19,28 +19,28 @@ fi
 sudo yum install zsh -y
 
 # oh-my-zsh
-if [ ! -d ${HOME}/.oh-my-zsh ]; then \
-  git clone https://github.com/robbyrussell/oh-my-zsh.git ${HOME}/.oh-my-zsh; \
+if [ ! -d "$HOME"/.oh-my-zsh ]; then \
+  git clone https://github.com/robbyrussell/oh-my-zsh.git "$HOME"/.oh-my-zsh; \
 fi
-if [ ! -d ${HOME}/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]; then \
-  git clone https://github.com/zsh-users/zsh-autosuggestions ${HOME}/.oh-my-zsh/custom/plugins/zsh-autosuggestions; \
+if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]; then \
+  git clone https://github.com/zsh-users/zsh-autosuggestions "$HOME"/.oh-my-zsh/custom/plugins/zsh-autosuggestions; \
 fi
-if [ ! -d ${HOME}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]; then \
-  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${HOME}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting; \
+if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]; then \
+  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$HOME"/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting; \
 fi
-if [ ! -d ${HOME}/.oh-my-zsh/custom/plugins/zsh-completions ]; then \
-  git clone https://github.com/zsh-users/zsh-completions ${HOME}/.oh-my-zsh/custom/plugins/zsh-completions; \
+if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/zsh-completions ]; then \
+  git clone https://github.com/zsh-users/zsh-completions "$HOME"/.oh-my-zsh/custom/plugins/zsh-completions; \
 fi
-if [ ! -d ${HOME}/.oh-my-zsh/custom/plugins/zsh-vim-mode ]; then \
-  git clone https://github.com/softmoth/zsh-vim-mode.git ${HOME}/.oh-my-zsh/custom/plugins/zsh-vim-mode; \
+if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/zsh-vim-mode ]; then \
+  git clone https://github.com/softmoth/zsh-vim-mode.git "$HOME"/.oh-my-zsh/custom/plugins/zsh-vim-mode; \
 fi
-if [ ! -d ${HOME}/.oh-my-zsh/custom/plugins/fzf-tab ]; then \
+if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/fzf-tab ]; then \
   git clone https://github.com/Aloxaf/fzf-tab "${HOME}/.oh-my-zsh/custom/plugins/fzf-tab"; \
 fi
-if [ ! -d ${HOME}/.oh-my-zsh/custom/themes/spaceship-prompt ]; then \
+if [ ! -d "$HOME"/.oh-my-zsh/custom/themes/spaceship-prompt ]; then \
   git clone https://github.com/denysdovhan/spaceship-prompt.git "${HOME}/.oh-my-zsh/custom/themes/spaceship-prompt"; \
-  sed -i 's/^SPACESHIP_CHAR_SYMBOL=.*$/SPACESHIP_CHAR_SYMBOL="${SPACESHIP_CHAR_SYMBOL="$ "}"/' ${HOME}/.oh-my-zsh/custom/themes/spaceship-prompt/sections/char.zsh
-  sed -i 's/^SPACESHIP_VI_MODE_SHOW=.*$/SPACESHIP_VI_MODE_SHOW="${SPACESHIP_VI_MODE_SHOW=false}"/' ${HOME}/.oh-my-zsh/custom/themes/spaceship-prompt/sections/vi_mode.zsh
+  sed -i 's/^SPACESHIP_CHAR_SYMBOL=.*$/SPACESHIP_CHAR_SYMBOL="${SPACESHIP_CHAR_SYMBOL="$ "}"/' "$HOME"/.oh-my-zsh/custom/themes/spaceship-prompt/sections/char.zsh
+  sed -i 's/^SPACESHIP_VI_MODE_SHOW=.*$/SPACESHIP_VI_MODE_SHOW="${SPACESHIP_VI_MODE_SHOW=false}"/' "$HOME"/.oh-my-zsh/custom/themes/spaceship-prompt/sections/vi_mode.zsh
 fi
 
 
@@ -54,8 +54,8 @@ fi
 
 # tig
 sudo yum install ncurses-devel ncurses -y
-if [ ! -d ${HOMW}/dotfiles/tig ]; then \
-  git clone git://github.com/jonas/tig.git ${HOME}/dotfiles/tig; \
+if [ ! -d "$HOMW"/dotfiles/tig ]; then \
+  git clone git://github.com/jonas/tig.git "$HOME"/dotfiles/tig; \
   make -C tig; \
   make -C tig install; \
 fi
@@ -63,14 +63,14 @@ fi
 # ccls
 yum provides '*/libncurses.so.5'
 sudo yum install ncurses-compat-libs -y
-if [ ! -d ${HOME}/dotfiles/ccls ]; then \
-  git clone --depth=1 --recursive https://github.com/MaskRay/ccls; ${HOME}/dotfiles/ccls\
+if [ ! -d "$HOME"/dotfiles/ccls ]; then \
+  git clone --depth=1 --recursive https://github.com/MaskRay/ccls; "$HOME"/dotfiles/ccls\
   cd ccls; \
-    wget -c http://releases.llvm.org/8.0.0/clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04.tar.xz ${HOME}/dotfiles/ccls; \
+    wget -c http://releases.llvm.org/8.0.0/clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04.tar.xz "$HOME"/dotfiles/ccls; \
     tar xf clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04.tar.xz; \
-    cmake -H. -BRelease -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=$PWD/clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04; \
+    cmake -H. -BRelease -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$PWD"/clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-18.04; \
     cmake --build Release; \
-    sudo ln -sf $PWD/Release/ccls /usr/local/bin/ccls; \
+    sudo ln -sf "$PWD"/Release/ccls /usr/local/bin/ccls; \
 fi
 
 # go
@@ -83,13 +83,15 @@ go get github.com/mattn/efm-langserver
 # tmux
 sudo yum install tmux -y
 
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
 # vim
 sudo yum install vim -y
 
 # diff-so-fancy
 wget https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy
 chmod a+x diff-so-fancy
-sudo ln -sf ${PWD}/diff-so-fancy /usr/local/bin/diff-so-fancy
+sudo ln -sf "$PWD"/diff-so-fancy /usr/local/bin/diff-so-fancy
 
 # node
 sudo yum install -y gcc-c++ make
@@ -127,9 +129,9 @@ python3 -m pip install neovim --user
 
 pip install vim-vint
 
-if [ ! -d ${HOMW}/.fzf ]; then\
-  git clone --depth 1 https://github.com/junegunn/fzf.git ${HOME}/.fzf; \
-  yes | ${HOME}/.fzf/install; \
+if [ ! -d "$HOMW"/.fzf ]; then\
+  git clone --depth 1 https://github.com/junegunn/fzf.git "$HOME"/.fzf; \
+  yes | "$HOME"/.fzf/install; \
 fi
 
 #mkdir -p ${HOME}/.local/share/bin
@@ -143,9 +145,9 @@ if [ ! -d ./autojump ]; then \
 fi
 
 # python3
-sudo ln -s $(which python3) /usr/local/bin/python
+sudo ln -s "$(which python3)" /usr/local/bin/python
 
-[[ -s ${HOME}/.autojump/etc/profile.d/autojump.sh ]] && source ${HOME}/.autojump/etc/profile.d/autojump.sh
+[[ -s ${HOME}/.autojump/etc/profile.d/autojump.sh ]] && source "$HOME"/.autojump/etc/profile.d/autojump.sh
 
 # Go
 wget -q -O - https://git.io/vQhTU | bash
@@ -156,4 +158,4 @@ go install github.com/mattn/efm-langserver@latest
 # Ag
 sudo yum install epel-release.noarch the_silver_searcher -y
 
-cd ${HOME}
+cd "$HOME"

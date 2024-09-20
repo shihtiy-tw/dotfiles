@@ -30,6 +30,8 @@ fi
 
 # Common commands for both architectures
 
+# tmux
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 # oh my zsh
 
