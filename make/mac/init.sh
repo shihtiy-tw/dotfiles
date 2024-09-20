@@ -12,7 +12,11 @@ git clone https://github.com/shihtiy-tw/dotfiles.git "$HOME"/dotfiles
 
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 
-cd "$HOME"/dotfiles/mac || exit
+cd "$HOME"/dotfiles/make/mac || exit
+
+# install from
+# brew bundle dump --file=~/dotfiles/make/mac/Brewfile.x86 --force
+# brew bundle dump --file=~/dotfiles/make/mac/Brewfile.arm --force
 
 if [[ $(uname -m) == 'arm64' ]]; then
     echo "Running on Apple Silicon (ARM)"

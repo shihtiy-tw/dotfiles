@@ -3,6 +3,7 @@ platform=$(uname)
 if [ "${platform}" == "Darwin" ]; then
     echo "MacOS"
     OS="MacOS"
+    ${HOME}/dotfiles/make/mac/init.sh
 
 elif cat /etc/os-release | grep "^ID=" | grep -q 'ubuntu'; then
     echo "ubuntu"
