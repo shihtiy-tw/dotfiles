@@ -48,6 +48,7 @@ set splitright                   " 切割右方螢幕
 set tabstop=2                    " tab寬度
 set shiftwidth=2                 " tab 寬度
 set expandtab                    " tab 變成 spaces
+set paste
 " set spell! spelllang=en_us         " 拼音檢查
 
 highlight ColorColumn ctermbg=88 guibg=lightgrey
