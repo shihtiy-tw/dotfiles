@@ -49,6 +49,9 @@ if [ "$color_scheme" = "dark" ]; then
         sed -i --follow-symlinks 's/^\(set -g @colors-solarized .*\)/#\ \1 /' ~/.tmux.conf
     fi
 
+    # for kitty
+    ln -sf ${HOME}/dotfiles/kitty/gruvbox_dark.conf ~/.config/kitty/theme.conf
+
 elif [ "$color_scheme" = "light" ]; then
     if [ "$OS" = "Mac" ]; then
         sed -i '' "/^export THEME/s/dark/light/g" "$HOME"/dotfiles/zsh/theme.zsh
@@ -67,6 +70,9 @@ elif [ "$color_scheme" = "light" ]; then
         sed -i --follow-symlinks 's/^# \(set -g @plugin .*solarized.*\)/\1/' ~/.tmux.conf
         sed -i --follow-symlinks 's/^# \(set -g @colors-solarized .*\)/\1/' ~/.tmux.conf
     fi
+
+    ln -sf ${HOME}/dotfiles/kitty/Solarized_Light.conf ~/.config/kitty/theme.conf
+
 
 else
     echo "Invalid color-scheme: $color_scheme"

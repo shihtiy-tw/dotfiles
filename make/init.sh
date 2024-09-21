@@ -36,7 +36,8 @@ ln -sf "$HOME"/dotfiles/nvim/coc-settings.json "$HOME"/.config/nvim/coc-settings
 ln -sf "$HOME"/dotfiles/nvim/init.lua "$HOME"/.config/nvim/init.lua
 ln -sf "$HOME"/dotfiles/nvim/lua "$HOME"/.config/nvim/lua
 ln -sf "$HOME"/dotfiles/aws/config "$HOME"/.aws/config
-ln -sf "${HOME}/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh-theme" "${HOME}/.oh-my-zsh/custom/themes/spaceship.zsh-theme"
+ln -sf "$HOME"/dotfiles/kitty/kitty.conf ~/.config/kitty/kitty.conf
+ln -sf "$HOME"/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh-theme "$HOME"/.oh-my-zsh/custom/themes/spaceship.zsh-theme
 
 
 # neovim
