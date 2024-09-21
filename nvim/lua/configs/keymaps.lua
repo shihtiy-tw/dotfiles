@@ -73,6 +73,11 @@ vim.api.nvim_set_keymap("n", "<leader>ls", "<cmd>:Other scss<CR>", { noremap = t
 -- oil
 vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 
+-- nvim-ufo
+-- Using ufo provider need remap `zR` and `zM`. If Neovim is 0.6.1, remap yourself
+vim.keymap.set('n', 'zR', require('ufo').openAllFolds, { desc = "Open all fold" })
+vim.keymap.set('n', 'zM', require('ufo').closeAllFolds, { desc = "Close all fold" })
+
 -- git fugitive
 vim.keymap.set("n", "<leader>gg", ":Git ", { silent = true })
 vim.keymap.set("n", "<leader>gs", ":Git<cr>", { silent = true })
