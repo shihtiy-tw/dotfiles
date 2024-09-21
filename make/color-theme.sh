@@ -78,7 +78,7 @@ if [ "$OS" = "Mac" ]; then
     if [ ! -d /Applications/ToggleDarkMode.app ]; then
         echo "Follow the doc to create a ToggleDarkMode.app!"
         echo "https://medium.com/@geert.cuppens/macos-keyboard-shortcut-to-toggle-dark-mode-2724c9f7fbfe"
-        open "$HOME"/dotfiles/make/mac/ToggleDarkMode.app.scpt
+        open "$HOME"/dotfiles/make/mac/ToggleDarkMode.scpt
     else
         open /Applications/ToggleDarkMode.app
     fi
