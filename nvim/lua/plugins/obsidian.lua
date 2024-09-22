@@ -39,7 +39,7 @@ return {
           templates = {
             folder = (function()
               local template_folder
-              if vim.g.os == "Darwin" then
+              if vim.g.os == "Darwin" and (string.find(vim.api.nvim_buf_get_name(0), "Brainiverse") or string.find(vim.api.nvim_buf_get_name(0), "Amazon")) then
                 template_folder = "Atlas/Utilities/Templates"
               else
                 template_folder = vim.NIL
