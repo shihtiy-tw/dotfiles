@@ -18,6 +18,10 @@ vim.keymap.set("n", "<leader>Kp", "<cmd>lua require('kustomize').print_resources
 vim.keymap.set("n", "<leader>Kv", "<cmd>lua require('kustomize').validate()<cr>", { noremap = true })
 vim.keymap.set("n", "<leader>Kd", "<cmd>lua require('kustomize').deprecations()<cr>", { noremap = true })
 
+-- aerial
+-- You probably also want to set a keymap to toggle aerial
+vim.keymap.set("n", "<leader>a", "<cmd>AerialToggle!<CR>", { desc = "Toggle Aerial for outline window." })
+
 -- inc-rename
 vim.keymap.set("n", "<leader>rn", ":IncRename ")
 
@@ -186,7 +190,7 @@ local harpoon = require("harpoon")
 harpoon:setup()
 -- REQUIRED
 
-vim.keymap.set("n", "<leader>a", function() harpoon:list():add() end)
+vim.keymap.set("n", "<leader>A", function() harpoon:list():add() end, { desc = "Add file to harpoon." })
 --vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
 
 vim.keymap.set("n", "<C-h>", function() harpoon:list():select(1) end)
