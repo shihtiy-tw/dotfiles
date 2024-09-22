@@ -91,9 +91,12 @@ vim.keymap.set("n", "<leader>a", "<cmd>AerialToggle!<CR>", { desc = "Toggle Aeri
 
 -- inc-rename
 local rename_mappings = {
-  { '<leader>n', group = '[Rename]' } }
+  { '<leader>r', group = '[Rename]' } }
 wk.add(rename_mappings)
 vim.keymap.set("n", "<leader>rn", ":IncRename ")
+
+-- autosave
+vim.api.nvim_set_keymap("n", "<leader>n", ":ASToggle<CR>", { desc = "Toggle autosave" })
 
 local other_mappings = {
   { '<leader>L', group = '[Other]' } }
@@ -123,7 +126,9 @@ wk.add(git_mappings)
 vim.keymap.set("n", "<leader>gg", ":Git ", { silent = true })
 vim.keymap.set("n", "<leader>gs", ":Git<cr>", { silent = true })
 vim.keymap.set("n", "<leader>ga", ":Git add %:p<cr><cr>", { silent = true })
-vim.keymap.set("n", "<leader>gp", ":Git add -p %:p<cr><cr>", { silent = true })
+vim.keymap.set("n", "<leader>gA", ":Git add -p %:p<cr><cr>", { silent = true })
+vim.keymap.set("n", "<leader>gr", ":Git restore %:p<cr><cr>", { silent = true })
+vim.keymap.set("n", "<leader>gR", ":Git restore -p %:p<cr><cr>", { silent = true })
 vim.keymap.set("n", "<leader>gS", ":Git diff --staged %:p<cr><cr>", { silent = true })
 vim.keymap.set("n", "<leader>gd", ":Gvdiffsplit<cr>", { silent = true })
 vim.keymap.set("n", "<leader>ge", ":Gedit<cr>", { silent = true })
