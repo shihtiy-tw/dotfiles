@@ -3,6 +3,9 @@ local lint = require "lint"
 lint.linters_by_ft = {
   go = { "golangcilint" },
   markdown = { "markdownlint-cli2" },
+  -- markdown = (function(bufnr)
+  --   return { "markdownlint-cli2" }
+  -- end)(),
   python = { "pylint" },
   ruby = { "rubocop" },
   terraform = { "tflint" },
@@ -21,6 +24,7 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave", "TextCh
     lint.try_lint()
   end,
 })
+
 require('mason-nvim-lint').setup({
   -- A list of linters to automatically install if they're not already installed. Example: { "eslint_d", "revive" }
   -- This setting has no relation with the `automatic_installation` setting.
@@ -36,3 +40,16 @@ require('mason-nvim-lint').setup({
   -- Disables warning notifications about misconfigurations such as invalid linter entries and incorrect plugin load order.
   quiet_mode = false,
 })
+
+-- https://github.com/mfussenegger/nvim-lint/issues/553
+local lint_var = true
+local toggle_lint = function()
+  if lint_var == true then
+    lint_var = false
+    vim.diagnostic.enable(false)
+  else
+    lint_var = true
+    vim.diagnostic.enable()
+  end
+end
+vim.keymap.set({ "n" }, "gL", toggle_lint, { noremap = true, desc = "Toggle linter" })

@@ -89,6 +89,34 @@ vim.keymap.set("n", "<leader>Kmd", "<cmd>lua require('kustomize').deprecations()
 -- You probably also want to set a keymap to toggle aerial
 vim.keymap.set("n", "<leader>a", "<cmd>AerialToggle!<CR>", { desc = "Toggle Aerial for outline window." })
 
+-- Obsidian
+-- Open a note in Obsidian app
+local obsidian_mappings = {
+  { '<leader>o', group = '[Obsidian]' } }
+wk.add(obsidian_mappings)
+vim.keymap.set("n", "<leader>oo", "<cmd>ObsidianOpen<CR>", { desc = "Open current note in Obsidian" })
+vim.keymap.set("n", "<leader>on", "<cmd>ObsidianNew<CR>", { desc = "Create a new note" })
+vim.keymap.set("n", "<leader>of", "<cmd>ObsidianQuickSwitch<CR>", { desc = "Quick switch to another note" })
+vim.keymap.set("n", "<leader>ol", "<cmd>ObsidianFollowLink<CR>", { desc = "Follow link under cursor" })
+vim.keymap.set("n", "<leader>ob", "<cmd>ObsidianBacklinks<CR>", { desc = "List backlinks to current note" })
+vim.keymap.set("n", "<leader>ot", "<cmd>ObsidianTags<CR>", { desc = "Search tags" })
+vim.keymap.set("n", "<leader>od", "<cmd>ObsidianToday<CR>", { desc = "Open/create today's note" })
+vim.keymap.set("n", "<leader>oy", "<cmd>ObsidianYesterday<CR>", { desc = "Open/create yesterday's note" })
+vim.keymap.set("n", "<leader>om", "<cmd>ObsidianTomorrow<CR>", { desc = "Open/create tomorrow's note" })
+vim.keymap.set("n", "<leader>oc", "<cmd>ObsidianDailies<CR>", { desc = "List daily notes" })
+vim.keymap.set("n", "<leader>oi", "<cmd>ObsidianTemplate<CR>", { desc = "Insert template" })
+vim.keymap.set("n", "<leader>os", "<cmd>ObsidianSearch<CR>", { desc = "Search notes" })
+vim.keymap.set("v", "<leader>ol", "<cmd>ObsidianLink<CR>", { desc = "Link selected text to a note" })
+vim.keymap.set("v", "<leader>on", "<cmd>ObsidianLinkNew<CR>", { desc = "Create new note and link selected text" })
+vim.keymap.set("n", "<leader>ok", "<cmd>ObsidianLinks<CR>", { desc = "List all links in current buffer" })
+vim.keymap.set("v", "<leader>oe", "<cmd>ObsidianExtractNote<CR>", { desc = "Extract selected text to a new note" })
+vim.keymap.set("n", "<leader>ow", "<cmd>ObsidianWorkspace<CR>", { desc = "Switch workspace" })
+vim.keymap.set("n", "<leader>op", "<cmd>ObsidianPasteImg<CR>", { desc = "Paste image from clipboard" })
+vim.keymap.set("n", "<leader>or", "<cmd>ObsidianRename<CR>", { desc = "Rename current note or link under cursor" })
+vim.keymap.set("n", "<leader>ox", "<cmd>ObsidianToggleCheckbox<CR>", { desc = "Toggle checkbox" })
+vim.keymap.set("n", "<leader>oT", "<cmd>ObsidianNewFromTemplate<CR>", { desc = "Create new note from template" })
+vim.keymap.set("n", "<leader>oa", "<cmd>ObsidianTOC<CR>", { desc = "Load table of contents" })
+
 -- inc-rename
 local rename_mappings = {
   { '<leader>r', group = '[Rename]' } }
@@ -276,6 +304,10 @@ end
 
 vim.keymap.set("n", "<C-e>", function() toggle_telescope(harpoon:list()) end,
   { desc = "Open harpoon window" })
+
+-- Linter and Formatter
+-- vim.keymap.set({ "n" }, "gL", toggle_lint, { noremap = true, desc = "Toggle linter" })
+-- vim.keymap.set({ "n" }, "gM", toggle_formatter, { noremap = true, desc = "Toggle formatter" })
 
 -- mini move
 -- `HJKL` for moving visual selection (overrides H, L, J in Visual mode)
