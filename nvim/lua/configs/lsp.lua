@@ -12,7 +12,7 @@ local lsp_attach = function(client, bufnr)
   vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>', opts)
   vim.keymap.set('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>', opts)
   vim.keymap.set('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<cr>', opts)
-  vim.keymap.set('n', 'go', '<cmd>lua vim.lsp.buf.type_definition()<cr>', opts)
+  vim.keymap.set('n', 'gt', '<cmd>lua vim.lsp.buf.type_definition()<cr>', opts)
   vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.references()<cr>', opts)
   vim.keymap.set('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<cr>', opts)
   vim.keymap.set('n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
@@ -26,6 +26,12 @@ lsp_zero.extend_lspconfig({
   capabilities = require('cmp_nvim_lsp').default_capabilities()
 })
 
+-- TODO: tirgger LSP based on Filepath (markdown)
+-- https://www.reddit.com/r/neovim/comments/13j71qz/how_to_activate_specific_lsp_based_on_directory/
+
+-- TODO: install markdown-oxide for obsidian
+-- https://github.com/Feel-ix-343/markdown-oxide
+
 require('mason-lspconfig').setup({
   -- See mapping
   -- https://github.com/williamboman/mason-lspconfig.nvim/blob/25c11854aa25558ee6c03432edfa0df0217324be/lua/mason-lspconfig/mappings/server.lua
@@ -37,7 +43,8 @@ require('mason-lspconfig').setup({
     'dockerls',
     'yamlls',
     'bashls',
-    'marksman',
+    'markdown_oxide'
+    -- 'marksman',
     -- autotools_ls is broken
     -- https://github.com/jwmatthews/treesitter_example/issues/1
     -- 'autotools_ls',
@@ -119,6 +126,7 @@ require("lspconfig").yamlls.setup(require("schema-companion").setup_client({
         -- The schema source can be changed here
         -- ~/.local/share/nvim/mason/packages/yaml-language-server/node_modules/yaml-language-server/out/server/src/languageservice/utils/schemaUrls.js
         -- TODO: how to use schemastore to contain the built-in kubernetes
+        -- TODO: Can trigger schema based on path?
         kubernetes = "k8s-*.yaml",
         ["http://json.schemastore.org/github-workflow"] = ".github/workflows/*",
         ["http://json.schemastore.org/github-action"] = ".github/action.{yml,yaml}",
