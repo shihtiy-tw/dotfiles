@@ -1,36 +1,40 @@
 -- https://github.com/nvim-telescope/telescope.nvim?tab=readme-ov-file#pickers
+local wk = require 'which-key'
+
+-- Trouble
+local trouble_mappings = {
+  { '<leader>x', group = '[Trouble]' } }
+wk.add(trouble_mappings)
+
+-- Telescope
 local builtin = require('telescope.builtin')
-vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
-vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
-vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
-vim.keymap.set('n', '<leader>fh', builtin.command_history, {})
-vim.keymap.set('n', '<leader>fk', builtin.keymaps, {})
-vim.keymap.set('n', '<leader>fc', builtin.commands, {})
-vim.keymap.set('n', '<leader>fj', builtin.jumplist, {})
-vim.keymap.set('n', '<leader>fo', builtin.oldfiles, {})
-vim.keymap.set('n', '<leader>fC', builtin.colorscheme, {})
-
--- kustomize
-vim.keymap.set("n", "<leader>Kb", "<cmd>lua require('kustomize').build()<cr>", { noremap = true })
-vim.keymap.set("n", "<leader>KK", "<cmd>lua require('kustomize').kinds()<cr>", { noremap = true })
-vim.keymap.set("n", "<leader>KL", "<cmd>lua require('kustomize').list_resources()<cr>", { noremap = true })
-vim.keymap.set("n", "<leader>Kp", "<cmd>lua require('kustomize').print_resources()<cr>", { noremap = true })
-vim.keymap.set("n", "<leader>Kv", "<cmd>lua require('kustomize').validate()<cr>", { noremap = true })
-vim.keymap.set("n", "<leader>Kd", "<cmd>lua require('kustomize').deprecations()<cr>", { noremap = true })
-
--- aerial
--- You probably also want to set a keymap to toggle aerial
-vim.keymap.set("n", "<leader>a", "<cmd>AerialToggle!<CR>", { desc = "Toggle Aerial for outline window." })
-
--- inc-rename
-vim.keymap.set("n", "<leader>rn", ":IncRename ")
-
+local telescope_mappings = {
+  { '<leader>f', group = '[Telescope]' } }
+wk.add(telescope_mappings)
+vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = "Find files in the current working directory" })
+vim.keymap.set('n', '<leader>fG', builtin.live_grep,
+  { desc = "Live grep (search) through files in the current working directory" })
+vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = "List and search through open buffers" })
+vim.keymap.set('n', '<leader>fh', builtin.command_history, { desc = "Search through command history" })
+vim.keymap.set('n', '<leader>fk', builtin.keymaps, { desc = "List and search available keymaps" })
+vim.keymap.set('n', '<leader>fc', builtin.commands, { desc = "List and search available commands" })
+vim.keymap.set('n', '<leader>fj', builtin.jumplist, { desc = "Show and search the jumplist" })
+vim.keymap.set('n', '<leader>fo', builtin.oldfiles, { desc = "List and search recently opened files" })
+vim.keymap.set('n', '<leader>fC', builtin.colorscheme, { desc = "Browse and select colorschemes" })
+vim.keymap.set('n', '<leader>fm', builtin.man_pages, { desc = "Lists manpage entries" })
+vim.keymap.set('n', '<leader>fS', builtin.spell_suggest,
+  { desc = "Lists spelling suggestions for the current word under the cursor" })
+vim.keymap.set('n', '<leader>fs', builtin.grep_string,
+  { desc = "Searches for the string under your cursor or selection in your current working directory " })
 
 -- telescope for neoclip
 vim.keymap.set("n", "<leader>C", "<cmd>Telescope neoclip<CR>", { desc = "Toggle neoclip for register" })
 vim.keymap.set("n", "<leader>c", "<cmd>Telescope macroscope<CR>", { desc = "Toggle neoclip for register" })
 
 -- telescope for lsp
+local telescope_lsp_mappings = {
+  { '<leader>fl', group = '[Telescope for LSP]' } }
+wk.add(telescope_lsp_mappings)
 vim.keymap.set('n', '<leader>flr', builtin.lsp_references,
   { desc = "Lists LSP references for the word under the cursor" })
 vim.keymap.set('n', '<leader>fli', builtin.lsp_incoming_calls,
@@ -59,25 +63,50 @@ vim.keymap.set('n', '<leader>flt', builtin.lsp_type_definitions,
     "Goto the definition of the type of the word under the cursor, if there's only one, otherwise show all options in Telescope"
   })
 
-
 -- telescope for git
-vim.keymap.set('n', '<leader>fgc', builtin.git_commits, {})
-vim.keymap.set('n', '<leader>fgb', builtin.git_branches, {})
-vim.keymap.set('n', '<leader>fgs', builtin.git_status, {})
+local telescope_git_mappings = {
+  { '<leader>fg', group = '[Telescope for Git]' } }
+wk.add(telescope_git_mappings)
+vim.keymap.set('n', '<leader>fgc', builtin.git_commits, { desc = "telecsope for git commit" })
+vim.keymap.set('n', '<leader>fgb', builtin.git_branches, { desc = "telecsope for git branches" })
+vim.keymap.set('n', '<leader>fgs', builtin.git_status, { desc = "telescope for git status" })
 
 -- alternative file and other plugin
-vim.keymap.set('n', '[e', '<C-^>', {})
+vim.keymap.set('n', '[e', '<C-^>', { desc = "previous alternative file" })
 
+-- kustomize
+local kustomize_mappings = {
+  { '<leader>Km', group = '[kustomize]' } }
+wk.add(kustomize_mappings)
+vim.keymap.set("n", "<leader>Kmb", "<cmd>lua require('kustomize').build()<cr>", { noremap = true })
+vim.keymap.set("n", "<leader>KmK", "<cmd>lua require('kustomize').kinds()<cr>", { noremap = true })
+vim.keymap.set("n", "<leader>KmL", "<cmd>lua require('kustomize').list_resources()<cr>", { noremap = true })
+vim.keymap.set("n", "<leader>Kmp", "<cmd>lua require('kustomize').print_resources()<cr>", { noremap = true })
+vim.keymap.set("n", "<leader>Kmv", "<cmd>lua require('kustomize').validate()<cr>", { noremap = true })
+vim.keymap.set("n", "<leader>Kmd", "<cmd>lua require('kustomize').deprecations()<cr>", { noremap = true })
 
-vim.api.nvim_set_keymap("n", "<leader>ll", "<cmd>:Other<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<leader>ltn", "<cmd>:OtherTabNew<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<leader>lp", "<cmd>:OtherSplit<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<leader>lv", "<cmd>:OtherVSplit<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<leader>lc", "<cmd>:OtherClear<CR>", { noremap = true, silent = true })
+-- aerial
+-- You probably also want to set a keymap to toggle aerial
+vim.keymap.set("n", "<leader>a", "<cmd>AerialToggle!<CR>", { desc = "Toggle Aerial for outline window." })
+
+-- inc-rename
+local rename_mappings = {
+  { '<leader>n', group = '[Rename]' } }
+wk.add(rename_mappings)
+vim.keymap.set("n", "<leader>rn", ":IncRename ")
+
+local other_mappings = {
+  { '<leader>L', group = '[Other]' } }
+wk.add(other_mappings)
+vim.api.nvim_set_keymap("n", "<leader>Ll", "<cmd>:Other<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>Ltn", "<cmd>:OtherTabNew<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>Lp", "<cmd>:OtherSplit<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>Lv", "<cmd>:OtherVSplit<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>Lc", "<cmd>:OtherClear<CR>", { noremap = true, silent = true })
 
 -- Context specific bindings
-vim.api.nvim_set_keymap("n", "<leader>lt", "<cmd>:Other test<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<leader>ls", "<cmd>:Other scss<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>Lt", "<cmd>:Other test<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>Ls", "<cmd>:Other scss<CR>", { noremap = true, silent = true })
 
 -- oil
 vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
@@ -88,6 +117,9 @@ vim.keymap.set('n', 'zR', require('ufo').openAllFolds, { desc = "Open all fold" 
 vim.keymap.set('n', 'zM', require('ufo').closeAllFolds, { desc = "Close all fold" })
 
 -- git fugitive
+local git_mappings = {
+  { '<leader>g', group = '[Git fugitive]' } }
+wk.add(git_mappings)
 vim.keymap.set("n", "<leader>gg", ":Git ", { silent = true })
 vim.keymap.set("n", "<leader>gs", ":Git<cr>", { silent = true })
 vim.keymap.set("n", "<leader>ga", ":Git add %:p<cr><cr>", { silent = true })
@@ -119,6 +151,9 @@ vim.keymap.set({ "i", "s" }, "<C-E>", function()
 end, { silent = true })
 
 -- schema companion
+local schema_companion_mappings = {
+  { '<leader>s', group = '[Schema Companion]' } }
+wk.add(schema_companion_mappings)
 vim.keymap.set("n", "<leader>sy", function()
   return require("telescope").extensions.schema_companion.select_from_matching_schemas()
 end, { desc = "Select from Matching Schema" })
@@ -126,25 +161,29 @@ vim.keymap.set("n", "<leader>sY", function()
   return require("telescope").extensions.schema_companion.select_schema()
 end, { desc = "Select from Schema" })
 
--- hop
+-- hop (easymotion)
 -- place this in one of your configuration file(s)
 local hop = require('hop')
 local directions = require('hop.hint').HintDirection
 vim.keymap.set('', 'f', function()
   hop.hint_char1({ direction = nil, current_line_only = false, multi_windows = true })
-end, { remap = true })
+end, { remap = true, desc = "Hop to any character in current buffer (multi-window)" })
+
 vim.keymap.set('', 'F', function()
   hop.hint_char2({ direction = nil, current_line_only = false, multi_windows = true })
-end, { remap = true })
+end, { remap = true, desc = "Hop to any bigram in current buffer (multi-window)" })
+
 vim.keymap.set('', 'fw', function()
   hop.hint_words({ direction = nil, current_line_only = false, hint_offset = -1, multi_windows = true })
-end, { remap = true })
+end, { remap = true, desc = "Hop to any word in current buffer (multi-window)" })
+
 vim.keymap.set('', 'fp', function()
   hop.hint_patterns({ direction = nil, current_line_only = false, hint_offset = 1, multi_windows = true })
-end, { remap = true })
+end, { remap = true, desc = "Hop to pattern matches in current buffer (multi-window)" })
+
 vim.keymap.set('', 'fl', function()
   hop.hint_lines({ multi_windows = true })
-end, { remap = true })
+end, { remap = true, desc = "Hop to any line in current buffer (multi-window)" })
 
 -- tree
 -- https://github.com/nvim-tree/nvim-tree.lua/blob/cb57691536702ea479afd294657f6a589d0faae1/doc/nvim-tree-lua.txt#L2329
@@ -158,7 +197,10 @@ vim.api.nvim_set_keymap('n', '<leader>m', '<cmd>noh<CR>', { noremap = true })
 -- vim.api.nvim_set_keymap('i', '<leader>m', '<cmd>noh<CR>', { noremap = true })
 
 -- Notion
-vim.keymap.set("n", "<leader>no", function() require "notion".openMenu() end)
+local notion_mappings = {
+  { '<leader>n', group = '[Notion]' } }
+wk.add(notion_mappings)
+vim.keymap.set("n", "<leader>no", function() require "notion".openMenu() end, { desc = "Open Notion" })
 
 
 -- TODO
