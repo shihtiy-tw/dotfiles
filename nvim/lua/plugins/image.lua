@@ -49,5 +49,10 @@ return {
         hijack_file_patterns = { "*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp", "*.avif" }, -- render image files as images when opened
       })
     end
+    -- https://www.youtube.com/watch?v=nYDMXI-yFTA
+    -- $ vim ~/.local/share/nvim/lazy/image.nvim/lua/image/integrations/markdown.lua
+    --   current_image.url = value
+    --current_image.url = "~/Brainiverse/Brainiverse/Atlas/Utilities/Attachments/General/" .. value
+
   }
 }
