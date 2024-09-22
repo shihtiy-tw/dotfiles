@@ -25,6 +25,11 @@ vim.keymap.set("n", "<leader>a", "<cmd>AerialToggle!<CR>", { desc = "Toggle Aeri
 -- inc-rename
 vim.keymap.set("n", "<leader>rn", ":IncRename ")
 
+
+-- telescope for neoclip
+vim.keymap.set("n", "<leader>C", "<cmd>Telescope neoclip<CR>", { desc = "Toggle neoclip for register" })
+vim.keymap.set("n", "<leader>c", "<cmd>Telescope macroscope<CR>", { desc = "Toggle neoclip for register" })
+
 -- telescope for lsp
 vim.keymap.set('n', '<leader>flr', builtin.lsp_references,
   { desc = "Lists LSP references for the word under the cursor" })
