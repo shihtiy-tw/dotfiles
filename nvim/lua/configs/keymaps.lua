@@ -98,7 +98,7 @@ vim.keymap.set("n", "<leader>oo", "<cmd>ObsidianOpen<CR>", { desc = "Open curren
 vim.keymap.set("n", "<leader>on", "<cmd>ObsidianNew<CR>", { desc = "Create a new note" })
 vim.keymap.set("n", "<leader>of", "<cmd>ObsidianQuickSwitch<CR>", { desc = "Quick switch to another note" })
 vim.keymap.set("n", "<leader>ol", "<cmd>ObsidianFollowLink<CR>", { desc = "Follow link under cursor" })
-vim.keymap.set("n", "<leader>ob", "<cmd>ObsidianBacklinks<CR>", { desc = "List backlinks to current note" })
+vim.keymap.set("n", "<leader>oB", "<cmd>ObsidianBacklinks<CR>", { desc = "List backlinks to current note" })
 vim.keymap.set("n", "<leader>ot", "<cmd>ObsidianTags<CR>", { desc = "Search tags" })
 vim.keymap.set("n", "<leader>od", "<cmd>ObsidianToday<CR>", { desc = "Open/create today's note" })
 vim.keymap.set("n", "<leader>oy", "<cmd>ObsidianYesterday<CR>", { desc = "Open/create yesterday's note" })
@@ -116,6 +116,16 @@ vim.keymap.set("n", "<leader>or", "<cmd>ObsidianRename<CR>", { desc = "Rename cu
 vim.keymap.set("n", "<leader>ox", "<cmd>ObsidianToggleCheckbox<CR>", { desc = "Toggle checkbox" })
 vim.keymap.set("n", "<leader>oT", "<cmd>ObsidianNewFromTemplate<CR>", { desc = "Create new note from template" })
 vim.keymap.set("n", "<leader>oa", "<cmd>ObsidianTOC<CR>", { desc = "Load table of contents" })
+
+vim.keymap.set("n", "<leader>obd", "<cmd>ObsidianBridgeDailyNote<CR>", { desc = "Open or create daily note" })
+vim.keymap.set("n", "<leader>obg", "<cmd>ObsidianBridgeOpenGraph<CR>", { desc = "Open graph view in Obsidian" })
+vim.keymap.set("n", "<leader>obv", "<cmd>ObsidianBridgeOpenVaultMenu<CR>",
+  { desc = "Open Obsidian vauolt selection dialog" })
+vim.keymap.set("n", "<leader>obc", "<cmd>ObsidianBridgeTelescopeCommand<CR>",
+  { desc = "List and execute oObsidian commands" })
+vim.keymap.set("n", "<leader>obo", "<cmd>ObsidianBridgeOn<CR>", { desc = "Activate Obsidian Bridge plugin" })
+vim.keymap.set("n", "<leader>obf", "<cmd>ObsidianBridgeOff<CR>", { desc = "Deactivate Obsidian Bridge plugin" })
+vim.keymap.set("n", "<leader>obt", "<cmd>ObsidianBridgeToggle<CR>", { desc = "Toggle Obsidian Bridge plugin" })
 
 -- inc-rename
 local rename_mappings = {
