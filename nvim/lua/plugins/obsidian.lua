@@ -65,6 +65,8 @@ return {
 
     -- Optional, by default when you use `:ObsidianFollowLink` on a link to an image
     -- file it will be ignored but you can customize this behavior here.
+    -- NOTE: this function hasn't be released yet
+    -- https://github.com/aquilesg/obsidian.nvim/commit/55aed056596f66af3d4d1852c7769bb600f6ce37
     ---@param img string
     follow_img_func = function(img)
       vim.fn.jobstart { "qlmanage", "-p", img } -- Mac OS quick look preview
