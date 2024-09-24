@@ -1,6 +1,6 @@
 return {
   'MeanderingProgrammer/render-markdown.nvim',
-  enabled = true,
+  enabled = false,
   version = "*",
   opts = {},
   after = { 'nvim-treesitter' },
