@@ -1,5 +1,6 @@
 return {
   "epwalsh/obsidian.nvim",
+  enabled = true,
   version = "*", -- recommended, use latest release instead of latest commit
   lazy = true,
   ft = "markdown",
@@ -73,5 +74,9 @@ return {
       -- vim.fn.jobstart({"xdg-open", url})  -- linux
       -- vim.cmd(':silent exec "!start ' .. url .. '"') -- Windows
     end,
+    -- UI will be placed by render-markdown
+    ui = {
+      enable = false, -- set to false to disable all additional syntax features
+    }
   },
 }
