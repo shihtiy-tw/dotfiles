@@ -29,9 +29,6 @@ lsp_zero.extend_lspconfig({
 -- TODO: tirgger LSP based on Filepath (markdown)
 -- https://www.reddit.com/r/neovim/comments/13j71qz/how_to_activate_specific_lsp_based_on_directory/
 
--- TODO: install markdown-oxide for obsidian
--- https://github.com/Feel-ix-343/markdown-oxide
-
 require('mason-lspconfig').setup({
   -- See mapping
   -- https://github.com/williamboman/mason-lspconfig.nvim/blob/25c11854aa25558ee6c03432edfa0df0217324be/lua/mason-lspconfig/mappings/server.lua
@@ -43,6 +40,8 @@ require('mason-lspconfig').setup({
     'dockerls',
     'yamlls',
     'bashls',
+    -- FIX: the path need to be added for reference, this should be fixed for v1 https://github.com/Feel-ix-343/markdown-oxide/issues/163 and v1 will work with obsidian.md (https://github.com/epwalsh/obsidian.nvim/issues/476)
+
     'markdown_oxide'
     -- 'marksman',
     -- autotools_ls is broken
