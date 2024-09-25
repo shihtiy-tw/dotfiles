@@ -26,9 +26,6 @@ lsp_zero.extend_lspconfig({
   capabilities = require('cmp_nvim_lsp').default_capabilities()
 })
 
--- TODO: tirgger LSP based on Filepath (markdown)
--- https://www.reddit.com/r/neovim/comments/13j71qz/how_to_activate_specific_lsp_based_on_directory/
-
 require('mason-lspconfig').setup({
   -- See mapping
   -- https://github.com/williamboman/mason-lspconfig.nvim/blob/25c11854aa25558ee6c03432edfa0df0217324be/lua/mason-lspconfig/mappings/server.lua
