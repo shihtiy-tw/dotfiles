@@ -1,4 +1,6 @@
-require("conform").setup({
+local conform = require("conform")
+
+conform.setup({
   formatters_by_ft = {
     lua = { "luaformatter" },
     -- Conform will run multiple formatters sequentially
@@ -30,6 +32,29 @@ require("conform").setup({
     return { timeout_ms = 500, lsp_format = "fallback" }
   end,
 })
+
+-- These can also be set directly
+conform.formatters.yamlfix = {
+  env = {
+    YAMLFIX_SEQUENCE_STYLE = "block_style",
+  },
+}
+
+conform.formatters["markdownlint-cli2"] = {
+  prepend_args = {
+    "--config",
+    vim.env.HOME .. "/dotfiles/nvim/lua/configs/formatter/markdownlint-cli2.toml",
+  },
+}
+
+-- https://github.com/angelofallars/dotfiles/blob/a0d2d199c5b0fe22f3b013473d830c291e7148db/nvim/lua/plugins/config/conform.lua#L42
+-- https://stackoverflow.com/questions/34573200/errors-when-including-hyphens-in-table-variables
+-- prepend_args = {
+--   conform.formatters.["markdownlint-cli2"] = {
+-- "--config",
+-- vim.env.HOME .. "/.config/nvim/lua/plugins/config/formatter/.markdownlint-cli2.jsonc",
+-- },
+-- }
 
 -- https://github.com/stevearc/conform.nvim/blob/master/doc/recipes.md#command-to-toggle-format-on-save
 vim.api.nvim_create_user_command("FormatDisable", function(args)
