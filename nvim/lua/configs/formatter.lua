@@ -15,7 +15,7 @@ conform.setup({
     --   return { "markdownlint-cli2", stop_after_first = true }
     -- end,
     sh = { "shellharden" },
-    yaml = { "prettierd", "prettier", stop_after_first = true },
+    yaml = { "yamlfix", "prettierd", "prettier", stop_after_first = true },
     -- java = { "google-java-format", stop_after_first = true },
 
   },
@@ -37,6 +37,7 @@ conform.setup({
 conform.formatters.yamlfix = {
   env = {
     YAMLFIX_SEQUENCE_STYLE = "block_style",
+    YAMLFIX_QUOTE_BASIC_VALUES = "true",
   },
 }
 

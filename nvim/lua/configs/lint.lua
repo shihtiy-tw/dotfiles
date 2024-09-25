@@ -17,11 +17,19 @@ lint.linters_by_ft = {
 
 }
 
+-- https://github.com/doctorfree/nvim-lazyman/blob/bb4091c962e646c5eb00a50eca4a86a2d43bcb7c/lua/utils/linter.lua#L41
 
-local markdownlint = require('lint').linters["markdownlint-cli2"]
+local markdownlint = lint.linters["markdownlint-cli2"]
 markdownlint.args = {
   '--ignore-path',
   'Brainiverse/',
+}
+
+lint.linters.yamllint.args = {
+  "--config-file",
+  vim.env.HOME .. "/dotfiles/nvim/lua/configs/lint/yamllint.yaml",
+  "--format=parsable",
+  "-",
 }
 
 

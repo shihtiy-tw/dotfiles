@@ -124,6 +124,7 @@ require("lspconfig").yamlls.setup(require("schema-companion").setup_client({
         -- TODO: how to use schemastore to contain the built-in kubernetes
         -- TODO: Can trigger schema based on path?
         kubernetes = "k8s-*.yaml",
+        -- ["file://${HOME}/dotfiles/nvim/lua/configs/schema/eksctl-schema.json"] = "eksctl-*.yaml",
         ["http://json.schemastore.org/github-workflow"] = ".github/workflows/*",
         ["http://json.schemastore.org/github-action"] = ".github/action.{yml,yaml}",
         ["http://json.schemastore.org/ansible-stable-2.9"] = "roles/tasks/**/*.{yml,yaml}",

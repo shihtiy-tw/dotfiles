@@ -22,5 +22,9 @@ require("schema-companion").setup({
       name = "Protolint",
       uri = "~/.config/nvim/schemas/protolint.json",
     },
+    {
+      name = "eksctl",
+      uri = "file://home/ubuntu/dotfiles/nvim/lua/configs/schema/eksctl-schema.json",
+    },
   },
 })
