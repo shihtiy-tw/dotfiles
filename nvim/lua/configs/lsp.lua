@@ -145,6 +145,44 @@ require("lspconfig").yamlls.setup(require("schema-companion").setup_client({
 -- https://github.com/nvim-java/nvim-java?tab=readme-ov-file#custom-configuration-instructions
 lsp_config.jdtls.setup({})
 
+-- oxide
+-- https://oxide.md/README#neovim
+-- Ensure that dynamicRegistration is enabled! This allows the LS to take into account actions like the
+-- Create Unresolved File code action, resolving completions for unindexed code blocks, ...
+
+local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
+capabilities.workspace = {
+  didChangeWatchedFiles = {
+    dynamicRegistration = true,
+  },
+}
+
+require("lspconfig").markdown_oxide.setup({
+  capabilities = capabilities, -- again, ensure that capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = true
+  on_attach = lsp_attach       -- configure your on attach config
+})
+
+local function check_codelens_support()
+  local clients = vim.lsp.get_active_clients({ bufnr = 0 })
+  for _, c in ipairs(clients) do
+    if c.server_capabilities.codeLensProvider then
+      return true
+    end
+  end
+  return false
+end
+
+vim.api.nvim_create_autocmd({ 'TextChanged', 'InsertLeave', 'CursorHold', 'LspAttach', 'BufEnter' }, {
+  buffer = bufnr,
+  callback = function()
+    if check_codelens_support() then
+      vim.lsp.codelens.refresh({ bufnr = 0 })
+    end
+  end
+})
+-- trigger codelens refresh
+vim.api.nvim_exec_autocmds('User', { pattern = 'LspAttached' })
+
 -- Makefiles
 -- https://github.com/MrTreev/nvim-config/blob/eb4e7dbe08a82d12ca896032f143967baad46571/lua/core/lsp/autotools_ls.lua#L4
 -- lsp_config.autotools_ls.setup {
