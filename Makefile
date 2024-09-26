@@ -16,8 +16,9 @@ RESET=\033[0m
 .PHONY: test
 .PHONY: clean
 .PHONY: all
+.PHONY: default
 
-defaulttt: help
+default: help
 
 help:
 	@echo " $(CYAN)Usage: make [target]$(RESET)\n "
