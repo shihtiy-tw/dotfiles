@@ -37,7 +37,8 @@ conform.setup({
 conform.formatters.yamlfix = {
   env = {
     YAMLFIX_SEQUENCE_STYLE = "block_style",
-    YAMLFIX_QUOTE_BASIC_VALUES = "true",
+    YAMLFIX_QUOTE_BASIC_VALUES = "false",
+    YAMLFIX_preserve_quotes = "true"
   },
 }
 
