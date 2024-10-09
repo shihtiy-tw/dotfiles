@@ -84,6 +84,9 @@ vim.keymap.set("n", "<leader>KmL", "<cmd>lua require('kustomize').list_resources
 vim.keymap.set("n", "<leader>Kmp", "<cmd>lua require('kustomize').print_resources()<cr>", { noremap = true })
 vim.keymap.set("n", "<leader>Kmv", "<cmd>lua require('kustomize').validate()<cr>", { noremap = true })
 vim.keymap.set("n", "<leader>Kmd", "<cmd>lua require('kustomize').deprecations()<cr>", { noremap = true })
+-- kubectl
+
+vim.keymap.set("n", "<leader>Kk", '<cmd>lua require("kubectl").toggle()<cr>', { noremap = true, silent = true })
 
 -- aerial
 vim.keymap.set("n", "<leader>Oa", "<cmd>AerialToggle!<CR>", { desc = "Toggle Aerial for outline window." })
@@ -93,8 +96,8 @@ vim.keymap.set("n", "<leader>Oo", "<cmd>Outline<CR>",
   { desc = "Toggle Outline" })
 
 -- Obsidian
--- Open a note in Obsidian app
 local obsidian_mappings = {
+  -- Open a note in Obsidian app
   { '<leader>o', group = '[Obsidian]' } }
 wk.add(obsidian_mappings)
 vim.keymap.set("n", "<leader>oo", "<cmd>ObsidianOpen<CR>", { desc = "Open current note in Obsidian" })

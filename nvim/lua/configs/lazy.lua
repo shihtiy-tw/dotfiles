@@ -136,6 +136,8 @@ require("lazy").setup({
     { import = "plugins.kubernetes" },
     -- use kustomize
     { import = "plugins.kustomize" },
+    -- use kubectl
+    { import = "plugins.kubectl" },
 
     -- Markdown
     -- ----------------------------
