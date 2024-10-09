@@ -101,6 +101,7 @@ require("lazy").setup({
     -- ----------------------------
     -- fugitive, diffview
     { import = "plugins.git" },
+    { import = "plugins.gitsigns" },
 
     -- Syntax
     -- ----------------------------

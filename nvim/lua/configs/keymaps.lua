@@ -76,6 +76,11 @@ vim.keymap.set('n', '<leader>fgs', builtin.git_status, { desc = "telescope for g
 -- alternative file and other plugin
 vim.keymap.set('n', '[e', '<C-^>', { desc = "previous alternative file" })
 
+-- gitsigns
+local gitsigns_mappings = {
+  { '<leader>G', group = '[Gitsigns]' } }
+wk.add(gitsigns_mappings)
+
 -- kustomize
 local kustomize_mappings = {
   { '<leader>Km', group = '[kustomize]' } }
