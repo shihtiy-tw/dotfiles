@@ -123,6 +123,8 @@ require("lazy").setup({
     -- code outline window
     { import = "plugins.aerial" },
     { import = "plugins.outline" },
+    -- A task runner and job management plugin
+    { import = "plugins.overseer" },
 
     -- Kubernetes
     -- ----------------------------
