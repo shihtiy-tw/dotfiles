@@ -31,8 +31,6 @@ require("lazy").setup({
     -- ----------------------------
     -- enhanced search
     { import = "plugins.telescope" },
-    -- code outline window
-    { import = "plugins.aerial" },
     -- autopair plugin that supports multiple characters.
     { import = "plugins.autopairs" },
     -- auto save
@@ -89,6 +87,8 @@ require("lazy").setup({
     { import = "plugins.tree" },
     -- open a url
     { import = "plugins.url-open" },
+    -- use yazi file manager
+    { import = "plugins.yazi" },
 
     -- Theme
     -- ----------------------------
@@ -136,7 +136,7 @@ require("lazy").setup({
     -- render
     { import = "plugins.render-markdown" },
     -- tables
-    { import = "plugins.easy-tables" },
+    { import = "plugins.easytables" },
     { import = "plugins.markdown-table" },
     -- image
     { import = "plugins.image" },

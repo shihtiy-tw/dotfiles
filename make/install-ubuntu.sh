@@ -139,6 +139,11 @@ if [ ! -d ./autojump ]; then \
   cd "$HOME"
 fi
 
+# yazi file manager
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+rustup update
+cargo install --locked yazi-fm yazi-cli
+
 # python3
 sudo ln -s "$(which python3)" /usr/local/bin/python
 
