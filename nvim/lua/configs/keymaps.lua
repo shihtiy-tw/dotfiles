@@ -26,10 +26,12 @@ vim.keymap.set('n', '<leader>fS', builtin.spell_suggest,
   { desc = "Lists spelling suggestions for the current word under the cursor" })
 vim.keymap.set('n', '<leader>fs', builtin.grep_string,
   { desc = "Searches for the string under your cursor or selection in your current working directory " })
+vim.keymap.set("n", "<leader>fn", "<cmd>Telescope noice<CR>", { desc = "Toggle noice for message history" })
 
 -- telescope for neoclip
 vim.keymap.set("n", "<leader>C", "<cmd>Telescope neoclip<CR>", { desc = "Toggle neoclip for register" })
 vim.keymap.set("n", "<leader>c", "<cmd>Telescope macroscope<CR>", { desc = "Toggle neoclip for register" })
+
 
 -- telescope for lsp
 local telescope_lsp_mappings = {

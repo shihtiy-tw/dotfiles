@@ -57,6 +57,8 @@ require("lazy").setup({
     { import = "plugins.todo-comments" },
     -- show key mappings
     { import = "plugins.which-key" },
+    -- enhanced nvim cmdline
+    { import = "plugins.noice" },
 
     -- Notes
     -- ----------------------------
