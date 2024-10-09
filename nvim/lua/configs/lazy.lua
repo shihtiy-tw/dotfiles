@@ -120,6 +120,9 @@ require("lazy").setup({
     { import = "plugins.snippets" },
     -- trouble
     { import = "plugins.trouble" },
+    -- code outline window
+    { import = "plugins.aerial" },
+    { import = "plugins.outline" },
 
     -- Kubernetes
     -- ----------------------------

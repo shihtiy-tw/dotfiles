@@ -86,8 +86,11 @@ vim.keymap.set("n", "<leader>Kmv", "<cmd>lua require('kustomize').validate()<cr>
 vim.keymap.set("n", "<leader>Kmd", "<cmd>lua require('kustomize').deprecations()<cr>", { noremap = true })
 
 -- aerial
--- You probably also want to set a keymap to toggle aerial
-vim.keymap.set("n", "<leader>a", "<cmd>AerialToggle!<CR>", { desc = "Toggle Aerial for outline window." })
+vim.keymap.set("n", "<leader>Oa", "<cmd>AerialToggle!<CR>", { desc = "Toggle Aerial for outline window." })
+
+-- outline
+vim.keymap.set("n", "<leader>Oo", "<cmd>Outline<CR>",
+  { desc = "Toggle Outline" })
 
 -- Obsidian
 -- Open a note in Obsidian app
@@ -134,8 +137,8 @@ wk.add(rename_mappings)
 vim.keymap.set("n", "<leader>rn", ":IncRename ")
 
 -- autosave
-vim.api.nvim_set_keymap("n", "<leader>n", ":ASToggle<CR>", { desc = "Toggle autosave" })
 
+vim.api.nvim_set_keymap("n", "<leader>n", ":ASToggle<CR>", { desc = "Toggle autosave" })
 local other_mappings = {
   { '<leader>L', group = '[Other]' } }
 wk.add(other_mappings)
