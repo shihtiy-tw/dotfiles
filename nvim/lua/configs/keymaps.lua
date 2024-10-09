@@ -185,7 +185,7 @@ vim.keymap.set("n", "<leader>gd", ":Gvdiffsplit<cr>", { silent = true })
 vim.keymap.set("n", "<leader>ge", ":Gedit<cr>", { silent = true })
 vim.keymap.set("n", "<leader>gw", ":Gwrite<cr>", { silent = true })
 vim.keymap.set("n", "<leader>gc", ":Git commit<cr>", { silent = true })
-vim.keymap.set("n", "<leader>gb", ":Gblame<cr>", { silent = true })
+vim.keymap.set("n", "<leader>gb", ":Git blame<cr>", { silent = true })
 vim.keymap.set("n", "<leader>gl",
   ":Git log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%ai%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all<cr>",
   { silent = true })
