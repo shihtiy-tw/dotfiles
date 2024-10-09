@@ -125,6 +125,8 @@ require("lazy").setup({
     { import = "plugins.outline" },
     -- A task runner and job management plugin
     { import = "plugins.overseer" },
+    -- enhanced notification for lsp
+    { import = "plugins.fidget" },
 
     -- Kubernetes
     -- ----------------------------
