@@ -59,6 +59,8 @@ require("lazy").setup({
     { import = "plugins.which-key" },
     -- enhanced nvim cmdline
     { import = "plugins.noice" },
+    -- jump among windws
+    { import = "plugins.window" },
 
     -- Notes
     -- ----------------------------

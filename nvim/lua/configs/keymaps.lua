@@ -182,6 +182,8 @@ vim.keymap.set("n", "<leader>gr", ":Git restore %:p<cr><cr>", { silent = true })
 vim.keymap.set("n", "<leader>gR", ":Git restore -p %:p<cr><cr>", { silent = true })
 vim.keymap.set("n", "<leader>gS", ":Git diff --staged %:p<cr><cr>", { silent = true })
 vim.keymap.set("n", "<leader>gd", ":Gvdiffsplit<cr>", { silent = true })
+vim.keymap.set("n", "<leader>gm", ":Gvdiffsplit!<cr>", { silent = true })
+vim.keymap.set("n", "<leader>gM", ":Git mergetool<cr>", { silent = true })
 vim.keymap.set("n", "<leader>ge", ":Gedit<cr>", { silent = true })
 vim.keymap.set("n", "<leader>gw", ":Gwrite<cr>", { silent = true })
 vim.keymap.set("n", "<leader>gc", ":Git commit<cr>", { silent = true })
@@ -342,6 +344,10 @@ require('mini.move').setup({
     up    = 'K',
   }
 })
+
+--- window
+vim.keymap.set("n", ",", function() require('nvim-window').pick() end,
+  { desc = "Open harpoon window" })
 
 -- Shift + arrows
 require('mini.move').setup({
