@@ -63,7 +63,7 @@ require('gitsigns').setup {
       else
         gitsigns.nav_hunk('next')
       end
-    end)
+    end, { desc = "Next hunk" })
 
     map('n', '[c', function()
       if vim.wo.diff then
@@ -71,7 +71,7 @@ require('gitsigns').setup {
       else
         gitsigns.nav_hunk('prev')
       end
-    end)
+    end, { desc = "Previous hunk" })
 
     -- Actions
     map('n', '<leader>Gs', gitsigns.stage_hunk, { desc = "Stage hunk" })
@@ -88,6 +88,7 @@ require('gitsigns').setup {
     map('n', '<leader>Gb', gitsigns.toggle_current_line_blame, { desc = "Toggle current line blame" })
     map('n', '<leader>Gd', gitsigns.diffthis, { desc = "Diff this" })
     map('n', '<leader>GD', function() gitsigns.diffthis('~') end, { desc = "Diff this (~)" })
+    map('n', '<leader>Gl', gitsigns.setqflist, { desc = "Quickfix hunk list" })
     -- map('n', '<leader>Gd', gitsigns.toggle_deleted, { desc = "Toggle deleted" })
 
     -- Text object
