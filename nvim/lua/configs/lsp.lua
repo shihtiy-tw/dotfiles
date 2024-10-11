@@ -37,6 +37,7 @@ require('mason-lspconfig').setup({
     'dockerls',
     'yamlls',
     'bashls',
+    'terraformls',
     -- FIX: the path need to be added for reference, this should be fixed for v1 https://github.com/Feel-ix-343/markdown-oxide/issues/163 and v1 will work with obsidian.md (https://github.com/epwalsh/obsidian.nvim/issues/476)
 
     'markdown_oxide'
@@ -143,6 +144,9 @@ require("lspconfig").yamlls.setup(require("schema-companion").setup_client({
 -- java
 -- https://github.com/nvim-java/nvim-java?tab=readme-ov-file#custom-configuration-instructions
 lsp_config.jdtls.setup({})
+
+-- Terraform
+lsp_config.terraformls.setup({})
 
 -- oxide
 -- https://oxide.md/README#neovim
