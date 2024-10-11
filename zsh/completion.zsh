@@ -20,6 +20,13 @@ if [ -f "$(which aws)" ]; then
   complete -C '/usr/local/bin/aws_completer' aws
 fi
 
+# terraform
+if [ -f "$(which terraform)" ]; then
+  autoload -U +X bashcompinit && bashcompinit
+  complete -o nospace -C /usr/bin/terraform terraform
+fi
+
+
 #[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 # node
