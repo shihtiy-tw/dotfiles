@@ -26,5 +26,10 @@ require("schema-companion").setup({
       name = "eksctl",
       uri = "file://home/ubuntu/dotfiles/nvim/lua/configs/schema/eksctl-schema.json",
     },
+    {
+      name = "ecs",
+      uri =
+      "https://raw.githubusercontent.com/shihtiy-tw/amazon-ecs-intellisense-schema/refs/heads/mainline/src/model/schema/schema.json",
+    },
   },
 })

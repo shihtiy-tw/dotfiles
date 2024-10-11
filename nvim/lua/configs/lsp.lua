@@ -132,6 +132,8 @@ require("lspconfig").yamlls.setup(require("schema-companion").setup_client({
         ["http://json.schemastore.org/kustomization"] = "kustomization.{yml,yaml}",
         ["http://json.schemastore.org/chart"] = "Chart.{yml,yaml}",
         ["http://json.schemastore.org/circleciconfig"] = ".circleci/**/*.{yml,yaml}",
+        ["https://raw.githubusercontent.com/shihtiy-tw/amazon-ecs-intellisense-schema/refs/heads/mainline/src/model/schema/schema.json"] =
+        "*task-def.yaml",
       },
     },
   },
