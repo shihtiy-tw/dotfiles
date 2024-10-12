@@ -13,11 +13,21 @@ if [ -f "$(which helm)" ]; then source <(helm completion zsh); fi
 # eksctl
 if [ -f "$(which eksctl)" ]; then source <(eksctl completion zsh); fi
 
-# eksctl
+# aws
 if [ -f "$(which aws)" ]; then
   autoload bashcompinit && bashcompinit
   autoload -Uz compinit && compinit
   complete -C '/usr/local/bin/aws_completer' aws
+fi
+
+#compdef toggl
+if [[ -f "$(which toggl)" ]]; then
+  _toggl() {
+    eval $(env COMMANDLINE="${words[1,$CURRENT]}" _TOGGL_COMPLETE=complete-zsh  toggl)
+  }
+  if [[ "$(basename -- ${(%):-%x})" != "_toggl" ]]; then
+    compdef _toggl toggl
+  fi
 fi
 
 # terraform
