@@ -36,8 +36,8 @@
 bindkey -v
 export KEYTIMEOUT=1
 
-bindkey '^ ' vi-cmd-mode
-bindkey -s '  ' vi-cmd-mode
+# bindkey '^ ' vi-cmd-mode
+# bindkey -s '  ' vi-cmd-mode
 
 # Use vim keys in tab complete menu:
 bindkey -M menuselect 'h' vi-backward-char
