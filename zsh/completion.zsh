@@ -13,12 +13,15 @@ if [ -f "$(which helm)" ]; then source <(helm completion zsh); fi
 # eksctl
 if [ -f "$(which eksctl)" ]; then source <(eksctl completion zsh); fi
 
-# eksctl
+# aws
 if [ -f "$(which aws)" ]; then
   autoload bashcompinit && bashcompinit
   autoload -Uz compinit && compinit
   complete -C '/usr/local/bin/aws_completer' aws
 fi
+
+# github cli
+if [ -f "$(which gh)" ]; then source <(gh completion -s zsh); fi
 
 # terraform
 if [ -f "$(which terraform)" ]; then
