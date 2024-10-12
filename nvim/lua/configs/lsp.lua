@@ -38,6 +38,7 @@ require('mason-lspconfig').setup({
     'yamlls',
     'bashls',
     'terraformls',
+    'nginx_language_server',
     -- FIX: the path need to be added for reference, this should be fixed for v1 https://github.com/Feel-ix-343/markdown-oxide/issues/163 and v1 will work with obsidian.md (https://github.com/epwalsh/obsidian.nvim/issues/476)
 
     'markdown_oxide'
@@ -125,7 +126,7 @@ require("lspconfig").yamlls.setup(require("schema-companion").setup_client({
         -- TODO: how to use schemastore to contain the built-in kubernetes
         -- TODO: Can trigger schema based on path?
         kubernetes = "k8s-*.yaml",
-        -- ["file://${HOME}/dotfiles/nvim/lua/configs/schema/eksctl-schema.json"] = "eksctl-*.yaml",
+        ["file://home/ubuntu/dotfiles/nvim/lua/configs/schema/eksctl-schema.json"] = "eksctl-*.yaml",
         ["http://json.schemastore.org/github-workflow"] = ".github/workflows/*",
         ["http://json.schemastore.org/github-action"] = ".github/action.{yml,yaml}",
         ["http://json.schemastore.org/ansible-stable-2.9"] = "roles/tasks/**/*.{yml,yaml}",
@@ -147,6 +148,9 @@ lsp_config.jdtls.setup({})
 
 -- Terraform
 lsp_config.terraformls.setup({})
+
+-- NGINX
+lsp_config.nginx_language_server.setup({})
 
 -- oxide
 -- https://oxide.md/README#neovim
