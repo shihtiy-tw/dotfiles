@@ -1,10 +1,26 @@
 return {
   {
     'williamboman/mason.nvim',
-    lazy = false,
-    config = function()
-      require("mason").setup {}
-    end,
+    -- lazy = false,
+    -- config = function()
+    --   require("mason").setup {}
+    -- end,
+    opts = {
+      ui = {
+        icons = {
+          package_installed = '✓',
+          package_pending = '➜',
+          package_uninstalled = '✗',
+        },
+      },
+    },
+    -- use OPTS property to pass the configuration
+    -- lazy vim call the setup function for you
+
+    -- config = function()
+    -- 	require('mason').setup({})
+    -- end
+    -- ^^^^^^^^^^^^^^^^ DON'T DO THIS
   },
   {
     "williamboman/mason-lspconfig.nvim",
