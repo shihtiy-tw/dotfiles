@@ -37,6 +37,19 @@ wget https://rubygems.org/rubygems/rubygems-"$RUBY_GEM_VERSION".tgz
 tar xvzf rubygems-"$RUBY_GEM_VERSION".tgz
 cd rubygems-"$RUBY_GEM_VERSION"; ruby setup.rb; cd
 
+# npm
+# install nvm
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash
+
+# export the env now to install npm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+nvm install 20
+
+node -v
+nvm -v
 
 # git-sim
 sudo apt install pipx -y
