@@ -36,6 +36,8 @@ source $HOME/dotfiles/zsh/completion.zsh
 source $HOME/dotfiles/zsh/env.zsh
 
 # THEME
+# cat theme.sh
+# export THEME=dark
 source ${HOME}/dotfiles/zsh/theme.zsh
 
 # color for man pages
@@ -50,11 +52,6 @@ fi
 fpath=(${HOME}/.zsh.d/ $fpath)
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-# GoLang
-export GOROOT=/usr/local/go
-export PATH=$GOROOT/bin:$PATH
-# export GOPATH=/Users/shihtiy/go
-# export PATH=$GOPATH/bin:$PATH
 
 # start tmux while ssh
 if [[ -z "$TMUX" ]] && [ "$SSH_CONNECTION" != "" ]; then
