@@ -191,30 +191,22 @@ echo \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt-get update
 
-sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
 
 sudo groupadd docker
 sudo usermod -aG docker "$USER"
 newgrp docker
 
-# Kubernetes
-# krew: plugin manager
-(
-  set -x; cd "$(mktemp -d)" &&
-  OS="$(uname | tr '[:upper:]' '[:lower:]')" &&
-  ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')" &&
-  KREW="krew-${OS}_${ARCH}" &&
-  curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/${KREW}.tar.gz" &&
-  tar zxvf "${KREW}.tar.gz" &&
-  ./"$KREW" install krew
-)
+# imagemagick
+sudo apt install imagemagick -y
 
-# k9s
-curl -sS https://webinstall.dev/k9s | bash
+# kernel tool
+sudo add-apt-repository ppa:cappelikan/ppa -y
+sudo apt update && sudo apt full-upgrade
+sudo apt install -y mainline
 
-# kube-alias
-curl -o "$HOME"/.kubectl_aliases https://raw.githubusercontent.com/ahmetb/kubectl-aliases/master/.kubectl_aliases
+# gcc-14
+sudo add-apt-repository universe
+sudo apt install gcc-14
 
 cd "$HOME"
-
