@@ -27,11 +27,15 @@ help:
 		@echo "  $(YELLOW)install$(RESET):          download applications"
 		@echo "  $(YELLOW)init$(RESET):             config all dotfiles"
 		@echo "  $(YELLOW)status$(RESET):           show dotfile status"
+		@echo "  $(YELLOW)dark$(RESET):             configure system for dark theme"
+		@echo "  $(YELLOW)light$(RESET):            configure system for light theme"
 		@echo "  $(YELLOW)diff$(RESET):             show dotfile diff"
 		@echo "  $(YELLOW)add$(RESET):              add changes to git"
 		@echo "  $(YELLOW)commit$(RESET):           commit changes"
 		@echo "  $(YELLOW)ls$(RESET):               show dotfiles"
 		@echo "  $(YELLOW)rm_env$(RESET):           remove env"
+		@echo "  $(YELLOW)aws$(RESET):              install aws tool"
+		@echo "  $(YELLOW)kubernetes$(RESET):       install kubernetes tool"
 
 # PHONY: help
 
@@ -163,3 +167,5 @@ remove_env:
 		rm ${HOME}/.config/nvim/init.vim \
 		mv ${HOME}/.config/nvim/init.vim.backup ${HOME}/.config/nvim/init.vim; \
 	fi
+
+# TODO: add aws and kubernetes script
