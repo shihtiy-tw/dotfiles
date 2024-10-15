@@ -2,7 +2,7 @@ local lint = require "lint"
 
 lint.linters_by_ft = {
   go = { "golangcilint" },
-  markdown = { "markdownlint-cli2" },
+  -- markdown = { "markdownlint-cli2" },
   -- markdown = (function(bufnr)
   --   return { "markdownlint-cli2" }
   -- end)(),

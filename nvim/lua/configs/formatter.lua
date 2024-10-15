@@ -10,7 +10,7 @@ conform.setup({
     -- Conform will run the first available formatter
     javascript = { "prettierd", "prettier", stop_after_first = true },
     -- this will overrite the tag in obsidian to a header
-    markdown = { "markdownlint-cli2", stop_after_first = true },
+    -- markdown = { "markdownlint-cli2", stop_after_first = true },
     -- markdown = function(bufnr)
     --   return { "markdownlint-cli2", stop_after_first = true }
     -- end,
