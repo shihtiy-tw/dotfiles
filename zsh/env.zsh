@@ -45,8 +45,8 @@ fi
 # export PYTHONPATH="${PYTHON3_SITE}:${PYTHON2_SITE}:$PYTHONPATH"
 
 # Golang
-export GOROOT=${HOME}/.go
-export PATH=$GOROOT/bin:$PATH
+# export GOROOT=${HOME}/.go
+# export PATH=$GOROOT/bin:$PATH
 export GOPATH=${HOME}/go
 export PATH=$GOPATH/bin:$PATH
 #export GOROOT='/usr/local/go'

@@ -29,6 +29,8 @@ curl https://sh.rustup.rs -sSf | sh -s -- -y
 # install lua
 sudo apt install luarocks
 
+# install Golang
+sudo apt install golang -y
 
 # install ruby
 sudo apt install ruby -y
