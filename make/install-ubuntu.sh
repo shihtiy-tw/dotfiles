@@ -105,6 +105,9 @@ fi
 if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/fzf-tab ]; then \
   git clone https://github.com/Aloxaf/fzf-tab "${HOME}/.oh-my-zsh/custom/plugins/fzf-tab"; \
 fi
+if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/zsh-system-clipboard ]; then \
+  git clone https://github.com/kutsan/zsh-system-clipboard "${HOME}/.oh-my-zsh/custom/plugins/zsh-system-clipboard"
+fi
 if [ ! -d "$HOME"/.oh-my-zsh/custom/themes/spaceship-prompt ]; then \
   git clone https://github.com/denysdovhan/spaceship-prompt.git "${HOME}/.oh-my-zsh/custom/themes/spaceship-prompt"; \
   sed -i 's/^SPACESHIP_CHAR_SYMBOL=.*$/SPACESHIP_CHAR_SYMBOL="${SPACESHIP_CHAR_SYMBOL="$ "}"/' "$HOME"/.oh-my-zsh/custom/themes/spaceship-prompt/sections/char.zsh
@@ -214,3 +217,4 @@ curl -sS https://webinstall.dev/k9s | bash
 curl -o "$HOME"/.kubectl_aliases https://raw.githubusercontent.com/ahmetb/kubectl-aliases/master/.kubectl_aliases
 
 cd "$HOME"
+
