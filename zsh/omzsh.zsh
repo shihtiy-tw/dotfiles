@@ -70,6 +70,7 @@ plugins=(
   zsh-autosuggestions
   zsh-syntax-highlighting
   zsh-vim-mode
+  zsh-system-clipboard
   #auto-color-ls
   #copyzshell
   #fast-syntax-highlighting

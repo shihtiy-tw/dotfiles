@@ -27,6 +27,8 @@ alias sudo='sudo '
 alias vbm="VBoxManage"
 alias l="exa -lahF"
 
+# if [ -f "$(which kubecolor)" ]; then alias kubectl=kubecolor; fi
+
 #if [ $(uname -s) != "Darwin" ]; then
   ##alias rm="trash"
   #alias say="spd-say"

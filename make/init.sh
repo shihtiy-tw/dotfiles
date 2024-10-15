@@ -26,7 +26,7 @@ fi
 #ln -sf ${HOME}/dotfiles/bashrc ${HOME}/.bash_profile
 ln -sf "$HOME"/dotfiles/zsh/zshrc "$HOME"/.zshrc
 ln -sf "$HOME"/dotfiles/tmux/tmux.conf "$HOME"/.config/tmux/tmux.conf
-ln -sf "$HOME"/dotfiles/tmux/themes "$HOME"/.tmux/themes
+# ln -sf "$HOME"/dotfiles/tmux/themes "$HOME"/.tmux/themes
 ln -sf "$HOME"/dotfiles/git/gitconfig "$HOME"/.gitconfig
 ln -sf "$HOME"/dotfiles/vim/vimrc "$HOME"/.vimrc
 ln -sf "$HOME"/dotfiles/vim/editorconfig "$HOME"/.editorconfig

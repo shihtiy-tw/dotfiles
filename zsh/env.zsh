@@ -49,8 +49,8 @@ fi
 # export PYTHONPATH="${PYTHON3_SITE}:${PYTHON2_SITE}:$PYTHONPATH"
 
 # Golang
-export GOROOT=${HOME}/.go
-export PATH=$GOROOT/bin:$PATH
+# export GOROOT=${HOME}/.go
+# export PATH=$GOROOT/bin:$PATH
 export GOPATH=${HOME}/go
 export PATH=$GOPATH/bin:$PATH
 #export GOROOT='/usr/local/go'
@@ -80,6 +80,10 @@ export PATH=${PATH}:/usr/local/cuda-9.0/bin
 
 # node
 export NODEPATH="$(which node)"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # rust
 export PATH=${PATH}:$HOME/.cargo/env

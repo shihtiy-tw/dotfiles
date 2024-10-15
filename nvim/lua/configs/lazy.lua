@@ -148,7 +148,8 @@ require("lazy").setup({
     -- ----------------------------
     { import = "plugins.markdown" },
     -- render
-    { import = "plugins.render-markdown" },
+    -- { import = "plugins.render-markdown" },
+    { import = "plugins.markview" },
     -- tables
     { import = "plugins.easytables" },
     { import = "plugins.markdown-table" },

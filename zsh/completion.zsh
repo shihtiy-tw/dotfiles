@@ -3,6 +3,7 @@ if [ -f "$(which awless)" ]; then source <(awless completion zsh); fi
 
 # kubectl
 if [ -f "$(which kubectl)" ]; then source <(kubectl completion zsh); fi
+if [ -f "$(which kubecolor)" ]; then compdef kubecolor=kubectl; fi
 
 # minikube
 if [ -f "$(which minikube)" ]; then source <(minikube completion zsh); fi
@@ -22,6 +23,16 @@ fi
 
 # github cli
 if [ -f "$(which gh)" ]; then source <(gh completion -s zsh); fi
+
+#compdef toggl
+if [[ -f "$(which toggl)" ]]; then
+  _toggl() {
+    eval $(env COMMANDLINE="${words[1,$CURRENT]}" _TOGGL_COMPLETE=complete-zsh  toggl)
+  }
+  if [[ "$(basename -- ${(%):-%x})" != "_toggl" ]]; then
+    compdef _toggl toggl
+  fi
+fi
 
 # terraform
 if [ -f "$(which terraform)" ]; then
