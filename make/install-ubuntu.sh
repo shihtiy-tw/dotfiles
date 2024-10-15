@@ -26,6 +26,9 @@ sudo apt install fcitx5
 # install cargo
 curl https://sh.rustup.rs -sSf | sh -s -- -y
 
+# java
+sudo apt install default-jdk -y
+
 # install lua
 sudo apt install luarocks
 
