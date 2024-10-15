@@ -209,4 +209,7 @@ sudo apt install -y mainline
 sudo add-apt-repository universe
 sudo apt install gcc-14
 
+# tig
+sudo apt-get install tig -y
+
 cd "$HOME"

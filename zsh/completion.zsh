@@ -3,6 +3,7 @@ if [ -f "$(which awless)" ]; then source <(awless completion zsh); fi
 
 # kubectl
 if [ -f "$(which kubectl)" ]; then source <(kubectl completion zsh); fi
+if [ -f "$(which kubecolor)" ]; then compdef kubecolor=kubectl; fi
 
 # minikube
 if [ -f "$(which minikube)" ]; then source <(minikube completion zsh); fi
