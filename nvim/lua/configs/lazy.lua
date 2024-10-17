@@ -61,6 +61,8 @@ require("lazy").setup({
     { import = "plugins.noice" },
     -- jump among windws
     { import = "plugins.window" },
+    -- show potential movement
+    { import = "plugins.precognition" },
 
     -- Notes
     -- ----------------------------
