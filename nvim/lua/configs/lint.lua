@@ -8,11 +8,11 @@ lint.linters_by_ft = {
   -- end)(),
   python = { "pylint" },
   ruby = { "rubocop" },
-  terraform = { "tflint" },
   -- sh = { "shellcheck" },
   dockerfile = { "hadolint" },
   yaml = { "yamllint" },
   make = { "checkmake" },
+  terraform = { "tflint" },
   -- java = { "checkstyle" }
 
 }

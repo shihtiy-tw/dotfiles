@@ -17,6 +17,9 @@ conform.setup({
     sh = { "shellharden" },
     yaml = { "yamlfix", "prettierd", "prettier", stop_after_first = true },
     -- java = { "google-java-format", stop_after_first = true },
+    terraform = { "terraform_fmt" },
+    tf = { "terraform_fmt" },
+    ["terraform-vars"] = { "terraform_fmt" },
 
   },
   -- format_on_save = {

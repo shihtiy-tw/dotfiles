@@ -43,6 +43,8 @@ return {
         "cpp",
         "java",
         "cmake",
+        "terraform",
+        "hcl"
       },
       incremental_selection = {
         enable = true,
