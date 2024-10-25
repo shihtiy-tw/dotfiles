@@ -357,6 +357,13 @@ vim.keymap.set("n", "<C-e>", function() toggle_telescope(harpoon:list()) end,
 -- vim.keymap.set({ "n" }, "gL", toggle_lint, { noremap = true, desc = "Toggle linter" })
 -- vim.keymap.set({ "n" }, "gM", toggle_formatter, { noremap = true, desc = "Toggle formatter" })
 
+-- Enter normal mode
+vim.keymap.set("i", "<C-space>", "<ESC>", opts,
+  { desc = "Enter normal mode" })
+-- doesn't work with my alfred short
+vim.keymap.set("i", "<C-C>", "<ESC>", opts,
+  { desc = "Enter normal mode" })
+
 -- mini move
 -- `HJKL` for moving visual selection (overrides H, L, J in Visual mode)
 require('mini.move').setup({
