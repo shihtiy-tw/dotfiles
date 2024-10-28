@@ -74,8 +74,15 @@ sudo apt install git-extras
 
 sudo apt install git-lfs
 
+# See ~/dotfiles/git/commit-conventions.txt
+git config --global commit.template ~/dotfiles/git/commit-conventions.txt
+git config --global core.editor=nvim +18 -c 'startinsert'
+
 # precommit
 sudo apt install pre-commit -y
+
+# gitflow-cjs
+wget -q  https://raw.githubusercontent.com/CJ-Systems/gitflow-cjs/develop/contrib/gitflow-installer.sh && sudo bash gitflow-installer.sh install stable; rm gitflow-installer.sh
 
 # tree
 sudo apt install tree

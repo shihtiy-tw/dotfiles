@@ -33,7 +33,7 @@
 	sslverify = false
 ;[core]
 	;pager = diff-so-fancy | less --tabs=4 -RFX
-	;editor = nvim
+	;editor = nvim +18 -c 'startinsert'
 ;[pager]
 	;show = diff-so-fancy | less --tabs=1,5 -RFX
 [color]
@@ -50,6 +50,7 @@
 	required = true
 [core]
 	pager = diff-so-fancy | less --tabs=4 -RF
+	editor = nvim +18 -c 'startinsert'
 [interactive]
 	diffFilter = diff-so-fancy --patch
 [color "diff"]
@@ -62,3 +63,5 @@
 	whitespace = red reverse
 [init]
 	defaultBranch = main
+[commit]
+	template = /home/yst/dotfiles/git/commit-conventions.txt
