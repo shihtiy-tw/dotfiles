@@ -64,4 +64,4 @@
 [init]
 	defaultBranch = main
 [commit]
-	template = /home/yst/dotfiles/git/commit-conventions.txt
+	template = ~/dotfiles/git/commit-conventions.txt
