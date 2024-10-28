@@ -175,6 +175,9 @@ cargo install --locked yazi-fm yazi-cli
 # python3
 sudo ln -s "$(which python3)" /usr/local/bin/python
 
+# pyenv
+curl https://pyenv.run | bash
+
 [[ -s ${HOME}/.autojump/etc/profile.d/autojump.sh ]] && source "$HOME"/.autojump/etc/profile.d/autojump.sh
 
 # Ag
@@ -186,7 +189,7 @@ for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker c
 
 # Add Docker's official GPG key:
 sudo apt-get update
-sudo apt-get install ca-certificates curl
+sudo apt-get install ca-certificates curl -y
 sudo install -m 0755 -d /etc/apt/keyrings
 sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
 sudo chmod a+r /etc/apt/keyrings/docker.asc
@@ -213,14 +216,14 @@ sudo apt update && sudo apt full-upgrade
 sudo apt install -y mainline
 
 # gcc-14
-sudo add-apt-repository universe
-sudo apt install gcc-14
+sudo add-apt-repository universe -y
+sudo apt install gcc-14 -y
 
 # tig
 sudo apt-get install tig -y
 
 # imagemagick
-sudo apt-get install imagemagick
+sudo apt-get install imagemagick -y
 
 # gh
 # https://github.com/cli/cli/blob/trunk/docs/install_linux.md
