@@ -131,6 +131,10 @@ vim.keymap.set("n", "<C-p>", function() require("hover").hover_switch("previous"
   { desc = "hover.nvim (previous source)" })
 vim.keymap.set("n", "<C-n>", function() require("hover").hover_switch("next") end, { desc = "hover.nvim (next source)" })
 
+-- docs plugin
+vim.keymap.set("n", "<leader>dt", "<cmd>DocsViewToggle<CR>", { desc = "Open current note in Obsidian" })
+vim.keymap.set("n", "<leader>du", "<cmd>DocsViewUpdate<CR>", { desc = "Create a new note" })
+
 -- Mouse support
 vim.keymap.set('n', '<MouseMove>', require('hover').hover_mouse, { desc = "hover.nvim (mouse)" })
 vim.o.mousemoveevent = true

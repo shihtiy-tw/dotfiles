@@ -65,6 +65,8 @@ require("lazy").setup({
     { import = "plugins.precognition" },
     -- show hover info
     { import = "plugins.hover" },
+    -- show doc info
+    { import = "plugins.docs" },
 
     -- Notes
     -- ----------------------------
