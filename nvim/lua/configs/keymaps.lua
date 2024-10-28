@@ -95,12 +95,35 @@ vim.keymap.set("n", "<leader>Kmd", "<cmd>lua require('kustomize').deprecations()
 
 vim.keymap.set("n", "<leader>Kk", '<cmd>lua require("kubectl").toggle()<cr>', { noremap = true, silent = true })
 
+local outline_mappings = {
+  -- Preview LSP action
+  { '<leader>O', group = '[Outline]' } }
+wk.add(outline_mappings)
 -- aerial
 vim.keymap.set("n", "<leader>Oa", "<cmd>AerialToggle!<CR>", { desc = "Toggle Aerial for outline window." })
 
 -- outline
 vim.keymap.set("n", "<leader>Oo", "<cmd>Outline<CR>",
   { desc = "Toggle Outline" })
+
+-- goto-preview
+local goto_preview_mappings = {
+  -- Preview LSP action
+  { '<leader>p', group = '[Preview]' } }
+wk.add(goto_preview_mappings)
+vim.keymap.set("n", "<leader>pd", "<cmd>lua require('goto-preview').goto_preview_definition()<CR>",
+  { noremap = true, desc = "Preview definition" })
+vim.keymap.set("n", "<leader>pt", "<cmd>lua require('goto-preview').goto_preview_type_definition()<CR>",
+  { noremap = true, desc = "Preview type definition" })
+vim.keymap.set("n", "<leader>pi", "<cmd>lua require('goto-preview').goto_preview_implementation()<CR>",
+  { noremap = true, desc = "Preview implementation" })
+vim.keymap.set("n", "<leader>pD", "<cmd>lua require('goto-preview').goto_preview_declaration()<CR>",
+  { noremap = true, desc = "Preview declaration" })
+vim.keymap.set("n", "<leader>P", "<cmd>lua require('goto-preview').close_all_win()<CR>",
+  { noremap = true, desc = "Close all preview windows" })
+vim.keymap.set("n", "<leader>pr", "<cmd>lua require('goto-preview').goto_preview_references()<CR>",
+  { noremap = true, desc = "Preview references" })
+
 
 -- Obsidian
 local obsidian_mappings = {
@@ -333,6 +356,13 @@ vim.keymap.set("n", "<C-e>", function() toggle_telescope(harpoon:list()) end,
 -- Linter and Formatter
 -- vim.keymap.set({ "n" }, "gL", toggle_lint, { noremap = true, desc = "Toggle linter" })
 -- vim.keymap.set({ "n" }, "gM", toggle_formatter, { noremap = true, desc = "Toggle formatter" })
+
+-- Enter normal mode
+vim.keymap.set("i", "<C-space>", "<ESC>", opts,
+  { desc = "Enter normal mode" })
+-- doesn't work with my alfred short
+vim.keymap.set("i", "<C-C>", "<ESC>", opts,
+  { desc = "Enter normal mode" })
 
 -- mini move
 -- `HJKL` for moving visual selection (overrides H, L, J in Visual mode)

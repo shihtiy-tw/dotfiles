@@ -134,6 +134,8 @@ require("lazy").setup({
     { import = "plugins.overseer" },
     -- enhanced notification for lsp
     { import = "plugins.fidget" },
+    -- preview lsp action
+    { import = "plugins.goto-preview" },
 
     -- Kubernetes
     -- ----------------------------
