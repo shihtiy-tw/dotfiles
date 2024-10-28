@@ -69,6 +69,8 @@ require("lazy").setup({
     { import = "plugins.docs" },
     -- zoom in mode
     { import = "plugins.zen" },
+    -- show undo
+    { import = "plugins.undotree" },
 
     -- Notes
     -- ----------------------------
