@@ -318,7 +318,7 @@ vim.api.nvim_set_keymap('n', '<leader>k', '<c-w>k', { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>l', '<c-w>l', { noremap = true })
 
 
--- Termianl
+-- terminal
 vim.keymap.set('t', '<leader><Esc>', '<C-\\><C-n>', { noremap = true })
 
 -- harpoon
