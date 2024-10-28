@@ -63,6 +63,8 @@ require("lazy").setup({
     { import = "plugins.window" },
     -- show potential movement
     { import = "plugins.precognition" },
+    -- show hover info
+    { import = "plugins.hover" },
 
     -- Notes
     -- ----------------------------
