@@ -72,8 +72,8 @@ export PATH="$PATH:$GEM_HOME"
 # export PATH="$PATH:~/.ruby/bin"
 
 # Tensorflow
-export TF_CPP_MIN_LOG_LEVEL=2
-export PATH=${PATH}:/usr/local/cuda-9.0/bin
+# export TF_CPP_MIN_LOG_LEVEL=2
+# export PATH=${PATH}:/usr/local/cuda-9.0/bin
 
 # Anaconda3 installer
 # export PATH="${HOME}/anaconda3/bin:$PATH"
