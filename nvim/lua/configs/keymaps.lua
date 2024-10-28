@@ -302,7 +302,10 @@ vim.keymap.set("n", "<leader>no", function() require "notion".openMenu() end, { 
 vim.api.nvim_set_keymap('n', '<leader>t', '<cmd>TodoTelescope<CR>', { noremap = true })
 
 -- Lazy
-vim.api.nvim_set_keymap('n', '<leader>z', '<cmd>Lazy<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>Z', '<cmd>Lazy<CR>', { noremap = true })
+
+-- Zen mode
+vim.api.nvim_set_keymap('n', '<leader>z', '<cmd>ZenMode<CR>', { noremap = true })
 
 -- Mason
 vim.api.nvim_set_keymap('n', '<leader>M', '<cmd>Mason<CR>', { noremap = true })

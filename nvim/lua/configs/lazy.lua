@@ -67,6 +67,8 @@ require("lazy").setup({
     { import = "plugins.hover" },
     -- show doc info
     { import = "plugins.docs" },
+    -- zoom in mode
+    { import = "plugins.zen" },
 
     -- Notes
     -- ----------------------------
