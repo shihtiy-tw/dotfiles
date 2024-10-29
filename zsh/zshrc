@@ -53,6 +53,10 @@ fpath=(${HOME}/.zsh.d/ $fpath)
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+# Amazon Q post block. Keep at the bottom of this file.
+# only work for mac at the moment
+[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh"
+
 # start tmux while ssh
 if [[ -z "$TMUX" ]] && [ "$SSH_CONNECTION" != "" ]; then
   tmux new-session -A -s main
