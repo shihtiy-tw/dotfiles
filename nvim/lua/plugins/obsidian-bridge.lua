@@ -9,8 +9,11 @@ return {
     })
   end,
   event = {
-    "BufReadPre *.md",
-    "BufNewFile *.md",
+    -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
+    -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/*.md"
+    -- refer to `:h file-pattern` for more examples
+    "BufReadPre " .. vim.fn.expand "~" .. "/Brainiverse/*/*.md",
+    "BufNewFile " .. vim.fn.expand "~" .. "/Brainiverse/*/*.md",
   },
   lazy = true
 }

@@ -22,4 +22,3 @@ require("configs.lazy")
 require("configs.keymaps")
 require("configs.themes")
 require("configs.windows")
-
