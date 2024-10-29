@@ -24,6 +24,10 @@ fi
 # github cli
 if [ -f "$(which gh)" ]; then source <(gh completion -s zsh); fi
 
+# git flow
+# https://github.com/petervanderdoes/git-flow-completion/tree/develop
+if git flow version >> /dev/null; then source ~/dotfiles/git/git-flow-completion.zsh; fi
+
 #compdef toggl
 if [[ -f "$(which toggl)" ]]; then
   _toggl() {
