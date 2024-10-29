@@ -75,7 +75,7 @@ return {
     end,
     -- UI will be placed by render-markdown
     ui = {
-      enable = true, -- set to false to disable all additional syntax features
+      enable = false, -- set to false to disable all additional syntax features
     }
   },
 }
