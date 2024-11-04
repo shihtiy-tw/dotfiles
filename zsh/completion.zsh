@@ -8,6 +8,9 @@ if [ -f "$(which kubecolor)" ]; then compdef kubecolor=kubectl; fi
 # minikube
 if [ -f "$(which minikube)" ]; then source <(minikube completion zsh); fi
 
+# k3s
+if [ -f "$(which k3s)" ]; then source <(k3s completion zsh); fi
+
 # helm
 if [ -f "$(which helm)" ]; then source <(helm completion zsh); fi
 
