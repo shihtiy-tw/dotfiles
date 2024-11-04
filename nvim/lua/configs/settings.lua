@@ -48,7 +48,7 @@ o.inccommand =
 o.splitright = true
 o.splitbelow = true         -- When on, splitting a window will put the new window below the current one
 o.termguicolors = true
-o.conceallevel = 1
+o.conceallevel = 2
 o.swapfile = false
 
 -- set list
