@@ -22,6 +22,13 @@ return {
       {
         name = "brainiverse",
         path = "~/Brainiverse/Brainiverse",
+        overrides = {
+          notes_subdir = vim.NIL, -- have to use 'vim.NIL' instead of 'nil'
+          new_notes_location = "current_dir",
+          templates = {
+            folder = 'Atlas/Utilities/Templates',
+          },
+        },
       },
       {
         name = "no-vault",
