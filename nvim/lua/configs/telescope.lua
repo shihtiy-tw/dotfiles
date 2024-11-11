@@ -33,3 +33,4 @@ telescope.load_extension('notify')
 telescope.load_extension("noice")
 -- telescope.load_extension("terraform")
 telescope.load_extension("terraform_doc")
+telescope.load_extension 'telescope-tabs'

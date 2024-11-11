@@ -32,6 +32,8 @@ vim.keymap.set("n", "<leader>fn", "<cmd>Telescope noice<CR>", { desc = "Toggle n
 vim.keymap.set("n", "<leader>C", "<cmd>Telescope neoclip<CR>", { desc = "Toggle neoclip for register" })
 vim.keymap.set("n", "<leader>c", "<cmd>Telescope macroscope<CR>", { desc = "Toggle neoclip for register" })
 
+-- telescope for tabs
+
 
 -- telescope for lsp
 local telescope_lsp_mappings = {
@@ -299,7 +301,7 @@ vim.keymap.set("n", "<leader>no", function() require "notion".openMenu() end, { 
 
 
 -- TODO
-vim.api.nvim_set_keymap('n', '<leader>t', '<cmd>TodoTelescope<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>To', '<cmd>TodoTelescope<CR>', { noremap = true, desc = "Show todos" })
 
 -- Lazy
 vim.api.nvim_set_keymap('n', '<leader>Z', '<cmd>Lazy<CR>', { noremap = true })
@@ -314,6 +316,10 @@ vim.api.nvim_set_keymap('n', '<leader>M', '<cmd>Mason<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<TAB>', 'gt', { noremap = true })
 vim.api.nvim_set_keymap('n', '<S-TAB>', 'gT', { noremap = true })
 --vim.api.nvim_set_keymap('n', '<leader>t', 't :tabedit', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>t', '<cmd>Telescope telescope-tabs list_tabs<CR>',
+  { noremap = true, desc = "List tabs" })
+vim.api.nvim_set_keymap('n', '<leader>TT', '<cmd>lua require("telescope-tabs").go_to_previous()<CR>',
+  { noremap = true, desc = "Previous tab" })
 
 -- change input
 -- vim.api.nvim_set_keymap('n', '<ESC>', '<c-space>', { noremap = true })

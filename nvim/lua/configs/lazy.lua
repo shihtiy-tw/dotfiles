@@ -71,6 +71,8 @@ require("lazy").setup({
     { import = "plugins.zen" },
     -- show undo
     { import = "plugins.undotree" },
+    -- jump between tabs
+    { import = "plugins.tabs" },
 
     -- Notes
     -- ----------------------------
