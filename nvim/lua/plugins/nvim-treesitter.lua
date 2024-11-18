@@ -44,7 +44,10 @@ return {
         "java",
         "cmake",
         "terraform",
-        "hcl"
+        "hcl",
+        "python",
+        "ninja",
+        "rst"
       },
       incremental_selection = {
         enable = true,

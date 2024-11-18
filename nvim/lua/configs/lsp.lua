@@ -41,6 +41,7 @@ require('mason-lspconfig').setup({
     'nginx_language_server',
     -- FIX: the path need to be added for reference, this should be fixed for v1 https://github.com/Feel-ix-343/markdown-oxide/issues/163 and v1 will work with obsidian.md (https://github.com/epwalsh/obsidian.nvim/issues/476)
 
+    'basedpyright',
     'markdown_oxide'
     -- 'marksman',
     -- autotools_ls is broken
@@ -165,6 +166,12 @@ capabilities.workspace = {
 }
 
 require("lspconfig").markdown_oxide.setup({
+  capabilities = capabilities, -- again, ensure that capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = true
+  on_attach = lsp_attach       -- configure your on attach config
+})
+
+-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#basedpyright
+require("lspconfig").basedpyright.setup({
   capabilities = capabilities, -- again, ensure that capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = true
   on_attach = lsp_attach       -- configure your on attach config
 })
