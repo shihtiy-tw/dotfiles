@@ -146,6 +146,8 @@ require("lazy").setup({
     { import = "plugins.fidget" },
     -- preview lsp action
     { import = "plugins.goto-preview" },
+    -- python virtual env selector
+    { import = "plugins.venv-selector" },
 
     -- Kubernetes
     -- ----------------------------
