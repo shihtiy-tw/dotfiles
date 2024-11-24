@@ -150,7 +150,7 @@ lsp_config.jdtls.setup({})
 lsp_config.terraformls.setup({})
 
 -- NGINX
-lsp_config.nginx_language_server.setup({})
+-- lsp_config.nginx_language_server.setup({})
 
 -- oxide
 -- https://oxide.md/README#neovim
