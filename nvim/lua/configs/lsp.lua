@@ -38,7 +38,7 @@ require('mason-lspconfig').setup({
     'yamlls',
     'bashls',
     'terraformls',
-    'nginx_language_server',
+    -- 'nginx_language_server',
     -- FIX: the path need to be added for reference, this should be fixed for v1 https://github.com/Feel-ix-343/markdown-oxide/issues/163 and v1 will work with obsidian.md (https://github.com/epwalsh/obsidian.nvim/issues/476)
 
     'basedpyright',
@@ -151,7 +151,7 @@ lsp_config.jdtls.setup({})
 lsp_config.terraformls.setup({})
 
 -- NGINX
-lsp_config.nginx_language_server.setup({})
+-- lsp_config.nginx_language_server.setup({})
 
 -- oxide
 -- https://oxide.md/README#neovim
