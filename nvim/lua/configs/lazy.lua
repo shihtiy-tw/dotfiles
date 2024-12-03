@@ -75,6 +75,8 @@ require("lazy").setup({
     { import = "plugins.tabs" },
     -- sesison manager
     { import = "plugins.session" },
+    -- kanban
+    { import = "plugins.kanban" },
 
     -- Notes
     -- ----------------------------
