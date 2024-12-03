@@ -73,6 +73,8 @@ require("lazy").setup({
     { import = "plugins.undotree" },
     -- jump between tabs
     { import = "plugins.tabs" },
+    -- sesison manager
+    { import = "plugins.session" },
 
     -- Notes
     -- ----------------------------
