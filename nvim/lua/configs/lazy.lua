@@ -77,6 +77,8 @@ require("lazy").setup({
     { import = "plugins.session" },
     -- kanban
     { import = "plugins.kanban" },
+    -- use ollama locally
+    { import = "plugins.codecompanion" },
 
     -- Notes
     -- ----------------------------

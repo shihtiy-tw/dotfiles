@@ -398,6 +398,22 @@ require('mini.move').setup({
   }
 })
 
+-- codecompanion
+
+vim.api.nvim_set_keymap("n", "<C-a>", "<cmd>CodeCompanionActions<cr>",
+  { noremap = true, silent = true, desc = "Open the Action Palette" })
+vim.api.nvim_set_keymap("v", "<C-a>", "<cmd>CodeCompanionActions<cr>",
+  { noremap = true, silent = true, desc = "Open the Action Palette" })
+vim.api.nvim_set_keymap("n", "<leader>a", "<cmd>CodeCompanionChat Toggle<cr>",
+  { noremap = true, silent = true, desc = "Open a chat buffer" })
+vim.api.nvim_set_keymap("v", "<leader>a", "<cmd>CodeCompanionChat Toggle<cr>",
+  { noremap = true, silent = true, desc = "Open a chat buffer" })
+vim.api.nvim_set_keymap("v", "ga", "<cmd>CodeCompanionChat Add<cr>",
+  { noremap = true, silent = true, desc = "Add visually selected chat to the current chat buffer" })
+
+-- Expand 'cc' into 'CodeCompanion' in the command line
+vim.cmd([[cab cc CodeCompanion]])
+
 --- window
 vim.keymap.set("n", ",", function() require('nvim-window').pick() end,
   { desc = "Open harpoon window" })
