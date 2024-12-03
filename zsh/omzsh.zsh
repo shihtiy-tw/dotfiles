@@ -76,11 +76,13 @@ plugins=(
   #fast-syntax-highlighting
   #fzf-git
   #hacker-quotes
-  #kube-ps1
+  kube-ps1
   #ls
   #web-search
   autojump
   fzf-tab
 )
+
+PROMPT='$(kube_ps1)'$PROMPT
 
 source $ZSH/oh-my-zsh.sh

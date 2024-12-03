@@ -17,6 +17,23 @@ if [ -f "$(which helm)" ]; then source <(helm completion zsh); fi
 # eksctl
 if [ -f "$(which eksctl)" ]; then source <(eksctl completion zsh); fi
 
+# cdk
+if [ -f "$(which cdk)" ]; then
+###-begin-cdk-completions-###
+_cdk_yargs_completions()
+{
+  local reply
+  local si=$IFS
+  IFS=$'
+' reply=($(COMP_CWORD="$((CURRENT-1))" COMP_LINE="$BUFFER" COMP_POINT="$CURSOR" cdk --get-yargs-completions "${words[@]}"))
+  IFS=$si
+  _describe 'values' reply
+}
+
+compdef _cdk_yargs_completions cdk;
+###-end-cdk-completions-###
+fi
+
 # aws
 if [ -f "$(which aws)" ]; then
   autoload bashcompinit && bashcompinit
