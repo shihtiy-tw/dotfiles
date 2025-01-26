@@ -113,6 +113,8 @@ echo 'if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi' >> ~/.bash_pr
 brew tap laishulu/homebrew
 brew install macism
 
+# input
+curl -fsSL https://git.io/rime-install | bash
 
 # brew install golang
 # export GOPATH=$HOME/go-workspace # don't forget to change your path correctly!
@@ -131,6 +133,5 @@ brew install macism
 # nvm use v11.14.0
 # nvm alias default 11.14.0
 # npm install -g bash-language-server
-
 
 brew cleanup
