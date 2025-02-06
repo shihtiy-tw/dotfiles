@@ -3,6 +3,9 @@ require("codecompanion").setup({
     diff = {
       provider = "mini_diff",
     },
+    action_palette = {
+      provider = "telescope"
+    },
   },
   opts = {
     log_level = "DEBUG",
@@ -11,6 +14,14 @@ require("codecompanion").setup({
   strategies = {
     chat = {
       adapter = "ollama",
+      -- https://github.com/olimorris/codecompanion.nvim/pull/406
+      slash_commands = {
+        ["buffer"] = {
+          opts = {
+            provider = "telescope", --you need that part
+          },
+        },
+      },
     },
     inline = {
       adapter = "ollama",
@@ -27,7 +38,8 @@ require("codecompanion").setup({
         schema = {
           model = {
             -- https://ollama.com/library/llama3.2:3b
-            default = "llama3.2:1b",
+            -- default = "llama3.2:1b",
+            default = "deepseek-r1:8b",
           },
           num_ctx = {
             default = 16384,
