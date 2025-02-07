@@ -21,6 +21,11 @@ require("codecompanion").setup({
             provider = "telescope", --you need that part
           },
         },
+        ["file"] = {
+          opts = {
+            provider = "telescope", --you need that part
+          },
+        },
       },
     },
     inline = {
