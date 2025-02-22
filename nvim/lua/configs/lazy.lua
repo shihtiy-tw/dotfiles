@@ -88,6 +88,8 @@ require("lazy").setup({
     { import = "plugins.obsidian" },
     -- Obsidian sync scrolling
     { import = "plugins.obsidian-bridge" },
+    -- nvim dark/light theme with system setting
+    { import = "plugins.auto-dark-mode" },
 
     -- Search
     -- ----------------------------
