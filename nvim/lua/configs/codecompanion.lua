@@ -46,7 +46,7 @@ require("codecompanion").setup({
           model = {
             -- https://ollama.com/library/llama3.2:3b
             -- default = "llama3.2:1b",
-            default = "deepseek-r1:8b",
+            default = "deepseek-coder-v2:16b",
           },
           num_ctx = {
             default = 16384,
