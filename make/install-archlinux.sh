@@ -11,7 +11,7 @@ sudo pacman --noconfirm -S lshw              # Provides detailed information on 
 sudo pacman --noconfirm -S powertop          # A tool to diagnose issues with power consumption and power management
 sudo pacman --noconfirm -S inxi              # Full featured CLI system information tool
 sudo pacman --noconfirm -S acpi              # Client for battery, power, and thermal readings
-sudo
+
 sudo pacman --noconfirm -S base-devel        # Basic tools to build Arch Linux packages
 sudo pacman --noconfirm -S git               # Distributed version control system
 sudo pacman --noconfirm -S zip               # Compressor/archiver for creating and modifying zipfiles
