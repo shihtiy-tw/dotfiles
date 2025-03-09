@@ -163,7 +163,7 @@ sudo pacman --noconfirm -S terraform        # infrastructure as a code tool (clo
 
 #### configure docker
 sudo systemctl enable docker            # enable docker daemon on system start
-sudo usermod -a -G docker yst  # to be able to run docker as non-root
+sudo usermod -a -G docker "$USER"  # to be able to run docker as non-root
 newgrp docker                           # login to docker group without restart
 
 # Install Golang and its tools:
