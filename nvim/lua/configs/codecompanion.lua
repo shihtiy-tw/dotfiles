@@ -45,8 +45,8 @@ require("codecompanion").setup({
         schema = {
           model = {
             -- https://ollama.com/library/llama3.2:3b
-            default = "qwen2.5-coder:3b",
-            -- default = "deepseek-coder-v2:16b",
+            --default = "qwen2.5-coder:3b",
+            default = "deepseek-coder-v2:16b",
           },
           num_ctx = {
             default = 16384,
