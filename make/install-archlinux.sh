@@ -327,3 +327,6 @@ fi
 # tmux tpm
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
+# for modify kde setting
+sudo pacman --noconfirm -S qt5-tools
+
