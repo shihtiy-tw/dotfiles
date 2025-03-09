@@ -83,6 +83,8 @@ plugins=(
   fzf-tab
 )
 
+ZSH_SYSTEM_CLIPBOARD_METHOD="tmux"
+
 PROMPT='$(kube_ps1)'$PROMPT
 
 source $ZSH/oh-my-zsh.sh
