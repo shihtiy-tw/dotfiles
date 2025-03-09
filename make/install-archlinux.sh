@@ -162,14 +162,17 @@ sudo pacman --noconfirm -S helm             # package manager for kubernetes
 sudo pacman --noconfirm -S terraform        # infrastructure as a code tool (clouds)
 
 #### configure docker
-
 sudo systemctl enable docker            # enable docker daemon on system start
 sudo usermod -a -G docker yst  # to be able to run docker as non-root
 newgrp docker                           # login to docker group without restart
+
 # Install Golang and its tools:
 sudo pacman --noconfirm -S go
 go install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest
 go install github.com/hairyhenderson/gomplate/v4/cmd/gomplate@latest
+# Install ruby and its tools:
+sudo pacman --noconfirm -S ruby
+
 # Install Java and its tools:
 sudo pacman --noconfirm -S jdk8-openjdk    # OpenJDK Java  8 development kit
 sudo pacman --noconfirm -S jdk11-openjdk   # OpenJDK Java 11 development kit
@@ -221,7 +224,6 @@ sudo pacman --noconfirm -S winetricks   # Installer for various runtime librarie
 sudo pacman --noconfirm -S zenity       # Display dialog boxes from shell scripts (wine dependency)
 # Configure smooth font in Wine applications:
 winetricks settings fontsmooth=rgb
-# 💡 IMPORTANT NOTE: if you are facing error wine: Read access denied for device L"\\??\\Z:\\", FS volume label and serial are not available, go to ~/.wine/dosdevices, remove z: symbolic link and make it point to your $HOME
 
 # Step 05: Install texlive (LaTeX distribution)
 # Download texlive installer:
@@ -232,3 +234,96 @@ tar -xvf install-tl-unx.tar.gz -C texlive --strip-components=1
 # Run texlive install and select nearest CTAN mirror:
 cd ./texlive
 sudo ./install-tl -select-repository
+
+
+# Install 1password
+curl -sS https://downloads.1password.com/linux/keys/1password.asc | gpg --import
+git clone https://aur.archlinux.org/1password.git
+cd 1password
+makepkg -si
+
+# Man page
+
+sudo pacman --noconfirm -S man-db
+sudo pacman --noconfirm -S man-pages
+sudo mandb
+
+# Notion
+
+yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" google-drive-linux
+yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" insync
+yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" notion-app-electron
+yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" notion-calendar-electron
+yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" google-chrome
+yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" zotero
+yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" albert
+yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" aws-cli-v2
+yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" aws-session-manager-plugin
+yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" sublime-text-4
+yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" whatsapp-for-linux
+yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" todoist-appimage
+yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" thinkfinger
+yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" powerline-fonts-git
+
+# Font
+curl -fsSL https://raw.githubusercontent.com/getnf/getnf/main/install.sh | bash
+
+wget -q  https://raw.githubusercontent.com/CJ-Systems/gitflow-cjs/develop/contrib/gitflow-installer.sh && sudo bash gitflow-installer.sh install stable; rm gitflow-installer.sh
+
+# git-sim
+sudo pacman --noconfirm -S calibre
+sudo pacman --noconfirm -S ghostty
+sudo pacman --noconfirm -S ripgrep
+sudo pacman --noconfirm -S pyenv
+sudo pacman --noconfirm -S nvtop
+sudo pacman --noconfirm -S discord
+sudo pacman --noconfirm -S diff-so-fancy
+sudo pacman --noconfirm -S powerline
+sudo pacman --noconfirm -S shellcheck
+sudo pacman --noconfirm -S the_silver_searcher
+sudo pacman --noconfirm -S tig
+sudo pacman --noconfirm -S xclip
+sudo pacman --noconfirm -S ollama-cuda
+sudo pacman --noconfirm -S darkman
+sudo pacman --noconfirm -S otf-codenewroman-nerd
+
+# Auto dump
+if [ ! -d ./autojump ]; then \
+  git clone https://github.com/wting/autojump.git /tmp/autojump; \
+  cd /tmp/autojump
+  python3 install.py; \
+  cd "$HOME"
+fi
+
+# oh-my-zsh
+if [ ! -d "$HOME"/.oh-my-zsh ]; then \
+  git clone https://github.com/robbyrussell/oh-my-zsh.git "$HOME"/.oh-my-zsh; \
+fi
+if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]; then \
+  git clone https://github.com/zsh-users/zsh-autosuggestions "$HOME"/.oh-my-zsh/custom/plugins/zsh-autosuggestions; \
+fi
+if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]; then \
+  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$HOME"/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting; \
+fi
+if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/zsh-completions ]; then \
+  git clone https://github.com/zsh-users/zsh-completions "$HOME"/.oh-my-zsh/custom/plugins/zsh-completions; \
+fi
+if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/zsh-vim-mode ]; then \
+  git clone https://github.com/softmoth/zsh-vim-mode.git "$HOME"/.oh-my-zsh/custom/plugins/zsh-vim-mode; \
+fi
+if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/fzf-tab ]; then \
+  git clone https://github.com/Aloxaf/fzf-tab "${HOME}/.oh-my-zsh/custom/plugins/fzf-tab"; \
+fi
+if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/zsh-system-clipboard ]; then \
+  git clone https://github.com/kutsan/zsh-system-clipboard "${HOME}/.oh-my-zsh/custom/plugins/zsh-system-clipboard"
+fi
+if [ ! -d "$HOME"/.oh-my-zsh/custom/themes/spaceship-prompt ]; then \
+  git clone https://github.com/denysdovhan/spaceship-prompt.git "${HOME}/.oh-my-zsh/custom/themes/spaceship-prompt"; \
+  sed -i 's/^SPACESHIP_CHAR_SYMBOL=.*$/SPACESHIP_CHAR_SYMBOL="${SPACESHIP_CHAR_SYMBOL="$ "}"/' "$HOME"/.oh-my-zsh/custom/themes/spaceship-prompt/sections/char.zsh
+  git clone https://github.com/spaceship-prompt/spaceship-vi-mode.git "$HOME"/.oh-my-zsh/custom/plugins/spaceship-vi-mode
+  sed -i 's/^SPACESHIP_VI_MODE_SHOW=.*$/SPACESHIP_VI_MODE_SHOW="${SPACESHIP_VI_MODE_SHOW=false}"/' "$HOME"/.oh-my-zsh/custom/themes/spaceship-prompt/sections/vi_mode.zsh
+fi
+
+# tmux tpm
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
