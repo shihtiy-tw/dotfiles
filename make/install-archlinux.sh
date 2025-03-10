@@ -330,3 +330,11 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 # for modify kde setting
 sudo pacman --noconfirm -S qt5-tools
 
+# Audio
+# $ dmesg
+# [    6.725628] sof-audio-pci-intel-mtl 0000:00:1f.3: Check if you have 'sof-firmware' package installed.
+# [    6.725628] sof-audio-pci-intel-mtl 0000:00:1f.3: Optionally it can be manually downloaded from:
+# [    6.725629] sof-audio-pci-intel-mtl 0000:00:1f.3:    https://github.com/thesofproject/sof-bin/
+# [    7.922709] sof-audio-pci-intel-mtl 0000:00:1f.3: error: sof_probe_work failed err: -2
+
+sudo pacman --noconfirm -S sof-firmware
