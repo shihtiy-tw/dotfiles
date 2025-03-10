@@ -349,3 +349,5 @@ sudo pacman --noconfirm -S fcitx5-configtool
 sudo pacman --noconfirm -S fcitx5-rime
 sudo pacman --noconfirm -S rime-bopomofo
 
+
+sudo pacman --noconfirm -S yazi
