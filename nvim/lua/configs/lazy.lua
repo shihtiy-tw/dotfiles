@@ -139,8 +139,8 @@ require("lazy").setup({
     -- java
     { import = "plugins.java" },
     -- selecting schema for yaml and json
-    { import = "plugins.schema-companion" },
-    { import = "plugins.schemastore" },
+    -- { import = "plugins.schema-companion" },
+    -- { import = "plugins.schemastore" },
     -- snippets
     { import = "plugins.snippets" },
     -- trouble
@@ -156,6 +156,8 @@ require("lazy").setup({
     { import = "plugins.goto-preview" },
     -- python virtual env selector
     { import = "plugins.venv-selector" },
+    -- dap
+    { import = "plugins.dap" },
 
     -- Kubernetes
     -- ----------------------------

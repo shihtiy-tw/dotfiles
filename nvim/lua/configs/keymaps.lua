@@ -432,3 +432,37 @@ require('mini.move').setup({
     line_up    = '<S-up>',
   }
 })
+-- dap
+local dap_mappings = {
+  { '<leader>d', group = '[Dap]' } }
+wk.add(dap_mappings)
+-- Normal mode mappings with descriptions
+vim.api.nvim_set_keymap('n', "<leader>dc", ":lua require'dap'.continue()<CR>",
+  { noremap = true, silent = true, desc = "Continue debugging session" })
+vim.api.nvim_set_keymap('n', "<leader>do", ":lua require'dap'.step_over()<CR>",
+  { noremap = true, silent = true, desc = "Step over the next function call" })
+vim.api.nvim_set_keymap('n', "<leader>di", ":lua require'dap'.step_into()<CR>",
+  { noremap = true, silent = true, desc = "Step into the next function call" })
+vim.api.nvim_set_keymap('n', "<leader>dx", ":lua require'dap'.step_out()<CR>",
+  { noremap = true, silent = true, desc = "Step out of the current function" })
+vim.api.nvim_set_keymap('n', "<leader>db", ":lua require'dap'.toggle_breakpoint()<CR>",
+  { noremap = true, silent = true, desc = "Toggle a breakpoint" })
+vim.api.nvim_set_keymap('n', "<leader>dB", ":lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>",
+  { noremap = true, silent = true, desc = "Set a breakpoint with a custom condition" })
+vim.api.nvim_set_keymap('n', "<leader>dl",
+  ":lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>",
+  { noremap = true, silent = true, desc = "Set a breakpoint with a custom log message" })
+vim.api.nvim_set_keymap('n', "<leader>dr", ":lua require'dap'.repl.open()<CR>",
+  { noremap = true, silent = true, desc = "Open the REPL for debugging" })
+vim.api.nvim_set_keymap('n', "<leader>drl", ":lua require'dap'.run_last()<CR>",
+  { noremap = true, silent = true, desc = "Run the last debug session" })
+vim.api.nvim_set_keymap('n', "<leader>dev", ":lua require('dapui').eval()<CR>",
+  { noremap = true, silent = true, desc = "Evaluate expression under cursor in debugger context" })
+vim.api.nvim_set_keymap('n', "<leader>dclose", ":lua require('dapui').close()<CR>",
+  { noremap = true, silent = true, desc = "Close the debug UI" })
+vim.api.nvim_set_keymap('n', "<leader>de", ":lua require('dap').close()<CR>",
+  { noremap = true, silent = true, desc = "Close the debugging session" })
+
+-- Visual mode mappings with descriptions
+vim.api.nvim_set_keymap('v', "<leader>dev", ":lua require('dapui').eval()<CR>",
+  { noremap = true, silent = true, desc = "Evaluate selected text in debugger context" })
