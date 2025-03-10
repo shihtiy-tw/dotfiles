@@ -338,3 +338,14 @@ sudo pacman --noconfirm -S qt5-tools
 # [    7.922709] sof-audio-pci-intel-mtl 0000:00:1f.3: error: sof_probe_work failed err: -2
 
 sudo pacman --noconfirm -S sof-firmware
+
+# Screenshot
+sudo pacman --noconfirm -S flameshot
+
+# input
+
+sudo pacman --noconfirm -S fcitx5
+sudo pacman --noconfirm -S fcitx5-configtool
+sudo pacman --noconfirm -S fcitx5-rime
+sudo pacman --noconfirm -S rime-bopomofo
+
