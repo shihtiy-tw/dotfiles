@@ -57,7 +57,33 @@ return {
         },
       },
     },
-    disable_frontmatter = true,
+    disable_frontmatter = false,
+
+    completion = {
+      -- Set to false to disable completion.
+      nvim_cmp = true,
+      -- Trigger completion at 2 chars.
+      min_chars = 2,
+    },
+
+    picker = {
+      -- Set your preferred picker. Can be one of 'telescope.nvim', 'fzf-lua', or 'mini.pick'.
+      name = "telescope.nvim",
+      -- Optional, configure key mappings for the picker. These are the defaults.
+      -- Not all pickers support all mappings.
+      note_mappings = {
+        -- Create a new note from your query.
+        new = "<C-X>",
+        -- Insert a link to the selected note.
+        insert_link = "<C-I>",
+      },
+      tag_mappings = {
+        -- Add tag(s) to current note.
+        tag_note = "<C-n>",
+        -- Insert a tag at the current location.
+        insert_tag = "<C-s>",
+      },
+    },
 
     -- Optional, by default when you use `:ObsidianFollowLink` on a link to an external
     -- URL it will be ignored but you can customize this behavior here.
