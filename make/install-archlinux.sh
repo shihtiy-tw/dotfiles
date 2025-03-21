@@ -264,6 +264,8 @@ yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" wha
 yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" todoist-appimage
 yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" thinkfinger
 yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" powerline-fonts-git
+yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" xrdp
+yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" ticktick
 
 # Font
 curl -fsSL https://raw.githubusercontent.com/getnf/getnf/main/install.sh | bash
@@ -351,3 +353,14 @@ sudo pacman --noconfirm -S rime-bopomofo
 
 
 sudo pacman --noconfirm -S yazi
+
+sudo pacman --noconfirm -S sysstat
+sudo pacman --noconfirm -S iotop
+sudo pacman --noconfirm -S iftop
+
+sudo pacman --noconfirm -S kitty
+
+
+sudo pacman --noconfirm -S rdesktop
+sudo pacman --noconfirm -S remmina
+sudo pacman --noconfirm -S freerdp
