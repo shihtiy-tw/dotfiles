@@ -364,3 +364,4 @@ sudo pacman --noconfirm -S kitty
 sudo pacman --noconfirm -S rdesktop
 sudo pacman --noconfirm -S remmina
 sudo pacman --noconfirm -S freerdp
+sudo pacman --noconfirm -S arch-wiki-docs
