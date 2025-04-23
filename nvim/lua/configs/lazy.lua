@@ -158,6 +158,8 @@ require("lazy").setup({
     { import = "plugins.venv-selector" },
     -- dap
     { import = "plugins.dap" },
+    -- leetcode
+    { import = "plugins.leetcode" },
 
     -- Kubernetes
     -- ----------------------------
