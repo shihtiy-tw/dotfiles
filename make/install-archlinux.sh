@@ -153,13 +153,18 @@ sudo pacman --noconfirm -S git-filter-repo # faster and safer git-filter-branch 
 # 💡 IMPORTANT NOTE: execute sudo setcap 'cap_net_raw+epi' /usr/bin/masscan to enable the ability to run masscan as non-root user.
 # Infrastructure as a Code and DevOps tools:
 sudo pacman --noconfirm -S ansible          # infrastructure as a code tool (bare metal)
+
+# Container
 sudo pacman --noconfirm -S podman           # cli tool for container management
 sudo pacman --noconfirm -S podman-compose   # run multi-container applications with podman
 sudo pacman --noconfirm -S docker           # cli tool for container management
 sudo pacman --noconfirm -S docker-compose   # run multi-container applications with docker
+
+# Kubernetes
 sudo pacman --noconfirm -S kubectl          # cli tool for managing kubernetes clusters
 sudo pacman --noconfirm -S helm             # package manager for kubernetes
 sudo pacman --noconfirm -S terraform        # infrastructure as a code tool (clouds)
+yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" kind
 
 #### configure docker
 sudo systemctl enable docker            # enable docker daemon on system start
@@ -248,8 +253,6 @@ sudo pacman --noconfirm -S man-db
 sudo pacman --noconfirm -S man-pages
 sudo mandb
 
-# Notion
-
 yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" google-drive-linux
 yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" insync
 yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" notion-app-electron
@@ -266,6 +269,7 @@ yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" thi
 yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" powerline-fonts-git
 yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" xrdp
 yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" ticktick
+
 
 # Font
 curl -fsSL https://raw.githubusercontent.com/getnf/getnf/main/install.sh | bash
