@@ -189,17 +189,17 @@ vim.keymap.set("n", "<leader>rn", ":IncRename ")
 
 vim.api.nvim_set_keymap("n", "<leader>n", ":ASToggle<CR>", { desc = "Toggle autosave" })
 local other_mappings = {
-  { '<leader>L', group = '[Other]' } }
+  { '<leader>R', group = '[Other]' } }
 wk.add(other_mappings)
-vim.api.nvim_set_keymap("n", "<leader>Ll", "<cmd>:Other<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<leader>Ltn", "<cmd>:OtherTabNew<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<leader>Lp", "<cmd>:OtherSplit<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<leader>Lv", "<cmd>:OtherVSplit<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<leader>Lc", "<cmd>:OtherClear<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>Rl", "<cmd>:Other<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>Rtn", "<cmd>:OtherTabNew<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>Rp", "<cmd>:OtherSplit<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>Rv", "<cmd>:OtherVSplit<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>Rc", "<cmd>:OtherClear<CR>", { noremap = true, silent = true })
 
 -- Context specific bindings
-vim.api.nvim_set_keymap("n", "<leader>Lt", "<cmd>:Other test<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<leader>Ls", "<cmd>:Other scss<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>Rt", "<cmd>:Other test<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>Rs", "<cmd>:Other scss<CR>", { noremap = true, silent = true })
 
 -- oil
 vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
@@ -299,6 +299,31 @@ local notion_mappings = {
 wk.add(notion_mappings)
 vim.keymap.set("n", "<leader>no", function() require "notion".openMenu() end, { desc = "Open Notion" })
 
+-- Leetcode
+local Leetcode_mappings = {
+  { '<leader>L', group = '[Leetcode]' } }
+wk.add(Leetcode_mappings)
+-- LeetCode.nvim key mappings
+vim.api.nvim_set_keymap('n', '<leader>Lm', '<cmd>Leet menu<CR>', { noremap = true, desc = "Open LeetCode menu" })
+vim.api.nvim_set_keymap('n', '<leader>Lq', '<cmd>Leet exit<CR>', { noremap = true, desc = "Close LeetCode" })
+vim.api.nvim_set_keymap('n', '<leader>Lc', '<cmd>Leet console<CR>',
+  { noremap = true, desc = "Open console for current question" })
+vim.api.nvim_set_keymap('n', '<leader>Li', '<cmd>Leet info<CR>', { noremap = true, desc = "Show question info" })
+vim.api.nvim_set_keymap('n', '<leader>Lt', '<cmd>Leet tabs<CR>', { noremap = true, desc = "List open question tabs" })
+vim.api.nvim_set_keymap('n', '<leader>Ly', '<cmd>Leet yank<CR>', { noremap = true, desc = "Yank current solution" })
+vim.api.nvim_set_keymap('n', '<leader>Ll', '<cmd>Leet lang<CR>', { noremap = true, desc = "Change question language" })
+vim.api.nvim_set_keymap('n', '<leader>Lr', '<cmd>Leet run<CR>', { noremap = true, desc = "Run current question" })
+vim.api.nvim_set_keymap('n', '<leader>LT', '<cmd>Leet test<CR>', { noremap = true, desc = "Test current question" })
+vim.api.nvim_set_keymap('n', '<leader>Ls', '<cmd>Leet submit<CR>', { noremap = true, desc = "Submit current question" })
+vim.api.nvim_set_keymap('n', '<leader>Ln', '<cmd>Leet random<CR>', { noremap = true, desc = "Open random question" })
+vim.api.nvim_set_keymap('n', '<leader>Ld', '<cmd>Leet daily<CR>', { noremap = true, desc = "Open daily question" })
+vim.api.nvim_set_keymap('n', '<leader>Lp', '<cmd>Leet list<CR>', { noremap = true, desc = "Open problem list" })
+vim.api.nvim_set_keymap('n', '<leader>Lo', '<cmd>Leet open<CR>', { noremap = true, desc = "Open question in browser" })
+vim.api.nvim_set_keymap('n', '<leader>LR', '<cmd>Leet reset<CR>', { noremap = true, desc = "Reset question code" })
+vim.api.nvim_set_keymap('n', '<leader>La', '<cmd>Leet last_submit<CR>',
+  { noremap = true, desc = "Retrieve last submitted code" })
+vim.api.nvim_set_keymap('n', '<leader>Le', '<cmd>Leet restore<CR>', { noremap = true, desc = "Restore question layout" })
+vim.api.nvim_set_keymap('n', '<leader>Lj', '<cmd>Leet inject<CR>', { noremap = true, desc = "Re-inject question code" })
 
 -- TODO
 vim.api.nvim_set_keymap('n', '<leader>To', '<cmd>TodoTelescope<CR>', { noremap = true, desc = "Show todos" })
