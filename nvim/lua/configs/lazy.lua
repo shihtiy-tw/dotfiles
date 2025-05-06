@@ -88,6 +88,8 @@ require("lazy").setup({
     { import = "plugins.obsidian" },
     -- Obsidian sync scrolling
     { import = "plugins.obsidian-bridge" },
+    -- nvim dark/light theme with system setting
+    { import = "plugins.auto-dark-mode" },
 
     -- Search
     -- ----------------------------
@@ -137,8 +139,8 @@ require("lazy").setup({
     -- java
     { import = "plugins.java" },
     -- selecting schema for yaml and json
-    { import = "plugins.schema-companion" },
-    { import = "plugins.schemastore" },
+    -- { import = "plugins.schema-companion" },
+    -- { import = "plugins.schemastore" },
     -- snippets
     { import = "plugins.snippets" },
     -- trouble
@@ -154,6 +156,10 @@ require("lazy").setup({
     { import = "plugins.goto-preview" },
     -- python virtual env selector
     { import = "plugins.venv-selector" },
+    -- dap
+    { import = "plugins.dap" },
+    -- leetcode
+    { import = "plugins.leetcode" },
 
     -- Kubernetes
     -- ----------------------------

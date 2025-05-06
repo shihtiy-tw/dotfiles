@@ -7,7 +7,9 @@ return {
     -- Initial plugin state,
     -- true = show preview
     -- falss = don't show preview
-    initial_state = false,
+    preview = {
+      enable = false
+    },
   },
 
   dependencies = {

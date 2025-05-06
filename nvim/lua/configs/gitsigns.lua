@@ -63,7 +63,7 @@ require('gitsigns').setup {
       else
         gitsigns.nav_hunk('next')
       end
-    end, { desc = "Next hunk" })
+    end, { desc = "[gitsigns] Next hunk" })
 
     map('n', '[c', function()
       if vim.wo.diff then
@@ -71,7 +71,7 @@ require('gitsigns').setup {
       else
         gitsigns.nav_hunk('prev')
       end
-    end, { desc = "Previous hunk" })
+    end, { desc = "[gitsigns] Previous hunk" })
 
     -- Actions
     map('n', '<leader>Gs', gitsigns.stage_hunk, { desc = "Stage hunk" })
