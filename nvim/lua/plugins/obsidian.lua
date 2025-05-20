@@ -109,7 +109,7 @@ return {
     -- UI will be placed by render-markdown
     ui = {
       enable = false, -- set to false to disable all additional syntax features
-    }
+    },
 
     -- Specify how to handle attachments.
     attachments = {
