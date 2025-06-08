@@ -10,7 +10,7 @@ This repository contains my personal configuration files for various tools and a
 
 - **Shell**: ZSH with Oh-My-ZSH and custom plugins
 - **Terminal Multiplexer**: tmux with session persistence and theme switching
-- **Editors**: 
+- **Editors**:
   - Vim with custom keybindings and plugins
   - Neovim with Lua configuration
 - **Terminal Emulators**: Configurations for kitty, ghostty, and alacritty

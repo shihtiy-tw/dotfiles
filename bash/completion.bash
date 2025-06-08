@@ -9,5 +9,3 @@ if [ -f "$(which minikube)" ]; then source <(minikube completion bash); fi
 
 # helm
 if [ -f "$(which helm)" ]; then source <(helm completion bash); fi
-
-

@@ -35,4 +35,3 @@ elseif option == "gruvbox"
         color gruvbox
     endif
 endif
-

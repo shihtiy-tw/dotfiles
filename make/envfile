@@ -14,4 +14,3 @@ INITVIMBACKUPPATH = "${HOME}/.config/nvim/init.vim_backup"
 
 GOPATH := /usr/local/go
 PATH := ${PATH}:${GOPATH}/bin
-

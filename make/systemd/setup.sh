@@ -23,3 +23,7 @@ for file in "$directory"/*; do
     echo "Created soft link for $file to $target"
   fi
 done
+
+systemctl enable --user sync-google-drive-rclone.timer
+systemctl start --user sync-google-drive-rclone.timer
+systemctl list-timers --user

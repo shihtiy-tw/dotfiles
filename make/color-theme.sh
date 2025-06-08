@@ -89,4 +89,3 @@ if [ "$OS" = "Mac" ]; then
         open /Applications/ToggleDarkMode.app
     fi
 fi
-
