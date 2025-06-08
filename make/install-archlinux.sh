@@ -270,6 +270,10 @@ yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" pow
 yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" xrdp
 yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" ticktick
 
+yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" claude-desktop
+yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" etcd
+yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" aws-session-manager-plugin
+yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" amazon-q-bin
 
 # Font
 curl -fsSL https://raw.githubusercontent.com/getnf/getnf/main/install.sh | bash
@@ -370,3 +374,12 @@ sudo pacman --noconfirm -S remmina
 sudo pacman --noconfirm -S freerdp
 sudo pacman --noconfirm -S arch-wiki-docs
 sudo pacman --noconfirm -S rclone
+
+# python package installer
+sudo pacman --noconfirm -S uv
+
+sudo pacman --noconfirm -S kubeadm
+sudo pacman --noconfirm -S kustomize
+sudo pacman --noconfirm -S bats
+sudo pacman -S github-cli
+sudo pacman -S docker-buildx
