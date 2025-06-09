@@ -33,15 +33,42 @@ require("codecompanion").setup({
     inline = {
       adapter = "ollama",
     },
-    -- agent = {
-    --   adapter = "ollama"
-    -- }
+    agent = {
+      adapter = "ollama"
+    }
   },
 
   adapters = {
     ollama = function()
       return require("codecompanion.adapters").extend("ollama", {
         name = "ollama", -- Give this adapter a different name to differentiate it from the default ollama adapter
+        schema = {
+          model = {
+            -- https://ollama.com/library/llama3.2:3b
+            --default = "qwen2.5-coder:3b",
+            default = "deepseek-r1:1.5b",
+          },
+          num_ctx = {
+            default = 16384,
+          },
+          num_predict = {
+            default = -1,
+          },
+        },
+        env = {
+          url = "http://127.0.0.1:11434",
+        },
+        headers = {
+          ["Content-Type"] = "application/json",
+        },
+        parameters = {
+          sync = true,
+        },
+      })
+    end,
+    deepseekcoder = function()
+      return require("codecompanion.adapters").extend("ollama", {
+        name = "deepseek-coder", -- Give this adapter a different name to differentiate it from the default ollama adapter
         schema = {
           model = {
             -- https://ollama.com/library/llama3.2:3b
