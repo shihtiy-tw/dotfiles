@@ -274,6 +274,7 @@ yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" cla
 yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" etcd
 yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" aws-session-manager-plugin
 yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" amazon-q-bin
+yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" lazydocker
 
 # Font
 curl -fsSL https://raw.githubusercontent.com/getnf/getnf/main/install.sh | bash
@@ -359,7 +360,6 @@ sudo pacman --noconfirm -S fcitx5-configtool
 sudo pacman --noconfirm -S fcitx5-rime
 sudo pacman --noconfirm -S rime-bopomofo
 
-
 sudo pacman --noconfirm -S yazi
 
 sudo pacman --noconfirm -S sysstat
@@ -381,5 +381,8 @@ sudo pacman --noconfirm -S uv
 sudo pacman --noconfirm -S kubeadm
 sudo pacman --noconfirm -S kustomize
 sudo pacman --noconfirm -S bats
-sudo pacman -S github-cli
-sudo pacman -S docker-buildx
+sudo pacman --noconfirm -S github-cli
+sudo pacman --noconfirm -S docker-buildx
+sudo pacman --noconfirm -S atop
+sudo pacman --noconfirm -S k9s
+sudo pacman --noconfirm -S packer
