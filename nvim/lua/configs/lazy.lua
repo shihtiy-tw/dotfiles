@@ -77,9 +77,14 @@ require("lazy").setup({
     { import = "plugins.session" },
     -- kanban
     -- { import = "plugins.kanban" },
+
+    -- AI
+    -- ----------------------------
     -- use ollama locally
     -- { import = "plugins.codecompanion" },
     { import = "plugins.avante" },
+    -- use MCP
+    { import = "plugins.mcphub" },
 
     -- Notes
     -- ----------------------------
