@@ -107,6 +107,11 @@ vim.keymap.set("n", "<leader>Oa", "<cmd>AerialToggle!<CR>", { desc = "Toggle Aer
 -- outline
 vim.keymap.set("n", "<leader>Oo", "<cmd>Outline<CR>",
   { desc = "Toggle Outline" })
+-- lualine
+-- local lualine_mappings = {
+--   { '<leader>Km', group = '[lualine]' } }
+vim.keymap.set("n", "<leader>Ol", "<cmd>lua require('lualine').hide()<cr>", { noremap = true, desc = "Diable lualine" })
+vim.keymap.set("n", "<leader>OL", "<cmd>lua require('lualine').hide({unhide=true})<cr>", { noremap = true, desc = "Enable lualine"})
 
 -- goto-preview
 local goto_preview_mappings = {
