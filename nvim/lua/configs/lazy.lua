@@ -48,7 +48,7 @@ require("lazy").setup({
     -- a clipboard manager
     { import = "plugins.neoclip" },
     -- enhanced notification
-    { import = "plugins.notify" },
+    -- { import = "plugins.notify" },
     -- enhanced neovim fold feature
     { import = "plugins.nvim-ufo" },
     -- syntax highlighting for rainbow parentheses
@@ -73,10 +73,10 @@ require("lazy").setup({
     { import = "plugins.undotree" },
     -- jump between tabs
     { import = "plugins.tabs" },
-    -- sesison manager
-    { import = "plugins.session" },
-    -- kanban
-    -- { import = "plugins.kanban" },
+    -- -- sesison manager
+    -- -- { import = "plugins.session" },
+    -- -- kanban
+    -- -- { import = "plugins.kanban" },
 
     -- AI
     -- ----------------------------
@@ -145,8 +145,8 @@ require("lazy").setup({
     -- java
     { import = "plugins.java" },
     -- selecting schema for yaml and json
-    -- { import = "plugins.schema-companion" },
-    -- { import = "plugins.schemastore" },
+    { import = "plugins.schema-companion" },
+    { import = "plugins.schemastore" },
     -- snippets
     { import = "plugins.snippets" },
     -- trouble
@@ -174,7 +174,7 @@ require("lazy").setup({
     -- fetches resource definitions from your cluster and feeds them to yamlls
     { import = "plugins.kubernetes" },
     -- use kustomize
-    { import = "plugins.kustomize" },
+    -- { import = "plugins.kustomize" },
     -- use kubectl
     { import = "plugins.kubectl" },
 
