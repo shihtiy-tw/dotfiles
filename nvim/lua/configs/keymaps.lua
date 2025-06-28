@@ -94,7 +94,6 @@ vim.keymap.set("n", "<leader>Kmp", "<cmd>lua require('kustomize').print_resource
 vim.keymap.set("n", "<leader>Kmv", "<cmd>lua require('kustomize').validate()<cr>", { noremap = true })
 vim.keymap.set("n", "<leader>Kmd", "<cmd>lua require('kustomize').deprecations()<cr>", { noremap = true })
 -- kubectl
-
 vim.keymap.set("n", "<leader>Kk", '<cmd>lua require("kubectl").toggle()<cr>', { noremap = true, silent = true })
 
 local outline_mappings = {
@@ -116,19 +115,19 @@ vim.keymap.set("n", "<leader>OL", "<cmd>lua require('lualine').hide({unhide=true
 -- goto-preview
 local goto_preview_mappings = {
   -- Preview LSP action
-  { '<leader>p', group = '[Preview]' } }
+  { '<leader>xp', group = '[Preview]' } }
 wk.add(goto_preview_mappings)
-vim.keymap.set("n", "<leader>pd", "<cmd>lua require('goto-preview').goto_preview_definition()<CR>",
+vim.keymap.set("n", "<leader>xpd", "<cmd>lua require('goto-preview').goto_preview_definition()<CR>",
   { noremap = true, desc = "Preview definition" })
-vim.keymap.set("n", "<leader>pt", "<cmd>lua require('goto-preview').goto_preview_type_definition()<CR>",
+vim.keymap.set("n", "<leader>xpt", "<cmd>lua require('goto-preview').goto_preview_type_definition()<CR>",
   { noremap = true, desc = "Preview type definition" })
-vim.keymap.set("n", "<leader>pi", "<cmd>lua require('goto-preview').goto_preview_implementation()<CR>",
+vim.keymap.set("n", "<leader>xpi", "<cmd>lua require('goto-preview').goto_preview_implementation()<CR>",
   { noremap = true, desc = "Preview implementation" })
-vim.keymap.set("n", "<leader>pD", "<cmd>lua require('goto-preview').goto_preview_declaration()<CR>",
+vim.keymap.set("n", "<leader>xpD", "<cmd>lua require('goto-preview').goto_preview_declaration()<CR>",
   { noremap = true, desc = "Preview declaration" })
-vim.keymap.set("n", "<leader>P", "<cmd>lua require('goto-preview').close_all_win()<CR>",
+vim.keymap.set("n", "<leader>xP", "<cmd>lua require('goto-preview').close_all_win()<CR>",
   { noremap = true, desc = "Close all preview windows" })
-vim.keymap.set("n", "<leader>pr", "<cmd>lua require('goto-preview').goto_preview_references()<CR>",
+vim.keymap.set("n", "<leader>xpr", "<cmd>lua require('goto-preview').goto_preview_references()<CR>",
   { noremap = true, desc = "Preview references" })
 
 -- Setup keymaps
