@@ -386,3 +386,8 @@ sudo pacman --noconfirm -S docker-buildx
 sudo pacman --noconfirm -S atop
 sudo pacman --noconfirm -S k9s
 sudo pacman --noconfirm -S packer
+
+# nvm
+# nvm install 22.17.0
+# nvm use 22.17.0
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
