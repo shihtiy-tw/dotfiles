@@ -4,3 +4,4 @@ return {
   config = function()
     require('configs.notify')
   end
+}
