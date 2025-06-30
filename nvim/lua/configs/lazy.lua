@@ -81,8 +81,8 @@ require("lazy").setup({
     -- AI
     -- ----------------------------
     -- use ollama locally
-    -- { import = "plugins.codecompanion" },
-    { import = "plugins.avante" },
+    { import = "plugins.codecompanion" },
+    -- { import = "plugins.avante" },
     -- use MCP
     { import = "plugins.mcphub" },
 
@@ -130,6 +130,8 @@ require("lazy").setup({
     -- fugitive, diffview
     { import = "plugins.git" },
     { import = "plugins.gitsigns" },
+    { import = "plugins.octo" },
+    { import = "plugins.octohub" },
 
     -- Syntax
     -- ----------------------------

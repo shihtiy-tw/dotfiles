@@ -110,7 +110,8 @@ vim.keymap.set("n", "<leader>Oo", "<cmd>Outline<CR>",
 -- local lualine_mappings = {
 --   { '<leader>Km', group = '[lualine]' } }
 vim.keymap.set("n", "<leader>Ol", "<cmd>lua require('lualine').hide()<cr>", { noremap = true, desc = "Diable lualine" })
-vim.keymap.set("n", "<leader>OL", "<cmd>lua require('lualine').hide({unhide=true})<cr>", { noremap = true, desc = "Enable lualine"})
+vim.keymap.set("n", "<leader>OL", "<cmd>lua require('lualine').hide({unhide=true})<cr>",
+  { noremap = true, desc = "Enable lualine" })
 
 -- goto-preview
 local goto_preview_mappings = {
@@ -234,6 +235,69 @@ vim.keymap.set("n", "<leader>gb", ":Git blame<cr>", { silent = true })
 vim.keymap.set("n", "<leader>gl",
   ":Git log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%ai%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all<cr>",
   { silent = true })
+--- Octohub
+local octo_mappings = {
+  { '<leader>go', group = '[Octohub]' } }
+wk.add(octo_mappings)
+-- Map all Repos
+vim.keymap.set("n", "<leader>goo", ":OctoRepos<CR>", { desc = "All Repos" })
+
+-- Map Repos by Size
+vim.keymap.set("n", "<leader>gob", ":OctoReposBySize<CR>", { desc = "Repos by Size" })
+
+-- Map Repos by Created
+vim.keymap.set("n", "<leader>goc", ":OctoReposByCreated<CR>", { desc = "Repos by Created" })
+
+-- Map Repos by Forks
+vim.keymap.set("n", "<leader>gof", ":OctoReposByForks<CR>", { desc = "Repos by Forks" })
+
+-- Map Repos by Issues
+vim.keymap.set("n", "<leader>goi", ":OctoReposByIssues<CR>", { desc = "Repos by Issues" })
+
+-- Map Repos by Language
+vim.keymap.set("n", "<leader>gol", ":OctoReposByLanguage<CR>", { desc = "Repos by Language" })
+
+-- Map Repos by Stars
+vim.keymap.set("n", "<leader>gos", ":OctoReposByStars<CR>", { desc = "Repos by Stars" })
+
+-- Map Repos by Updated
+vim.keymap.set("n", "<leader>goU", ":OctoReposByUpdated<CR>", { desc = "Repos by Updated" })
+
+-- Map Repos by Pushed
+vim.keymap.set("n", "<leader>goA", ":OctoReposByPushed<CR>", { desc = "Repos by Pushed" })
+
+-- Map Archived Repos
+vim.keymap.set("n", "<leader>goa", ":OctoRepoTypeArchived<CR>", { desc = "Archived Repos" })
+
+-- Map Forked Repos
+vim.keymap.set("n", "<leader>goF", ":OctoRepoTypeForked<CR>", { desc = "Forked Repos" })
+
+-- Map Private Repos
+vim.keymap.set("n", "<leader>goP", ":OctoRepoTypePrivate<CR>", { desc = "Private Repos" })
+
+-- Map Starred Repos
+vim.keymap.set("n", "<leader>goS", ":OctoRepoTypeStarred<CR>", { desc = "Starred Repos" })
+
+-- Map Template Repos
+vim.keymap.set("n", "<leader>got", ":OctoRepoTypeTemplate<CR>", { desc = "Template Repos" })
+
+-- Map Activity Stats
+vim.keymap.set("n", "<leader>goa", ":OctoActivityStats<CR>", { desc = "Activity Stats" })
+
+-- Map Contribution Graph
+vim.keymap.set("n", "<leader>gog", ":OctoContributionStats<CR>", { desc = "Contribution Graph" })
+
+-- Map Repo Stats
+vim.keymap.set("n", "<leader>gor", ":OctoRepoStats<CR>", { desc = "Repo Stats" })
+
+-- Map All Stats
+vim.keymap.set("n", "<leader>got", ":OctoStats<CR>", { desc = "All Stats" })
+
+-- Map Open GitHub Profile
+vim.keymap.set("n", "<leader>goP", ":OctoProfile<CR>", { desc = "Open GitHub Profile" })
+
+-- Map Open Repo in Browser
+vim.keymap.set("n", "<leader>goog", ":OctoRepoWeb<CR>", { desc = "Open Repo in Browser" })
 
 -- url-open
 vim.keymap.set("n", "gx", "<esc>:URLOpenUnderCursor<cr>")
@@ -427,25 +491,28 @@ require('mini.move').setup({
   }
 })
 
--- codecompanion
+-- local ai_mappings = {
+--   { '<leader>a', group = '[Avante]' } }
+-- wk.add(ai_mappings)
 
--- vim.api.nvim_set_keymap("n", "<C-a>", "<cmd>CodeCompanionActions<cr>",
---   { noremap = true, silent = true, desc = "Open the Action Palette" })
--- vim.api.nvim_set_keymap("v", "<C-a>", "<cmd>CodeCompanionActions<cr>",
---   { noremap = true, silent = true, desc = "Open the Action Palette" })
--- vim.api.nvim_set_keymap("n", "<leader>a", "<cmd>CodeCompanionChat Toggle<cr>",
---   { noremap = true, silent = true, desc = "Open a chat buffer" })
--- vim.api.nvim_set_keymap("v", "<leader>a", "<cmd>CodeCompanionChat Toggle<cr>",
---   { noremap = true, silent = true, desc = "Open a chat buffer" })
--- vim.api.nvim_set_keymap("v", "ga", "<cmd>CodeCompanionChat Add<cr>",
---   { noremap = true, silent = true, desc = "Add visually selected chat to the current chat buffer" })
+-- codecompanion
+local ai_mappings = {
+  { '<leader>a', group = '[CodeCompanion]' } }
+wk.add(ai_mappings)
+
+vim.api.nvim_set_keymap("n", "<C-a>", "<cmd>CodeCompanionActions<cr>",
+  { noremap = true, silent = true, desc = "Open the Action Palette" })
+vim.api.nvim_set_keymap("v", "<C-a>", "<cmd>CodeCompanionActions<cr>",
+  { noremap = true, silent = true, desc = "Open the Action Palette" })
+vim.api.nvim_set_keymap("n", "<leader>a", "<cmd>CodeCompanionChat Toggle<cr>",
+  { noremap = true, silent = true, desc = "Open a chat buffer" })
+vim.api.nvim_set_keymap("v", "<leader>a", "<cmd>CodeCompanionChat Toggle<cr>",
+  { noremap = true, silent = true, desc = "Open a chat buffer" })
+vim.api.nvim_set_keymap("v", "ga", "<cmd>CodeCompanionChat Add<cr>",
+  { noremap = true, silent = true, desc = "Add visually selected chat to the current chat buffer" })
 
 -- Expand 'cc' into 'CodeCompanion' in the command line
 -- vim.cmd([[cab cc CodeCompanion]])
-
-local dap_mappings = {
-  { '<leader>a', group = '[Avante]' } }
-wk.add(dap_mappings)
 
 --- window
 vim.keymap.set("n", ",", function() require('nvim-window').pick() end,
