@@ -132,6 +132,7 @@ require("lazy").setup({
     { import = "plugins.gitsigns" },
     { import = "plugins.octo" },
     { import = "plugins.octohub" },
+    { import = "plugins.git-dev" },
 
     -- Syntax
     -- ----------------------------
