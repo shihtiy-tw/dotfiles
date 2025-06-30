@@ -87,6 +87,7 @@ This configuration is inspired by and borrows from:
 - [thoughtbot/dotfiles](https://github.com/thoughtbot/dotfiles)
 - [Inndy's vimrc](https://github.com/Inndy/dotfiles/blob/master/vimrc)
 - [PastLeo's tmux configuration](https://5xruby.tw/en/posts/tmux)
+- [mimikun's dotfiles](https://github.com/mimikun/dotfiles)
 
 ## License
 
