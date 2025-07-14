@@ -103,3 +103,7 @@ export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 #export PATH="$PATH:${HOME}/Tools/Sonar/sonar-scanner-4.0.0.1744-linux/bin"
 #export WORKON_HOME=$HOME/.virtualenvs
 #export CODIMD_SERVER='127.0.0.1:3000'
+
+# For homebrew
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+

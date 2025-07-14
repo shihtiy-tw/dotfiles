@@ -177,6 +177,7 @@ go install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest
 go install github.com/hairyhenderson/gomplate/v4/cmd/gomplate@latest
 # Install ruby and its tools:
 sudo pacman --noconfirm -S ruby
+sudo pacman --noconfirm -S ruby-webrick
 
 # Install Java and its tools:
 sudo pacman --noconfirm -S jdk8-openjdk    # OpenJDK Java  8 development kit
@@ -275,6 +276,8 @@ yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" etc
 yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" aws-session-manager-plugin
 yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" amazon-q-bin
 yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" lazydocker
+yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" electron25-bin
+yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" claude-desktop
 
 # Font
 curl -fsSL https://raw.githubusercontent.com/getnf/getnf/main/install.sh | bash
@@ -386,8 +389,10 @@ sudo pacman --noconfirm -S docker-buildx
 sudo pacman --noconfirm -S atop
 sudo pacman --noconfirm -S k9s
 sudo pacman --noconfirm -S packer
+sudo pacman --noconfirm -S lazygit
 
 # nvm
 # nvm install 22.17.0
 # nvm use 22.17.0
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+
