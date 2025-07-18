@@ -235,6 +235,7 @@ vim.keymap.set("n", "<leader>gb", ":Git blame<cr>", { silent = true })
 vim.keymap.set("n", "<leader>gl",
   ":Git log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%ai%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all<cr>",
   { silent = true })
+vim.keymap.set("n", "<leader>gL", ":Git log --follow --all -p -- %:p<cr>", { desc = "Show file history" silent = true })
 --- Octohub
 local octo_mappings = {
   { '<leader>go', group = '[Octohub]' } }
