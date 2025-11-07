@@ -28,6 +28,10 @@ return {
       --   "cappyzawa/telescope-terraform.nvim",
       --   opt = true,
       -- }
+      {
+        "cenk1cenk2/schema-companion.nvim",
+        -- opt = true,
+      }
     },
     requires = {
     },
@@ -35,5 +39,4 @@ return {
       require('configs.telescope')
     end
   }
-
 }

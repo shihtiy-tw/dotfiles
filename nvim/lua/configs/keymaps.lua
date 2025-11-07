@@ -317,15 +317,16 @@ vim.keymap.set({ "i", "s" }, "<C-E>", function()
 end, { silent = true })
 
 -- schema companion
-local schema_companion_mappings = {
-  { '<leader>s', group = '[Schema Companion]' } }
-wk.add(schema_companion_mappings)
-vim.keymap.set("n", "<leader>sy", function()
-  return require("telescope").extensions.schema_companion.select_from_matching_schemas()
-end, { desc = "Select from Matching Schema" })
-vim.keymap.set("n", "<leader>sY", function()
-  return require("telescope").extensions.schema_companion.select_schema()
-end, { desc = "Select from Schema" })
+-- schema companin issue/18
+-- local schema_companion_mappings = {
+--   { '<leader>s', group = '[Schema Companion]' } }
+-- wk.add(schema_companion_mappings)
+-- vim.keymap.set("n", "<leader>sy", function()
+--   return require("telescope").extensions.schema_companion.select_from_matching_schemas()
+-- end, { desc = "Select from Matching Schema" })
+-- vim.keymap.set("n", "<leader>sY", function()
+--   return require("telescope").extensions.schema_companion.select_schema()
+-- end, { desc = "Select from Scheml" })
 
 -- hop (easymotion)
 -- place this in one of your configuration file(s)

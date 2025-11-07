@@ -54,114 +54,37 @@ require("codecompanion").setup({
       adapter = "ollama"
     }
   },
-
-  adapters = {
-    openrouter = function()
-      return require("codecompanion.adapters").extend("openai_compatible", {
-        name = "openrouter",
-        env = {
-          url = "https://openrouter.ai/api",
-          api_key = os.getenv("OPENROUTER_KEY"),
-          chat_url = "/v1/chat/completions",
-        },
-        opts = {
-          stream = false,
-          can_reason = true
-        },
-        schema = {
-          model = {
-            default = "qwen/qwen3-30b-a3b:free",
-            choices = { "moonshotai/kimi-k2:free" },
+  -- FIX: The 'adapters' block is now nested inside 'http'
+  http = {
+    adapters = {
+      ollama = function()
+        return require("codecompanion.adapters").extend("ollama", {
+          name = "ollama", -- Give this adapter a different name to differentiate it from the default ollama adapter
+          schema = {
+            model = {
+              -- https://ollama.com/library/llama3.2:3b
+              -- default = "llama3.2:1b",
+              default = "deepseek-r1:8b",
+            },
+            num_ctx = {
+              default = 16384,
+            },
+            num_predict = {
+              default = -1,
+            },
           },
-        },
-        handlers = {
-          chat_output = function(self, data)
-            local utils = require("codecompanion.utils.adapters")
-            local output = {}
-
-            if data and data ~= "" then
-              local data_mod = utils.clean_streamed_data(data)
-              local ok, json = pcall(vim.json.decode, data_mod, { luanil = { object = true } })
-
-              if ok and json.choices and #json.choices > 0 then
-                local choice = json.choices[1]
-                local delta = (self.opts and self.opts.stream) and choice.delta or choice.message
-
-                if delta then
-                  output.role = nil
-                  if delta.role then
-                    output.role = delta.role
-                  end
-                  if self.opts.can_reason and delta.reasoning then
-                    output.reasoning = delta.reasoning
-                  end
-                  if delta.content then
-                    output.content = (output.content or "") .. delta.content
-                  end
-                  return {
-                    status = "success",
-                    output = output,
-                  }
-                end
-              end
-            end
-          end,
-        },
-      })
-    end,
-    ollamadeepseekcoderv2 = function()
-      return require("codecompanion.adapters").extend("ollama", {
-        name = "ollamadeepseekcoderv2",
-        schema = {
-          model = {
-            default = "deepseek-coder-v2:16b",
+          env = {
+            url = "http://127.0.0.1:11434",
           },
-          num_ctx = {
-            default = 16384,
+          headers = {
+            ["Content-Type"] = "application/json",
           },
-          num_predict = {
-            default = -1,
+          parameters = {
+            sync = true,
           },
-        },
-        env = {
-          url = "http://127.0.0.1:11434",
-        },
-        headers = {
-          ["Content-Type"] = "application/json",
-        },
-        parameters = {
-          sync = true,
-        },
-      })
-    end,
-    ollama = function()
-      return require("codecompanion.adapters").extend("ollama", {
-        name = "ollama",
-        schema = {
-          model = {
-            -- https://ollama.com/library/llama3.2:3b
-            --default = "deepseek-r1:1.5b",
-            --default = "deepseek-coderv2:1.5b",
-            default = "qwen2.5-coder:3b",
-          },
-          num_ctx = {
-            default = 16384,
-          },
-          num_predict = {
-            default = -1,
-          },
-        },
-        env = {
-          url = "http://127.0.0.1:11434",
-        },
-        headers = {
-          ["Content-Type"] = "application/json",
-        },
-        parameters = {
-          sync = true,
-        },
-      })
-    end,
+        })
+      end,
+    },
   },
   prompt_library = {
     ["Generate a Semantics Commit Message"] = {
@@ -214,7 +137,8 @@ require("codecompanion").setup({
 
 ```diff
 %s
-```
+````
+
 ]],
               vim.fn.system("git diff --no-ext-diff --staged")
             )

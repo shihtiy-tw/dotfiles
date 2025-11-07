@@ -41,7 +41,7 @@ source $HOME/dotfiles/zsh/env.zsh
 # THEME
 # cat theme.sh
 # export THEME=dark
-source ${HOME}/dotfiles/zsh/theme.zsh
+# source ${HOME}/dotfiles/zsh/theme.zsh
 
 # color for man pages
 source $HOME/dotfiles/zsh/man.zsh

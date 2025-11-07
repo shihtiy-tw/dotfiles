@@ -7,13 +7,11 @@ return {
     -- Initial plugin state,
     -- true = show preview
     -- falss = don't show preview
-    preview = {
-      enable = false
-    },
-  },
+    preview = disable,
 
-  dependencies = {
-    "nvim-treesitter/nvim-treesitter",
-    "nvim-tree/nvim-web-devicons"
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons"
+    }
   }
 }
