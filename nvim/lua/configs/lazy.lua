@@ -48,7 +48,7 @@ require("lazy").setup({
     -- a clipboard manager
     { import = "plugins.neoclip" },
     -- enhanced notification
-    -- { import = "plugins.notify" },
+    { import = "plugins.notify" },
     -- enhanced neovim fold feature
     { import = "plugins.nvim-ufo" },
     -- syntax highlighting for rainbow parentheses
@@ -175,7 +175,7 @@ require("lazy").setup({
     -- use k9s in neovim
     { import = "plugins.kube-utils" },
     -- fetches resource definitions from your cluster and feeds them to yamlls
-    { import = "plugins.kubernetes" },
+    -- { import = "plugins.kubernetes" },
     -- use kustomize
     -- { import = "plugins.kustomize" },
     -- use kubectl

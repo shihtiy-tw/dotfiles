@@ -278,6 +278,8 @@ yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" ama
 yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" lazydocker
 yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" electron25-bin
 yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" claude-desktop
+yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" superproductivity
+yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" affine
 
 # Font
 curl -fsSL https://raw.githubusercontent.com/getnf/getnf/main/install.sh | bash
