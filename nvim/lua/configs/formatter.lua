@@ -4,7 +4,7 @@ conform.setup({
   formatters_by_ft = {
     lua = { "luaformatter" },
     -- Conform will run multiple formatters sequentially
-    python = { "black", "isort", "black" },
+    python = { "ruff_format" },
     -- You can customize some of the format options for the filetype (:help conform.format)
     -- rust = { "rustfmt", lsp_format = "fallback" },
     -- Conform will run the first available formatter
@@ -32,7 +32,7 @@ conform.setup({
     if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
       return
     end
-    return { timeout_ms = 500, lsp_format = "fallback" }
+    return { timeout_ms = 5000, lsp_format = "fallback" }
   end,
 })
 

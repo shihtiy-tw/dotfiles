@@ -38,34 +38,37 @@ require("codecompanion").setup({
     -- }
   },
 
-  adapters = {
-    ollama = function()
-      return require("codecompanion.adapters").extend("ollama", {
-        name = "ollama", -- Give this adapter a different name to differentiate it from the default ollama adapter
-        schema = {
-          model = {
-            -- https://ollama.com/library/llama3.2:3b
-            -- default = "llama3.2:1b",
-            default = "deepseek-r1:8b",
+  -- FIX: The 'adapters' block is now nested inside 'http'
+  http = {
+    adapters = {
+      ollama = function()
+        return require("codecompanion.adapters").extend("ollama", {
+          name = "ollama", -- Give this adapter a different name to differentiate it from the default ollama adapter
+          schema = {
+            model = {
+              -- https://ollama.com/library/llama3.2:3b
+              -- default = "llama3.2:1b",
+              default = "deepseek-r1:8b",
+            },
+            num_ctx = {
+              default = 16384,
+            },
+            num_predict = {
+              default = -1,
+            },
           },
-          num_ctx = {
-            default = 16384,
+          env = {
+            url = "http://127.0.0.1:11434",
           },
-          num_predict = {
-            default = -1,
+          headers = {
+            ["Content-Type"] = "application/json",
           },
-        },
-        env = {
-          url = "http://127.0.0.1:11434",
-        },
-        headers = {
-          ["Content-Type"] = "application/json",
-        },
-        parameters = {
-          sync = true,
-        },
-      })
-    end,
+          parameters = {
+            sync = true,
+          },
+        })
+      end,
+    },
   },
   prompt_library = {
     ["Generate a Semantics Commit Message"] = {
@@ -118,7 +121,8 @@ require("codecompanion").setup({
 
 ```diff
 %s
-```
+````
+
 ]],
               vim.fn.system("git diff --no-ext-diff --staged")
             )

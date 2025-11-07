@@ -52,7 +52,7 @@ require("lazy").setup({
     -- enhanced neovim fold feature
     { import = "plugins.nvim-ufo" },
     -- syntax highlighting for rainbow parentheses
-    { import = "plugins.rainbow-delimiters" },
+    -- { import = "plugins.rainbow-delimiters" },
     -- seartch TODO, BUG etc
     { import = "plugins.todo-comments" },
     -- show key mappings
@@ -127,6 +127,9 @@ require("lazy").setup({
 
     -- Syntax
     -- ----------------------------
+    -- selecting schema for yaml and json
+    { import = "plugins.schema-companion" },
+    { import = "plugins.schemastore" },
     { import = "plugins.nvim-treesitter" },
     -- mason-lsp
     { import = "plugins.lsp" },
@@ -138,9 +141,6 @@ require("lazy").setup({
     { import = "plugins.inc-rename" },
     -- java
     { import = "plugins.java" },
-    -- selecting schema for yaml and json
-    { import = "plugins.schema-companion" },
-    { import = "plugins.schemastore" },
     -- snippets
     { import = "plugins.snippets" },
     -- trouble
