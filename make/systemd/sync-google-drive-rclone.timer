@@ -1,0 +1,10 @@
+# https://www.zihad.com.bd/posts/sync-google-drive-linux-clone/
+[Unit]
+Description=sync google drive with rclone every 5 minutes.
+
+[Timer]
+OnCalendar=*:0/05
+Persistent=true
+
+[Install]
+WantedBy=timers.target

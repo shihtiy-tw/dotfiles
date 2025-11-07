@@ -73,12 +73,18 @@ require("lazy").setup({
     { import = "plugins.undotree" },
     -- jump between tabs
     { import = "plugins.tabs" },
-    -- sesison manager
-    { import = "plugins.session" },
-    -- kanban
-    { import = "plugins.kanban" },
+    -- -- sesison manager
+    -- -- { import = "plugins.session" },
+    -- -- kanban
+    -- -- { import = "plugins.kanban" },
+
+    -- AI
+    -- ----------------------------
     -- use ollama locally
     { import = "plugins.codecompanion" },
+    -- { import = "plugins.avante" },
+    -- use MCP
+    { import = "plugins.mcphub" },
 
     -- Notes
     -- ----------------------------
@@ -124,6 +130,9 @@ require("lazy").setup({
     -- fugitive, diffview
     { import = "plugins.git" },
     { import = "plugins.gitsigns" },
+    { import = "plugins.octo" },
+    { import = "plugins.octohub" },
+    { import = "plugins.git-dev" },
 
     -- Syntax
     -- ----------------------------
@@ -156,15 +165,19 @@ require("lazy").setup({
     { import = "plugins.goto-preview" },
     -- python virtual env selector
     { import = "plugins.venv-selector" },
+    -- dap
+    { import = "plugins.dap" },
+    -- leetcode
+    { import = "plugins.leetcode" },
 
     -- Kubernetes
     -- ----------------------------
     -- use k9s in neovim
     { import = "plugins.kube-utils" },
     -- fetches resource definitions from your cluster and feeds them to yamlls
-    { import = "plugins.kubernetes" },
+    -- { import = "plugins.kubernetes" },
     -- use kustomize
-    { import = "plugins.kustomize" },
+    -- { import = "plugins.kustomize" },
     -- use kubectl
     { import = "plugins.kubectl" },
 

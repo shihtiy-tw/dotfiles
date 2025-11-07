@@ -16,3 +16,10 @@ elif cat /etc/os-release | grep "^ID=" | grep -q 'amzn'; then
     "$HOME"/dotfiles/make/install-amazon-linux.sh
     echo "Done"
 fi
+
+elif cat /etc/os-release | grep "^ID=" | grep -q 'arch'; then
+    echo "arch"
+    OS="arch"
+    "$HOME"/dotfiles/make/install-archlinux.sh
+    echo "Done"
+fi

@@ -1,5 +1,5 @@
 return {
-  "epwalsh/obsidian.nvim",
+  "obsidian-nvim/obsidian.nvim",
   version = "*", -- recommended, use latest release instead of latest commit
   lazy = true,
   -- ft = "markdown",
@@ -57,7 +57,57 @@ return {
         },
       },
     },
-    disable_frontmatter = true,
+    disable_frontmatter = false,
+
+    daily_notes = {
+      -- Optional, if you keep daily notes in a separate directory.
+      folder = "Calendar/Planner/05Daily/",
+      -- Optional, if you want to change the date format for the ID of daily notes.
+      date_format = "%Y-%m-%d-%a",
+      -- Optional, if you want to change the date format of the default alias of daily notes.
+      alias_format = "%B %-d, %Y",
+      -- Optional, default tags to add to each new daily note created.
+      default_tags = { "daily-notes" },
+      -- Optional, if you want to automatically insert a template from your template directory like 'daily.md'
+      template = "Planner/Template_Planner_Daily_Today.md",
+      -- Optional, if you want `Obsidian yesterday` to return the last work day or `Obsidian tomorrow` to return the next work day.
+      workdays_only = false,
+    },
+    templates = {
+      folder = "Atlas/Utilities/Templates",
+      date_format = "%Y-%m-%d",
+      time_format = "%H:%M",
+      -- A map for custom variables, the key should be the variable and the value a function.
+      -- Functions are called with obsidian.TemplateContext objects as their sole parameter.
+      -- See: https://github.com/obsidian-nvim/obsidian.nvim/wiki/Template#substitutions
+      substitutions = {},
+    },
+
+    completion = {
+      -- Set to false to disable completion.
+      nvim_cmp = true,
+      -- Trigger completion at 2 chars.
+      min_chars = 2,
+    },
+
+    picker = {
+      -- Set your preferred picker. Can be one of 'telescope.nvim', 'fzf-lua', or 'mini.pick'.
+      name = "telescope.nvim",
+      -- Optional, configure key mappings for the picker. These are the defaults.
+      -- Not all pickers support all mappings.
+      note_mappings = {
+        -- Create a new note from your query.
+        new = "<C-X>",
+        -- Insert a link to the selected note.
+        insert_link = "<C-I>",
+      },
+      tag_mappings = {
+        -- Add tag(s) to current note.
+        tag_note = "<C-n>",
+        -- Insert a tag at the current location.
+        insert_tag = "<C-s>",
+      },
+    },
 
     -- Optional, by default when you use `:ObsidianFollowLink` on a link to an external
     -- URL it will be ignored but you can customize this behavior here.
@@ -83,6 +133,38 @@ return {
     -- UI will be placed by render-markdown
     ui = {
       enable = false, -- set to false to disable all additional syntax features
-    }
+    },
+
+    -- Specify how to handle attachments.
+    attachments = {
+      -- The default folder to place images in via `:Obsidian paste_img`.
+      -- If this is a relative path it will be interpreted as relative to the vault root.
+      -- You can always override this per image by passing a full path to the command instead of just a filename.
+      img_folder = "Atlas/Utilities/Attachments/General/imgs", -- This is the default
+
+      -- A function that determines default name or prefix when pasting images via `:Obsidian paste_img`.
+      ---@return string
+      img_name_func = function()
+        -- Prefix image names with timestamp.
+        return string.format("Pasted image %s", os.date "%Y%m%d%H%M%S")
+      end,
+
+      -- A function that determines the text to insert in the note when pasting an image.
+      -- It takes two arguments, the `obsidian.Client` and an `obsidian.Path` to the image file.
+      -- This is the default implementation.
+      ---@param client obsidian.Client
+      ---@param path obsidian.Path the absolute path to the image file
+      ---@return string
+      img_text_func = function(client, path)
+        path = client:vault_relative_path(path) or path
+        return string.format("![%s](%s)", path.name, path)
+      end,
+    },
+
+    -- See https://github.com/obsidian-nvim/obsidian.nvim/wiki/Notes-on-configuration#statusline-component
+    statusline = {
+      enabled = true,
+      format = "{{properties}} properties {{backlinks}} backlinks {{words}} words {{chars}} chars",
+    },
   },
 }

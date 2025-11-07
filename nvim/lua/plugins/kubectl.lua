@@ -6,12 +6,12 @@ return {
     end,
     keys = {
       -- General keys
-      { "dd", "<Plug>(kubectl.kill)",          ft = "k8s_*" },
-      { "q",  "<Plug>(kubectl.quit)",          ft = "k8s_*" },
+      { "dd", "<Plug>(kubectl.kill)"},
+      { "q",  "<Plug>(kubectl.quit)"},
       -- views
-      { "7",  "<Plug>(kubectl.view_nodes)",    ft = "k8s_*" },
-      { "8",  "<Plug>(kubectl.view_top)",      ft = "k8s_*" },
-      { "0",  "<Plug>(kubectl.view_overview)", ft = "k8s_*" },
+      { "7",  "<Plug>(kubectl.view_nodes)"},
+      { "8",  "<Plug>(kubectl.view_top)"},
+      { "0",  "<Plug>(kubectl.view_overview)"},
       -- {
       --   'Z',
       --   function()

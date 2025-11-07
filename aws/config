@@ -4,4 +4,3 @@ cli_pager =
 output = json
 cli_history = enabled
 cli_auto_prompt = on-partial
-

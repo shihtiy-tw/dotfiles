@@ -29,8 +29,9 @@ telescope.setup {
 
 -- telescope.load_extension('fzf')
 telescope.load_extension('luasnip')
-telescope.load_extension('notify')
+-- telescope.load_extension('notify')
 telescope.load_extension("noice")
 -- telescope.load_extension("terraform")
 telescope.load_extension("terraform_doc")
 telescope.load_extension 'telescope-tabs'
+telescope.load_extension('dap')

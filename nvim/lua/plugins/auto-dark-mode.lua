@@ -11,5 +11,7 @@ return {
       vim.api.nvim_set_option_value('background', 'light', {})
       vim.cmd('colorscheme solarized')
     end,
+    fallback = "dark"
   },
+
 }

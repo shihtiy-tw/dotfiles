@@ -94,7 +94,6 @@ vim.keymap.set("n", "<leader>Kmp", "<cmd>lua require('kustomize').print_resource
 vim.keymap.set("n", "<leader>Kmv", "<cmd>lua require('kustomize').validate()<cr>", { noremap = true })
 vim.keymap.set("n", "<leader>Kmd", "<cmd>lua require('kustomize').deprecations()<cr>", { noremap = true })
 -- kubectl
-
 vim.keymap.set("n", "<leader>Kk", '<cmd>lua require("kubectl").toggle()<cr>', { noremap = true, silent = true })
 
 local outline_mappings = {
@@ -107,23 +106,29 @@ vim.keymap.set("n", "<leader>Oa", "<cmd>AerialToggle!<CR>", { desc = "Toggle Aer
 -- outline
 vim.keymap.set("n", "<leader>Oo", "<cmd>Outline<CR>",
   { desc = "Toggle Outline" })
+-- lualine
+-- local lualine_mappings = {
+--   { '<leader>Km', group = '[lualine]' } }
+vim.keymap.set("n", "<leader>Ol", "<cmd>lua require('lualine').hide()<cr>", { noremap = true, desc = "Diable lualine" })
+vim.keymap.set("n", "<leader>OL", "<cmd>lua require('lualine').hide({unhide=true})<cr>",
+  { noremap = true, desc = "Enable lualine" })
 
 -- goto-preview
 local goto_preview_mappings = {
   -- Preview LSP action
-  { '<leader>p', group = '[Preview]' } }
+  { '<leader>xp', group = '[Preview]' } }
 wk.add(goto_preview_mappings)
-vim.keymap.set("n", "<leader>pd", "<cmd>lua require('goto-preview').goto_preview_definition()<CR>",
+vim.keymap.set("n", "<leader>xpd", "<cmd>lua require('goto-preview').goto_preview_definition()<CR>",
   { noremap = true, desc = "Preview definition" })
-vim.keymap.set("n", "<leader>pt", "<cmd>lua require('goto-preview').goto_preview_type_definition()<CR>",
+vim.keymap.set("n", "<leader>xpt", "<cmd>lua require('goto-preview').goto_preview_type_definition()<CR>",
   { noremap = true, desc = "Preview type definition" })
-vim.keymap.set("n", "<leader>pi", "<cmd>lua require('goto-preview').goto_preview_implementation()<CR>",
+vim.keymap.set("n", "<leader>xpi", "<cmd>lua require('goto-preview').goto_preview_implementation()<CR>",
   { noremap = true, desc = "Preview implementation" })
-vim.keymap.set("n", "<leader>pD", "<cmd>lua require('goto-preview').goto_preview_declaration()<CR>",
+vim.keymap.set("n", "<leader>xpD", "<cmd>lua require('goto-preview').goto_preview_declaration()<CR>",
   { noremap = true, desc = "Preview declaration" })
-vim.keymap.set("n", "<leader>P", "<cmd>lua require('goto-preview').close_all_win()<CR>",
+vim.keymap.set("n", "<leader>xP", "<cmd>lua require('goto-preview').close_all_win()<CR>",
   { noremap = true, desc = "Close all preview windows" })
-vim.keymap.set("n", "<leader>pr", "<cmd>lua require('goto-preview').goto_preview_references()<CR>",
+vim.keymap.set("n", "<leader>xpr", "<cmd>lua require('goto-preview').goto_preview_references()<CR>",
   { noremap = true, desc = "Preview references" })
 
 -- Setup keymaps
@@ -146,28 +151,28 @@ local obsidian_mappings = {
   -- Open a note in Obsidian app
   { '<leader>o', group = '[Obsidian]' } }
 wk.add(obsidian_mappings)
-vim.keymap.set("n", "<leader>oo", "<cmd>ObsidianOpen<CR>", { desc = "Open current note in Obsidian" })
-vim.keymap.set("n", "<leader>on", "<cmd>ObsidianNew<CR>", { desc = "Create a new note" })
-vim.keymap.set("n", "<leader>of", "<cmd>ObsidianQuickSwitch<CR>", { desc = "Quick switch to another note" })
-vim.keymap.set("n", "<leader>ol", "<cmd>ObsidianFollowLink<CR>", { desc = "Follow link under cursor" })
-vim.keymap.set("n", "<leader>oB", "<cmd>ObsidianBacklinks<CR>", { desc = "List backlinks to current note" })
-vim.keymap.set("n", "<leader>ot", "<cmd>ObsidianTags<CR>", { desc = "Search tags" })
-vim.keymap.set("n", "<leader>od", "<cmd>ObsidianToday<CR>", { desc = "Open/create today's note" })
-vim.keymap.set("n", "<leader>oy", "<cmd>ObsidianYesterday<CR>", { desc = "Open/create yesterday's note" })
-vim.keymap.set("n", "<leader>om", "<cmd>ObsidianTomorrow<CR>", { desc = "Open/create tomorrow's note" })
-vim.keymap.set("n", "<leader>oc", "<cmd>ObsidianDailies<CR>", { desc = "List daily notes" })
-vim.keymap.set("n", "<leader>oi", "<cmd>ObsidianTemplate<CR>", { desc = "Insert template" })
-vim.keymap.set("n", "<leader>os", "<cmd>ObsidianSearch<CR>", { desc = "Search notes" })
-vim.keymap.set("v", "<leader>ol", "<cmd>ObsidianLink<CR>", { desc = "Link selected text to a note" })
-vim.keymap.set("v", "<leader>on", "<cmd>ObsidianLinkNew<CR>", { desc = "Create new note and link selected text" })
-vim.keymap.set("n", "<leader>ok", "<cmd>ObsidianLinks<CR>", { desc = "List all links in current buffer" })
-vim.keymap.set("v", "<leader>oe", "<cmd>ObsidianExtractNote<CR>", { desc = "Extract selected text to a new note" })
-vim.keymap.set("n", "<leader>ow", "<cmd>ObsidianWorkspace<CR>", { desc = "Switch workspace" })
-vim.keymap.set("n", "<leader>op", "<cmd>ObsidianPasteImg<CR>", { desc = "Paste image from clipboard" })
-vim.keymap.set("n", "<leader>or", "<cmd>ObsidianRename<CR>", { desc = "Rename current note or link under cursor" })
-vim.keymap.set("n", "<leader>ox", "<cmd>ObsidianToggleCheckbox<CR>", { desc = "Toggle checkbox" })
-vim.keymap.set("n", "<leader>oT", "<cmd>ObsidianNewFromTemplate<CR>", { desc = "Create new note from template" })
-vim.keymap.set("n", "<leader>oa", "<cmd>ObsidianTOC<CR>", { desc = "Load table of contents" })
+vim.keymap.set("n", "<leader>oo", "<cmd>Obsidian open<CR>", { desc = "Open current note in Obsidian" })
+vim.keymap.set("n", "<leader>on", "<cmd>Obsidian new<CR>", { desc = "Create a new note" })
+vim.keymap.set("n", "<leader>of", "<cmd>Obsidian quick_switch<CR>", { desc = "Quick switch to another note" })
+vim.keymap.set("n", "<leader>ol", "<cmd>Obsidian follow_link<CR>", { desc = "Follow link under cursor" })
+vim.keymap.set("n", "<leader>oB", "<cmd>Obsidian backlinks<CR>", { desc = "List backlinks to current note" })
+vim.keymap.set("n", "<leader>ot", "<cmd>Obsidian tags<CR>", { desc = "Search tags" })
+vim.keymap.set("n", "<leader>od", "<cmd>Obsidian today<CR>", { desc = "Open/create today's note" })
+vim.keymap.set("n", "<leader>oy", "<cmd>Obsidian yesterday<CR>", { desc = "Open/create yesterday's note" })
+vim.keymap.set("n", "<leader>om", "<cmd>Obsidian tomorrow<CR>", { desc = "Open/create tomorrow's note" })
+vim.keymap.set("n", "<leader>oc", "<cmd>Obsidian dailies<CR>", { desc = "List daily notes" })
+vim.keymap.set("n", "<leader>oi", "<cmd>Obsidian template<CR>", { desc = "Insert template" })
+vim.keymap.set("n", "<leader>os", "<cmd>Obsidian search<CR>", { desc = "Search notes" })
+vim.keymap.set("v", "<leader>ol", "<cmd>Obsidian link<CR>", { desc = "Link selected text to a note" })
+vim.keymap.set("v", "<leader>on", "<cmd>Obsidian link_new<CR>", { desc = "Create new note and link selected text" })
+vim.keymap.set("n", "<leader>ok", "<cmd>Obsidian links<CR>", { desc = "List all links in current buffer" })
+-- vim.keymap.set("v", "<leader>oe", "<cmd>Obsidian extractNote<CR>", { desc = "Extract selected text to a new note" })
+vim.keymap.set("n", "<leader>ow", "<cmd>Obsidian workspace<CR>", { desc = "Switch workspace" })
+-- vim.keymap.set("n", "<leader>op", "<cmd>ObsidianPasteImg<CR>", { desc = "Paste image from clipboard" })
+vim.keymap.set("n", "<leader>or", "<cmd>Obsidian rename<CR>", { desc = "Rename current note or link under cursor" })
+vim.keymap.set("n", "<leader>ox", "<cmd>Obsidia toggle_checkbox<CR>", { desc = "Toggle checkbox" })
+vim.keymap.set("n", "<leader>oT", "<cmd>Obsidian new_from_template<CR>", { desc = "Create new note from template" })
+vim.keymap.set("n", "<leader>oa", "<cmd>Obsidian toc<CR>", { desc = "Load table of contents" })
 
 vim.keymap.set("n", "<leader>obd", "<cmd>ObsidianBridgeDailyNote<CR>", { desc = "Open or create daily note" })
 vim.keymap.set("n", "<leader>obg", "<cmd>ObsidianBridgeOpenGraph<CR>", { desc = "Open graph view in Obsidian" })
@@ -189,17 +194,17 @@ vim.keymap.set("n", "<leader>rn", ":IncRename ")
 
 vim.api.nvim_set_keymap("n", "<leader>n", ":ASToggle<CR>", { desc = "Toggle autosave" })
 local other_mappings = {
-  { '<leader>L', group = '[Other]' } }
+  { '<leader>R', group = '[Other]' } }
 wk.add(other_mappings)
-vim.api.nvim_set_keymap("n", "<leader>Ll", "<cmd>:Other<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<leader>Ltn", "<cmd>:OtherTabNew<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<leader>Lp", "<cmd>:OtherSplit<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<leader>Lv", "<cmd>:OtherVSplit<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<leader>Lc", "<cmd>:OtherClear<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>Rl", "<cmd>:Other<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>Rtn", "<cmd>:OtherTabNew<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>Rp", "<cmd>:OtherSplit<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>Rv", "<cmd>:OtherVSplit<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>Rc", "<cmd>:OtherClear<CR>", { noremap = true, silent = true })
 
 -- Context specific bindings
-vim.api.nvim_set_keymap("n", "<leader>Lt", "<cmd>:Other test<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<leader>Ls", "<cmd>:Other scss<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>Rt", "<cmd>:Other test<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>Rs", "<cmd>:Other scss<CR>", { noremap = true, silent = true })
 
 -- oil
 vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
@@ -230,6 +235,70 @@ vim.keymap.set("n", "<leader>gb", ":Git blame<cr>", { silent = true })
 vim.keymap.set("n", "<leader>gl",
   ":Git log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%ai%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all<cr>",
   { silent = true })
+vim.keymap.set("n", "<leader>gL", ":Git log --follow --all -p -- %:p<cr>", { desc = "Show file history", silent = true })
+--- Octohub
+local octo_mappings = {
+  { '<leader>go', group = '[Octohub]' } }
+wk.add(octo_mappings)
+-- Map all Repos
+vim.keymap.set("n", "<leader>goo", ":OctoRepos<CR>", { desc = "All Repos" })
+
+-- Map Repos by Size
+vim.keymap.set("n", "<leader>gob", ":OctoReposBySize<CR>", { desc = "Repos by Size" })
+
+-- Map Repos by Created
+vim.keymap.set("n", "<leader>goc", ":OctoReposByCreated<CR>", { desc = "Repos by Created" })
+
+-- Map Repos by Forks
+vim.keymap.set("n", "<leader>gof", ":OctoReposByForks<CR>", { desc = "Repos by Forks" })
+
+-- Map Repos by Issues
+vim.keymap.set("n", "<leader>goi", ":OctoReposByIssues<CR>", { desc = "Repos by Issues" })
+
+-- Map Repos by Language
+vim.keymap.set("n", "<leader>gol", ":OctoReposByLanguage<CR>", { desc = "Repos by Language" })
+
+-- Map Repos by Stars
+vim.keymap.set("n", "<leader>gos", ":OctoReposByStars<CR>", { desc = "Repos by Stars" })
+
+-- Map Repos by Updated
+vim.keymap.set("n", "<leader>goU", ":OctoReposByUpdated<CR>", { desc = "Repos by Updated" })
+
+-- Map Repos by Pushed
+vim.keymap.set("n", "<leader>goA", ":OctoReposByPushed<CR>", { desc = "Repos by Pushed" })
+
+-- Map Archived Repos
+vim.keymap.set("n", "<leader>goa", ":OctoRepoTypeArchived<CR>", { desc = "Archived Repos" })
+
+-- Map Forked Repos
+vim.keymap.set("n", "<leader>goF", ":OctoRepoTypeForked<CR>", { desc = "Forked Repos" })
+
+-- Map Private Repos
+vim.keymap.set("n", "<leader>goP", ":OctoRepoTypePrivate<CR>", { desc = "Private Repos" })
+
+-- Map Starred Repos
+vim.keymap.set("n", "<leader>goS", ":OctoRepoTypeStarred<CR>", { desc = "Starred Repos" })
+
+-- Map Template Repos
+vim.keymap.set("n", "<leader>got", ":OctoRepoTypeTemplate<CR>", { desc = "Template Repos" })
+
+-- Map Activity Stats
+vim.keymap.set("n", "<leader>goa", ":OctoActivityStats<CR>", { desc = "Activity Stats" })
+
+-- Map Contribution Graph
+vim.keymap.set("n", "<leader>gog", ":OctoContributionStats<CR>", { desc = "Contribution Graph" })
+
+-- Map Repo Stats
+vim.keymap.set("n", "<leader>gor", ":OctoRepoStats<CR>", { desc = "Repo Stats" })
+
+-- Map All Stats
+vim.keymap.set("n", "<leader>got", ":OctoStats<CR>", { desc = "All Stats" })
+
+-- Map Open GitHub Profile
+vim.keymap.set("n", "<leader>goP", ":OctoProfile<CR>", { desc = "Open GitHub Profile" })
+
+-- Map Open Repo in Browser
+vim.keymap.set("n", "<leader>goog", ":OctoRepoWeb<CR>", { desc = "Open Repo in Browser" })
 
 -- url-open
 vim.keymap.set("n", "gx", "<esc>:URLOpenUnderCursor<cr>")
@@ -299,6 +368,31 @@ local notion_mappings = {
 wk.add(notion_mappings)
 vim.keymap.set("n", "<leader>no", function() require "notion".openMenu() end, { desc = "Open Notion" })
 
+-- Leetcode
+local Leetcode_mappings = {
+  { '<leader>L', group = '[Leetcode]' } }
+wk.add(Leetcode_mappings)
+-- LeetCode.nvim key mappings
+vim.api.nvim_set_keymap('n', '<leader>Lm', '<cmd>Leet menu<CR>', { noremap = true, desc = "Open LeetCode menu" })
+vim.api.nvim_set_keymap('n', '<leader>Lq', '<cmd>Leet exit<CR>', { noremap = true, desc = "Close LeetCode" })
+vim.api.nvim_set_keymap('n', '<leader>Lc', '<cmd>Leet console<CR>',
+  { noremap = true, desc = "Open console for current question" })
+vim.api.nvim_set_keymap('n', '<leader>Li', '<cmd>Leet info<CR>', { noremap = true, desc = "Show question info" })
+vim.api.nvim_set_keymap('n', '<leader>Lt', '<cmd>Leet tabs<CR>', { noremap = true, desc = "List open question tabs" })
+vim.api.nvim_set_keymap('n', '<leader>Ly', '<cmd>Leet yank<CR>', { noremap = true, desc = "Yank current solution" })
+vim.api.nvim_set_keymap('n', '<leader>Ll', '<cmd>Leet lang<CR>', { noremap = true, desc = "Change question language" })
+vim.api.nvim_set_keymap('n', '<leader>Lr', '<cmd>Leet run<CR>', { noremap = true, desc = "Run current question" })
+vim.api.nvim_set_keymap('n', '<leader>LT', '<cmd>Leet test<CR>', { noremap = true, desc = "Test current question" })
+vim.api.nvim_set_keymap('n', '<leader>Ls', '<cmd>Leet submit<CR>', { noremap = true, desc = "Submit current question" })
+vim.api.nvim_set_keymap('n', '<leader>Ln', '<cmd>Leet random<CR>', { noremap = true, desc = "Open random question" })
+vim.api.nvim_set_keymap('n', '<leader>Ld', '<cmd>Leet daily<CR>', { noremap = true, desc = "Open daily question" })
+vim.api.nvim_set_keymap('n', '<leader>Lp', '<cmd>Leet list<CR>', { noremap = true, desc = "Open problem list" })
+vim.api.nvim_set_keymap('n', '<leader>Lo', '<cmd>Leet open<CR>', { noremap = true, desc = "Open question in browser" })
+vim.api.nvim_set_keymap('n', '<leader>LR', '<cmd>Leet reset<CR>', { noremap = true, desc = "Reset question code" })
+vim.api.nvim_set_keymap('n', '<leader>La', '<cmd>Leet last_submit<CR>',
+  { noremap = true, desc = "Retrieve last submitted code" })
+vim.api.nvim_set_keymap('n', '<leader>Le', '<cmd>Leet restore<CR>', { noremap = true, desc = "Restore question layout" })
+vim.api.nvim_set_keymap('n', '<leader>Lj', '<cmd>Leet inject<CR>', { noremap = true, desc = "Re-inject question code" })
 
 -- TODO
 vim.api.nvim_set_keymap('n', '<leader>To', '<cmd>TodoTelescope<CR>', { noremap = true, desc = "Show todos" })
@@ -398,7 +492,14 @@ require('mini.move').setup({
   }
 })
 
+-- local ai_mappings = {
+--   { '<leader>a', group = '[Avante]' } }
+-- wk.add(ai_mappings)
+
 -- codecompanion
+local ai_mappings = {
+  { '<leader>a', group = '[CodeCompanion]' } }
+wk.add(ai_mappings)
 
 vim.api.nvim_set_keymap("n", "<C-a>", "<cmd>CodeCompanionActions<cr>",
   { noremap = true, silent = true, desc = "Open the Action Palette" })
@@ -412,7 +513,7 @@ vim.api.nvim_set_keymap("v", "ga", "<cmd>CodeCompanionChat Add<cr>",
   { noremap = true, silent = true, desc = "Add visually selected chat to the current chat buffer" })
 
 -- Expand 'cc' into 'CodeCompanion' in the command line
-vim.cmd([[cab cc CodeCompanion]])
+-- vim.cmd([[cab cc CodeCompanion]])
 
 --- window
 vim.keymap.set("n", ",", function() require('nvim-window').pick() end,
@@ -432,3 +533,37 @@ require('mini.move').setup({
     line_up    = '<S-up>',
   }
 })
+-- dap
+local dap_mappings = {
+  { '<leader>d', group = '[Dap]' } }
+wk.add(dap_mappings)
+-- Normal mode mappings with descriptions
+vim.api.nvim_set_keymap('n', "<leader>dc", ":lua require'dap'.continue()<CR>",
+  { noremap = true, silent = true, desc = "Continue debugging session" })
+vim.api.nvim_set_keymap('n', "<leader>do", ":lua require'dap'.step_over()<CR>",
+  { noremap = true, silent = true, desc = "Step over the next function call" })
+vim.api.nvim_set_keymap('n', "<leader>di", ":lua require'dap'.step_into()<CR>",
+  { noremap = true, silent = true, desc = "Step into the next function call" })
+vim.api.nvim_set_keymap('n', "<leader>dx", ":lua require'dap'.step_out()<CR>",
+  { noremap = true, silent = true, desc = "Step out of the current function" })
+vim.api.nvim_set_keymap('n', "<leader>db", ":lua require'dap'.toggle_breakpoint()<CR>",
+  { noremap = true, silent = true, desc = "Toggle a breakpoint" })
+vim.api.nvim_set_keymap('n', "<leader>dB", ":lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>",
+  { noremap = true, silent = true, desc = "Set a breakpoint with a custom condition" })
+vim.api.nvim_set_keymap('n', "<leader>dl",
+  ":lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>",
+  { noremap = true, silent = true, desc = "Set a breakpoint with a custom log message" })
+vim.api.nvim_set_keymap('n', "<leader>dr", ":lua require'dap'.repl.open()<CR>",
+  { noremap = true, silent = true, desc = "Open the REPL for debugging" })
+vim.api.nvim_set_keymap('n', "<leader>drl", ":lua require'dap'.run_last()<CR>",
+  { noremap = true, silent = true, desc = "Run the last debug session" })
+vim.api.nvim_set_keymap('n', "<leader>dev", ":lua require('dapui').eval()<CR>",
+  { noremap = true, silent = true, desc = "Evaluate expression under cursor in debugger context" })
+vim.api.nvim_set_keymap('n', "<leader>dclose", ":lua require('dapui').close()<CR>",
+  { noremap = true, silent = true, desc = "Close the debug UI" })
+vim.api.nvim_set_keymap('n', "<leader>de", ":lua require('dap').close()<CR>",
+  { noremap = true, silent = true, desc = "Close the debugging session" })
+
+-- Visual mode mappings with descriptions
+vim.api.nvim_set_keymap('v', "<leader>dev", ":lua require('dapui').eval()<CR>",
+  { noremap = true, silent = true, desc = "Evaluate selected text in debugger context" })

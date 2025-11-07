@@ -41,4 +41,3 @@ ZSH_THEME_GIT_PROMPT_CLEAN=""
     #RPROMPT='%{$fg_bold[red]%}$(rbenv_version)%{$reset_color%}'
   #fi
 #fi
-

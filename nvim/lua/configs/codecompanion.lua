@@ -11,7 +11,24 @@ require("codecompanion").setup({
   },
   opts = {
     log_level = "DEBUG",
-    language = "English" -- Default is "English"
+    language = "English", -- Default is "English"
+  },
+  extensions = {
+    mcphub = {
+      callback = "mcphub.extensions.codecompanion",
+      opts = {
+        -- MCP Tools
+        make_tools = true,                    -- Make individual tools (@server__tool) and server groups (@server) from MCP servers
+        show_server_tools_in_chat = true,     -- Show individual tools in chat completion (when make_tools=true)
+        add_mcp_prefix_to_tool_names = false, -- Add mcp__ prefix (e.g `@mcp__github`, `@mcp__neovim__list_issues`)
+        show_result_in_chat = true,           -- Show tool results directly in chat buffer
+        format_tool = nil,                    -- function(tool_name:string, tool: CodeCompanion.Agent.Tool) : string Function to format tool names to show in the chat buffer
+        -- MCP Resources
+        make_vars = true,                     -- Convert MCP resources to #variables for prompts
+        -- MCP Prompts
+        make_slash_commands = true,           -- Add MCP prompts as /slash commands
+      }
+    }
   },
   strategies = {
     chat = {
@@ -33,20 +50,99 @@ require("codecompanion").setup({
     inline = {
       adapter = "ollama",
     },
-    -- agent = {
-    --   adapter = "ollama"
-    -- }
+    agent = {
+      adapter = "ollama"
+    }
   },
 
   adapters = {
+    openrouter = function()
+      return require("codecompanion.adapters").extend("openai_compatible", {
+        name = "openrouter",
+        env = {
+          url = "https://openrouter.ai/api",
+          api_key = os.getenv("OPENROUTER_KEY"),
+          chat_url = "/v1/chat/completions",
+        },
+        opts = {
+          stream = false,
+          can_reason = true
+        },
+        schema = {
+          model = {
+            default = "qwen/qwen3-30b-a3b:free",
+            choices = { "moonshotai/kimi-k2:free" },
+          },
+        },
+        handlers = {
+          chat_output = function(self, data)
+            local utils = require("codecompanion.utils.adapters")
+            local output = {}
+
+            if data and data ~= "" then
+              local data_mod = utils.clean_streamed_data(data)
+              local ok, json = pcall(vim.json.decode, data_mod, { luanil = { object = true } })
+
+              if ok and json.choices and #json.choices > 0 then
+                local choice = json.choices[1]
+                local delta = (self.opts and self.opts.stream) and choice.delta or choice.message
+
+                if delta then
+                  output.role = nil
+                  if delta.role then
+                    output.role = delta.role
+                  end
+                  if self.opts.can_reason and delta.reasoning then
+                    output.reasoning = delta.reasoning
+                  end
+                  if delta.content then
+                    output.content = (output.content or "") .. delta.content
+                  end
+                  return {
+                    status = "success",
+                    output = output,
+                  }
+                end
+              end
+            end
+          end,
+        },
+      })
+    end,
+    ollamadeepseekcoderv2 = function()
+      return require("codecompanion.adapters").extend("ollama", {
+        name = "ollamadeepseekcoderv2",
+        schema = {
+          model = {
+            default = "deepseek-coder-v2:16b",
+          },
+          num_ctx = {
+            default = 16384,
+          },
+          num_predict = {
+            default = -1,
+          },
+        },
+        env = {
+          url = "http://127.0.0.1:11434",
+        },
+        headers = {
+          ["Content-Type"] = "application/json",
+        },
+        parameters = {
+          sync = true,
+        },
+      })
+    end,
     ollama = function()
       return require("codecompanion.adapters").extend("ollama", {
-        name = "ollama", -- Give this adapter a different name to differentiate it from the default ollama adapter
+        name = "ollama",
         schema = {
           model = {
             -- https://ollama.com/library/llama3.2:3b
-            -- default = "llama3.2:1b",
-            default = "deepseek-r1:8b",
+            --default = "deepseek-r1:1.5b",
+            --default = "deepseek-coderv2:1.5b",
+            default = "qwen2.5-coder:3b",
           },
           num_ctx = {
             default = 16384,
