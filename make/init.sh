@@ -40,8 +40,8 @@ ln -sf "$HOME"/dotfiles/kitty/kitty.conf ~/.config/kitty/kitty.conf
 ln -sf "$HOME"/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh-theme "$HOME"/.oh-my-zsh/custom/themes/spaceship.zsh-theme
 
 # ghostty
-$ mkdir ~/.config/ghostty
-$ ln -s ~/dotfiles/ghostty/ghostty.conf ~/.config/ghostty/config
+mkdir "$HOME"/.config/ghostty
+ln -s "$HOME"/dotfiles/ghostty/ghostty.conf ~/.config/ghostty/config
 
 # neovim
 #nvim -c "PlugInstall"
