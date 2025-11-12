@@ -27,6 +27,18 @@ require("lazy").setup({
     -- import your plugins
     -- { import = "plugins" },
 
+    -- Notes
+    -- ----------------------------
+    -- Notion
+    { import = "plugins.notion" },
+    -- Obsidian
+    { import = "plugins.obsidian" },
+    -- Obsidian sync scrolling
+    { import = "plugins.obsidian-bridge" },
+    -- nvim dark/light theme with system setting
+    { import = "plugins.auto-dark-mode" },
+
+
     -- General
     -- ----------------------------
     -- enhanced search
@@ -85,17 +97,6 @@ require("lazy").setup({
     -- { import = "plugins.avante" },
     -- use MCP
     { import = "plugins.mcphub" },
-
-    -- Notes
-    -- ----------------------------
-    -- Notion
-    { import = "plugins.notion" },
-    -- Obsidian
-    { import = "plugins.obsidian" },
-    -- Obsidian sync scrolling
-    { import = "plugins.obsidian-bridge" },
-    -- nvim dark/light theme with system setting
-    { import = "plugins.auto-dark-mode" },
 
     -- Search
     -- ----------------------------
