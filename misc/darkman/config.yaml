@@ -13,4 +13,4 @@ lat: 53.3498  # Replace with your latitude
 lng: -0.1  # Replace with your longitude
 # usegeoclue: true  # Set to true if you want automatic location detection
 dbusserver: true
-portals: true
+# portals: true

@@ -45,3 +45,4 @@ You can customize the configuration by editing the `ghostty.conf` file. Some com
 
 - [Ghostty Website](https://ghostty.org/)
 - [Ghostty Documentation](https://ghostty.org/docs/)
+- [jrswab/ghostty-everforest](https://github.com/jrswab/ghostty-everforest)
