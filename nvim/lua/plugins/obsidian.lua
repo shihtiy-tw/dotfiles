@@ -1,15 +1,17 @@
 return {
   "obsidian-nvim/obsidian.nvim",
-  version = "*", -- recommended, use latest release instead of latest commit
-  lazy = true,
+  -- https://www.reddit.com/r/neovim/comments/1n8sygk/obsidiannvim_error_error_executing_vimschedule/
+  -- issue with 3.14 "table expected, got nil"
+  version = "3.12", -- recommended, use latest release instead of latest commit
+  -- lazy = true,
   -- ft = "markdown",
   -- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
   event = {
     -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
     -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/*.md"
     -- refer to `:h file-pattern` for more examples
-    "BufReadPre " .. vim.fn.expand "~" .. "/Brainiverse/*/*.md",
-    "BufNewFile " .. vim.fn.expand "~" .. "/Brainiverse/*/*.md",
+    "BufReadPre " .. vim.fn.expand "~" .. "Brainiverse/Brainiverse/*/*.md",
+    "BufNewFile " .. vim.fn.expand "~" .. "Brainiverse/Brainiverse/*/*.md",
   },
   dependencies = {
     -- Required.
@@ -17,154 +19,104 @@ return {
 
     -- see below for full list of optional dependencies 👇
   },
-  opts = {
-    workspaces = {
-      {
-        name = "brainiverse",
-        path = "~/Brainiverse/Brainiverse",
-        overrides = {
-          notes_subdir = vim.NIL, -- have to use 'vim.NIL' instead of 'nil'
-          new_notes_location = "current_dir",
-          templates = {
-            folder = 'Atlas/Utilities/Templates',
+  config = function()
+    require("obsidian").setup({
+      workspaces = {
+        {
+          name = "brainiverse",
+          path = "~/Brainiverse/Brainiverse",
+          overrides = {
+            notes_subdir = vim.NIL, -- have to use 'vim.NIL' instead of 'nil'
+            new_notes_location = "current_dir",
+            templates = {
+              folder = 'Toolkit/Templates',
+            },
           },
         },
       },
-      {
-        name = "no-vault",
-        path = function()
-          -- alternatively use the CWD:
-          -- return assert(vim.fn.getcwd())
-          return assert(vim.fs.dirname(vim.api.nvim_buf_get_name(0)))
-        end,
-        overrides = {
-          notes_subdir = vim.NIL, -- have to use 'vim.NIL' instead of 'nil'
-          new_notes_location = "current_dir",
-          -- templates = {
-          --   folder = 'Atlas/Utilities/Templates',
-          -- },
-          templates = {
-            folder = (function()
-              local template_folder
-              if vim.g.os == "Darwin" and (string.find(vim.api.nvim_buf_get_name(0), "Brainiverse") or string.find(vim.api.nvim_buf_get_name(0), "Amazon")) then
-                template_folder = "Atlas/Utilities/Templates"
-              else
-                template_folder = vim.NIL
-              end
-              return template_folder
-            end)(),
-          },
+      disable_frontmatter = false,
+      legacy_commands = false,
+
+      daily_notes = {
+        -- Optional, if you keep daily notes in a separate directory.
+        folder = "Calendar/Planner/05Daily/",
+        -- Optional, if you want to change the date format for the ID of daily notes.
+        date_format = "%Y-%m-%d-%a",
+        -- Optional, if you want to change the date format of the default alias of daily notes.
+        alias_format = "%B %-d, %Y",
+        -- Optional, default tags to add to each new daily note created.
+        default_tags = { "daily-notes" },
+        -- Optional, if you want to automatically insert a template from your template directory like 'daily.md'
+        template = "/Toolkit/Templates/Templater/Planner/Daily_Note_Templater.md",
+        -- Optional, if you want `Obsidian yesterday` to return the last work day or `Obsidian tomorrow` to return the next work day.
+        workdays_only = false,
+      },
+      templates = {
+        folder = "Toolkit/Templates",
+        date_format = "%Y-%m-%d",
+        time_format = "%H:%M",
+        -- A map for custom variables, the key should be the variable and the value a function.
+        -- Functions are called with obsidian.TemplateContext objects as their sole parameter.
+        -- See: https://github.com/obsidian-nvim/obsidian.nvim/wiki/Template#substitutions
+        substitutions = {},
+      },
+
+      completion = {
+        -- Set to false to disable completion.
+        nvim_cmp = true,
+        -- Trigger completion at 2 chars.
+        min_chars = 2,
+      },
+
+      picker = {
+        -- Set your preferred picker. Can be one of 'telescope.nvim', 'fzf-lua', or 'mini.pick'.
+        name = "telescope.nvim",
+        -- Optional, configure key mappings for the picker. These are the defaults.
+        -- Not all pickers support all mappings.
+        note_mappings = {
+          -- Create a new note from your query.
+          new = "<C-X>",
+          -- Insert a link to the selected note.
+          insert_link = "<C-I>",
+        },
+        tag_mappings = {
+          -- Add tag(s) to current note.
+          tag_note = "<C-n>",
+          -- Insert a tag at the current location.
+          insert_tag = "<C-s>",
         },
       },
-    },
-    disable_frontmatter = false,
 
-    daily_notes = {
-      -- Optional, if you keep daily notes in a separate directory.
-      folder = "Calendar/Planner/05Daily/",
-      -- Optional, if you want to change the date format for the ID of daily notes.
-      date_format = "%Y-%m-%d-%a",
-      -- Optional, if you want to change the date format of the default alias of daily notes.
-      alias_format = "%B %-d, %Y",
-      -- Optional, default tags to add to each new daily note created.
-      default_tags = { "daily-notes" },
-      -- Optional, if you want to automatically insert a template from your template directory like 'daily.md'
-      template = "Planner/Template_Planner_Daily_Today.md",
-      -- Optional, if you want `Obsidian yesterday` to return the last work day or `Obsidian tomorrow` to return the next work day.
-      workdays_only = false,
-    },
-    templates = {
-      folder = "Atlas/Utilities/Templates",
-      date_format = "%Y-%m-%d",
-      time_format = "%H:%M",
-      -- A map for custom variables, the key should be the variable and the value a function.
-      -- Functions are called with obsidian.TemplateContext objects as their sole parameter.
-      -- See: https://github.com/obsidian-nvim/obsidian.nvim/wiki/Template#substitutions
-      substitutions = {},
-    },
-
-    completion = {
-      -- Set to false to disable completion.
-      nvim_cmp = true,
-      -- Trigger completion at 2 chars.
-      min_chars = 2,
-    },
-
-    picker = {
-      -- Set your preferred picker. Can be one of 'telescope.nvim', 'fzf-lua', or 'mini.pick'.
-      name = "telescope.nvim",
-      -- Optional, configure key mappings for the picker. These are the defaults.
-      -- Not all pickers support all mappings.
-      note_mappings = {
-        -- Create a new note from your query.
-        new = "<C-X>",
-        -- Insert a link to the selected note.
-        insert_link = "<C-I>",
-      },
-      tag_mappings = {
-        -- Add tag(s) to current note.
-        tag_note = "<C-n>",
-        -- Insert a tag at the current location.
-        insert_tag = "<C-s>",
-      },
-    },
-
-    -- Optional, by default when you use `:ObsidianFollowLink` on a link to an external
-    -- URL it will be ignored but you can customize this behavior here.
-    ---@param url string
-    follow_url_func = function(url)
-      -- Open the URL in the default web browser.
-      vim.fn.jobstart({ "open", url }) -- Mac OS
-      -- vim.fn.jobstart({"xdg-open", url})  -- linux
-      -- vim.cmd(':silent exec "!start ' .. url .. '"') -- Windows
-      -- vim.ui.open(url) -- need Neovim 0.10.0+
-    end,
-
-    -- Optional, by default when you use `:ObsidianFollowLink` on a link to an image
-    -- file it will be ignored but you can customize this behavior here.
-    -- NOTE: this function hasn't be released yet
-    -- https://github.com/aquilesg/obsidian.nvim/commit/55aed056596f66af3d4d1852c7769bb600f6ce37
-    ---@param img string
-    follow_img_func = function(img)
-      vim.fn.jobstart { "qlmanage", "-p", img } -- Mac OS quick look preview
-      -- vim.fn.jobstart({"xdg-open", url})  -- linux
-      -- vim.cmd(':silent exec "!start ' .. url .. '"') -- Windows
-    end,
-    -- UI will be placed by render-markdown
-    ui = {
-      enable = false, -- set to false to disable all additional syntax features
-    },
-
-    -- Specify how to handle attachments.
-    attachments = {
-      -- The default folder to place images in via `:Obsidian paste_img`.
-      -- If this is a relative path it will be interpreted as relative to the vault root.
-      -- You can always override this per image by passing a full path to the command instead of just a filename.
-      img_folder = "Atlas/Utilities/Attachments/General/imgs", -- This is the default
-
-      -- A function that determines default name or prefix when pasting images via `:Obsidian paste_img`.
-      ---@return string
-      img_name_func = function()
-        -- Prefix image names with timestamp.
-        return string.format("Pasted image %s", os.date "%Y%m%d%H%M%S")
+      -- Optional, by default when you use `:ObsidianFollowLink` on a link to an external
+      -- URL it will be ignored but you can customize this behavior here.
+      ---@param url string
+      follow_url_func = function(url)
+        -- Open the URL in the default web browser.
+        vim.fn.jobstart({ "open", url }) -- Mac OS
+        -- vim.fn.jobstart({"xdg-open", url})  -- linux
+        -- vim.cmd(':silent exec "!start ' .. url .. '"') -- Windows
+        -- vim.ui.open(url) -- need Neovim 0.10.0+
       end,
 
-      -- A function that determines the text to insert in the note when pasting an image.
-      -- It takes two arguments, the `obsidian.Client` and an `obsidian.Path` to the image file.
-      -- This is the default implementation.
-      ---@param client obsidian.Client
-      ---@param path obsidian.Path the absolute path to the image file
-      ---@return string
-      img_text_func = function(client, path)
-        path = client:vault_relative_path(path) or path
-        return string.format("![%s](%s)", path.name, path)
-      end,
-    },
+      ui = {
+        enable = true, -- set to false to disable all additional syntax features
+      },
 
-    -- See https://github.com/obsidian-nvim/obsidian.nvim/wiki/Notes-on-configuration#statusline-component
-    statusline = {
-      enabled = true,
-      format = "{{properties}} properties {{backlinks}} backlinks {{words}} words {{chars}} chars",
-    },
-  },
+      -- Specify how to handle attachments.
+      attachments = {
+        -- The default folder to place images in via `:Obsidian paste_img`.
+        -- If this is a relative path it will be interpreted as relative to the vault root.
+        -- You can always override this per image by passing a full path to the command instead of just a filename.
+        img_folder = "Toolkit/Attachments/General", -- This is the default
+
+      },
+
+      footer = {
+        enabled = true,
+        format = "{{backlinks}} backlinks  {{properties}} properties  {{words}} words  {{chars}} chars",
+        hl_group = "Comment",
+        separator = string.rep("-", 80),
+      },
+    })
+  end,
 }

@@ -55,6 +55,7 @@ return {
       { 'williamboman/mason.nvim' },
       { 'williamboman/mason-lspconfig.nvim' },
       { 'cenk1cenk2/schema-companion.nvim' },
+      { 'obsidian-nvim/obsidian.nvim' },
     },
     config = function()
       require("configs.lsp")
