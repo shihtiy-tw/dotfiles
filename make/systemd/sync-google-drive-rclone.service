@@ -2,4 +2,5 @@
 Description=sync google drive with rclone every 5 minutes.
 
 [Service]
-ExecStart=%h/Brainiverse/Brainiverse/Atlas/Utilities/Scripts/rclone-sync/sync.sh
+ExecStart=%h/Brainiverse/Brainiverse/Toolkit/Scripts/rclone-sync/sync.sh
+
