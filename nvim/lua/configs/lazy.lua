@@ -89,6 +89,8 @@ require("lazy").setup({
     -- -- { import = "plugins.session" },
     -- -- kanban
     -- -- { import = "plugins.kanban" },
+    -- diffview
+    { import = "plugins.vscode-diff" },
 
     -- AI
     -- ----------------------------
