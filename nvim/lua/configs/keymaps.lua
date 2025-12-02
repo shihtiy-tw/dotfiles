@@ -483,6 +483,8 @@ vim.keymap.set("i", "<C-C>", "<ESC>", opts,
   { desc = "Enter normal mode" })
 vim.keymap.set("i", "jj", "<ESC>", opts,
   { desc = "Enter normal mode" })
+vim.keymap.set("i", "jk", "<ESC>", opts,
+  { desc = "Enter normal mode" })
 
 -- mini move
 -- `HJKL` for moving visual selection (overrides H, L, J in Visual mode)
