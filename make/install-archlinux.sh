@@ -281,6 +281,8 @@ yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" cla
 yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" superproductivity
 yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" affine
 
+yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" chawan
+
 # Font
 curl -fsSL https://raw.githubusercontent.com/getnf/getnf/main/install.sh | bash
 
@@ -338,6 +340,10 @@ if [ ! -d "$HOME"/.oh-my-zsh/custom/themes/spaceship-prompt ]; then \
   sed -i 's/^SPACESHIP_CHAR_SYMBOL=.*$/SPACESHIP_CHAR_SYMBOL="${SPACESHIP_CHAR_SYMBOL="$ "}"/' "$HOME"/.oh-my-zsh/custom/themes/spaceship-prompt/sections/char.zsh
   git clone https://github.com/spaceship-prompt/spaceship-vi-mode.git "$HOME"/.oh-my-zsh/custom/plugins/spaceship-vi-mode
   sed -i 's/^SPACESHIP_VI_MODE_SHOW=.*$/SPACESHIP_VI_MODE_SHOW="${SPACESHIP_VI_MODE_SHOW=false}"/' "$HOME"/.oh-my-zsh/custom/themes/spaceship-prompt/sections/vi_mode.zsh
+fi
+if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/zsh-vi-man ]; then \
+  git clone https://github.com/TunaCuma/zsh-vi-man \
+    "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}"/plugins/zsh-vi-man
 fi
 
 # tmux tpm
