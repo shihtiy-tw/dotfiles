@@ -81,6 +81,7 @@ plugins=(
   #web-search
   autojump
   fzf-tab
+  zsh-vi-man
 )
 
 ZSH_SYSTEM_CLIPBOARD_METHOD="tmux"

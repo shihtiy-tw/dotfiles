@@ -87,6 +87,7 @@ export NVM_DIR="$HOME/.nvm"
 
 # rust
 export PATH=${PATH}:$HOME/.cargo/env
+export PATH=${PATH}:${HOME}/.cargo/bin
 
 # kubectl
 # krew
@@ -98,7 +99,6 @@ export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 #export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64:$LD_LIBRARY_PATH1
 #export LD_LIBRARY_PATH=/usr/local/cuda-9.0/lib64
 #export CATALINA_HOME='/opt/tomcat'
-#export PATH=${PATH}:${HOME}/.cargo/bin
 #export PATH=${PATH}:${HOME}/Tools/codimd-cli/bin
 #export PATH="$PATH:${HOME}/Tools/Sonar/sonar-scanner-4.0.0.1744-linux/bin"
 #export WORKON_HOME=$HOME/.virtualenvs

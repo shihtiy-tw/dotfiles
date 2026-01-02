@@ -26,7 +26,7 @@ return {
     "williamboman/mason-lspconfig.nvim",
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
   },
-  'mhartington/formatter.nvim',
+  { 'mhartington/formatter.nvim' },
   -- TODO: setup auto complete for python
   {
     'hrsh7th/nvim-cmp',
