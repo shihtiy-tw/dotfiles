@@ -1,61 +1,65 @@
 require("avante").setup({
-  -- system_prompt as function ensures LLM always has latest MCP server state
-  -- This is evaluated for every message, even in existing chats
+  ---@alias Provider "ollama" | "gemini"
+  provider = "gemini",                  -- Switch to gemini as default for better reasoning
+  auto_suggestions_provider = "ollama", -- Keep local for speed/cost
+
+  -- MCP Prompt Logic
   system_prompt = function()
-    local hub = require("mcphub").get_hub_instance()
-    return hub and hub:get_active_servers_prompt() or ""
+    local ok, hub = pcall(require, "mcphub")
+    if ok then
+      local instance = hub.get_hub_instance()
+      return instance and instance:get_active_servers_prompt() or ""
+    end
+    return ""
   end,
-  -- Using function prevents requiring mcphub before it's loaded
+
+  -- MCP Tools Logic
   custom_tools = function()
-    return {
-      require("mcphub.extensions.avante").mcp_tool(),
-    }
+    local ok, mcp_avante = pcall(require, "mcphub.extensions.avante")
+    if ok then
+      return { mcp_avante.mcp_tool() }
+    end
+    return {}
   end,
-  -- add any opts here
-  -- for example
-  -- https://github.com/yetone/avante.nvim/issues/2048j
-  mode = "legacy", -- solve cannnot apply change issue for local LLM
-  -- mode = "agentic",
-  provider = "ollama",
-  auto_suggestions_provider = "ollama",
+
+  -- Gemini Configuration
+  gemini = {
+    model = "gemini-2.0-flash", -- or "gemini-1.5-pro" for deeper reasoning
+    max_tokens = 4096,
+    temperature = 0,
+  },
+
   providers = {
-    -- bedrock = {
-    --   model = "us.anthropic.claude-3-5-sonnet-20241022-v2:0",
-    --   aws_profile = "default",
-    --   aws_region = "us-east-1",
-    -- },
     ollama = {
       endpoint = "http://localhost:11434",
-      --model = "deepseek-r1:1.5b",
-      -- model = "qwen2.5-coder:3b",
-      model = "qwen3:4b",
-      -- model = "deepseek-coder-v2:16b",
-      -- important to set this to true if you are using a local server
-      disable_tools = false,
+      model = "qwen2.5-coder:7b", -- Recommended for local tool use over 3b
+      disable_tools = false,      -- Must be false for MCP to work
       max_tokens = 32768,
+      timeout = 30000,            -- Local models can be slow to start
     },
+    -- Specialized reasoning provider (No tools)
     ollama_deepseek = {
       __inherited_from = "openai",
       endpoint = "http://localhost:11434/v1",
       api_key_name = "",
-      model = "deepseek-r1:1.5b",
-      -- model = "qwen2.5-coder:3b",
-      -- model = "deepseek-coder-v2:16b",
-      -- important to set this to true if you are using a local server
+      model = "deepseek-r1:7b",
       disable_tools = true,
       max_tokens = 32768,
     },
   },
+
+  -- Keep your existing window and behavior settings
+  mode = "legacy",
+  cursor_applying_provider = "gemini",
+  behaviour = {
+    enable_cursor_planning_mode = true,
+  },
   windows = {
     edit = { border = "rounded" },
     ask = {
-      floating = false,    -- Open the 'AvanteAsk' prompt in a floating window
-      start_insert = true, -- Start insert mode when opening the ask window
+      floating = false,
+      start_insert = true,
       border = "rounded",
     },
-  },
-  cursor_applying_provider = "ollama",
-  behaviour = {
-    enable_cursor_planning_mode = true,
   },
 })
