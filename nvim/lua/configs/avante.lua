@@ -1,7 +1,7 @@
 require("avante").setup({
   ---@alias Provider "ollama" | "gemini"
-  provider = "gemini",                  -- Switch to gemini as default for better reasoning
-  auto_suggestions_provider = "ollama", -- Keep local for speed/cost
+  provider = "gemini-cli",                  -- Switch to gemini as default for better reasoning
+  auto_suggestions_provider = "gemini-cli", -- Keep local for speed/cost
 
   -- MCP Prompt Logic
   system_prompt = function()
@@ -22,14 +22,14 @@ require("avante").setup({
     return {}
   end,
 
-  -- Gemini Configuration
-  gemini = {
-    model = "gemini-2.0-flash", -- or "gemini-1.5-pro" for deeper reasoning
-    max_tokens = 4096,
-    temperature = 0,
-  },
 
   providers = {
+    -- Gemini Configuration
+    gemini = {
+      model = "gemini-3-pro-review", -- or "gemini-1.5-pro" for deeper reasoning
+      max_tokens = 4096,
+      temperature = 0,
+    },
     ollama = {
       endpoint = "http://localhost:11434",
       model = "qwen2.5-coder:7b", -- Recommended for local tool use over 3b
@@ -46,6 +46,38 @@ require("avante").setup({
       disable_tools = true,
       max_tokens = 32768,
     },
+  },
+
+
+  acp_providers = {
+    ["gemini-cli"] = {
+      command = "gemini",
+      args = { "--experimental-acp" },
+      env = {
+        NODE_NO_WARNINGS = "1",
+        --    GEMINI_API_KEY = os.getenv("GEMINI_API_KEY"),
+      },
+    },
+    -- ["claude-code"] = {
+    --   command = "npx",
+    --   args = { "@zed-industries/claude-code-acp" },
+    --   env = {
+    --     NODE_NO_WARNINGS = "1",
+    --     ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY"),
+    --   },
+    -- },
+    -- ["goose"] = {
+    --   command = "goose",
+    --   args = { "acp" },
+    -- },
+    -- ["codex"] = {
+    --   command = "npx",
+    --   args = { "@zed-industries/codex-acp" },
+    --   env = {
+    --     NODE_NO_WARNINGS = "1",
+    --     OPENAI_API_KEY = os.getenv("OPENAI_API_KEY"),
+    --   },
+    -- },
   },
 
   -- Keep your existing window and behavior settings

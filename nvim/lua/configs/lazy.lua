@@ -96,7 +96,7 @@ require("lazy").setup({
     -- ----------------------------
     -- use ollama locally
     -- { import = "plugins.codecompanion" },
-     import = "plugins.avante" },
+    { import = "plugins.avante" },
     -- use MCP
     { import = "plugins.mcphub" },
 
@@ -203,5 +203,5 @@ require("lazy").setup({
   -- colorscheme that will be used when installing plugins.
   install = { colorscheme = { "habamax" } },
   -- automatically check for plugin updates
-  checker = { enabled = true },
+  checker = { { enabled = true } },
 })
