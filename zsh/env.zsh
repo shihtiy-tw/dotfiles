@@ -107,3 +107,6 @@ export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 # For homebrew
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
+# Added by Antigravity
+export PATH="${HOME}/.antigravity/antigravity/bin:$PATH"
+

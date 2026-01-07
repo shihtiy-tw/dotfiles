@@ -17,6 +17,12 @@ if [ -f "$(which helm)" ]; then source <(helm completion zsh); fi
 # eksctl
 if [ -f "$(which eksctl)" ]; then source <(eksctl completion zsh); fi
 
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '${HOME}/google-cloud-sdk/path.zsh.inc' ]; then . '${HOME}/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '${HOME}/.google-cloud-sdk/completion.zsh.inc' ]; then . '${HOME}/google-cloud-sdk/completion.zsh.inc'; fi
+
 # cdk
 if [ -f "$(which cdk)" ]; then
 ###-begin-cdk-completions-###

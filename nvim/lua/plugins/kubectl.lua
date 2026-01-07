@@ -1,17 +1,20 @@
 return {
   {
     "ramilito/kubectl.nvim",
+    version = "2.*",
     config = function()
       require("kubectl").setup()
     end,
+    dependencies = "saghen/blink.download",
+    build = 'cargo build --release',
     keys = {
       -- General keys
-      { "dd", "<Plug>(kubectl.kill)"},
-      { "q",  "<Plug>(kubectl.quit)"},
+      { "dd", "<Plug>(kubectl.kill)" },
+      { "q",  "<Plug>(kubectl.quit)" },
       -- views
-      { "7",  "<Plug>(kubectl.view_nodes)"},
-      { "8",  "<Plug>(kubectl.view_top)"},
-      { "0",  "<Plug>(kubectl.view_overview)"},
+      { "7",  "<Plug>(kubectl.view_nodes)" },
+      { "8",  "<Plug>(kubectl.view_top)" },
+      { "0",  "<Plug>(kubectl.view_overview)" },
       -- {
       --   'Z',
       --   function()
