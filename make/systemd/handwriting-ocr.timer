@@ -1,0 +1,10 @@
+[Unit]
+Description=Run Handwriting OCR every 15 minutes
+
+[Timer]
+# Run every 15 minutes (00, 15, 30, 45)
+OnCalendar=*:0/15
+Persistent=true
+
+[Install]
+WantedBy=timers.target

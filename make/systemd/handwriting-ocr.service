@@ -1,0 +1,6 @@
+[Unit]
+Description=Recursive Handwriting OCR for Boox Notes
+
+[Service]
+# Points to the wrapper script we just created
+ExecStart=%h/Brainiverse/Brainiverse/Toolkit/Scripts/ai-agent/run-ocr-recursive.sh
