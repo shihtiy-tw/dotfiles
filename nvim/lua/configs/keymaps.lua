@@ -503,71 +503,92 @@ require('mini.move').setup({
 
 local wk = require("which-key")
 
--- Define the Avante group for which-key
-local avante_mappings = {
-  { '<leader>a', group = '[Avante AI]' }
-}
-wk.add(avante_mappings)
-
---- Standard Keymaps ---
-
--- Primary interaction: Use <C-a> to Ask (similar to your CodeCompanionActions)
-vim.api.nvim_set_keymap("n", "<C-a>", "<cmd>AvanteAsk<cr>",
-  { noremap = true, silent = true, desc = "Avante: Ask a question" })
-vim.api.nvim_set_keymap("v", "<C-a>", "<cmd>AvanteAsk<cr>",
-  { noremap = true, silent = true, desc = "Avante: Ask about selection" })
-
--- Sidebar & Chat Management
-vim.api.nvim_set_keymap("n", "<leader>aa", "<cmd>AvanteToggle<cr>",
-  { noremap = true, silent = true, desc = "Toggle Sidebar" })
-vim.api.nvim_set_keymap("n", "<leader>ac", "<cmd>AvanteChat<cr>",
-  { noremap = true, silent = true, desc = "Open Chat" })
-vim.api.nvim_set_keymap("n", "<leader>an", "<cmd>AvanteChatNew<cr>",
-  { noremap = true, silent = true, desc = "New Chat Session" })
-
--- Workflow Tools
-vim.api.nvim_set_keymap("n", "<leader>ae", "<cmd>AvanteEdit<cr>",
-  { noremap = true, silent = true, desc = "Edit Selection" })
-vim.api.nvim_set_keymap("v", "<leader>ae", "<cmd>AvanteEdit<cr>",
-  { noremap = true, silent = true, desc = "Edit Selection" })
-vim.api.nvim_set_keymap("n", "<leader>ah", "<cmd>AvanteHistory<cr>",
-  { noremap = true, silent = true, desc = "Chat History" })
-vim.api.nvim_set_keymap("n", "<leader>ar", "<cmd>AvanteRefresh<cr>",
-  { noremap = true, silent = true, desc = "Refresh Avante" })
-vim.api.nvim_set_keymap("n", "<leader>af", "<cmd>AvanteFocus<cr>",
-  { noremap = true, silent = true, desc = "Focus Sidebar" })
-
--- Provider & Model Settings
-vim.api.nvim_set_keymap("n", "<leader>as", "<cmd>AvanteSwitchProvider<cr>",
-  { noremap = true, silent = true, desc = "Switch AI Provider" })
-vim.api.nvim_set_keymap("n", "<leader>am", "<cmd>AvanteModels<cr>",
-  { noremap = true, silent = true, desc = "Show Model List" })
-
--- Maintenance
-vim.api.nvim_set_keymap("n", "<leader>ab", "<cmd>AvanteBuild<cr>",
-  { noremap = true, silent = true, desc = "Build Avante Dependencies" })
-vim.api.nvim_set_keymap("n", "<leader>ax", "<cmd>AvanteClear<cr>",
-  { noremap = true, silent = true, desc = "Clear Chat History" })
-
--- Repo Map (Context)
-vim.api.nvim_set_keymap("n", "<leader>ap", "<cmd>AvanteShowRepoMap<cr>",
-  { noremap = true, silent = true, desc = "Show Repo Map" })
+-- -- Define the Avante group for which-key
+-- local avante_mappings = {
+--   { '<leader>a', group = '[Avante AI]' }
+-- }
+-- wk.add(avante_mappings)
+--
+-- --- Standard Keymaps ---
+--
+-- -- Primary interaction: Use <C-a> to Ask (similar to your CodeCompanionActions)
+-- vim.api.nvim_set_keymap("n", "<C-a>", "<cmd>AvanteAsk<cr>",
+--   { noremap = true, silent = true, desc = "Avante: Ask a question" })
+-- vim.api.nvim_set_keymap("v", "<C-a>", "<cmd>AvanteAsk<cr>",
+--   { noremap = true, silent = true, desc = "Avante: Ask about selection" })
+--
+-- -- Sidebar & Chat Management
+-- vim.api.nvim_set_keymap("n", "<leader>aa", "<cmd>AvanteToggle<cr>",
+--   { noremap = true, silent = true, desc = "Toggle Sidebar" })
+-- vim.api.nvim_set_keymap("n", "<leader>ac", "<cmd>AvanteChat<cr>",
+--   { noremap = true, silent = true, desc = "Open Chat" })
+-- vim.api.nvim_set_keymap("n", "<leader>an", "<cmd>AvanteChatNew<cr>",
+--   { noremap = true, silent = true, desc = "New Chat Session" })
+--
+-- -- Workflow Tools
+-- vim.api.nvim_set_keymap("n", "<leader>ae", "<cmd>AvanteEdit<cr>",
+--   { noremap = true, silent = true, desc = "Edit Selection" })
+-- vim.api.nvim_set_keymap("v", "<leader>ae", "<cmd>AvanteEdit<cr>",
+--   { noremap = true, silent = true, desc = "Edit Selection" })
+-- vim.api.nvim_set_keymap("n", "<leader>ah", "<cmd>AvanteHistory<cr>",
+--   { noremap = true, silent = true, desc = "Chat History" })
+-- vim.api.nvim_set_keymap("n", "<leader>ar", "<cmd>AvanteRefresh<cr>",
+--   { noremap = true, silent = true, desc = "Refresh Avante" })
+-- vim.api.nvim_set_keymap("n", "<leader>af", "<cmd>AvanteFocus<cr>",
+--   { noremap = true, silent = true, desc = "Focus Sidebar" })
+--
+-- -- Provider & Model Settings
+-- vim.api.nvim_set_keymap("n", "<leader>as", "<cmd>AvanteSwitchProvider<cr>",
+--   { noremap = true, silent = true, desc = "Switch AI Provider" })
+-- vim.api.nvim_set_keymap("n", "<leader>am", "<cmd>AvanteModels<cr>",
+--   { noremap = true, silent = true, desc = "Show Model List" })
+--
+-- -- Maintenance
+-- vim.api.nvim_set_keymap("n", "<leader>ab", "<cmd>AvanteBuild<cr>",
+--   { noremap = true, silent = true, desc = "Build Avante Dependencies" })
+-- vim.api.nvim_set_keymap("n", "<leader>ax", "<cmd>AvanteClear<cr>",
+--   { noremap = true, silent = true, desc = "Clear Chat History" })
+--
+-- -- Repo Map (Context)
+-- vim.api.nvim_set_keymap("n", "<leader>ap", "<cmd>AvanteShowRepoMap<cr>",
+--   { noremap = true, silent = true, desc = "Show Repo Map" })
 
 -- codecompanion
--- local ai_mappings = {
---   { '<leader>a', group = '[CodeCompanion]' } }
--- wk.add(ai_mappings)
---
--- vim.api.nvim_set_keymap("n", "<C-a>", "<cmd>CodeCompanionActions<cr>",
---   { noremap = true, silent = true, desc = "Open the Action Palette" })
--- vim.api.nvim_set_keymap("v", "<C-a>", "<cmd>CodeCompanionActions<cr>",
---   { noremap = true, silent = true, desc = "Open the Action Palette" })
--- vim.api.nvim_set_keymap("n", "<leader>a", "<cmd>CodeCompanionChat Toggle<cr>",
---   { noremap = true, silent = true, desc = "Open a chat buffer" })
--- vim.api.nvim_set_keymap("v", "<leader>a", "<cmd>CodeCompanionChat Toggle<cr>",
---   { noremap = true, silent = true, desc = "Open a chat buffer" })
--- vim.api.nvim_set_keymap("v", "ga", "<cmd>CodeCompanionChat Add<cr>",
---   { noremap = true, silent = true, desc = "Add visually selected chat to the current chat buffer" })
+local ai_mappings = {
+  { '<leader>a', group = '[CodeCompanion]' } }
+wk.add(ai_mappings)
+
+-- Primary interaction
+vim.api.nvim_set_keymap("n", "<C-a>", "<cmd>CodeCompanionActions<cr>",
+  { noremap = true, silent = true, desc = "Open the Action Palette" })
+vim.api.nvim_set_keymap("v", "<C-a>", "<cmd>CodeCompanionActions<cr>",
+  { noremap = true, silent = true, desc = "Open the Action Palette" })
+
+-- Chat
+vim.api.nvim_set_keymap("n", "<leader>aa", "<cmd>CodeCompanionChat Toggle<cr>",
+  { noremap = true, silent = true, desc = "Toggle chat" })
+vim.api.nvim_set_keymap("v", "<leader>aa", "<cmd>CodeCompanionChat Toggle<cr>",
+  { noremap = true, silent = true, desc = "Toggle chat" })
+vim.api.nvim_set_keymap("n", "<leader>ac", "<cmd>CodeCompanionChat Toggle<cr>",
+  { noremap = true, silent = true, desc = "Toggle chat" })
+vim.api.nvim_set_keymap("v", "<leader>ac", "<cmd>CodeCompanionChat Toggle<cr>",
+  { noremap = true, silent = true, desc = "Toggle chat" })
+
+-- Inline Assistant (Edit)
+vim.api.nvim_set_keymap("n", "<leader>ae", "<cmd>CodeCompanion<cr>",
+  { noremap = true, silent = true, desc = "Inline assistant (Edit)" })
+vim.api.nvim_set_keymap("v", "<leader>ae", "<cmd>CodeCompanion<cr>",
+  { noremap = true, silent = true, desc = "Inline assistant (Edit)" })
+
+-- Command Generation
+vim.api.nvim_set_keymap("n", "<leader>ag", "<cmd>CodeCompanionCmd<cr>",
+  { noremap = true, silent = true, desc = "Generate command" })
+vim.api.nvim_set_keymap("v", "<leader>ag", "<cmd>CodeCompanionCmd<cr>",
+  { noremap = true, silent = true, desc = "Generate command" })
+
+-- Visual Add
+vim.api.nvim_set_keymap("v", "ga", "<cmd>CodeCompanionChat Add<cr>",
+  { noremap = true, silent = true, desc = "Add visually selected chat to the current chat buffer" })
 
 -- Expand 'cc' into 'CodeCompanion' in the command line
 -- vim.cmd([[cab cc CodeCompanion]])

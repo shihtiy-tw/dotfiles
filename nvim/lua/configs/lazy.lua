@@ -95,8 +95,8 @@ require("lazy").setup({
     -- AI
     -- ----------------------------
     -- use ollama locally
-    -- { import = "plugins.codecompanion" },
-    { import = "plugins.avante" },
+    { import = "plugins.codecompanion" },
+    -- { import = "plugins.avante" },
     -- use MCP
     { import = "plugins.mcphub" },
 

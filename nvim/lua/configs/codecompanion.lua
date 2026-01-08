@@ -1,14 +1,14 @@
 local fmt = string.format
 
 require("codecompanion").setup({
-  display = {
-    diff = {
-      provider = "mini_diff",
-    },
-    action_palette = {
-      provider = "telescope"
-    },
-  },
+  -- display = {
+  --   diff = {
+  --     provider = "mini_diff",
+  --   },
+  --   action_palette = {
+  --     provider = "telescope"
+  --   },
+  -- },
   opts = {
     log_level = "DEBUG",
     language = "English", -- Default is "English"
@@ -32,7 +32,7 @@ require("codecompanion").setup({
   },
   strategies = {
     chat = {
-      adapter = "ollama",
+      adapter = "gemini_cli",
       -- https://github.com/olimorris/codecompanion.nvim/pull/406
       slash_commands = {
         ["buffer"] = {
@@ -48,15 +48,35 @@ require("codecompanion").setup({
       },
     },
     inline = {
-      adapter = "ollama",
+      adapter = "gemini_cli",
     },
     agent = {
-      adapter = "ollama"
+      adapter = "gemini_cli",
     }
   },
-  -- FIX: The 'adapters' block is now nested inside 'http'
-  http = {
-    adapters = {
+  adapters = {
+    acp = {
+      gemini_cli = function()
+        return require("codecompanion.adapters").extend("gemini_cli", {
+          commands = {
+            default = {
+              "gemini",
+              "--experimental-acp",
+              "-m",
+              "gemini-3-pro-preview",
+            },
+          },
+          defaults = {
+            auth_method = "oauth-personal", -- "oauth-personal"|"gemini-api-key"|"vertex-ai"
+          },
+          -- env = {
+          --   GEMINI_API_KEY = "cmd:op read op://personal/Gemini_API/credential --no-newline",
+          -- },
+        })
+      end,
+    },
+    -- FIX: The 'adapters' block is now nested inside 'http'
+    http = {
       ollama = function()
         return require("codecompanion.adapters").extend("ollama", {
           name = "ollama", -- Give this adapter a different name to differentiate it from the default ollama adapter
@@ -90,44 +110,48 @@ require("codecompanion").setup({
     ["Generate a Semantics Commit Message"] = {
       strategy = "chat",
       description = "generate a Semantic Commit specification",
+      opts = {
+        index = 5,
+      },
       prompts = {
         {
           role = "system",
-          content =
-          "You are an experienced developer with clear mindset of Conventional Commit specification and semantics commit message",
-          "Below is a reference of Conventional Commit specification:",
-          "# ----------------------------------------------------------",
-          "# Header - type(scope): Brief description",
-          "# ----------------------------------------------------------",
-          "#    * feat             A new feature - SemVar PATCH",
-          "#    * fix              A bug fix - SemVar MINOR",
-          "#    * BREAKING CHANGE  Breaking API change - SemVar MAJOR",
-          "#    * docs             Change to documentation only",
-          "#    * style            Change to style (whitespace, etc.)",
-          "#    * refactor         Change not related to a bug or feat",
-          "#    * perf             Change that affects performance",
-          "#    * test             Change that adds/modifies tests",
-          "#    * build            Change to build system",
-          "#    * ci               Change to CI pipeline/workflow",
-          "#    * chore            General tooling/config/min refactor",
-          "# ----------------------------------------------------------",
-          "#   * Ex: docs: Update README with contributing instructions",
-          "# ----------------------------------------------------------",
-          "# ----------------------------------------------------------",
-          "# Body - More detailed description, if necessary",
-          "# ----------------------------------------------------------",
-          "#   * Motivation behind changes, more detail into how",
-          "# functionality might be affected, etc.",
-          "# ----------------------------------------------------------",
-          "#   * Ex: Adds a CONTRIBUTING.md with PR best practices,",
-          "#         code style guide, and code of conduct for",
-          "#         contributors.",
-          "# ----------------------------------------------------------",
-          "# ----------------------------------------------------------",
-          "# Footer - Associated issues, PRs, etc.",
-          "# ----------------------------------------------------------",
-          "#   * Ex: Resolves Issue #207, see PR #15, etc.",
-          "# ----------------------------------------------------------",
+          content = [[
+You are an experienced developer with clear mindset of Conventional Commit specification and semantics commit message
+Below is a reference of Conventional Commit specification:
+# ----------------------------------------------------------
+# Header - type(scope): Brief description
+# ----------------------------------------------------------
+#    * feat             A new feature - SemVar PATCH
+#    * fix              A bug fix - SemVar MINOR
+#    * BREAKING CHANGE  Breaking API change - SemVar MAJOR
+#    * docs             Change to documentation only
+#    * style            Change to style (whitespace, etc.)
+#    * refactor         Change not related to a bug or feat
+#    * perf             Change that affects performance
+#    * test             Change that adds/modifies tests
+#    * build            Change to build system
+#    * ci               Change to CI pipeline/workflow
+#    * chore            General tooling/config/min refactor
+# ----------------------------------------------------------
+#   * Ex: docs: Update README with contributing instructions
+# ----------------------------------------------------------
+# ----------------------------------------------------------
+# Body - More detailed description, if necessary
+# ----------------------------------------------------------
+#   * Motivation behind changes, more detail into how
+# functionality might be affected, etc.
+# ----------------------------------------------------------
+#   * Ex: Adds a CONTRIBUTING.md with PR best practices,
+#         code style guide, and code of conduct for
+#         contributors.
+# ----------------------------------------------------------
+# ----------------------------------------------------------
+# Footer - Associated issues, PRs, etc.
+# ----------------------------------------------------------
+#   * Ex: Resolves Issue #207, see PR #15, etc.
+# ----------------------------------------------------------
+]],
         },
         {
           role = "user",
