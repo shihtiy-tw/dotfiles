@@ -2,7 +2,7 @@ return {
   "obsidian-nvim/obsidian.nvim",
   -- https://www.reddit.com/r/neovim/comments/1n8sygk/obsidiannvim_error_error_executing_vimschedule/
   -- issue with 3.14 "table expected, got nil"
-  version = "3.12", -- recommended, use latest release instead of latest commit
+  version = "3.15", -- recommended, use latest release instead of latest commit
   -- lazy = true,
   -- ft = "markdown",
   -- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
