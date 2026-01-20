@@ -7,11 +7,19 @@ return {
     -- Initial plugin state,
     -- true = show preview
     -- falss = don't show preview
-    preview = disable,
+    preview = {
+      enable = false
+    },
 
     dependencies = {
       "nvim-treesitter/nvim-treesitter",
       "nvim-tree/nvim-web-devicons"
     }
-  }
+  },
+
+  config = function ()
+    require("markview").setup({
+	    preview = { enable = false }
+    })
+  end
 }
