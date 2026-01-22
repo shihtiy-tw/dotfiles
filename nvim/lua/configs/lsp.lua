@@ -65,7 +65,7 @@ require('mason-lspconfig').setup({
     'bashls',
     'terraformls',
     'basedpyright',
-    'markdown_oxide'
+    -- 'markdown_oxide'
   },
   automatic_installation = true,
   automatic_enable = true,
