@@ -33,6 +33,8 @@ require("lazy").setup({
     { import = "plugins.notion" },
     -- Obsidian
     { import = "plugins.obsidian" },
+    -- IWD for wiki notes
+    { import = "plugins.iwe" },
     -- Obsidian sync scrolling
     { import = "plugins.obsidian-bridge" },
     -- nvim dark/light theme with system setting

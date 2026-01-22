@@ -146,6 +146,64 @@ vim.keymap.set("n", "<leader>du", "<cmd>DocsViewUpdate<CR>", { desc = "Create a 
 vim.keymap.set('n', '<MouseMove>', require('hover').hover_mouse, { desc = "hover.nvim (mouse)" })
 vim.o.mousemoveevent = true
 
+-- IWE
+
+local wk = require("which-key")
+
+-- 1. Register the group name
+local iwe_mappings = {
+  { '<leader>i', group = '[IWE]' },
+}
+wk.add(iwe_mappings)
+
+-- 2. Map IWE commands to match Obsidian muscle memory
+-- ----------------------------------------------------------------
+
+-- "New" -> Init
+-- Mirrors <leader>on (New note)
+vim.keymap.set("n", "<leader>in", "<cmd>IWE init<CR>", { desc = "Initialize IWE project" })
+
+-- "Find" -> Find Files
+-- Mirrors <leader>of (Quick switch)
+vim.keymap.set("n", "<leader>if", "<cmd>IWE find_files<CR>", { desc = "Find files in project" })
+
+-- "Search" -> Grep
+-- Mirrors <leader>os (Search notes)
+vim.keymap.set("n", "<leader>is", "<cmd>IWE grep<CR>", { desc = "Live grep search" })
+
+-- "Backlinks" -> LSP References (Declarations)
+-- Mirrors <leader>oB (Backlinks)
+vim.keymap.set("n", "<leader>iB", "<cmd>IWE backlinks<CR>", { desc = "LSP references (with decl)" })
+
+-- "References" -> Block References
+-- Mirrors <leader>ob (Close to Backlinks logic)
+vim.keymap.set("n", "<leader>ib", "<cmd>IWE blockreferences<CR>", { desc = "LSP references (no decl)" })
+
+-- "TOC" -> Headers
+-- Mirrors <leader>oa (Table of Contents)
+vim.keymap.set("n", "<leader>ia", "<cmd>IWE headers<CR>", { desc = "Document symbols (Headers)" })
+
+-- "Workspace" -> Roots
+-- Mirrors <leader>ow (Switch workspace)
+vim.keymap.set("n", "<leader>iw", "<cmd>IWE roots<CR>", { desc = "Namespace symbols (Roots)" })
+
+-- "Links" -> Paths
+-- Mirrors <leader>ok (List links)
+vim.keymap.set("n", "<leader>ik", "<cmd>IWE paths<CR>", { desc = "Workspace symbols (Paths)" })
+
+-- "Link Action" -> LSP
+-- Mirrors <leader>ol (Follow link)
+vim.keymap.set("n", "<leader>il", "<cmd>IWE lsp<CR>", { desc = "Control LSP server" })
+
+-- "Paste/Preview" -> Preview
+-- Mirrors <leader>op (Paste image - logically 'visual' or 'preview')
+vim.keymap.set("n", "<leader>ip", "<cmd>IWE preview<CR>", { desc = "Generate previews" })
+
+-- "Info/Template" -> Info
+-- Mirrors <leader>oi (Template - generic 'info' or 'insert' slot)
+vim.keymap.set("n", "<leader>ii", "<cmd>IWE info<CR>", { desc = "Show plugin status" })
+
+
 -- Obsidian
 local obsidian_mappings = {
   -- Open a note in Obsidian app
