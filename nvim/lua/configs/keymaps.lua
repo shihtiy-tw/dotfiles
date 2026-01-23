@@ -205,42 +205,42 @@ vim.keymap.set("n", "<leader>ii", "<cmd>IWE info<CR>", { desc = "Show plugin sta
 
 
 -- Obsidian
-local obsidian_mappings = {
-  -- Open a note in Obsidian app
-  { '<leader>o', group = '[Obsidian]' } }
-wk.add(obsidian_mappings)
-vim.keymap.set("n", "<leader>oo", "<cmd>Obsidian open<CR>", { desc = "Open current note in Obsidian" })
-vim.keymap.set("n", "<leader>on", "<cmd>Obsidian new<CR>", { desc = "Create a new note" })
-vim.keymap.set("n", "<leader>of", "<cmd>Obsidian quick_switch<CR>", { desc = "Quick switch to another note" })
-vim.keymap.set("n", "<leader>ol", "<cmd>Obsidian follow_link<CR>", { desc = "Follow link under cursor" })
-vim.keymap.set("n", "<leader>oB", "<cmd>Obsidian backlinks<CR>", { desc = "List backlinks to current note" })
-vim.keymap.set("n", "<leader>ot", "<cmd>Obsidian tags<CR>", { desc = "Search tags" })
-vim.keymap.set("n", "<leader>od", "<cmd>Obsidian today<CR>", { desc = "Open/create today's note" })
-vim.keymap.set("n", "<leader>oy", "<cmd>Obsidian yesterday<CR>", { desc = "Open/create yesterday's note" })
-vim.keymap.set("n", "<leader>om", "<cmd>Obsidian tomorrow<CR>", { desc = "Open/create tomorrow's note" })
-vim.keymap.set("n", "<leader>oc", "<cmd>Obsidian dailies<CR>", { desc = "List daily notes" })
-vim.keymap.set("n", "<leader>oi", "<cmd>Obsidian template<CR>", { desc = "Insert template" })
-vim.keymap.set("n", "<leader>os", "<cmd>Obsidian search<CR>", { desc = "Search notes" })
-vim.keymap.set("v", "<leader>ol", "<cmd>Obsidian link<CR>", { desc = "Link selected text to a note" })
-vim.keymap.set("v", "<leader>on", "<cmd>Obsidian link_new<CR>", { desc = "Create new note and link selected text" })
-vim.keymap.set("n", "<leader>ok", "<cmd>Obsidian links<CR>", { desc = "List all links in current buffer" })
--- vim.keymap.set("v", "<leader>oe", "<cmd>Obsidian extractNote<CR>", { desc = "Extract selected text to a new note" })
-vim.keymap.set("n", "<leader>ow", "<cmd>Obsidian workspace<CR>", { desc = "Switch workspace" })
--- vim.keymap.set("n", "<leader>op", "<cmd>ObsidianPasteImg<CR>", { desc = "Paste image from clipboard" })
-vim.keymap.set("n", "<leader>or", "<cmd>Obsidian rename<CR>", { desc = "Rename current note or link under cursor" })
-vim.keymap.set("n", "<leader>ox", "<cmd>Obsidia toggle_checkbox<CR>", { desc = "Toggle checkbox" })
-vim.keymap.set("n", "<leader>oT", "<cmd>Obsidian new_from_template<CR>", { desc = "Create new note from template" })
-vim.keymap.set("n", "<leader>oa", "<cmd>Obsidian toc<CR>", { desc = "Load table of contents" })
-
-vim.keymap.set("n", "<leader>obd", "<cmd>ObsidianBridgeDailyNote<CR>", { desc = "Open or create daily note" })
-vim.keymap.set("n", "<leader>obg", "<cmd>ObsidianBridgeOpenGraph<CR>", { desc = "Open graph view in Obsidian" })
-vim.keymap.set("n", "<leader>obv", "<cmd>ObsidianBridgeOpenVaultMenu<CR>",
-  { desc = "Open Obsidian vauolt selection dialog" })
-vim.keymap.set("n", "<leader>obc", "<cmd>ObsidianBridgeTelescopeCommand<CR>",
-  { desc = "List and execute oObsidian commands" })
-vim.keymap.set("n", "<leader>obo", "<cmd>ObsidianBridgeOn<CR>", { desc = "Activate Obsidian Bridge plugin" })
-vim.keymap.set("n", "<leader>obf", "<cmd>ObsidianBridgeOff<CR>", { desc = "Deactivate Obsidian Bridge plugin" })
-vim.keymap.set("n", "<leader>obt", "<cmd>ObsidianBridgeToggle<CR>", { desc = "Toggle Obsidian Bridge plugin" })
+-- local obsidian_mappings = {
+--   -- Open a note in Obsidian app
+--   { '<leader>o', group = '[Obsidian]' } }
+-- wk.add(obsidian_mappings)
+-- vim.keymap.set("n", "<leader>oo", "<cmd>Obsidian open<CR>", { desc = "Open current note in Obsidian" })
+-- vim.keymap.set("n", "<leader>on", "<cmd>Obsidian new<CR>", { desc = "Create a new note" })
+-- vim.keymap.set("n", "<leader>of", "<cmd>Obsidian quick_switch<CR>", { desc = "Quick switch to another note" })
+-- vim.keymap.set("n", "<leader>ol", "<cmd>Obsidian follow_link<CR>", { desc = "Follow link under cursor" })
+-- vim.keymap.set("n", "<leader>oB", "<cmd>Obsidian backlinks<CR>", { desc = "List backlinks to current note" })
+-- vim.keymap.set("n", "<leader>ot", "<cmd>Obsidian tags<CR>", { desc = "Search tags" })
+-- vim.keymap.set("n", "<leader>od", "<cmd>Obsidian today<CR>", { desc = "Open/create today's note" })
+-- vim.keymap.set("n", "<leader>oy", "<cmd>Obsidian yesterday<CR>", { desc = "Open/create yesterday's note" })
+-- vim.keymap.set("n", "<leader>om", "<cmd>Obsidian tomorrow<CR>", { desc = "Open/create tomorrow's note" })
+-- vim.keymap.set("n", "<leader>oc", "<cmd>Obsidian dailies<CR>", { desc = "List daily notes" })
+-- vim.keymap.set("n", "<leader>oi", "<cmd>Obsidian template<CR>", { desc = "Insert template" })
+-- vim.keymap.set("n", "<leader>os", "<cmd>Obsidian search<CR>", { desc = "Search notes" })
+-- vim.keymap.set("v", "<leader>ol", "<cmd>Obsidian link<CR>", { desc = "Link selected text to a note" })
+-- vim.keymap.set("v", "<leader>on", "<cmd>Obsidian link_new<CR>", { desc = "Create new note and link selected text" })
+-- vim.keymap.set("n", "<leader>ok", "<cmd>Obsidian links<CR>", { desc = "List all links in current buffer" })
+-- -- vim.keymap.set("v", "<leader>oe", "<cmd>Obsidian extractNote<CR>", { desc = "Extract selected text to a new note" })
+-- vim.keymap.set("n", "<leader>ow", "<cmd>Obsidian workspace<CR>", { desc = "Switch workspace" })
+-- -- vim.keymap.set("n", "<leader>op", "<cmd>ObsidianPasteImg<CR>", { desc = "Paste image from clipboard" })
+-- vim.keymap.set("n", "<leader>or", "<cmd>Obsidian rename<CR>", { desc = "Rename current note or link under cursor" })
+-- vim.keymap.set("n", "<leader>ox", "<cmd>Obsidia toggle_checkbox<CR>", { desc = "Toggle checkbox" })
+-- vim.keymap.set("n", "<leader>oT", "<cmd>Obsidian new_from_template<CR>", { desc = "Create new note from template" })
+-- vim.keymap.set("n", "<leader>oa", "<cmd>Obsidian toc<CR>", { desc = "Load table of contents" })
+--
+-- vim.keymap.set("n", "<leader>obd", "<cmd>ObsidianBridgeDailyNote<CR>", { desc = "Open or create daily note" })
+-- vim.keymap.set("n", "<leader>obg", "<cmd>ObsidianBridgeOpenGraph<CR>", { desc = "Open graph view in Obsidian" })
+-- vim.keymap.set("n", "<leader>obv", "<cmd>ObsidianBridgeOpenVaultMenu<CR>",
+--   { desc = "Open Obsidian vauolt selection dialog" })
+-- vim.keymap.set("n", "<leader>obc", "<cmd>ObsidianBridgeTelescopeCommand<CR>",
+--   { desc = "List and execute oObsidian commands" })
+-- vim.keymap.set("n", "<leader>obo", "<cmd>ObsidianBridgeOn<CR>", { desc = "Activate Obsidian Bridge plugin" })
+-- vim.keymap.set("n", "<leader>obf", "<cmd>ObsidianBridgeOff<CR>", { desc = "Deactivate Obsidian Bridge plugin" })
+-- vim.keymap.set("n", "<leader>obt", "<cmd>ObsidianBridgeToggle<CR>", { desc = "Toggle Obsidian Bridge plugin" })
 
 -- inc-rename
 local rename_mappings = {
@@ -636,41 +636,41 @@ local wk = require("which-key")
 --   { noremap = true, silent = true, desc = "Show Repo Map" })
 
 -- codecompanion
-local ai_mappings = {
-  { '<leader>a', group = '[CodeCompanion]' } }
-wk.add(ai_mappings)
-
--- Primary interaction
-vim.api.nvim_set_keymap("n", "<C-a>", "<cmd>CodeCompanionActions<cr>",
-  { noremap = true, silent = true, desc = "Open the Action Palette" })
-vim.api.nvim_set_keymap("v", "<C-a>", "<cmd>CodeCompanionActions<cr>",
-  { noremap = true, silent = true, desc = "Open the Action Palette" })
-
--- Chat
-vim.api.nvim_set_keymap("n", "<leader>aa", "<cmd>CodeCompanionChat Toggle<cr>",
-  { noremap = true, silent = true, desc = "Toggle chat" })
-vim.api.nvim_set_keymap("v", "<leader>aa", "<cmd>CodeCompanionChat Toggle<cr>",
-  { noremap = true, silent = true, desc = "Toggle chat" })
-vim.api.nvim_set_keymap("n", "<leader>ac", "<cmd>CodeCompanionChat Toggle<cr>",
-  { noremap = true, silent = true, desc = "Toggle chat" })
-vim.api.nvim_set_keymap("v", "<leader>ac", "<cmd>CodeCompanionChat Toggle<cr>",
-  { noremap = true, silent = true, desc = "Toggle chat" })
-
--- Inline Assistant (Edit)
-vim.api.nvim_set_keymap("n", "<leader>ae", "<cmd>CodeCompanion<cr>",
-  { noremap = true, silent = true, desc = "Inline assistant (Edit)" })
-vim.api.nvim_set_keymap("v", "<leader>ae", "<cmd>CodeCompanion<cr>",
-  { noremap = true, silent = true, desc = "Inline assistant (Edit)" })
-
--- Command Generation
-vim.api.nvim_set_keymap("n", "<leader>ag", "<cmd>CodeCompanionCmd<cr>",
-  { noremap = true, silent = true, desc = "Generate command" })
-vim.api.nvim_set_keymap("v", "<leader>ag", "<cmd>CodeCompanionCmd<cr>",
-  { noremap = true, silent = true, desc = "Generate command" })
-
--- Visual Add
-vim.api.nvim_set_keymap("v", "ga", "<cmd>CodeCompanionChat Add<cr>",
-  { noremap = true, silent = true, desc = "Add visually selected chat to the current chat buffer" })
+-- local ai_mappings = {
+--   { '<leader>a', group = '[CodeCompanion]' } }
+-- wk.add(ai_mappings)
+--
+-- -- Primary interaction
+-- vim.api.nvim_set_keymap("n", "<C-a>", "<cmd>CodeCompanionActions<cr>",
+--   { noremap = true, silent = true, desc = "Open the Action Palette" })
+-- vim.api.nvim_set_keymap("v", "<C-a>", "<cmd>CodeCompanionActions<cr>",
+--   { noremap = true, silent = true, desc = "Open the Action Palette" })
+--
+-- -- Chat
+-- vim.api.nvim_set_keymap("n", "<leader>aa", "<cmd>CodeCompanionChat Toggle<cr>",
+--   { noremap = true, silent = true, desc = "Toggle chat" })
+-- vim.api.nvim_set_keymap("v", "<leader>aa", "<cmd>CodeCompanionChat Toggle<cr>",
+--   { noremap = true, silent = true, desc = "Toggle chat" })
+-- vim.api.nvim_set_keymap("n", "<leader>ac", "<cmd>CodeCompanionChat Toggle<cr>",
+--   { noremap = true, silent = true, desc = "Toggle chat" })
+-- vim.api.nvim_set_keymap("v", "<leader>ac", "<cmd>CodeCompanionChat Toggle<cr>",
+--   { noremap = true, silent = true, desc = "Toggle chat" })
+--
+-- -- Inline Assistant (Edit)
+-- vim.api.nvim_set_keymap("n", "<leader>ae", "<cmd>CodeCompanion<cr>",
+--   { noremap = true, silent = true, desc = "Inline assistant (Edit)" })
+-- vim.api.nvim_set_keymap("v", "<leader>ae", "<cmd>CodeCompanion<cr>",
+--   { noremap = true, silent = true, desc = "Inline assistant (Edit)" })
+--
+-- -- Command Generation
+-- vim.api.nvim_set_keymap("n", "<leader>ag", "<cmd>CodeCompanionCmd<cr>",
+--   { noremap = true, silent = true, desc = "Generate command" })
+-- vim.api.nvim_set_keymap("v", "<leader>ag", "<cmd>CodeCompanionCmd<cr>",
+--   { noremap = true, silent = true, desc = "Generate command" })
+--
+-- -- Visual Add
+-- vim.api.nvim_set_keymap("v", "ga", "<cmd>CodeCompanionChat Add<cr>",
+--   { noremap = true, silent = true, desc = "Add visually selected chat to the current chat buffer" })
 
 -- Expand 'cc' into 'CodeCompanion' in the command line
 -- vim.cmd([[cab cc CodeCompanion]])

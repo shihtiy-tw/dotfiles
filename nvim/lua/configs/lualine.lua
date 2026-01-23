@@ -22,8 +22,8 @@ require('lualine').setup {
     component_separators = { left = '', right = '' },
     section_separators = { left = '', right = '' },
     disabled_filetypes = {
-      statusline = {""},
-      winbar = {"", "k8s", "k8s_*"},
+      statusline = { "" },
+      winbar = { "", "k8s", "k8s_*" },
     },
     ignore_focus = {},
     always_divide_middle = true,
@@ -52,8 +52,11 @@ require('lualine').setup {
       },
     },
     lualine_x = { 'encoding', 'fileformat', 'filetype' },
-    lualine_y = { 'progress' },
-    lualine_z = { 'location' }
+    lualine_y = { 'progress', 'location' },
+    -- lualine_z = { {
+    --   require("opencode").statusline,
+    -- }, }
+    lualine_z = { {}, }
   },
   inactive_sections = {
     lualine_a = {},

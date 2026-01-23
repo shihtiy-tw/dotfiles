@@ -53,6 +53,10 @@ local cmp_keybind = {
   -- }),
 }
 
+cmp.setup.filetype({ "opencode", "opencode_input" }, {
+  enabled = false -- Turn off completion entirely for this window
+})
+
 cmp.setup {
   snippet = {
     expand = function(args)
