@@ -65,6 +65,8 @@ vim.o.foldlevelstart = 99
 vim.o.foldenable = true
 
 
+-- Keep the sign column always open so the text doesn't shift
+vim.opt.signcolumn = "yes"
 
 -- tree
 -- disable netrw at the very start of your init.lua

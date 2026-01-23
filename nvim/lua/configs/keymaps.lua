@@ -484,8 +484,6 @@ vim.api.nvim_set_keymap('n', '<leader>k', '<c-w>k', { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>l', '<c-w>l', { noremap = true })
 
 
--- terminal
-vim.keymap.set('t', '<leader><Esc>', '<C-\\><C-n>', { noremap = true })
 
 -- harpoon
 local harpoon = require("harpoon")
@@ -543,6 +541,32 @@ vim.keymap.set("i", "jj", "<ESC>", opts,
   { desc = "Enter normal mode" })
 vim.keymap.set("i", "jk", "<ESC>", opts,
   { desc = "Enter normal mode" })
+
+-- terminal
+vim.keymap.set('t', '<leader><Esc>', '<C-\\><C-n>', { desc = "Exit terminal mode", noremap = true })
+-- Map 'jj' to exit terminal mode
+vim.keymap.set("t", "jj", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+
+-- Map 'jk' to exit terminal mode
+vim.keymap.set("t", "jk", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+
+-- Exit terminal mode with Esc
+vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+
+-- Move down by visual line (if not counting)
+vim.keymap.set("n", "j", function()
+  return vim.v.count == 0 and "gj" or "j"
+end, { expr = true, silent = true, desc = "Move down visual line" })
+
+-- Move up by visual line (if not counting)
+vim.keymap.set("n", "k", function()
+  return vim.v.count == 0 and "gk" or "k"
+end, { expr = true, silent = true, desc = "Move up visual line" })
+
+-- Also map for Visual Mode (v) so it works while selecting text
+vim.keymap.set("x", "j", "gj", { desc = "Move down visual line" })
+vim.keymap.set("x", "k", "gk", { desc = "Move up visual line" })
+
 
 -- mini move
 -- `HJKL` for moving visual selection (overrides H, L, J in Visual mode)
