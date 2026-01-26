@@ -2,8 +2,36 @@
   "$schema": "https://opencode.ai/config.json",
   "plugin": [
     // https://github.com/jenslys/opencode-gemini-auth
-    "opencode-gemini-auth@latest"
+    "opencode-gemini-auth@latest",
+    // "@tarquinen/opencode-dcp@latest"
   ],
+  "permission": {
+    "skill": {
+      "obsidian-skills": "allow",
+      "anthropics-skill-creator": "allow",
+      "context-engineering": "allow",
+      "mermaidjs-v11": "allow",
+      "superpower-brainstorming": "allow",
+      "librarian": "allow",
+      "planning-advisor": "allow",
+      "spec-architect": "allow",
+      "triage-officer": "allow",
+      "*": "deny",
+    }
+  },
+  "mcp": {
+    "readwise": {
+      "command": [
+        "npx",
+        "@readwise/readwise-mcp"
+      ],
+      "type": "local",
+      "enabled": true,
+      "environment": {
+        "ACCESS_TOKEN": "{env:READWISE_TOKEN}"
+      }
+    }
+  },
   "theme": "everforest",
   "provider": {
     "ollama": {
