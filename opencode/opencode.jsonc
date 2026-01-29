@@ -1,22 +1,22 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "plugin": [
-    // https://github.com/jenslys/opencode-gemini-auth
     "opencode-gemini-auth@latest",
-    // "@tarquinen/opencode-dcp@latest"
+    "oh-my-opencode@3.1.6",
   ],
   "permission": {
     "skill": {
       "obsidian-skills": "allow",
       "anthropics-skill-creator": "allow",
-      "context-engineering": "allow",
-      "mermaidjs-v11": "allow",
+      "cloudekit-context-engineering": "allow",
+      "cloudekit-sequential-thinking": "allow",
+      "cloudekit-mermaidjs-v11": "allow",
       "superpower-brainstorming": "allow",
       "librarian": "allow",
       "planning-advisor": "allow",
       "spec-architect": "allow",
       "triage-officer": "allow",
-      "*": "deny",
+      "*": "deny"
     }
   },
   "mcp": {
@@ -30,6 +30,15 @@
       "environment": {
         "ACCESS_TOKEN": "{env:READWISE_TOKEN}"
       }
+    },
+    "sequential-thinking": {
+      "command": [
+        "npx",
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
+      "type": "local",
+      "enabled": true
     }
   },
   "theme": "everforest",
@@ -59,6 +68,7 @@
       }
     },
     "google": {
+      "name": "Google",
       "models": {
         "gemini-2.5-flash": {
           "options": {

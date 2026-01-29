@@ -1,94 +1,62 @@
 # Dotfiles
 
-A comprehensive collection of configuration files for a productive development environment.
-
 ## Overview
+A collection of configuration files for a productive development environment. Optimized for **Linux** and **macOS**, featuring heavy integration with modern tools like **Neovim (Lua)**, **Tmux**, and **AI** agents.
 
-This repository contains my personal configuration files for various tools and applications I use daily. The setup is designed to be modular, easily deployable, and supports both light and dark themes.
+## Key Features
 
-## Features
-
-- **Shell**: ZSH with Oh-My-ZSH and custom plugins
-- **Terminal Multiplexer**: tmux with session persistence and theme switching
-- **Editors**:
-  - Vim with custom keybindings and plugins
-  - Neovim with Lua configuration
-- **Terminal Emulators**: Configurations for kitty, ghostty, and alacritty
-- **Version Control**: Git configuration with useful aliases
-- **AWS & Kubernetes**: Tools and configurations for cloud development
-- **Theme Support**: Automatic switching between light and dark themes
+| Domain | Tools | Highlights |
+| :--- | :--- | :--- |
+| **Editor** | [Neovim](./nvim/README.md) | **Avante.nvim (Gemini + Local LLMs)**, Lazy.nvim, LSP-Zero |
+| **Shell** | [Zsh](./zsh/README.md) / [Bash](./bash/README.md) | Custom plugins, `bash-it` integration, cross-shell aliases |
+| **Terminal** | [Tmux](./tmux/README.md) | Persistence (Continuum), Auto-theming (Dark/Light), FZF navigation |
+| **Infrastructure** | [Make](./make/README.md) | Automated installation & symlinking, OS detection |
+| **AI Agents** | [OpenCode](./opencode/README.md) | Config for `gemini-cli`, `ollama`, and MCP servers |
 
 ## Directory Structure
 
-```
+```text
 dotfiles/
-├── alacritty/       # Alacritty terminal configuration
-├── aws/             # AWS CLI configuration
-├── bash/            # Bash shell configuration
-├── git/             # Git configuration and aliases
-├── ghostty/         # Ghostty terminal configuration
-├── kitty/           # Kitty terminal configuration
-├── make/            # Makefile scripts and environment variables
-├── misc/            # Miscellaneous configurations
-├── nvim/            # Neovim configuration (Lua-based)
-├── tmux/            # tmux configuration and themes
-├── vim/             # Vim configuration
-├── xmodmap/         # X keyboard mapping
-└── zsh/             # ZSH configuration and themes
+├── alacritty/       # Alacritty configuration
+├── aws/             # AWS CLI & Amazon Q
+├── bash/            # Bash framework & aliases
+├── ghostty/         # Ghostty terminal config
+├── git/             # Git config & commit templates
+├── kitty/           # Kitty terminal config
+├── make/            # Installation scripts & orchestration
+├── misc/            # Darkman & Xmodmap
+├── nix/             # Nix flakes config
+├── nvim/            # Neovim (The Beast)
+├── opencode/        # AI Agent Code Config
+├── tmux/            # Tmux & TPM
+├── vim/             # Legacy Vim config
+└── zsh/             # Zsh framework & aliases
 ```
 
 ## Installation
 
 ### Quick Start
-
 ```bash
-# Clone the repository
+# 1. Clone
 git clone https://github.com/shihtiy-tw/dotfiles.git ~/dotfiles
 
-# Install dependencies
+# 2. Install Dependencies (OS specific)
+cd ~/dotfiles
 make install
 
-# Set up symlinks and configure environment
+# 3. Symlink Configurations
 make init
 ```
 
-### Additional Commands
-
+### Theme Switching
+Toggle your entire system between Light and Dark modes instantly:
 ```bash
-# Switch to dark theme
-make dark
-
-# Switch to light theme
-make light
-
-# Check status of dotfiles
-make status
-
-# View differences between local and repository files
-make diff
+make dark   # Switch to Dark Mode (Everforest Dark / Gruvbox)
+make light  # Switch to Light Mode (Everforest Light)
 ```
 
-## Customization
-
-Most configurations are modular and can be modified independently:
-
-- Shell aliases and functions: `zsh/alias.zsh` and `zsh/function.zsh`
-- tmux key bindings: `tmux/tmux.conf`
-- Vim/Neovim settings: `vim/vimrc` and `nvim/init.lua`
-
-## Backup Strategy
-
-The installation process automatically creates backups of your existing configuration files before replacing them with symlinks to this repository.
-
 ## Credits
-
-This configuration is inspired by and borrows from:
-- [GitHub does dotfiles](https://dotfiles.github.io/)
+Inspired by:
 - [thoughtbot/dotfiles](https://github.com/thoughtbot/dotfiles)
-- [Inndy's vimrc](https://github.com/Inndy/dotfiles/blob/master/vimrc)
-- [PastLeo's tmux configuration](https://5xruby.tw/en/posts/tmux)
-- [mimikun's dotfiles](https://github.com/mimikun/dotfiles)
-
-## License
-
-Feel free to use and modify these configurations for your own use.
+- [Inndy's vimrc](https://github.com/Inndy/dotfiles)
+- [PastLeo's tmux](https://5xruby.tw/en/posts/tmux)
