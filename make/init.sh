@@ -1,53 +1,132 @@
-mkdir -p "$HOME"/.config/nvim/
+#!/bin/bash
+################################################################################
+# Dotfiles Initialization Script
+#
+# Description: Creates symlinks for all dotfiles configurations
+# Author: shihtiy-tw
+# Last Updated: 2026-02-01
+################################################################################
 
-# tmux support .config
-# https://unix.stackexchange.com/questions/644819/is-it-possible-to-move-tmux-conf-to-config-folder
-mkdir -p "$HOME"/.config/tmux/
+set -u
+set -o pipefail
 
-if [ -e "$HOME"/.zshrc ]; then \
-  mv "$HOME"/.zshrc "$HOME"/.zshrc.backup; \
+################################################################################
+# SETUP - Source Shared Modules
+################################################################################
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Source shared logger
+source "$SCRIPT_DIR/modules/helpers/logger.sh"
+
+################################################################################
+# HELPER FUNCTIONS
+################################################################################
+
+# Function to create symlink with backup
+link_config() {
+    local source="$1"
+    local target="$2"
+    local dir
+    dir="$(dirname "$target")"
+
+    # Create parent directory if needed
+    if [ ! -d "$dir" ]; then
+        log_info "Creating directory: $dir"
+        mkdir -p "$dir"
+    fi
+
+    # Check if target already exists
+    if [ -e "$target" ] || [ -L "$target" ]; then
+        # Normalize paths for comparison
+        local real_source
+        local real_target
+        real_source="$(readlink -f "$source")"
+        real_target="$(readlink -f "$target")"
+
+        # Check if it's already a correct symlink
+        if [ "$real_source" = "$real_target" ]; then
+            log_skip "Link exists: $target -> $source"
+            return 0
+        fi
+
+        # Backup existing file/directory
+        # Use timestamp to avoid overwriting existing backups
+        local backup_path="$target.backup.$(date +%s)"
+        log_warn "Backing up: $target -> $backup_path"
+        mv "$target" "$backup_path"
+    fi
+    
+    # Ensure target is gone (redundant safety check)
+    rm -rf "$target"
+
+    # Create symlink
+    # Use -n (no-dereference) if available to avoid linking inside a directory
+    ln -sfn "$source" "$target" 2>/dev/null || ln -sf "$source" "$target"
+    log_success "Linked: $target -> $source"
+}
+
+################################################################################
+# MAIN CONFIGURATION
+################################################################################
+
+log_section "Initializing Dotfiles"
+
+# Define base directory
+DOTFILES="$HOME/dotfiles"
+
+# Zsh
+link_config "$DOTFILES/zsh/zshrc" "$HOME/.zshrc"
+# link_config "$DOTFILES/zsh/ieni.zsh-theme" "$HOME/.oh-my-zsh/custom/themes/ieni.zsh-theme"
+
+# Bash (Commented out in original, keeping as is but ready)
+# link_config "$DOTFILES/bashrc" "$HOME/.bashrc"
+# link_config "$DOTFILES/bashrc" "$HOME/.bash_profile"
+
+# Git
+link_config "$DOTFILES/git/gitconfig" "$HOME/.gitconfig"
+
+# Tmux
+link_config "$DOTFILES/tmux/tmux.conf" "$HOME/.config/tmux/tmux.conf"
+link_config "$DOTFILES/tmux/tmux.conf" "$HOME/.tmux.conf"
+
+# Vim
+link_config "$DOTFILES/vim/vimrc" "$HOME/.vimrc"
+link_config "$DOTFILES/vim/editorconfig" "$HOME/.editorconfig"
+
+# Neovim
+link_config "$DOTFILES/nvim/init.lua" "$HOME/.config/nvim/init.lua"
+link_config "$DOTFILES/nvim/lua" "$HOME/.config/nvim/lua"
+link_config "$DOTFILES/nvim/coc-settings.json" "$HOME/.config/nvim/coc-settings.json"
+
+# AWS
+link_config "$DOTFILES/aws/config" "$HOME/.aws/config"
+
+# Kitty
+link_config "$DOTFILES/kitty/kitty.conf" "$HOME/.config/kitty/kitty.conf"
+
+# Ghostty
+link_config "$DOTFILES/ghostty/ghostty.conf" "$HOME/.config/ghostty/config"
+
+# Alacritty (New addition)
+link_config "$DOTFILES/alacritty/alacritty.yml" "$HOME/.config/alacritty/alacritty.yml"
+
+# Opencode
+link_config "$DOTFILES/opencode/opencode.jsonc" "$HOME/.config/opencode/opencode.jsonc"
+
+# Oh-My-Zsh Theme
+if [ -d "$HOME/.oh-my-zsh/custom/themes" ]; then
+    SPACESHIP_THEME="$HOME/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh-theme"
+    if [ -f "$SPACESHIP_THEME" ]; then
+        link_config "$SPACESHIP_THEME" "$HOME/.oh-my-zsh/custom/themes/spaceship.zsh-theme"
+    fi
 fi
-#if [ -e ${HOME}/.bashrc ]; then \
-#	mv ${HOME}/.bashrc ${HOME}/.bash.backup; \
-#fi
-if [ -e "$HOME"/.tmux.conf ]; then \
-  mv "$HOME"/.tmux.conf "$HOME"/.tmux.conf.backup; \
-fi
-if [ -e "$HOME"/.gitconfig ]; then \
-  mv "$HOME"/.gitconfig "$HOME"/.gitconfig.backup; \
-fi
-if [ -e "$HOME"/.config/nvim/init.vim ]; then \
-  mv "$HOME"/.config/nvim/init.vim "$HOME"/.config/nvim/init.vim.backup; \
-fi
 
-#ln -sf ${HOME}/dotfiles/zsh/ieni.zsh-theme ${HOME}/.oh-my-zsh/custom/themes/ieni.zsh-theme
-#ln -sf ${HOME}/dotfiles/bash/themes/fish ${HOME}/.bash_it/custom/themes/fish
-#ln -sf ${HOME}/dotfiles/bashrc ${HOME}/.bashrc
-#ln -sf ${HOME}/dotfiles/bashrc ${HOME}/.bash_profile
-ln -sf "$HOME"/dotfiles/zsh/zshrc "$HOME"/.zshrc
-ln -sf "$HOME"/dotfiles/tmux/tmux.conf "$HOME"/.config/tmux/tmux.conf
-# ln -sf "$HOME"/dotfiles/tmux/themes "$HOME"/.tmux/themes
-ln -sf "$HOME"/dotfiles/git/gitconfig "$HOME"/.gitconfig
-ln -sf "$HOME"/dotfiles/vim/vimrc "$HOME"/.vimrc
-ln -sf "$HOME"/dotfiles/vim/editorconfig "$HOME"/.editorconfig
-#ln -sf ${HOME}/dotfiles/zsh/antigenrc ${HOME}/.antigenrc
-ln -sf "$HOME"/dotfiles/nvim/coc-settings.json "$HOME"/.config/nvim/coc-settings.json
-#ln -sf ${HOME}/dotfiles/nvim/init.vim ${HOME}/.config/nvim/init.vim
-ln -sf "$HOME"/dotfiles/nvim/init.lua "$HOME"/.config/nvim/init.lua
-ln -sf "$HOME"/dotfiles/nvim/lua "$HOME"/.config/nvim/lua
-ln -sf "$HOME"/dotfiles/aws/config "$HOME"/.aws/config
-ln -sf "$HOME"/dotfiles/kitty/kitty.conf ~/.config/kitty/kitty.conf
-ln -sf "$HOME"/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh-theme "$HOME"/.oh-my-zsh/custom/themes/spaceship.zsh-theme
+################################################################################
+# COMPLETION
+################################################################################
 
-# ghostty
-mkdir "$HOME"/.config/ghostty
-ln -s "$HOME"/dotfiles/ghostty/ghostty.conf ~/.config/ghostty/config
-
-# neovim
-#nvim -c "PlugInstall"
-#nvim -c "call coc#util#install()"
-#nvim -c "CocInstall coc-dictionary"
-#nvim -c "CocInstall coc-json coc-css coc-python coc-yaml coc-tabnine"
-#nvim -c "CocInstall coc-python coc-yaml coc-tabnine"
-
-echo "\ndone\n"
+echo ""
+log_success "Dotfiles initialization complete!"
+log_info "Run 'make test' to verify your configuration."
+echo ""

@@ -1,5 +1,16 @@
+#!/bin/bash
+################################################################################
+# AWS CLI Installation Script
+# Description: Install AWS CLI v2 and Session Manager Plugin
+# Platforms: Ubuntu/Debian
+################################################################################
 
-# awscli
+set -u
+set -o pipefail
+
+echo "Installing AWS CLI tools..."
+
+#
 # https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip

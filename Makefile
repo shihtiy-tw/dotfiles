@@ -14,6 +14,8 @@ RESET=\033[0m
 
 .PHONY: help
 .PHONY: test
+.PHONY: test-install
+.PHONY: test-symlinks
 .PHONY: clean
 .PHONY: all
 .PHONY: default
@@ -26,6 +28,10 @@ help:
 		@echo "  $(YELLOW)hello$(RESET):            hello"
 		@echo "  $(YELLOW)install$(RESET):          download applications"
 		@echo "  $(YELLOW)init$(RESET):             config all dotfiles"
+		@echo "  $(YELLOW)test$(RESET):             run all verification tests"
+		@echo "  $(YELLOW)test-install$(RESET):     verify tool installations"
+		@echo "  $(YELLOW)test-symlinks$(RESET):    verify dotfile symlinks"
+		@echo "  $(YELLOW)test-fix$(RESET):         verify and fix broken symlinks"
 		@echo "  $(YELLOW)status$(RESET):           show dotfile status"
 		@echo "  $(YELLOW)dark$(RESET):             configure system for dark theme"
 		@echo "  $(YELLOW)light$(RESET):            configure system for light theme"
@@ -168,4 +174,29 @@ remove_env:
 		mv ${HOME}/.config/nvim/init.vim.backup ${HOME}/.config/nvim/init.vim; \
 	fi
 
+################################################################################
+# TEST TARGETS
+################################################################################
+
+test:
+	@echo " $(CYAN)Running all verification tests...$(RESET)"
+	@./make/test.sh
+
+test-install:
+	@echo " $(CYAN)Running installation verification tests...$(RESET)"
+	@./make/test-install.sh
+
+test-symlinks:
+	@echo " $(CYAN)Running symlink verification tests...$(RESET)"
+	@./make/test-symlinks.sh
+
+test-fix:
+	@echo " $(CYAN)Running symlink verification and fixing broken links...$(RESET)"
+	@./make/test-symlinks.sh --fix
+
+test-verbose:
+	@echo " $(CYAN)Running all tests with verbose output...$(RESET)"
+	@./make/test.sh --verbose
+
 # TODO: add aws and kubernetes script
+

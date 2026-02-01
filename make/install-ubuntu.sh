@@ -1,11 +1,77 @@
+#!/bin/bash
+################################################################################
+# Ubuntu/Linux Mint Development Environment Setup Script
+#
+# Description: Automated installation of development tools and configurations
+# Author: shihtiy-tw
+# Platforms: Ubuntu, Linux Mint
+# Last Updated: 2026-02-01
+#
+# This script uses shared modules from make/modules/ for common installations.
+# To run: ./make/install-ubuntu.sh
+################################################################################
+
+# DO NOT exit on error - we want to continue even if some installations fail
+# set -e is deliberately NOT used here
+set -u  # Exit on undefined variable
+set -o pipefail  # Exit on pipe failure
+
+################################################################################
+# SETUP - Source Shared Modules
+################################################################################
+
+# Get the directory of this script
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Source shared logger module (provides log_info, log_error, log_success, etc.)
+source "$SCRIPT_DIR/modules/helpers/logger.sh"
+
+# Source common installation modules
+source "$SCRIPT_DIR/modules/common/oh-my-zsh.sh"
+source "$SCRIPT_DIR/modules/common/nvm.sh"
+source "$SCRIPT_DIR/modules/common/rustup.sh"
+source "$SCRIPT_DIR/modules/common/autojump.sh"
+source "$SCRIPT_DIR/modules/common/tmux-tpm.sh"
+source "$SCRIPT_DIR/modules/common/gitflow.sh"
+source "$SCRIPT_DIR/modules/common/pyenv.sh"
+source "$SCRIPT_DIR/modules/common/fzf.sh"
+
+################################################################################
+# CONFIGURATION
+################################################################################
+
 # Version
 RUBY_GEM_VERSION=3.4.8
 
-# update and upgrade packages
-sudo apt update -y
-sudo apt upgrade -y
 
-sudo apt install -y \
+################################################################################
+# SYSTEM UPDATE
+################################################################################
+
+log_section "System Update"
+log_info "Updating package lists and upgrading installed packages..."
+
+# Update package lists
+safe_exec "apt update" sudo apt update -y
+
+# Upgrade installed packages (non-interactive)
+safe_exec "apt upgrade" sudo apt upgrade -y
+
+################################################################################
+# BUILD TOOLS & ESSENTIALS
+################################################################################
+
+log_section "Installing Build Tools and Essential Packages"
+
+# Install core build tools required for compiling software
+# - ninja-build: Fast build system
+# - gettext, libtool: Build helpers
+# - autoconf, automake, cmake: Build configuration tools
+# - g++, build-essential: C/C++ compilers and tools
+# - python3-dev, python3-pip: Python development headers
+# - pkg-config, unzip: Package configuration and archive tools
+log_info "Installing core build tools..."
+safe_exec "Core build tools" sudo apt install -y \
     ninja-build \
     gettext libtool libtool-bin \
     autoconf automake cmake g++ \
@@ -13,48 +79,68 @@ sudo apt install -y \
     python3-dev python3-pip\
     pkg-config unzip
 
-sudo apt install -y \
+# Install development libraries required for various tools
+# These are dependencies for pyenv, neovim, and other development tools
+log_info "Installing development libraries..."
+safe_exec "Development libraries" sudo apt install -y \
     make libssl-dev zlib1g-dev \
     libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm \
     libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
 
-sudo apt-get install ripgrep
+################################################################################
+# CLI TOOLS
+################################################################################
 
-# install fcitx5 for input switch
-sudo apt install fcitx5
+log_section "Installing CLI Tools"
 
-# install cargo
-curl https://sh.rustup.rs -sSf | sh -s -- -y
+# Ripgrep: Fast grep alternative
+log_info "Installing ripgrep..."
+safe_exec "ripgrep" sudo apt-get install -y ripgrep
 
-# java
-sudo apt install default-jdk -y
+# Fcitx5: Input method framework for typing in different languages
+log_info "Installing fcitx5 input method..."
+safe_exec "fcitx5" sudo apt install -y fcitx5
 
-# install lua
-sudo apt install luarocks
+################################################################################
+# PROGRAMMING LANGUAGES
+################################################################################
 
-# install Golang
-sudo apt install golang -y
+log_section "Installing Programming Languages"
 
-# install ruby
-sudo apt install ruby -y
-sudo apt-get install ruby-dev -y
-wget https://rubygems.org/rubygems/rubygems-"$RUBY_GEM_VERSION".tgz
-tar xvzf rubygems-"$RUBY_GEM_VERSION".tgz
-cd rubygems-"$RUBY_GEM_VERSION"; ruby setup.rb; cd
+# Rust: Systems programming language - Using shared module
+install_rustup
 
-# npm
-# install nvm
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash
+# Java: JDK for Java development
+log_info "Installing Java JDK..."
+safe_exec "Java JDK" sudo apt install -y default-jdk
 
-# export the env now to install npm
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# Lua: Lightweight scripting language (required for Neovim and other tools)
+log_info "Installing Lua and LuaRocks package manager..."
+safe_exec "luarocks" sudo apt install -y luarocks
 
-nvm install 20
+# Go: Google's systems programming language
+log_info "Installing Go language..."
+safe_exec "golang" sudo apt install -y golang
 
-node -v
-nvm -v
+# Ruby: Dynamic programming language
+log_info "Installing Ruby and development headers..."
+safe_exec "ruby" sudo apt install -y ruby
+safe_exec "ruby-dev" sudo apt-get install -y ruby-dev
+
+# RubyGems: Ruby package manager upgrade
+log_info "Upgrading RubyGems to version $RUBY_GEM_VERSION..."
+if wget https://rubygems.org/rubygems/rubygems-"$RUBY_GEM_VERSION".tgz; then
+    tar xvzf rubygems-"$RUBY_GEM_VERSION".tgz
+    (cd rubygems-"$RUBY_GEM_VERSION" && ruby setup.rb) || log_error "RubyGems setup failed"
+    cd "$HOME" || true
+    rm -f rubygems-"$RUBY_GEM_VERSION".tgz
+    log_success "RubyGems upgraded"
+else
+    log_error "Failed to download RubyGems"
+fi
+
+# NVM and Node.js - Using shared module
+install_nvm_with_node
 
 # git-sim
 sudo apt install pipx -y
@@ -81,8 +167,8 @@ git config --global core.editor=nvim +18 -c 'startinsert'
 # precommit
 sudo apt install pre-commit -y
 
-# gitflow-cjs
-wget -q  https://raw.githubusercontent.com/CJ-Systems/gitflow-cjs/develop/contrib/gitflow-installer.sh && sudo bash gitflow-installer.sh install stable; rm gitflow-installer.sh
+# gitflow-cjs - Using shared module
+install_gitflow
 
 # tree
 sudo apt install tree
@@ -93,34 +179,9 @@ sudo apt install zsh powerline fonts-powerline -y
 sudo apt install shellcheck -y
 
 
-# oh-my-zsh
-if [ ! -d "$HOME"/.oh-my-zsh ]; then \
-  git clone https://github.com/robbyrussell/oh-my-zsh.git "$HOME"/.oh-my-zsh; \
-fi
-if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]; then \
-  git clone https://github.com/zsh-users/zsh-autosuggestions "$HOME"/.oh-my-zsh/custom/plugins/zsh-autosuggestions; \
-fi
-if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]; then \
-  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$HOME"/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting; \
-fi
-if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/zsh-completions ]; then \
-  git clone https://github.com/zsh-users/zsh-completions "$HOME"/.oh-my-zsh/custom/plugins/zsh-completions; \
-fi
-if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/zsh-vim-mode ]; then \
-  git clone https://github.com/softmoth/zsh-vim-mode.git "$HOME"/.oh-my-zsh/custom/plugins/zsh-vim-mode; \
-fi
-if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/fzf-tab ]; then \
-  git clone https://github.com/Aloxaf/fzf-tab "${HOME}/.oh-my-zsh/custom/plugins/fzf-tab"; \
-fi
-if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/zsh-system-clipboard ]; then \
-  git clone https://github.com/kutsan/zsh-system-clipboard "${HOME}/.oh-my-zsh/custom/plugins/zsh-system-clipboard"
-fi
-if [ ! -d "$HOME"/.oh-my-zsh/custom/themes/spaceship-prompt ]; then \
-  git clone https://github.com/denysdovhan/spaceship-prompt.git "${HOME}/.oh-my-zsh/custom/themes/spaceship-prompt"; \
-  sed -i 's/^SPACESHIP_CHAR_SYMBOL=.*$/SPACESHIP_CHAR_SYMBOL="${SPACESHIP_CHAR_SYMBOL="$ "}"/' "$HOME"/.oh-my-zsh/custom/themes/spaceship-prompt/sections/char.zsh
-  git clone https://github.com/spaceship-prompt/spaceship-vi-mode.git "$HOME"/.oh-my-zsh/custom/plugins/spaceship-vi-mode
-  sed -i 's/^SPACESHIP_VI_MODE_SHOW=.*$/SPACESHIP_VI_MODE_SHOW="${SPACESHIP_VI_MODE_SHOW=false}"/' "$HOME"/.oh-my-zsh/custom/themes/spaceship-prompt/sections/vi_mode.zsh
-fi
+# oh-my-zsh: Framework and plugins - Using shared module
+# This replaces ~30 lines of manual installation with a single function call
+install_oh_my_zsh
 
 # bash-it
 #if [ ! -d ${HOME}/.bash_it ]; then \
@@ -130,100 +191,145 @@ fi
 #${HOME}/bash_it/install.sh --slient
 #mkdir -p ${HOME}/.bash_it/custom/themes
 
-# tmux
-sudo apt install tmux -y
+################################################################################
+# TERMINAL & EDITORS
+################################################################################
 
-# install tpm
-# https://github.com/tmux-plugins/tpm
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+log_section "Installing Terminal and Editor Tools"
+
+# Tmux: Terminal multiplexer for managing multiple terminal sessions
+log_info "Installing tmux..."
+safe_exec "tmux" sudo apt install -y tmux
+
+# Tmux Plugin Manager (TPM) - Using shared module
+install_tmux_tpm
 
 # vim
 # sudo apt-get install vim -y
 
-# fuse
-# to use appimage
-apt install libfuse2
+# Fuse2: Required for running AppImage applications
+log_info "Installing libfuse2 for AppImage support..."
+safe_exec "libfuse2" sudo apt install -y libfuse2
 
-# neovim
-curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
-chmod u+x nvim.appimage
-mv nvim.appimage /usr/loca/bin/nvim
+# Neovim: Modern Vim-based text editor
+log_info "Installing Neovim (latest via AppImage)..."
+if ! command -v nvim &> /dev/null; then
+    if curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage; then
+        chmod u+x nvim.appimage
+        safe_exec "neovim install" sudo mv nvim.appimage /usr/local/bin/nvim
+    else
+        log_error "Failed to download Neovim AppImage"
+    fi
+else
 
-# fzf
-if [ ! -d "$HOMW"/.fzf ]; then\
-  git clone --depth 1 https://github.com/junegunn/fzf.git "$HOME"/.fzf; \
-  yes | "$HOME"/.fzf/install; \
+    log_skip "Neovim already installed"
 fi
+
+# FZF: Fuzzy finder - Using shared module
+install_fzf
 
 # ack
 #mkdir -p ${HOME}/.local/share/bin
 #curl https://beyondgrep.com/ack-v3.1.2 > ${HOME}/.local/share/bin/ack && chmod 0755 ${HOME}/.local/share/bin/ack
 
-# auto jump
-if [ ! -d ./autojump ]; then \
-  git clone https://github.com/wting/autojump.git /tmp/autojump; \
-  cd /tmp/autojump
-  python3 install.py; \
-  cd "$HOME"
+# Autojump: Smart directory navigation - Using shared module
+install_autojump
+
+# Yazi: Modern terminal file manager written in Rust
+log_info "Installing yazi file manager..."
+if ! command -v yazi &> /dev/null; then
+    rustup update || log_error "rustup update failed"
+    safe_exec "yazi" cargo install --locked yazi-fm yazi-cli
+else
+    log_skip "Yazi already installed"
 fi
 
-# yazi file manager
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-rustup update
-cargo install --locked yazi-fm yazi-cli
+# Python3 symlink: Create /usr/local/bin/python pointing to python3
+log_info "Creating python3 symlink..."
+if [ ! -f /usr/local/bin/python ]; then
+    safe_exec "python symlink" sudo ln -s "$(which python3)" /usr/local/bin/python
+else
+    log_skip "Python symlink already exists"
+fi
 
-# python3
-sudo ln -s "$(which python3)" /usr/local/bin/python
+# Pyenv: Python version manager - Using shared module
+install_pyenv
 
-# pyenv
-curl https://pyenv.run | bash
+# Source autojump if available
+load_autojump || true
 
-[[ -s ${HOME}/.autojump/etc/profile.d/autojump.sh ]] && source "$HOME"/.autojump/etc/profile.d/autojump.sh
+# Silver Searcher (Ag): Fast code search tool
+log_info "Installing Silver Searcher (ag)..."
+safe_exec "Silver Searcher" sudo apt install -y silversearcher-ag
 
-# Ag
-sudo apt install silversearcher-ag -y
+################################################################################
+# DOCKER
+################################################################################
 
-# Docker
-#
-for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove "$pkg"; done
+log_section "Installing Docker"
 
-# Add Docker's official GPG key:
-sudo apt-get update
-sudo apt-get install ca-certificates curl -y
-sudo install -m 0755 -d /etc/apt/keyrings
-sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-sudo chmod a+r /etc/apt/keyrings/docker.asc
+log_info "Removing old Docker packages..."
+for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do 
+    sudo apt-get remove -y "$pkg" 2>/dev/null || true
+done
 
-# Add the repository to Apt sources:
+# Add Docker's official GPG key
+log_info "Setting up Docker GPG key and repository..."
+safe_exec "apt update for Docker" sudo apt-get update
+safe_exec "Docker prerequisites" sudo apt-get install -y ca-certificates curl
+safe_exec "Docker keyrings dir" sudo install -m 0755 -d /etc/apt/keyrings
+safe_exec "Docker GPG key" sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+safe_exec "Docker GPG permissions" sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+# Add the Docker repository to Apt sources
+log_info "Adding Docker repository to apt sources..."
 echo \
   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
   $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-sudo apt-get update
+  
+safe_exec "apt update after Docker repo" sudo apt-get update
 
-sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
+# Install Docker packages
+log_info "Installing Docker packages..."
+safe_exec "Docker installation" sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-sudo groupadd docker
-sudo usermod -aG docker "$USER"
-newgrp docker
+# Configure Docker group for non-root access
+log_info "Configuring Docker group for non-root usage..."
+sudo groupadd docker 2>/dev/null || log_skip "Docker group already exists"
+safe_exec "Add user to docker group" sudo usermod -aG docker "$USER"
 
-# imagemagick
-sudo apt install imagemagick -y
+# IMPORTANT: Docker group changes require logout/login or system restart to take effect
+# The 'newgrp docker' command would create a new shell session and block the script
+log_warn "Docker group added. You need to LOG OUT and LOG BACK IN for docker group to take effect."
+log_warn "Alternatively, reboot your system or run: sudo systemctl restart docker"
 
-# kernel tool
-sudo add-apt-repository ppa:cappelikan/ppa -y
-sudo apt update && sudo apt full-upgrade
-sudo apt install -y mainline
+################################################################################
+# SYSTEM TOOLS
+################################################################################
 
-# gcc-14
-sudo add-apt-repository universe -y
-sudo apt install gcc-14 -y
+log_section "Installing System Tools"
 
-# tig
-sudo apt-get install tig -y
+# ImageMagick: Image manipulation tool
+log_info "Installing ImageMagick..."
+safe_exec "imagemagick" sudo apt install -y imagemagick
 
-# imagemagick
-sudo apt-get install imagemagick -y
+# Mainline: Kernel update tool
+log_info "Installing Mainline kernel tool..."
+safe_exec "PPA cappelikan" sudo add-apt-repository ppa:cappelikan/ppa -y
+safe_exec "apt update for mainline" sudo apt update
+# FIX: Add -y flag to full-upgrade for non-interactive execution
+safe_exec "apt full-upgrade" sudo apt full-upgrade -y
+safe_exec "mainline" sudo apt install -y mainline
+
+# GCC-14: Latest GCC compiler
+log_info "Installing GCC-14..."
+safe_exec "universe repository" sudo add-apt-repository universe -y
+safe_exec "gcc-14" sudo apt install -y gcc-14
+
+# Tig: Text-mode interface for Git
+log_info "Installing tig..."
+safe_exec "tig" sudo apt-get install -y tig
 
 # gh
 # https://github.com/cli/cli/blob/trunk/docs/install_linux.md
@@ -259,4 +365,22 @@ curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
 sudo apt-add-repository -y "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
 sudo apt-get update && sudo apt-get install packer
 
-cd "$HOME"
+# Return to home directory
+cd "$HOME" || exit
+
+################################################################################
+# INSTALLATION COMPLETE
+################################################################################
+
+log_section "Installation Complete!"
+log_success "All packages and tools have been installed."
+log_info ""
+log_info "NEXT STEPS:"
+log_info "1. Run 'make init' to set up dotfile symlinks"
+log_info "2. LOG OUT and LOG BACK IN for Docker group and shell changes to take effect"
+log_info "3. Restart your terminal or run: source ~/.zshrc"
+log_info "4. (Optional) Install Tmux plugins: Press Ctrl+A then I in tmux"
+log_info ""
+log_warn "Important: Some tools require a logout/login to work properly!"
+echo ""
+

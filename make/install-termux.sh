@@ -1,3 +1,9 @@
+#!/bin/bash
+################################################################################
+# Termux Installation Script
+# Description: Set up dotfiles and termux-style on Android Termux
+################################################################################
+
 pkg install git -y
 
 # dotfile
