@@ -1,8 +1,28 @@
-# Kubernetes
+#!/bin/bash
+################################################################################
+# Kubernetes Tools Installation Script
+#
+# Description: Install kubectl, eksctl, helm, krew, k9s, and other K8s tools
+# Platforms: Linux (Ubuntu/Debian), macOS
+# Last Updated: 2026-02-01
+################################################################################
 
-# kubectl
-# https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html
-curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.31.0/2024-09-12/bin/darwin/amd64/kubectl
+set -u
+set -o pipefail
+
+# Detect architecture
+ARCH=$(uname -m)
+case $ARCH in
+    x86_64) ARCH="amd64" ;;
+    aarch64|arm64) ARCH="arm64" ;;
+    armv7l) ARCH="arm" ;;
+esac
+
+PLATFORM=$(uname -s | tr '[:upper:]' '[:lower:]')
+
+echo "Installing Kubernetes tools for $PLATFORM/$ARCH..."
+
+#
 chmod +x ./kubectl
 mkdir -p "$HOME"/bin && cp ./kubectl "$HOME"/bin/kubectl
 

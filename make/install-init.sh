@@ -1,3 +1,5 @@
+#!/bin/bash
+
 platform=$(uname)
 
 if [ "$platform" == "Darwin" ]; then
@@ -5,8 +7,8 @@ if [ "$platform" == "Darwin" ]; then
     OS="MacOS"
     "$HOME"/dotfiles/make/mac/install-mac.sh
 
-elif cat /etc/os-release | grep "^ID=" | grep -q 'ubuntu'; then
-    echo "ubuntu"
+elif cat /etc/os-release | grep "^ID=" | grep -qE 'ubuntu|linuxmint'; then
+    echo "ubuntu/linuxmint"
     "$HOME"/dotfiles/make/install-ubuntu.sh
     echo "Done"
 
@@ -15,7 +17,6 @@ elif cat /etc/os-release | grep "^ID=" | grep -q 'amzn'; then
     OS="amzn"
     "$HOME"/dotfiles/make/install-amazon-linux.sh
     echo "Done"
-fi
 
 elif cat /etc/os-release | grep "^ID=" | grep -q 'arch'; then
     echo "arch"

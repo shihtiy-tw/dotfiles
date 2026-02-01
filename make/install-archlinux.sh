@@ -1,406 +1,393 @@
 #!/bin/bash
-
+################################################################################
+# Arch Linux Development Environment Setup Script
+#
+# Description: Automated installation of development tools for Arch Linux
+# Author: shihtiy-tw
+# Platforms: Arch Linux
+# Last Updated: 2026-02-01
+#
 # Reference: https://github.com/silentz/arch-linux-install-guide
+################################################################################
 
-echo "Useful Utilities:"
+set -u  # Exit on undefined variable
+set -o pipefail  # Exit on pipe failure
 
-sudo pacman --noconfirm -S dbus              # Message bus used by many applications
-sudo pacman --noconfirm -S intel-ucode       # Microcode update files for Intel CPUs
-sudo pacman --noconfirm -S fuse2             # Interface for programs to export a filesystem to the Linux kernel
-sudo pacman --noconfirm -S lshw              # Provides detailed information on the hardware of the machine
-sudo pacman --noconfirm -S powertop          # A tool to diagnose issues with power consumption and power management
-sudo pacman --noconfirm -S inxi              # Full featured CLI system information tool
-sudo pacman --noconfirm -S acpi              # Client for battery, power, and thermal readings
+################################################################################
+# SETUP - Source Shared Modules
+################################################################################
 
-sudo pacman --noconfirm -S base-devel        # Basic tools to build Arch Linux packages
-sudo pacman --noconfirm -S git               # Distributed version control system
-sudo pacman --noconfirm -S zip               # Compressor/archiver for creating and modifying zipfiles
-sudo pacman --noconfirm -S unzip             # For extracting and viewing files in .zip archives
-sudo pacman --noconfirm -S p7zip             # For extracting and viewing files in .7z archives
-sudo pacman --noconfirm -S htop              # Interactive CLI process viewer
-sudo pacman --noconfirm -S tree              # A directory listing program
-sudo
-sudo pacman --noconfirm -S dialog            # A tool to display dialog boxes from shell scripts
-sudo pacman --noconfirm -S reflector         # Script to retrieve and filter the latest Pacman mirror list
-sudo pacman --noconfirm -S bash-completion   # Programmable completion for the bash shell
-sudo
-sudo pacman --noconfirm -S iw                # CLI configuration utility for wireless devices
-sudo pacman --noconfirm -S wpa_supplicant    # A utility providing key negotiation for WPA wireless networks
-sudo pacman --noconfirm -S tcpdump           # Powerful command-line packet analyzer
-sudo pacman --noconfirm -S mtr               # Combines the functionality of traceroute and ping into one tool
-sudo pacman --noconfirm -S net-tools         # Configuration tools for Linux networking
-sudo pacman --noconfirm -S conntrack-tools   # Userspace tools to interact with the Netfilter tracking system
-sudo pacman --noconfirm -S ethtool           # Utility for controlling network drivers and hardware
-sudo pacman --noconfirm -S wget              # Network utility to retrieve files from the Web
-sudo pacman --noconfirm -S rsync             # File copying tool for remote and local files
-sudo pacman --noconfirm -S socat             # Multipurpose socket relay
-sudo pacman --noconfirm -S openbsd-netcat    # Netcat program. OpenBSD variant.
-sudo pacman --noconfirm -S axel              # Light command line download accelerator
-sudo pacman --noconfirm -S bind              # I use dig utility for DNS resolution from this package
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-sudo pacman --noconfirm -S less
-sudo pacman --noconfirm -S vi
+# Source shared modules
+source "$SCRIPT_DIR/modules/helpers/logger.sh"
+source "$SCRIPT_DIR/modules/common/oh-my-zsh.sh"
+source "$SCRIPT_DIR/modules/common/nvm.sh"
+source "$SCRIPT_DIR/modules/common/autojump.sh"
+source "$SCRIPT_DIR/modules/common/tmux-tpm.sh"
+source "$SCRIPT_DIR/modules/common/gitflow.sh"
+source "$SCRIPT_DIR/modules/common/fzf.sh"
 
-# Install login session manager
-sudo pacman --noconfirm -S ly                            # Session manager
-sudo systemctl enable ly
+################################################################################
+# SYSTEM UTILITIES
+################################################################################
 
+log_section "Installing System Utilities"
 
-# Install essential system fonts:
-sudo pacman --noconfirm -S ttf-dejavu ttf-freefont ttf-liberation ttf-droid terminus-font
-sudo pacman --noconfirm -S noto-fonts noto-fonts-emoji ttf-ubuntu-font-family ttf-roboto ttf-roboto-mono ttf-ibm-plex
+# Core utilities
+safe_exec "dbus" sudo pacman --noconfirm -S dbus
+safe_exec "intel-ucode" sudo pacman --noconfirm -S intel-ucode
+safe_exec "fuse2" sudo pacman --noconfirm -S fuse2
+safe_exec "lshw" sudo pacman --noconfirm -S lshw
+safe_exec "powertop" sudo pacman --noconfirm -S powertop
+safe_exec "inxi" sudo pacman --noconfirm -S inxi
+safe_exec "acpi" sudo pacman --noconfirm -S acpi
 
-# [Optional] Enable sound support on your PC:
-sudo pacman --noconfirm -S alsa-utils      # Advanced Linux Sound Architecture - Utilities
-sudo pacman --noconfirm -S alsa-plugins    # Additional ALSA plugins
+# Build essentials
+safe_exec "base-devel" sudo pacman --noconfirm -S base-devel
+safe_exec "git" sudo pacman --noconfirm -S git
+safe_exec "zip unzip" sudo pacman --noconfirm -S zip unzip p7zip
+safe_exec "htop" sudo pacman --noconfirm -S htop
+safe_exec "tree" sudo pacman --noconfirm -S tree
+safe_exec "dialog" sudo pacman --noconfirm -S dialog
+safe_exec "reflector" sudo pacman --noconfirm -S reflector
+safe_exec "bash-completion" sudo pacman --noconfirm -S bash-completion
 
+# Network tools
+safe_exec "network tools" sudo pacman --noconfirm -S iw wpa_supplicant tcpdump mtr net-tools
+safe_exec "conntrack" sudo pacman --noconfirm -S conntrack-tools ethtool wget rsync
+safe_exec "socat netcat" sudo pacman --noconfirm -S socat openbsd-netcat axel bind
+safe_exec "less vi" sudo pacman --noconfirm -S less vi
 
-# [Optional] Enable bluetooth support on your PC:
-sudo pacman --noconfirm -S bluez bluez-utils blueman
-sudo systemctl enable bluetooth
+################################################################################
+# SYSTEM CONFIGURATION
+################################################################################
 
-# [Optional] Enable printing support on your PC:
-sudo pacman --noconfirm -S cups cups-filters cups-pdf system-config-printer
-sudo pacman --noconfirm -S hplip    # for HP devices
-sudo systemctl enable cups.service
-#[Optional] Improve battary usage with TLP - utility that basically does kernel settings tweaking that improve power consumption. More information about TLP can be found here. More information about TLP-RDW (radio device wizard) can be found here.
-sudo pacman --noconfirm -S tlp tlp-rdw
-sudo systemctl enable tlp
+log_section "System Configuration"
 
-# [Optional] Run service that will discard unused blocks on mounted filesystems. This is useful for solid-state drives (SSDs) and thinly-provisioned storage. More information on fstrim can be found here.
-sudo systemctl enable fstrim.timer
+# Session manager
+log_info "Enabling session manager..."
+safe_exec "ly" sudo pacman --noconfirm -S ly
+sudo systemctl enable ly || true
 
-# [Optional] Install GTK themes and icons:
-sudo pacman --noconfirm -S arc-gtk-theme adapta-gtk-theme materia-gtk-theme
-sudo pacman --noconfirm -S papirus-icon-theme
-# [Optional] Choose fastest pacman mirrors (use your own country list):
-sudo reflector --country United Kingdom,Germany,Switzerland \
-                 --fastest 10 \
-                 --threads "$(nproc)" \
-                 --save /etc/pacman.d/mirrorlist
+# Fonts
+safe_exec "fonts" sudo pacman --noconfirm -S ttf-dejavu ttf-freefont ttf-liberation ttf-droid terminus-font
+safe_exec "noto fonts" sudo pacman --noconfirm -S noto-fonts noto-fonts-emoji ttf-ubuntu-font-family ttf-roboto ttf-roboto-mono ttf-ibm-plex
 
-# [Optional] Install NetworkManager addons:
-sudo pacman --noconfirm -S nm-connection-editor networkmanager-openvpn
+# Sound support
+safe_exec "alsa" sudo pacman --noconfirm -S alsa-utils alsa-plugins
+safe_exec "sof-firmware" sudo pacman --noconfirm -S sof-firmware
 
-# [Optional] Install vulkan drivers:
-sudo pacman --noconfirm -S mesa vulkan-intel   # only for systems with Intel graphics
-sudo pacman --noconfirm -S nvidia-utils        # only for systems with Nvidia graphics
+# Bluetooth
+safe_exec "bluetooth" sudo pacman --noconfirm -S bluez bluez-utils blueman
+sudo systemctl enable bluetooth || true
 
+# Printing
+safe_exec "cups" sudo pacman --noconfirm -S cups cups-filters cups-pdf system-config-printer
+safe_exec "hplip" sudo pacman --noconfirm -S hplip
+sudo systemctl enable cups.service || true
 
-# Keybord management
-sudo pacman --noconfirm -S xorg-xmodmap
-sudo pacman --noconfirm -S xkeycaps
+# Power management
+safe_exec "tlp" sudo pacman --noconfirm -S tlp tlp-rdw
+sudo systemctl enable tlp || true
+sudo systemctl enable fstrim.timer || true
 
-### Third-Party
+# GTK themes
+safe_exec "gtk themes" sudo pacman --noconfirm -S arc-gtk-theme adapta-gtk-theme materia-gtk-theme papirus-icon-theme
 
-# Step 01: General-purpose apps
-sudo pacman --noconfirm -S firefix           # web-browser
-sudo pacman --noconfirm -S obsidian          # note-taking app
-sudo pacman --noconfirm -S bitwarden         # password manager for all devices (use keepassxc provider)
-sudo pacman --noconfirm -S bitwarden-cli     # command line bitwarden client
-sudo pacman --noconfirm -S mousepad          # simple graphical text editor
-sudo pacman --noconfirm -S file-roller       # archive manager
-sudo pacman --noconfirm -S evince            # pdf viewer
-sudo pacman --noconfirm -S xournalpp         # pdf editor
-sudo pacman --noconfirm -S libreoffice       # office packages
-sudo pacman --noconfirm -S gimp              # image editor
-sudo pacman --noconfirm -S gpick             # color picker
-sudo pacman --noconfirm -S inkscape          # vector graphics editor
-sudo pacman --noconfirm -S fontforge         # fonts editor
-sudo pacman --noconfirm -S gparted           # grphical disk management tool
-sudo pacman --noconfirm -S vlc               # video player
-sudo pacman --noconfirm -S remmina           # remote desktop client
-sudo pacman --noconfirm -S shotcut           # video editing tool
-sudo pacman --noconfirm -S evolution         # email client
-sudo pacman --noconfirm -S redshift          # adjusts the color temperature of your screen
-sudo pacman --noconfirm -S obs-studio        # screencasting and streaming app
-sudo pacman --noconfirm -S wireshark-qt      # network protocol analyzer
-sudo pacman --noconfirm -S spotify-launcher  # spotify client
-sudo pacman --noconfirm -S telegram-desktop  # my preffered messenger
-sudo pacman --noconfirm -S rclone            # manage or migrate files on cloud storage
-sudo pacman --noconfirm -S openvpn           # openvpn client
-sudo pacman --noconfirm -S wireguard-tools   # wireguard client
-sudo pacman --noconfirm -S arandr            # gui for xrandr
+# NetworkManager addons
+safe_exec "nm-connection-editor" sudo pacman --noconfirm -S nm-connection-editor networkmanager-openvpn
 
-# Step 02: Install package manager for AUR (Arch User Repository)
+# Graphics drivers
+safe_exec "vulkan intel" sudo pacman --noconfirm -S mesa vulkan-intel || true
+safe_exec "nvidia-utils" sudo pacman --noconfirm -S nvidia-utils || true
 
-git clone https://aur.archlinux.org/yay.git
-cd yay
-makepkg -si
+# Keyboard management
+safe_exec "xorg-xmodmap" sudo pacman --noconfirm -S xorg-xmodmap xkeycaps
 
-# Step 03: Software development tools
-# General purpose development tools:
+################################################################################
+# GENERAL PURPOSE APPS
+################################################################################
 
-sudo pacman --noconfirm -S neovim          # powerful console editor
-sudo pacman --noconfirm -S zed             # ultimate graphical editor
-sudo pacman --noconfirm -S tree-sitter     # parsing system for programming tools
-sudo pacman --noconfirm -S tree-sitter-cli # cli tool tree-sitter parsers
-sudo pacman --noconfirm -S stow            # configuration manager
-sudo pacman --noconfirm -S sqlite3         # console sqlite client
-sudo pacman --noconfirm -S tldr            # collection of simplified man pages
-sudo pacman --noconfirm -S jq              # cli json processor
-sudo pacman --noconfirm -S tmux            # terminal session multiplexer
-sudo pacman --noconfirm -S nmap            # network scanner with advanced features
-sudo pacman --noconfirm -S masscan         # high performance network scanner
-sudo pacman --noconfirm -S pgcli           # console client for PostgreSQL
-sudo pacman --noconfirm -S redis           # console client for Redis
-sudo pacman --noconfirm -S apache          # http server + some useful utilities (htpasswd)
-sudo pacman --noconfirm -S meld            # git visual diff and merge tool
-sudo pacman --noconfirm -S websocat        # command line client for websockets
-sudo pacman --noconfirm -S sshpass         # noninteractive ssh password provider
-sudo pacman --noconfirm -S git-filter-repo # faster and safer git-filter-branch alternative
+log_section "Installing General Purpose Apps"
 
-# 💡 IMPORTANT NOTE: execute sudo setcap 'cap_net_raw+epi' /usr/bin/masscan to enable the ability to run masscan as non-root user.
-# Infrastructure as a Code and DevOps tools:
-sudo pacman --noconfirm -S ansible          # infrastructure as a code tool (bare metal)
+safe_exec "firefox" sudo pacman --noconfirm -S firefox
+safe_exec "obsidian" sudo pacman --noconfirm -S obsidian
+safe_exec "bitwarden" sudo pacman --noconfirm -S bitwarden bitwarden-cli
+safe_exec "mousepad" sudo pacman --noconfirm -S mousepad
+safe_exec "file-roller" sudo pacman --noconfirm -S file-roller
+safe_exec "evince" sudo pacman --noconfirm -S evince
+safe_exec "xournalpp" sudo pacman --noconfirm -S xournalpp
+safe_exec "libreoffice" sudo pacman --noconfirm -S libreoffice
+safe_exec "gimp" sudo pacman --noconfirm -S gimp
+safe_exec "gpick" sudo pacman --noconfirm -S gpick
+safe_exec "inkscape" sudo pacman --noconfirm -S inkscape
+safe_exec "fontforge" sudo pacman --noconfirm -S fontforge
+safe_exec "gparted" sudo pacman --noconfirm -S gparted
+safe_exec "vlc" sudo pacman --noconfirm -S vlc
+safe_exec "remmina" sudo pacman --noconfirm -S remmina
+safe_exec "shotcut" sudo pacman --noconfirm -S shotcut
+safe_exec "evolution" sudo pacman --noconfirm -S evolution
+safe_exec "redshift" sudo pacman --noconfirm -S redshift
+safe_exec "obs-studio" sudo pacman --noconfirm -S obs-studio
+safe_exec "wireshark-qt" sudo pacman --noconfirm -S wireshark-qt
+safe_exec "spotify-launcher" sudo pacman --noconfirm -S spotify-launcher
+safe_exec "telegram-desktop" sudo pacman --noconfirm -S telegram-desktop
+safe_exec "rclone" sudo pacman --noconfirm -S rclone
+safe_exec "openvpn wireguard" sudo pacman --noconfirm -S openvpn wireguard-tools
+safe_exec "arandr" sudo pacman --noconfirm -S arandr
 
-# Container
-sudo pacman --noconfirm -S podman           # cli tool for container management
-sudo pacman --noconfirm -S podman-compose   # run multi-container applications with podman
-sudo pacman --noconfirm -S docker           # cli tool for container management
-sudo pacman --noconfirm -S docker-compose   # run multi-container applications with docker
+################################################################################
+# YAY (AUR HELPER)
+################################################################################
+
+log_section "Installing YAY (AUR Helper)"
+
+if ! command -v yay &> /dev/null; then
+    log_info "Installing yay..."
+    git clone https://aur.archlinux.org/yay.git /tmp/yay
+    (cd /tmp/yay && makepkg -si --noconfirm) || log_error "yay installation failed"
+    rm -rf /tmp/yay
+    log_success "yay installed"
+else
+    log_skip "yay already installed"
+fi
+
+################################################################################
+# DEVELOPMENT TOOLS
+################################################################################
+
+log_section "Installing Development Tools"
+
+safe_exec "neovim" sudo pacman --noconfirm -S neovim
+safe_exec "zed" sudo pacman --noconfirm -S zed || true
+safe_exec "tree-sitter" sudo pacman --noconfirm -S tree-sitter tree-sitter-cli
+safe_exec "stow" sudo pacman --noconfirm -S stow
+safe_exec "sqlite3" sudo pacman --noconfirm -S sqlite
+safe_exec "tldr" sudo pacman --noconfirm -S tldr
+safe_exec "jq" sudo pacman --noconfirm -S jq
+safe_exec "tmux" sudo pacman --noconfirm -S tmux
+safe_exec "nmap masscan" sudo pacman --noconfirm -S nmap masscan
+safe_exec "pgcli" sudo pacman --noconfirm -S pgcli
+safe_exec "redis" sudo pacman --noconfirm -S redis
+safe_exec "apache" sudo pacman --noconfirm -S apache
+safe_exec "meld" sudo pacman --noconfirm -S meld
+safe_exec "websocat" sudo pacman --noconfirm -S websocat
+safe_exec "sshpass" sudo pacman --noconfirm -S sshpass
+safe_exec "git-filter-repo" sudo pacman --noconfirm -S git-filter-repo
+
+# IaC & DevOps
+safe_exec "ansible" sudo pacman --noconfirm -S ansible
+safe_exec "terraform" sudo pacman --noconfirm -S terraform
+safe_exec "packer" sudo pacman --noconfirm -S packer
+
+################################################################################
+# CONTAINERS & KUBERNETES
+################################################################################
+
+log_section "Installing Container Tools"
+
+safe_exec "podman" sudo pacman --noconfirm -S podman podman-compose
+safe_exec "docker" sudo pacman --noconfirm -S docker docker-compose docker-buildx
 
 # Kubernetes
-sudo pacman --noconfirm -S kubectl          # cli tool for managing kubernetes clusters
-sudo pacman --noconfirm -S helm             # package manager for kubernetes
-sudo pacman --noconfirm -S terraform        # infrastructure as a code tool (clouds)
-yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" kind
+safe_exec "kubectl" sudo pacman --noconfirm -S kubectl
+safe_exec "helm" sudo pacman --noconfirm -S helm
+safe_exec "kubeadm" sudo pacman --noconfirm -S kubeadm
+safe_exec "kustomize" sudo pacman --noconfirm -S kustomize
+safe_exec "k9s" sudo pacman --noconfirm -S k9s
 
-#### configure docker
-sudo systemctl enable docker            # enable docker daemon on system start
-sudo usermod -a -G docker "$USER"  # to be able to run docker as non-root
-newgrp docker                           # login to docker group without restart
-
-# Install Golang and its tools:
-sudo pacman --noconfirm -S go
-go install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest
-go install github.com/hairyhenderson/gomplate/v4/cmd/gomplate@latest
-# Install ruby and its tools:
-sudo pacman --noconfirm -S ruby
-sudo pacman --noconfirm -S ruby-webrick
-
-# Install Java and its tools:
-sudo pacman --noconfirm -S jdk8-openjdk    # OpenJDK Java  8 development kit
-sudo pacman --noconfirm -S jdk11-openjdk   # OpenJDK Java 11 development kit
-sudo pacman --noconfirm -S jdk17-openjdk   # OpenJDK Java 17 development kit
-sudo pacman --noconfirm -S jdk21-openjdk   # OpenJDK Java 21 development kit
-sudo pacman --noconfirm -S jdk-openjdk     # OpenJDK Java 22 development kit
-sudo pacman --noconfirm -S maven           # Java project management tool
-sudo pacman --noconfirm -S gradle          # Java project management tool
-#💡 IMPORTANT NOTE: JVM version can be switched using archlinux-java. List all available JVM versions using archlinux-java status and set one using archlinux-java set VERSION.
-# Install Dart and Flutter following instructions from https://docs.flutter.dev/get-started/install/linux
-
-# Install C, C++ and tools for low-level development:
-
-sudo pacman --noconfirm -S gcc         # GNU Compiler Collection, C and C++ frontends
-sudo pacman --noconfirm -S gdb         # GNU Debugger
-sudo pacman --noconfirm -S clang       # C/C++ frontend compiler for LLVM
-sudo pacman --noconfirm -S cmake       # C/C++ project management tool
-sudo pacman --noconfirm -S ninja       # Build system with a focus on speed
-sudo pacman --noconfirm -S cuda        # NVIDIA GPU programming toolkit
-sudo pacman --noconfirm -S nasm        # Asssembler for the x86 CPU architecture
-sudo pacman --noconfirm -S boost       # C++ library with general purpose utils and data structures
-sudo pacman --noconfirm -S cdrtools    # CD/DVD/BluRay command line recording software
-sudo pacman --noconfirm -S qemu-full   # Open source machine emulator and virtualizer
-# Install Python and its tools:
-sudo pacman --noconfirm -S python          # python itself
-sudo pacman --noconfirm -S python-pip      # python package manager
-sudo pacman --noconfirm -S python-poetry   # python package manager (better one)
-# Install Lua:
-sudo pacman --noconfirm -S lua       # Collection of Lua tools
-# Install JavaScript and its tools:
-sudo pacman --noconfirm -S nodejs    # JavaScript runtime
-sudo pacman --noconfirm -S npm       # JavaScript package manager
-sudo pacman --noconfirm -S yarn      # JavaScript package manager
-
-# Install Rust and its tools:
-sudo pacman --noconfirm -S rust     # Rust compiler and tools for project management
-# Install Virtualbox:
-sudo pacman --noconfirm -S linux-headers          # Headers for building Linux kernel modules
-sudo pacman --noconfirm -S virtualbox-host-dkms   # VirtualBox Host kernel modules sources
-sudo pacman --noconfirm -S virtualbox             # Hypervisor for x86 virtualization
-# Architecture diagraming tools:
-sudo pacman --noconfirm -S plantuml    # Tool for creating UML diagrams
-
-# Install Wine and its utilities:
-sudo pacman --noconfirm -S wine         # Compatibility layer for running Windows programs
-sudo pacman --noconfirm -S wine-mono    # Wine's replacement for Microsoft's .NET Framework
-sudo pacman --noconfirm -S wine-gecko   # Wine's replacement for Microsoft's Internet Explorer
-sudo pacman --noconfirm -S winetricks   # Installer for various runtime libraries in Wine
-sudo pacman --noconfirm -S zenity       # Display dialog boxes from shell scripts (wine dependency)
-# Configure smooth font in Wine applications:
-winetricks settings fontsmooth=rgb
-
-# Step 05: Install texlive (LaTeX distribution)
-# Download texlive installer:
-wget http://mirrors.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
-# Unpack texlive installer archive:
-mkdir ./texlive
-tar -xvf install-tl-unx.tar.gz -C texlive --strip-components=1
-# Run texlive install and select nearest CTAN mirror:
-cd ./texlive
-sudo ./install-tl -select-repository
-
-
-# Install 1password
-curl -sS https://downloads.1password.com/linux/keys/1password.asc | gpg --import
-git clone https://aur.archlinux.org/1password.git
-cd 1password
-makepkg -si
-
-# Man page
-
-sudo pacman --noconfirm -S man-db
-sudo pacman --noconfirm -S man-pages
-sudo mandb
-
-yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" google-drive-linux
-yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" insync
-yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" notion-app-electron
-yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" notion-calendar-electron
-yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" google-chrome
-yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" zotero
-yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" albert
-yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" aws-cli-v2
-yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" aws-session-manager-plugin
-yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" sublime-text-4
-yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" whatsapp-for-linux
-yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" todoist-appimage
-yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" thinkfinger
-yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" powerline-fonts-git
-yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" xrdp
-yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" ticktick
-
-yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" claude-desktop
-yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" etcd
-yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" aws-session-manager-plugin
-yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" amazon-q-bin
-yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" lazydocker
-yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" electron25-bin
-yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" claude-desktop
-yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" superproductivity
-yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" affine
-
-yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" chawan
-
-# Font
-curl -fsSL https://raw.githubusercontent.com/getnf/getnf/main/install.sh | bash
-
-wget -q  https://raw.githubusercontent.com/CJ-Systems/gitflow-cjs/develop/contrib/gitflow-installer.sh && sudo bash gitflow-installer.sh install stable; rm gitflow-installer.sh
-
-# git-sim
-sudo pacman --noconfirm -S calibre
-sudo pacman --noconfirm -S ghostty
-sudo pacman --noconfirm -S ripgrep
-sudo pacman --noconfirm -S pyenv
-sudo pacman --noconfirm -S nvtop
-sudo pacman --noconfirm -S discord
-sudo pacman --noconfirm -S diff-so-fancy
-sudo pacman --noconfirm -S powerline
-sudo pacman --noconfirm -S shellcheck
-sudo pacman --noconfirm -S the_silver_searcher
-sudo pacman --noconfirm -S tig
-sudo pacman --noconfirm -S xclip
-sudo pacman --noconfirm -S ollama-cuda
-sudo pacman --noconfirm -S darkman
-sudo pacman --noconfirm -S otf-codenewroman-nerd
-
-# Auto dump
-if [ ! -d ./autojump ]; then \
-  git clone https://github.com/wting/autojump.git /tmp/autojump; \
-  cd /tmp/autojump
-  python3 install.py; \
-  cd "$HOME"
+# AUR: kind
+if command -v yay &> /dev/null; then
+    yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" kind || true
 fi
 
-# oh-my-zsh
-if [ ! -d "$HOME"/.oh-my-zsh ]; then \
-  git clone https://github.com/robbyrussell/oh-my-zsh.git "$HOME"/.oh-my-zsh; \
-fi
-if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]; then \
-  git clone https://github.com/zsh-users/zsh-autosuggestions "$HOME"/.oh-my-zsh/custom/plugins/zsh-autosuggestions; \
-fi
-if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]; then \
-  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$HOME"/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting; \
-fi
-if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/zsh-completions ]; then \
-  git clone https://github.com/zsh-users/zsh-completions "$HOME"/.oh-my-zsh/custom/plugins/zsh-completions; \
-fi
-if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/zsh-vim-mode ]; then \
-  git clone https://github.com/softmoth/zsh-vim-mode.git "$HOME"/.oh-my-zsh/custom/plugins/zsh-vim-mode; \
-fi
-if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/fzf-tab ]; then \
-  git clone https://github.com/Aloxaf/fzf-tab "${HOME}/.oh-my-zsh/custom/plugins/fzf-tab"; \
-fi
-if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/zsh-system-clipboard ]; then \
-  git clone https://github.com/kutsan/zsh-system-clipboard "${HOME}/.oh-my-zsh/custom/plugins/zsh-system-clipboard"
-fi
-if [ ! -d "$HOME"/.oh-my-zsh/custom/themes/spaceship-prompt ]; then \
-  git clone https://github.com/denysdovhan/spaceship-prompt.git "${HOME}/.oh-my-zsh/custom/themes/spaceship-prompt"; \
-  sed -i 's/^SPACESHIP_CHAR_SYMBOL=.*$/SPACESHIP_CHAR_SYMBOL="${SPACESHIP_CHAR_SYMBOL="$ "}"/' "$HOME"/.oh-my-zsh/custom/themes/spaceship-prompt/sections/char.zsh
-  git clone https://github.com/spaceship-prompt/spaceship-vi-mode.git "$HOME"/.oh-my-zsh/custom/plugins/spaceship-vi-mode
-  sed -i 's/^SPACESHIP_VI_MODE_SHOW=.*$/SPACESHIP_VI_MODE_SHOW="${SPACESHIP_VI_MODE_SHOW=false}"/' "$HOME"/.oh-my-zsh/custom/themes/spaceship-prompt/sections/vi_mode.zsh
-fi
-if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/zsh-vi-man ]; then \
-  git clone https://github.com/TunaCuma/zsh-vi-man \
-    "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}"/plugins/zsh-vi-man
+# Docker configuration
+log_info "Configuring Docker..."
+sudo systemctl enable docker || true
+sudo usermod -a -G docker "$USER" || true
+# NOTE: newgrp docker is NOT used here as it blocks the script
+log_warn "Docker group added. You must LOG OUT and back in for docker group to take effect."
+
+################################################################################
+# PROGRAMMING LANGUAGES
+################################################################################
+
+log_section "Installing Programming Languages"
+
+# Go
+safe_exec "go" sudo pacman --noconfirm -S go
+if command -v go &> /dev/null; then
+    go install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest || true
+    go install github.com/hairyhenderson/gomplate/v4/cmd/gomplate@latest || true
 fi
 
-# tmux tpm
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+# Ruby
+safe_exec "ruby" sudo pacman --noconfirm -S ruby ruby-webrick
 
-# for modify kde setting
-sudo pacman --noconfirm -S qt5-tools
+# Java
+safe_exec "jdk8" sudo pacman --noconfirm -S jdk8-openjdk
+safe_exec "jdk11" sudo pacman --noconfirm -S jdk11-openjdk
+safe_exec "jdk17" sudo pacman --noconfirm -S jdk17-openjdk
+safe_exec "jdk21" sudo pacman --noconfirm -S jdk21-openjdk
+safe_exec "jdk-openjdk" sudo pacman --noconfirm -S jdk-openjdk
+safe_exec "maven gradle" sudo pacman --noconfirm -S maven gradle
 
-# Audio
-# $ dmesg
-# [    6.725628] sof-audio-pci-intel-mtl 0000:00:1f.3: Check if you have 'sof-firmware' package installed.
-# [    6.725628] sof-audio-pci-intel-mtl 0000:00:1f.3: Optionally it can be manually downloaded from:
-# [    6.725629] sof-audio-pci-intel-mtl 0000:00:1f.3:    https://github.com/thesofproject/sof-bin/
-# [    7.922709] sof-audio-pci-intel-mtl 0000:00:1f.3: error: sof_probe_work failed err: -2
+# C/C++
+safe_exec "gcc gdb clang" sudo pacman --noconfirm -S gcc gdb clang
+safe_exec "cmake ninja" sudo pacman --noconfirm -S cmake ninja
+safe_exec "cuda" sudo pacman --noconfirm -S cuda || true
+safe_exec "nasm boost" sudo pacman --noconfirm -S nasm boost
 
-sudo pacman --noconfirm -S sof-firmware
+# Python
+safe_exec "python" sudo pacman --noconfirm -S python python-pip python-poetry
+safe_exec "pyenv" sudo pacman --noconfirm -S pyenv
+safe_exec "uv" sudo pacman --noconfirm -S uv
 
-# Screenshot
-sudo pacman --noconfirm -S flameshot
+# Lua
+safe_exec "lua" sudo pacman --noconfirm -S lua
 
-# input
+# JavaScript/Node
+safe_exec "nodejs npm yarn" sudo pacman --noconfirm -S nodejs npm yarn
 
-sudo pacman --noconfirm -S fcitx5
-sudo pacman --noconfirm -S fcitx5-configtool
-sudo pacman --noconfirm -S fcitx5-rime
-sudo pacman --noconfirm -S rime-bopomofo
+# Rust
+safe_exec "rust" sudo pacman --noconfirm -S rust
 
-sudo pacman --noconfirm -S yazi
+# NVM for Node version management - using shared module
+install_nvm_with_node
 
-sudo pacman --noconfirm -S sysstat
-sudo pacman --noconfirm -S iotop
-sudo pacman --noconfirm -S iftop
+################################################################################
+# VIRTUALIZATION
+################################################################################
 
-sudo pacman --noconfirm -S kitty
+log_section "Installing Virtualization Tools"
 
+safe_exec "cdrtools qemu" sudo pacman --noconfirm -S cdrtools qemu-full
+safe_exec "virtualbox" sudo pacman --noconfirm -S linux-headers virtualbox-host-dkms virtualbox || true
 
-sudo pacman --noconfirm -S rdesktop
-sudo pacman --noconfirm -S remmina
-sudo pacman --noconfirm -S freerdp
-sudo pacman --noconfirm -S arch-wiki-docs
-sudo pacman --noconfirm -S rclone
+# Wine
+safe_exec "wine" sudo pacman --noconfirm -S wine wine-mono wine-gecko winetricks zenity
 
-# python package installer
-sudo pacman --noconfirm -S uv
+################################################################################
+# AUR PACKAGES
+################################################################################
 
-sudo pacman --noconfirm -S kubeadm
-sudo pacman --noconfirm -S kustomize
-sudo pacman --noconfirm -S bats
-sudo pacman --noconfirm -S github-cli
-sudo pacman --noconfirm -S docker-buildx
-sudo pacman --noconfirm -S atop
-sudo pacman --noconfirm -S k9s
-sudo pacman --noconfirm -S packer
-sudo pacman --noconfirm -S lazygit
+log_section "Installing AUR Packages"
 
-# nvm
-# nvm install 22.17.0
-# nvm use 22.17.0
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+if command -v yay &> /dev/null; then
+    # Install common AUR packages
+    AUR_PACKAGES=(
+        "google-chrome"
+        "aws-cli-v2"
+        "aws-session-manager-plugin"
+        "sublime-text-4"
+        "lazydocker"
+        "lazygit"
+        "amazon-q-bin"
+        "claude-desktop"
+    )
+    
+    for pkg in "${AUR_PACKAGES[@]}"; do
+        log_info "Installing $pkg from AUR..."
+        yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" "$pkg" || log_warn "Failed to install $pkg"
+    done
+else
+    log_warn "yay not available, skipping AUR packages"
+fi
 
+################################################################################
+# CLI TOOLS
+################################################################################
+
+log_section "Installing CLI Tools"
+
+safe_exec "ripgrep" sudo pacman --noconfirm -S ripgrep
+safe_exec "the_silver_searcher" sudo pacman --noconfirm -S the_silver_searcher
+safe_exec "tig" sudo pacman --noconfirm -S tig
+safe_exec "xclip" sudo pacman --noconfirm -S xclip
+safe_exec "diff-so-fancy" sudo pacman --noconfirm -S diff-so-fancy
+safe_exec "shellcheck" sudo pacman --noconfirm -S shellcheck
+safe_exec "powerline" sudo pacman --noconfirm -S powerline
+safe_exec "github-cli" sudo pacman --noconfirm -S github-cli
+safe_exec "bats" sudo pacman --noconfirm -S bats
+safe_exec "yazi" sudo pacman --noconfirm -S yazi
+safe_exec "ghostty" sudo pacman --noconfirm -S ghostty
+safe_exec "kitty" sudo pacman --noconfirm -S kitty
+
+# System monitoring
+safe_exec "monitoring tools" sudo pacman --noconfirm -S sysstat iotop iftop atop nvtop
+
+# Man pages
+safe_exec "man-db" sudo pacman --noconfirm -S man-db man-pages
+sudo mandb || true
+
+################################################################################
+# SHELL CONFIGURATION
+################################################################################
+
+log_section "Shell Configuration"
+
+# Autojump - using shared module
+install_autojump
+
+# Oh-My-Zsh - using shared module
+install_oh_my_zsh
+
+# Tmux TPM - using shared module
+install_tmux_tpm
+
+# Gitflow - using shared module
+install_gitflow
+
+# FZF - using shared module
+install_fzf
+
+################################################################################
+# INPUT METHODS
+################################################################################
+
+log_section "Installing Input Methods"
+
+safe_exec "fcitx5" sudo pacman --noconfirm -S fcitx5 fcitx5-configtool fcitx5-rime rime-bopomofo
+
+################################################################################
+# MISCELLANEOUS
+################################################################################
+
+log_section "Installing Miscellaneous Tools"
+
+safe_exec "flameshot" sudo pacman --noconfirm -S flameshot
+safe_exec "ollama-cuda" sudo pacman --noconfirm -S ollama-cuda || true
+safe_exec "darkman" sudo pacman --noconfirm -S darkman
+safe_exec "discord" sudo pacman --noconfirm -S discord
+safe_exec "calibre" sudo pacman --noconfirm -S calibre
+safe_exec "plantuml" sudo pacman --noconfirm -S plantuml
+safe_exec "qt5-tools" sudo pacman --noconfirm -S qt5-tools
+safe_exec "remote desktop" sudo pacman --noconfirm -S rdesktop freerdp
+safe_exec "arch-wiki-docs" sudo pacman --noconfirm -S arch-wiki-docs
+
+# Nerd fonts
+log_info "Installing Nerd Fonts..."
+curl -fsSL https://raw.githubusercontent.com/getnf/getnf/main/install.sh | bash || true
+safe_exec "otf-codenewroman-nerd" sudo pacman --noconfirm -S otf-codenewroman-nerd
+
+################################################################################
+# COMPLETION
+################################################################################
+
+log_section "Installation Complete"
+
+cd "$HOME" || true
+
+echo ""
+log_success "Arch Linux setup complete!"
+echo ""
+log_info "Next steps:"
+echo "  1. Run 'make init' to create dotfile symlinks"
+echo "  2. LOG OUT and back in for docker group to take effect"
+echo "  3. Set default shell: chsh -s \$(which zsh)"
+echo "  4. Configure masscan: sudo setcap 'cap_net_raw+epi' /usr/bin/masscan"
+echo "  5. Switch JVM: archlinux-java set VERSION"
+echo ""
+log_warn "Some packages may require manual configuration - check their documentation."
+echo ""

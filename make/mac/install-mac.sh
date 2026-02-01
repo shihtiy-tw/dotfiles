@@ -1,137 +1,186 @@
-#!/bin/sh
+#!/bin/bash
+################################################################################
+# macOS Development Environment Setup Script
+#
+# Description: Automated installation of development tools for macOS
+# Author: shihtiy-tw
+# Platforms: macOS (Apple Silicon and Intel)
+# Last Updated: 2026-02-01
+################################################################################
 
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+set -u  # Exit on undefined variable
+set -o pipefail  # Exit on pipe failure
 
-# Mac Setup Script
+################################################################################
+# SETUP - Source Shared Modules
+################################################################################
 
-# dotfile
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-git clone https://github.com/shihtiy-tw/dotfiles.git "$HOME"/dotfiles
+# Source shared modules (from parent directory)
+source "$SCRIPT_DIR/../modules/helpers/logger.sh"
+source "$SCRIPT_DIR/../modules/common/oh-my-zsh.sh"
+source "$SCRIPT_DIR/../modules/common/nvm.sh"
+source "$SCRIPT_DIR/../modules/common/rustup.sh"
+source "$SCRIPT_DIR/../modules/common/autojump.sh"
+source "$SCRIPT_DIR/../modules/common/tmux-tpm.sh"
+source "$SCRIPT_DIR/../modules/common/gitflow.sh"
+source "$SCRIPT_DIR/../modules/common/pyenv.sh"
+source "$SCRIPT_DIR/../modules/common/fzf.sh"
 
-# brew
+################################################################################
+# HOMEBREW
+################################################################################
 
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+log_section "Installing Homebrew"
 
-echo >> /Users/yst/.zprofile
-echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/yst/.zprofile
-eval "$(/opt/homebrew/bin/brew shellenv)"
+if ! command -v brew &> /dev/null; then
+    log_info "Installing Homebrew..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    
+    # Add Homebrew to PATH for this session
+    if [[ $(uname -m) == 'arm64' ]]; then
+        echo >> "$HOME/.zprofile"
+        echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> "$HOME/.zprofile"
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+    else
+        echo >> "$HOME/.bash_profile"
+        echo 'eval "$(/usr/local/bin/brew shellenv)"' >> "$HOME/.bash_profile"
+        eval "$(/usr/local/bin/brew shellenv)"
+    fi
+    log_success "Homebrew installed"
+else
+    log_skip "Homebrew already installed"
+fi
 
-cd "$HOME"/dotfiles/make/mac || exit
+################################################################################
+# BREWFILE
+################################################################################
 
-# gitflow
-wget -q  https://raw.githubusercontent.com/CJ-Systems/gitflow-cjs/develop/contrib/gitflow-installer.sh && sudo bash gitflow-installer.sh install stable; rm gitflow-installer.sh
+log_section "Installing Brew Packages"
 
-# https://github.com/petervanderdoes/gitflow-avh/issues/126#issuecomment-27480324
-echo 'FLAGS_GETOPT_CMD="$(brew --prefix gnu-getopt)/bin/getopt"' > ~/.gitflow_export
-
-# install from
-# brew bundle dump --file=~/dotfiles/make/mac/Brewfile.x86 --force
-# brew bundle dump --file=~/dotfiles/make/mac/Brewfile.arm --force
+cd "$SCRIPT_DIR" || exit
 
 if [[ $(uname -m) == 'arm64' ]]; then
-    echo "Running on Apple Silicon (ARM)"
-    # ARM-specific Homebrew packages or settings
-    brew bundle --file Brewfile.arm
+    log_info "Running on Apple Silicon (ARM)"
+    if [ -f Brewfile.arm ]; then
+        brew bundle --file Brewfile.arm
+    else
+        log_warn "Brewfile.arm not found"
+    fi
 else
-    echo "Running on Intel (x86)"
-    # Intel-specific Homebrew packages or settings
-    brew bundle --file Brewfile.x86
+    log_info "Running on Intel (x86)"
+    if [ -f Brewfile.x86 ]; then
+        brew bundle --file Brewfile.x86
+    else
+        log_warn "Brewfile.x86 not found"
+    fi
 fi
 
-# Common commands for both architectures
+################################################################################
+# SHELL CONFIGURATION
+################################################################################
 
-# tmux
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+log_section "Shell Configuration"
 
-# kitty
-curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
+# Oh-My-Zsh - using shared module
+install_oh_my_zsh
 
-# install cargo
-curl https://sh.rustup.rs -sSf | sh -s -- -y
+################################################################################
+# DEVELOPMENT TOOLS
+################################################################################
 
-# npm
-# install nvm
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash
+log_section "Installing Development Tools"
 
-# export the env now to install npm
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# Tmux TPM - using shared module
+install_tmux_tpm
 
-nvm install 20
-
-node -v
-nvm -v
-
-# oh-my-zsh
-if [ ! -d "$HOME"/.oh-my-zsh ]; then \
-  git clone https://github.com/robbyrussell/oh-my-zsh.git "$HOME"/.oh-my-zsh; \
-fi
-if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]; then \
-  git clone https://github.com/zsh-users/zsh-autosuggestions "$HOME"/.oh-my-zsh/custom/plugins/zsh-autosuggestions; \
-fi
-if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]; then \
-  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$HOME"/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting; \
-fi
-if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/zsh-completions ]; then \
-  git clone https://github.com/zsh-users/zsh-completions "$HOME"/.oh-my-zsh/custom/plugins/zsh-completions; \
-fi
-if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/zsh-vim-mode ]; then \
-  git clone https://github.com/softmoth/zsh-vim-mode.git "$HOME"/.oh-my-zsh/custom/plugins/zsh-vim-mode; \
-fi
-if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/fzf-tab ]; then \
-  git clone https://github.com/Aloxaf/fzf-tab "${HOME}/.oh-my-zsh/custom/plugins/fzf-tab"; \
-fi
-if [ ! -d "$HOME"/.oh-my-zsh/custom/plugins/zsh-system-clipboard ]; then \
-  git clone https://github.com/kutsan/zsh-system-clipboard "${HOME}/.oh-my-zsh/custom/plugins/zsh-system-clipboard"
-fi
-if [ ! -d "$HOME"/.oh-my-zsh/custom/themes/spaceship-prompt ]; then \
-  git clone https://github.com/denysdovhan/spaceship-prompt.git "${HOME}/.oh-my-zsh/custom/themes/spaceship-prompt"; \
-  sed -i 's/^SPACESHIP_CHAR_SYMBOL=.*$/SPACESHIP_CHAR_SYMBOL="${SPACESHIP_CHAR_SYMBOL="$ "}"/' "$HOME"/.oh-my-zsh/custom/themes/spaceship-prompt/sections/char.zsh
-  git clone https://github.com/spaceship-prompt/spaceship-vi-mode.git "$HOME"/.oh-my-zsh/custom/plugins/spaceship-vi-mode
-  sed -i 's/^SPACESHIP_VI_MODE_SHOW=.*$/SPACESHIP_VI_MODE_SHOW="${SPACESHIP_VI_MODE_SHOW=false}"/' "$HOME"/.oh-my-zsh/custom/themes/spaceship-prompt/sections/vi_mode.zsh
+# Kitty terminal
+log_info "Installing Kitty..."
+if ! command -v kitty &> /dev/null; then
+    curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin || log_error "Kitty installation failed"
+    log_success "Kitty installed"
+else
+    log_skip "Kitty already installed"
 fi
 
-## Autojump
+# Rust - using shared module
+install_rustup
 
-git clone git://github.com/joelthelion/autojump.git "$HOME"/dotfiles/autojump; \
-cd "$HOME"/dotfiles/autojump/ || exit; \
-python3 "$HOME"/dotfiles/autojump/install.py; \
+# NVM and Node.js - using shared module
+install_nvm_with_node
 
-## Rust and Cargo
-curl https://sh.rustup.rs -sSf | sh -s -- -y
+# Autojump - using shared module
+install_autojump
 
-# pyenv
-curl https://pyenv.run | bash
+# Pyenv - using shared module
+install_pyenv
 
-# Ruby
-brew install rbenv ruby-build
-echo 'if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi' >> ~/.bash_profile
+# FZF - using shared module
+install_fzf
 
-# for im-select.nvim
-# https://github.com/keaising/im-select.nvim?tab=readme-ov-file#12-macos
-brew tap laishulu/homebrew
-brew install macism
+# Gitflow - using shared module
+install_gitflow
 
-# input
-curl -fsSL https://git.io/rime-install | bash
+################################################################################
+# RUBY
+################################################################################
 
-# brew install golang
-# export GOPATH=$HOME/go-workspace # don't forget to change your path correctly!
-# export GOROOT=/usr/local/opt/go/libexec
-# export PATH=$PATH:$GOPATH/bin
-# export PATH=$PATH:$GOROOT/bin
-# go get github.com/mattn/efm-langserver
-# $HOME/.config/efm-langserver/config.yaml
-# mkdir $HOME/.config/efm-langserver
-# ln -s $HOME/dotfiles/nvim/efm-langserver-config.yaml
-#
-# mkdir ~/.nvm
-# wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
-# source $HOME/.bashrc
-# nvm install 11.14.0
-# nvm use v11.14.0
-# nvm alias default 11.14.0
-# npm install -g bash-language-server
+log_section "Installing Ruby Tools"
+
+if brew list rbenv &> /dev/null; then
+    log_skip "rbenv already installed via Homebrew"
+else
+    safe_exec "rbenv" brew install rbenv ruby-build
+fi
+
+# Add rbenv init to bash_profile if not present
+if ! grep -q "rbenv init" "$HOME/.bash_profile" 2>/dev/null; then
+    echo 'if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi' >> "$HOME/.bash_profile"
+    log_success "rbenv init added to .bash_profile"
+fi
+
+################################################################################
+# INPUT METHOD
+################################################################################
+
+log_section "Installing Input Method Tools"
+
+# im-select for neovim
+log_info "Installing macism for im-select.nvim..."
+if ! brew list macism &> /dev/null; then
+    brew tap laishulu/homebrew
+    brew install macism
+    log_success "macism installed"
+else
+    log_skip "macism already installed"
+fi
+
+# Rime input method
+log_info "Installing Rime..."
+curl -fsSL https://git.io/rime-install | bash || log_warn "Rime installation may have issues"
+
+################################################################################
+# CLEANUP
+################################################################################
+
+log_section "Cleanup"
 
 brew cleanup
+
+################################################################################
+# COMPLETION
+################################################################################
+
+log_section "Installation Complete"
+
+cd "$HOME" || true
+
+echo ""
+log_success "macOS setup complete!"
+echo ""
+log_info "Next steps:"
+echo "  1. Run 'make init' to create dotfile symlinks"
+echo "  2. Set default shell: chsh -s \$(which zsh)"
+echo "  3. Open a new terminal session"
+echo ""
