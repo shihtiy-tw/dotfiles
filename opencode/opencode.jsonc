@@ -2,7 +2,8 @@
   "$schema": "https://opencode.ai/config.json",
   "plugin": [
     "opencode-gemini-auth@latest",
-    "oh-my-opencode@3.1.6",
+    "oh-my-opencode@3.2.1",
+    "@plannotator/opencode@latest"
   ],
   "permission": {
     "skill": {
