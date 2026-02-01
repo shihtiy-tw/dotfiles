@@ -1,66 +1,29 @@
-# Make Scripts
+# Makefile & Installation Scripts
 
-This directory contains scripts and configuration files used by the Makefile in the root of the dotfiles repository.
+## Highlights
+- **Orchestration**: The central hub for installing, updating, and managing the dotfiles.
+- **Theme Switching**: Scripts to toggle the entire system between Light and Dark modes.
+- **OS Detection**: Automatic installation scripts for MacOS, Ubuntu, Arch, and Amazon Linux.
 
 ## Structure
+- `init.sh`: The core script that creates symlinks (the "link" phase).
+- `install-*.sh`: OS-specific dependency installers (the "install" phase).
+- `color-theme.sh`: Logic for switching themes (updates Vim, Tmux, Alacritty, etc.).
+- `envfile`: Environment variables used by the Makefile.
 
-- `envfile` - Environment variables used by the Makefile
-- `init.sh` - Main initialization script for setting up dotfiles
-- `install-init.sh` - Script for installing dependencies
-- `color-theme.sh` - Script for switching between light and dark themes
-- `envtest.sh` - Script for testing environment variables
-- `mac/` - macOS-specific scripts
-- `systemd/` - Systemd service files
+## Make Commands
+Run these from the root directory:
 
-## Key Scripts
+| Command | Description |
+| :--- | :--- |
+| `make install` | Installs system dependencies (apt/brew/pacman). |
+| `make init` | Symlinks configurations to your home directory. |
+| `make dark` | Switches system to **Dark Mode**. |
+| `make light` | Switches system to **Light Mode**. |
+| `make status` | Checks the git status of the dotfiles. |
 
-### init.sh
-
-This script:
-- Creates necessary directories
-- Backs up existing configuration files
-- Creates symlinks from the dotfiles repository to the appropriate locations
-
-### install-init.sh
-
-This script installs dependencies required by the dotfiles, such as:
-- Terminal emulators
-- Shell utilities
-- Text editors
-- Version control tools
-
-### color-theme.sh
-
-This script switches between light and dark themes for:
-- Terminal emulators
-- Text editors
-- Shell prompts
-- Other applications that support theming
-
-## Usage
-
-These scripts are primarily used by the Makefile in the root directory and should not be executed directly unless you know what you're doing.
-
-To use the functionality provided by these scripts, use the corresponding Makefile targets:
-
-```bash
-# Initialize dotfiles
-make init
-
-# Install dependencies
-make install
-
-# Switch to dark theme
-make dark
-
-# Switch to light theme
-make light
-```
-
-## Customization
-
-If you need to customize the behavior of these scripts:
-
-1. Edit the `envfile` to change environment variables
-2. Modify the individual scripts to change their behavior
-3. Update the Makefile to add new targets or modify existing ones
+## Theme Switching
+The `color-theme.sh` script updates multiple tools simultaneously:
+- **Alacritty/Kitty/Ghostty**: Swaps config files.
+- **Tmux**: reload config active session.
+- **Neovim**: Triggers background color change.

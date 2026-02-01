@@ -129,8 +129,8 @@ require("lazy").setup({
     -- Theme
     -- ----------------------------
     { import = "plugins.everforest" },
-    { import = "plugins.gruvbox" },
-    { import = "plugins.solarized" },
+    -- { import = "plugins.gruvbox" },
+    -- { import = "plugins.solarized" },
 
     -- Git
     -- ----------------------------

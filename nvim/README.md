@@ -1,69 +1,38 @@
 # Neovim Configuration
 
-A modern, Lua-based Neovim configuration designed for efficient coding and text editing.
+## Highlights
+- **AI-Native Workflow**: Deep integration with **Avante.nvim** using `gemini-cli` and `ollama` for agentic coding.
+- **Modern Lua**: Built entirely on Lua with `lazy.nvim` for lightning-fast startup.
+- **LSP & Tools**: Pre-configured for Python, Go, Lua, and more via `lsp-zero` and `mason`.
 
 ## Structure
+- `init.lua`: Bootstraps `lazy.nvim`.
+- `lua/configs/`: Plugin configurations.
+  - `avante.lua`: **Gemini** & **Ollama** provider settings + MCP Tools.
+  - `lsp.lua`: Language Server Protocol settings.
+  - `keymaps.lua`: Centralized keybindings.
 
-- `init.lua` - Main configuration entry point
-- `lua/` - Lua-based configuration modules
-  - `configs/` - Plugin-specific configurations
-    - `formatter/` - Code formatting settings
-    - `lint/` - Linting configurations
-    - `schema/` - JSON schema settings
-  - `plugins/` - Plugin definitions and settings
-- `vimscript/` - Legacy Vim script configurations
-- `coc-settings.json` - CoC (Conquer of Completion) settings
+## AI Integration
+This config is bleeding-edge:
+- **Provider**: Defaults to **Gemini Flow** for complex reasoning.
+- **Local Fallback**: **Qwen 2.5 Coder** (via Ollama) for fast, free autocomplete.
+- **MCP**: Model Context Protocol integration via `mcphub` for connecting AI to external tools.
 
-## Features
+## Critical Keybindings
+| Key | Action |
+| :--- | :--- |
+| `<leader>f` | Telescope Files (Fuzzy Find) |
+| `<leader>a` | **Avante AI** Actions (Ask/Edit) |
+| `<leader>g` | Git (Fugitive/LazyGit) |
+| `<C-a>` | CodeCompanion (Inline AI) |
 
-- Modern Lua-based configuration
-- Lazy-loaded plugins for fast startup
-- LSP (Language Server Protocol) integration
-- Code formatting and linting
-- Syntax highlighting and treesitter support
-- Git integration
-- File navigation and fuzzy finding
-- Statusline customization
+## Prerequisites
+- Neovim >= 0.10.0
+- `ripgrep`, `fd`
+- `ollama` (optional, for local AI)
 
-## Dependencies
-
-- Neovim >= 0.8.0
-- Git
-- Node.js (for LSP features)
-- A Nerd Font for icons
-- ripgrep (for telescope file searching)
-
-## Installation
-
-The main dotfiles `make init` command will set up the Neovim configuration automatically.
-
-For manual installation:
-```bash
-# Create necessary directories
-mkdir -p ~/.config/nvim
-
-# Create symlinks
-ln -sf ~/dotfiles/nvim/init.lua ~/.config/nvim/init.lua
-ln -sf ~/dotfiles/nvim/lua ~/.config/nvim/lua
-ln -sf ~/dotfiles/nvim/coc-settings.json ~/.config/nvim/coc-settings.json
-```
-
-## Troubleshooting
-
-Run these commands inside Neovim to diagnose issues:
-```
-:checkhealth provider
-:CheckHealth
-```
-
-Common issues:
-- Missing clipboard provider: Install xclip (Linux) or pbcopy/pbpaste (macOS)
-- LSP not working: Check if the language server is installed
-- Plugin errors: Run `:Lazy` to check plugin status
-
-## Keybindings
-
-See the `lua/plugins/which-key.lua` file for a complete list of keybindings.
-
-## TODO
-- Add clipboard integration with [nvim-neoclip.lua](https://github.com/AckslD/nvim-neoclip.lua)
+## Plugin Spotlight
+- **Avante.nvim**: Cursor-aware AI coding assistant.
+- **Lazy.nvim**: Package manager.
+- **Telescope**: Fuzzy finder over lists (files, buffers, etc).
+- **Harpoon**: Quick file navigation.

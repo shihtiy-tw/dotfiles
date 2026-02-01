@@ -1,3 +1,6 @@
 .DS_Store
 theme.zsh
 .env
+
+.sisyphus
+.vscode
