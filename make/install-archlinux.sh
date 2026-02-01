@@ -27,6 +27,7 @@ source "$SCRIPT_DIR/modules/common/autojump.sh"
 source "$SCRIPT_DIR/modules/common/tmux-tpm.sh"
 source "$SCRIPT_DIR/modules/common/gitflow.sh"
 source "$SCRIPT_DIR/modules/common/fzf.sh"
+source "$SCRIPT_DIR/modules/common/bun.sh"
 
 ################################################################################
 # SYSTEM UTILITIES
@@ -255,6 +256,9 @@ safe_exec "rust" sudo pacman --noconfirm -S rust
 
 # NVM for Node version management - using shared module
 install_nvm_with_node
+
+# Bun - Using shared module
+install_bun
 
 ################################################################################
 # VIRTUALIZATION

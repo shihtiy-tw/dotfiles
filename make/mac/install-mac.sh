@@ -27,6 +27,7 @@ source "$SCRIPT_DIR/../modules/common/tmux-tpm.sh"
 source "$SCRIPT_DIR/../modules/common/gitflow.sh"
 source "$SCRIPT_DIR/../modules/common/pyenv.sh"
 source "$SCRIPT_DIR/../modules/common/fzf.sh"
+source "$SCRIPT_DIR/../modules/common/bun.sh"
 
 ################################################################################
 # HOMEBREW

@@ -85,3 +85,6 @@ export NVM_DIR="$HOME/.nvm"
 
 # https://github.com/zsh-users/antigen/issues/603
 # source /usr/local/share/zsh/site-functions/_awless
+
+# bun completions
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"

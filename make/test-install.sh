@@ -141,6 +141,10 @@ test_programming_languages() {
     show_version ruby
     run_test "gem" test_command gem
     
+    # Bun
+    run_test "bun" test_command bun
+    show_version bun
+    
     # Lua
     run_test "lua" test_command lua || run_test "luarocks" test_command luarocks
 }

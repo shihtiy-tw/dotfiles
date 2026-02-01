@@ -35,6 +35,7 @@ source "$SCRIPT_DIR/modules/common/tmux-tpm.sh"
 source "$SCRIPT_DIR/modules/common/gitflow.sh"
 source "$SCRIPT_DIR/modules/common/pyenv.sh"
 source "$SCRIPT_DIR/modules/common/fzf.sh"
+source "$SCRIPT_DIR/modules/common/bun.sh"
 
 ################################################################################
 # CONFIGURATION
@@ -109,6 +110,9 @@ log_section "Installing Programming Languages"
 
 # Rust: Systems programming language - Using shared module
 install_rustup
+
+# Bun: Javascript runtime - Using shared module
+install_bun
 
 # Java: JDK for Java development
 log_info "Installing Java JDK..."

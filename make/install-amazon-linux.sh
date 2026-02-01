@@ -25,6 +25,7 @@ source "$SCRIPT_DIR/modules/common/autojump.sh"
 source "$SCRIPT_DIR/modules/common/tmux-tpm.sh"
 source "$SCRIPT_DIR/modules/common/fzf.sh"
 source "$SCRIPT_DIR/modules/common/pyenv.sh"
+source "$SCRIPT_DIR/modules/common/bun.sh"
 
 ################################################################################
 # SYSTEM UPDATE
@@ -108,6 +109,9 @@ log_section "Installing Node.js"
 
 # NVM and Node.js using shared module
 install_nvm_with_node
+
+# Bun - Using shared module
+install_bun
 
 # Language servers
 if command -v npm &> /dev/null; then
