@@ -311,6 +311,19 @@ test_cargo_packages() {
 }
 
 ################################################################################
+# AI TOOLS TESTS
+################################################################################
+
+test_ai_tools() {
+    log_section "AI Tools"
+    
+    run_test "agent-deck" test_command agent-deck
+    show_version agent-deck
+    
+    run_test "vibe-kanban" test_command vibe-kanban
+}
+
+################################################################################
 # MAIN
 ################################################################################
 
@@ -333,6 +346,7 @@ main() {
     test_container_tools
     test_devops_tools
     test_cargo_packages
+    test_ai_tools
     
     # Print summary
     log_section "Test Summary"

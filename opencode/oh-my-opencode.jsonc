@@ -1,0 +1,64 @@
+{
+  "agents": {
+    "sisyphus": {
+      "model": "google/gemini-3-pro"
+    },
+    "oracle": {
+      "model": "google/gemini-3-pro"
+    },
+    "librarian": {
+      "model": "opencode/big-pickle"
+    },
+    "explore": {
+      "model": "opencode/gpt-5-nano"
+    },
+    "multimodal-looker": {
+      "model": "google/gemini-3-flash"
+    },
+    "prometheus": {
+      "model": "google/gemini-3-pro"
+    },
+    "metis": {
+      "model": "google/gemini-3-pro",
+      "variant": "max"
+    },
+    "momus": {
+      "model": "google/gemini-3-pro",
+      "variant": "max"
+    },
+    "atlas": {
+      "model": "google/gemini-3-pro"
+    }
+  },
+  "categories": {
+    "visual-engineering": {
+      "model": "google/gemini-3-pro"
+    },
+    "ultrabrain": {
+      "model": "google/gemini-3-pro"
+    },
+    "artistry": {
+      "model": "google/gemini-3-pro",
+      "variant": "max"
+    },
+    "quick": {
+      "model": "google/gemini-3-flash"
+    },
+    "unspecified-low": {
+      "model": "google/gemini-3-flash"
+    },
+    "unspecified-high": {
+      "model": "google/gemini-3-flash"
+    },
+    "writing": {
+      "model": "google/gemini-3-flash"
+    }
+  },
+  "tmux": {
+    "enabled": true,
+    "layout": "main-vertical",
+    "main_pane_size": 60,
+    "main_pane_min_width": 120,
+    "agent_pane_min_width": 40
+  }
+}

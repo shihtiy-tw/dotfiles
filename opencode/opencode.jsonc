@@ -1,10 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "plugin": [
-    "opencode-gemini-auth@latest",
-    "oh-my-opencode@3.2.1",
-    "@plannotator/opencode@latest"
-  ],
+  "plugin": ["opencode-gemini-auth@latest", "oh-my-opencode@3.5.2", "@plannotator/opencode@latest"],
   "permission": {
     "skill": {
       "obsidian-skills": "allow",
@@ -22,10 +18,7 @@
   },
   "mcp": {
     "readwise": {
-      "command": [
-        "npx",
-        "@readwise/readwise-mcp"
-      ],
+      "command": ["npx", "@readwise/readwise-mcp"],
       "type": "local",
       "enabled": true,
       "environment": {
@@ -33,12 +26,27 @@
       }
     },
     "sequential-thinking": {
-      "command": [
-        "npx",
-        "-y",
-        "@modelcontextprotocol/server-sequential-thinking"
-      ],
+      "command": ["npx", "-y", "@modelcontextprotocol/server-sequential-thinking"],
       "type": "local",
+      "enabled": true
+    },
+    "notebooklm-mcp": {
+      "command": ["uvx", "--from", "notebooklm-mcp-cli", "notebooklm-mcp"],
+      "type": "local",
+      "enabled": true
+    },
+    "vibe_kanban": {
+      "type": "local",
+      "command": ["npx", "-y", "vibe-kanban@latest", "--mcp"],
+      "enabled": true
+    },
+    "context7": {
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "CONTEXT7_API_KEY": "YOUR_API_KEY",
+        "Accept": "application/json, text/event-stream"
+      },
       "enabled": true
     }
   },

@@ -28,6 +28,8 @@ source "$SCRIPT_DIR/../modules/common/gitflow.sh"
 source "$SCRIPT_DIR/../modules/common/pyenv.sh"
 source "$SCRIPT_DIR/../modules/common/fzf.sh"
 source "$SCRIPT_DIR/../modules/common/bun.sh"
+source "$SCRIPT_DIR/../modules/common/agent-deck.sh"
+source "$SCRIPT_DIR/../modules/common/vibe-kanban.sh"
 
 ################################################################################
 # HOMEBREW
@@ -122,6 +124,18 @@ install_fzf
 
 # Gitflow - using shared module
 install_gitflow
+
+################################################################################
+# AI TOOLS
+################################################################################
+
+log_section "Installing AI Tools"
+
+# Agent Deck: AI workspace manager - Using shared module
+install_agent_deck
+
+# Vibe Kanban: AI-native kanban - Using shared module
+install_vibe_kanban
 
 ################################################################################
 # RUBY

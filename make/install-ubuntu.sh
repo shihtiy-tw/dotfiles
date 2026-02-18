@@ -36,6 +36,8 @@ source "$SCRIPT_DIR/modules/common/gitflow.sh"
 source "$SCRIPT_DIR/modules/common/pyenv.sh"
 source "$SCRIPT_DIR/modules/common/fzf.sh"
 source "$SCRIPT_DIR/modules/common/bun.sh"
+source "$SCRIPT_DIR/modules/common/agent-deck.sh"
+source "$SCRIPT_DIR/modules/common/vibe-kanban.sh"
 
 ################################################################################
 # CONFIGURATION
@@ -368,6 +370,18 @@ sudo apt-get install terraform
 curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
 sudo apt-add-repository -y "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
 sudo apt-get update && sudo apt-get install packer
+
+################################################################################
+# AI TOOLS
+################################################################################
+
+log_section "Installing AI Tools"
+
+# Agent Deck: AI workspace manager - Using shared module
+install_agent_deck
+
+# Vibe Kanban: AI-native kanban - Using shared module
+install_vibe_kanban
 
 # Return to home directory
 cd "$HOME" || exit
