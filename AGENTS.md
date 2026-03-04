@@ -27,12 +27,27 @@ dotfiles/
 
 ---
 
-## AI Methodology
+## AI Methodology & Coding Agent Protocol
 
 This repo uses **GSD** (get-shit-done-cc) for lightweight config changes.
 For complex multi-tool changes, escalate to SpecKit.
 
+### Tool Selection (Quick Reference)
+| Tool | Use When |
+|---|---|
+| `opencode run "..." .` | Multi-file changes, SpecKit workflow |
+| `gemini -p "..." --approval-mode plan` | Read-only analysis (safest) |
+| `gemini -p "..." --yolo` | Quick script generation, non-destructive |
+| `claude -p "..."` | Deep reasoning, config review |
+
+### Safety Ladder
+```
+plan (read-only) → auto_edit → supervised → yolo
+```
+dotfiles changes: `auto_edit` minimum. Never `yolo` on shell/git configs.
+
 Methodology reference: ~/Brainiverse/Brainiverse/Effort/Projects/Cultivation/Labs/METHODOLOGY.md
+Full protocol: ~/Brainiverse/Brainiverse/Toolkit/Openclaw/Inbox/Engineer/CODING_AGENTS_PROTOCOL.md
 
 ---
 
