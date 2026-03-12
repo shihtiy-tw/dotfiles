@@ -1,6 +1,9 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "plugin": ["opencode-gemini-auth@latest", "oh-my-opencode@3.5.2", "@plannotator/opencode@latest"],
+  "plugin": [
+    "opencode-gemini-auth@latest",
+    "@plannotator/opencode@latest"
+  ],
   "permission": {
     "skill": {
       "obsidian-skills": "allow",
@@ -18,7 +21,10 @@
   },
   "mcp": {
     "readwise": {
-      "command": ["npx", "@readwise/readwise-mcp"],
+      "command": [
+        "npx",
+        "@readwise/readwise-mcp"
+      ],
       "type": "local",
       "enabled": true,
       "environment": {
@@ -26,18 +32,32 @@
       }
     },
     "sequential-thinking": {
-      "command": ["npx", "-y", "@modelcontextprotocol/server-sequential-thinking"],
+      "command": [
+        "npx",
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
       "type": "local",
       "enabled": true
     },
     "notebooklm-mcp": {
-      "command": ["uvx", "--from", "notebooklm-mcp-cli", "notebooklm-mcp"],
+      "command": [
+        "uvx",
+        "--from",
+        "notebooklm-mcp-cli",
+        "notebooklm-mcp"
+      ],
       "type": "local",
       "enabled": true
     },
     "vibe_kanban": {
       "type": "local",
-      "command": ["npx", "-y", "vibe-kanban@latest", "--mcp"],
+      "command": [
+        "npx",
+        "-y",
+        "vibe-kanban@latest",
+        "--mcp"
+      ],
       "enabled": true
     },
     "context7": {
