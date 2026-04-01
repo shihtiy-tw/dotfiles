@@ -727,3 +727,8 @@ vim.api.nvim_set_keymap('n', "<leader>de", ":lua require('dap').close()<CR>",
 -- Visual mode mappings with descriptions
 vim.api.nvim_set_keymap('v', "<leader>dev", ":lua require('dapui').eval()<CR>",
   { noremap = true, silent = true, desc = "Evaluate selected text in debugger context" })
+
+-- Built-in undotree (nvim 0.12+)
+vim.keymap.set("n", "<leader>u", function()
+  require("undotree").open()
+end, { desc = "Toggle undotree (built-in)" })

@@ -96,3 +96,7 @@ vim.api.nvim_create_autocmd({ 'FileChangedShellPost' }, {
 
 -- --- LSP
 -- vim.lsp.set_log_level("INFO")
+
+-- Built-in undotree (nvim 0.12+)
+-- Replaces: jiaoshijie/undotree (lazy.nvim plugin removed)
+vim.cmd("packadd nvim.undotree")

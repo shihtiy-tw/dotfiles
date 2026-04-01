@@ -1,8 +1,5 @@
-return {
-  "jiaoshijie/undotree",
-  dependencies = "nvim-lua/plenary.nvim",
-  config = true,
-  keys = { -- load the plugin only when using it's keybinding:
-    { "<leader>u", "<cmd>lua require('undotree').toggle()<cr>" },
-  },
-}
+-- Built-in undotree (nvim 0.12+)
+-- Plugin: nvim.undotree (ships with neovim, no external dependency)
+-- Usage: :packadd nvim.undotree  or  require("undotree")
+-- Replaces: jiaoshijie/undotree (removed)
+return {}
