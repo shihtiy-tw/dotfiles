@@ -2,21 +2,41 @@ export LC_ALL=en_US.UTF-8
 export PATH=${PATH}:${HOME}/.local/bin
 export PATH=${PATH}:${HOME}/.local/share/bin
 export PATH=${PATH}:${HOME}/.local/share/
-export LD_LIBRARY_PATH=/usr/local/cuda-9.0/lib64
+if [ -d "/usr/local/cuda-9.0/lib64" ]; then
+    export LD_LIBRARY_PATH=/usr/local/cuda-9.0/lib64
+fi
 export TF_CPP_MIN_LOG_LEVEL=2
 export VISUAL=nvim
 export MYVIMRC="${HOME}/.vimrc"
 export EDITOR="$VISUAL"
-export GOROOT='/usr/local/go'
-export GOROOT='/usr/local/opt/go/libexec'
+
+# Go setup with platform-specific paths
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    export GOROOT='/usr/local/opt/go/libexec'
+else
+    export GOROOT='/usr/local/go'
+fi
 export GOPATH="${HOME}/go"
 export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 export ANDROID_HOME='${HOME}/Android/Sdk'
 export CATALINA_HOME='/opt/tomcat'
-export PATH=${PATH}:/usr/local/cuda-9.0/bin
+
+# Add CUDA to PATH if it exists
+if [ -d "/usr/local/cuda-9.0/bin" ]; then
+    export PATH=${PATH}:/usr/local/cuda-9.0/bin
+fi
+
 export PATH=${PATH}:${HOME}/.cargo/bin
-export PATH=${PATH}:${HOME}/Tools/codimd-cli/bin
-export PATH=${PATH}:${HOME}/arduino-1.8.8
+
+# Add codimd-cli to PATH if it exists
+if [ -d "${HOME}/Tools/codimd-cli/bin" ]; then
+    export PATH=${PATH}:${HOME}/Tools/codimd-cli/bin
+fi
+
+# Add Arduino to PATH if it exists
+if [ -d "${HOME}/arduino-1.8.8" ]; then
+    export PATH=${PATH}:${HOME}/arduino-1.8.8
+fi
 export PATH=${PATH}:${JAVA_HOME}
 export GEM_HOME="~/.gem/ruby/2.5.0/"
 export PATH="$PATH:$GEM_HOME"
@@ -27,7 +47,8 @@ export GEM_HOME=~/.ruby
 export PATH="$PATH:~/.ruby/bin"
 export PYTHON3PATH=$(which python3)
 
-if [ -d $HOME/Library/Python/3.7/bin ]; then
+# macOS-specific Python library paths
+if [[ "$OSTYPE" == "darwin"* ]] && [ -d "$HOME/Library/Python/3.7/bin" ]; then
     export PATH=$HOME/Library/Python/3.7/bin:$PATH
 fi
 
