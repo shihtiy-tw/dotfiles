@@ -4,7 +4,7 @@
     "opencode-gemini-auth@latest",
     "oh-my-opencode@latest",
     "@plannotator/opencode@latest",
-    "opencode-antigravity-auth@1.4.3"
+    "opencode-antigravity-auth@1.6.0"
   ],
   "permission": {
     "skill": {
@@ -22,6 +22,17 @@
     }
   },
   "mcp": {
+    "graphthulhu": {
+      "command": [
+        "/home/yst/.local/bin/graphthulhu",
+        "serve",
+        "--backend", "obsidian",
+        "--vault", "/home/yst/Brainiverse/Brainiverse",
+        "--read-only"
+      ],
+      "type": "local",
+      "enabled": true
+    },
     "readwise": {
       "command": [
         "npx",
@@ -50,10 +61,65 @@
       ],
       "type": "local",
       "enabled": true
+    },
+    "notebooklm": {
+      "command": ["/home/yst/.local/bin/notebooklm-mcp"],
+      "type": "local",
+      "enabled": true
+    },
+    "deepwiki": {
+      "url": "https://mcp.deepwiki.com/mcp",
+      "type": "remote",
+      "enabled": true
+    },
+    "consensus": {
+      "url": "https://mcp.consensus.app/mcp",
+      "type": "remote",
+      "auth": "oauth",
+      "oauthRedirectUrl": "http://127.0.0.1:44647/callback",
+      "enabled": true
+    },
+    "postgres": {
+      "command": ["npx", "-y", "@modelcontextprotocol/server-postgres", "postgresql://homelab:{env:HOMELAB_PG_PASSWORD}@172.20.0.3:5432/homelab"],
+      "type": "local",
+      "enabled": true
+    },
+    "filesystem-brainiverse": {
+      "command": ["npx", "-y", "@modelcontextprotocol/server-filesystem", "/home/yst/Brainiverse/Brainiverse"],
+      "type": "local",
+      "enabled": true
+    },
+    "filesystem-homelab": {
+      "command": ["npx", "-y", "@modelcontextprotocol/server-filesystem", "/data/homelab"],
+      "type": "local",
+      "enabled": true
+    },
+    "homelab-mcp": {
+      "command": ["python3", "/home/yst/Labs/homelab/toolkit/homelab-mcp/server.py"],
+      "type": "local",
+      "enabled": true,
+      "environment": {
+        "PROMETHEUS_URL": "http://172.20.0.11:9090",
+        "GATUS_URL": "http://172.20.0.13:8080",
+        "PORTAINER_URL": "http://172.20.0.18:9000",
+        "PORTAINER_USER": "admin",
+        "PORTAINER_PASS": "{env:PORTAINER_PASS}"
+      }
     }
   },
+  "model": "amazon-bedrock/global.anthropic.claude-sonnet-4-6",
   "theme": "everforest",
   "provider": {
+    "amazon-bedrock": {
+      "models": {
+        "us.anthropic.claude-sonnet-4-6": {
+          "name": "Claude Sonnet 4.6 (Bedrock US)"
+        },
+        "global.anthropic.claude-sonnet-4-6": {
+          "name": "Claude Sonnet 4.6 (Bedrock Global)"
+        }
+      }
+    },
     "ollama": {
       "npm": "@ai-sdk/openai-compatible",
       "name": "Ollama (local)",

@@ -59,4 +59,6 @@
 [init]
 	defaultBranch = main
 [commit]
-	template = ~/dotfiles/git/commit-conventions.txt
+	template = /home/yst/dotfiles/git/commit-conventions.txt
+[credential]
+	helper = store
