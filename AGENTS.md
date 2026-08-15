@@ -31,7 +31,17 @@ This guide provides the necessary context for AI agents working on this dotfiles
 
 ### 3. Theme Management
 - **Mechanism**: `make dark` and `make light` execute `make/color-theme.sh`.
-- **Logic**: Uses `sed` to dynamically toggle comments in `tmux.conf` and update `zsh/theme.zsh`.
+- **Logic**: The OS owns the current mode, and tools follow it. `color-theme.sh`
+  sets the mode with the platform's own tool (`darkman set` on Linux, System
+  Events via `osascript` on macOS), then updates the tools that have no watcher
+  of their own (kitty, `zsh/theme.zsh`).
+- **Tmux**: `tmux/themes/switch-theme.sh light|dark` is the single entry point.
+  It is called by the darkman hooks in `misc/darkman/{dark,light}-mode.d/` on
+  Linux, by `erikw/tmux-dark-notify` on macOS, and by `tmux.conf` itself (with
+  no argument, so it auto-detects) on every server start. It records the choice
+  in `~/.local/state/tmux/tmux-dark-notify-theme.conf`, which `tmux.conf`
+  sources, so a new server does not fall back to the everforest plugin's
+  built-in dark default.
 - **Agent Rule**: Ensure UI-related changes respect the **Everforest** and **Gruvbox** color schemes.
 
 ## AI Agent Integration
