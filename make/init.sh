@@ -56,7 +56,7 @@ link_config() {
         log_warn "Backing up: $target -> $backup_path"
         mv "$target" "$backup_path"
     fi
-    
+
     # Ensure target is gone (redundant safety check)
     rm -rf "$target"
 
@@ -97,7 +97,8 @@ link_config "$DOTFILES/vim/editorconfig" "$HOME/.editorconfig"
 # Neovim
 link_config "$DOTFILES/nvim/init.lua" "$HOME/.config/nvim/init.lua"
 link_config "$DOTFILES/nvim/lua" "$HOME/.config/nvim/lua"
-link_config "$DOTFILES/nvim/coc-settings.json" "$HOME/.config/nvim/coc-settings.json"
+# coc-settings.json is not linked: the neovim config uses native LSP + blink.cmp,
+# and the file itself belongs to the legacy nvim/vimscript setup.
 
 # AWS
 link_config "$DOTFILES/aws/config" "$HOME/.aws/config"

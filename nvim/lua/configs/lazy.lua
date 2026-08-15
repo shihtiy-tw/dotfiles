@@ -206,5 +206,10 @@ require("lazy").setup({
   -- colorscheme that will be used when installing plugins.
   install = { colorscheme = { "habamax" } },
   -- automatically check for plugin updates
-  checker = { { enabled = true } },
+  -- (the extra nesting this used to have left `enabled` unset, so the checker
+  -- silently never ran)
+  checker = { enabled = true },
+  -- no plugin in this config needs luarocks, so skip the hererocks bootstrap
+  -- that otherwise fails its healthcheck
+  rocks = { enabled = false },
 })

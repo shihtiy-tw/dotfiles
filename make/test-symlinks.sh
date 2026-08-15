@@ -49,33 +49,32 @@ fi
 SYMLINKS=(
     # Shell configs
     "$HOME/.zshrc:$DOTFILES_DIR/zsh/zshrc"
-    
-    # Git configs  
+
+    # Git configs
     "$HOME/.gitconfig:$DOTFILES_DIR/git/gitconfig"
-    
+
     # Vim/Neovim configs
     "$HOME/.vimrc:$DOTFILES_DIR/vim/vimrc"
     "$HOME/.editorconfig:$DOTFILES_DIR/vim/editorconfig"
     "$HOME/.config/nvim/init.lua:$DOTFILES_DIR/nvim/init.lua"
     "$HOME/.config/nvim/lua:$DOTFILES_DIR/nvim/lua"
-    "$HOME/.config/nvim/coc-settings.json:$DOTFILES_DIR/nvim/coc-settings.json"
-    
+
     # Tmux config
     "$HOME/.config/tmux/tmux.conf:$DOTFILES_DIR/tmux/tmux.conf"
     "$HOME/.tmux.conf:$DOTFILES_DIR/tmux/tmux.conf"
-    
+
     # AWS config
     "$HOME/.aws/config:$DOTFILES_DIR/aws/config"
-    
+
     # Kitty terminal
     "$HOME/.config/kitty/kitty.conf:$DOTFILES_DIR/kitty/kitty.conf"
-    
+
     # Ghostty terminal
     "$HOME/.config/ghostty/config:$DOTFILES_DIR/ghostty/ghostty.conf"
-    
+
     # Opencode
     "$HOME/.config/opencode/opencode.jsonc:$DOTFILES_DIR/opencode/opencode.jsonc"
-    
+
     # Oh-My-Zsh theme symlink
     "$HOME/.oh-my-zsh/custom/themes/spaceship.zsh-theme:$HOME/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh-theme"
 )
@@ -89,7 +88,7 @@ SYMLINKS=(
 check_symlink() {
     local symlink_path="$1"
     local expected_target="$2"
-    
+
     # Check if symlink exists
     if [[ ! -L "$symlink_path" ]]; then
         if [[ -e "$symlink_path" ]]; then
@@ -97,32 +96,32 @@ check_symlink() {
         fi
         return 1  # Missing
     fi
-    
+
     # Get actual target
     local actual_target
     actual_target=$(readlink "$symlink_path")
-    
+
     # Resolve relative paths
     if [[ ! "$actual_target" = /* ]]; then
         actual_target="$(dirname "$symlink_path")/$actual_target"
     fi
     actual_target=$(cd "$(dirname "$actual_target")" 2>/dev/null && pwd)/$(basename "$actual_target") 2>/dev/null || echo "$actual_target"
     expected_target=$(cd "$(dirname "$expected_target")" 2>/dev/null && pwd)/$(basename "$expected_target") 2>/dev/null || echo "$expected_target"
-    
+
     # Check if target exists
     if [[ ! -e "$symlink_path" ]]; then
         return 2  # Broken symlink (target doesn't exist)
     fi
-    
+
     # Check if target matches (normalize paths)
     local norm_actual norm_expected
     norm_actual=$(readlink -f "$symlink_path" 2>/dev/null || echo "$actual_target")
     norm_expected=$(readlink -f "$expected_target" 2>/dev/null || echo "$expected_target")
-    
+
     if [[ "$norm_actual" != "$norm_expected" ]]; then
         return 3  # Wrong target
     fi
-    
+
     return 0  # Valid
 }
 
@@ -130,7 +129,7 @@ check_symlink() {
 fix_symlink() {
     local symlink_path="$1"
     local target="$2"
-    
+
     # Create parent directory if needed
     local parent_dir
     parent_dir=$(dirname "$symlink_path")
@@ -138,12 +137,12 @@ fix_symlink() {
         mkdir -p "$parent_dir"
         log_info "Created directory: $parent_dir"
     fi
-    
+
     # Remove existing file/symlink if present
     if [[ -e "$symlink_path" ]] || [[ -L "$symlink_path" ]]; then
         rm -rf "$symlink_path"
     fi
-    
+
     # Create symlink
     if ln -sf "$target" "$symlink_path"; then
         log_success "Fixed: $symlink_path -> $target"
@@ -162,10 +161,10 @@ test_symlink() {
     local display_path="${symlink_path/#$HOME/~}"
     local display_target="${target/#$HOME/~}"
     display_target="${display_target/#$DOTFILES_DIR/\$DOTFILES}"
-    
+
     check_symlink "$symlink_path" "$target"
     local result=$?
-    
+
     case $result in
         0)
             log_test "PASS" "$display_path -> $display_target"
@@ -226,13 +225,13 @@ main() {
         echo -e "${LOG_YELLOW}FIX MODE: Will attempt to repair broken symlinks${LOG_NC}"
     fi
     echo ""
-    
+
     log_section "Shell Configuration"
     for entry in "${SYMLINKS[@]}"; do
         # Parse entry
         local symlink_path="${entry%%:*}"
         local target="${entry#*:}"
-        
+
         # Group by category based on path
         case "$symlink_path" in
             */.zshrc|*/.bashrc)
@@ -242,10 +241,10 @@ main() {
                 # Continue with test
                 ;;
         esac
-        
+
         test_symlink "$symlink_path" "$target"
     done
-    
+
     # Print summary
     log_section "Test Summary"
     echo ""
@@ -255,7 +254,7 @@ main() {
         echo -e "${LOG_YELLOW}Fixed:${LOG_NC}   $TESTS_FIXED"
     fi
     echo ""
-    
+
     if [[ $TESTS_FAILED -eq 0 ]]; then
         log_success "All symlinks are valid!"
         return 0
