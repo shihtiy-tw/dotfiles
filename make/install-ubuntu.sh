@@ -321,19 +321,38 @@ safe_exec "FZF" install_fzf
 safe_exec "autojump" install_autojump
 
 # Yazi: Modern terminal file manager written in Rust
+#
+# Installed from the upstream release archive rather than from cargo. There is no longer a
+# working `cargo install` path: yazi-fm/yazi-cli stopped being published after 26.5.6 and
+# their build.rs now aborts with "must be built with `cargo install --force yazi-build`",
+# but yazi-build only builds Yazi from a source checkout - installed from crates.io it runs
+# `cargo --config .cargo/release.toml` inside the registry src directory, where that file
+# does not exist, and dies with "failed to parse value from --config argument". Both halves
+# were measured in a container. The release zip also skips a ~3 minute Rust build.
 log_info "Installing yazi file manager..."
 if ! command -v yazi &> /dev/null; then
-    rustup update || log_error "rustup update failed"
-    # yazi-fm/yazi-cli now refuse to build directly: their build.rs aborts with "must be
-    # built with `cargo install --force yazi-build`". The old invocation burned ~2.5
-    # minutes of compilation before hitting that panic.
-    #
-    # That crate is only the build system, and installing it is not enough - measured in a
-    # container, the one executable it puts in ~/.cargo/bin is `yazi-build` itself, so the
-    # step reported success while leaving no `yazi` on the machine. It has to be run, and
-    # `yazi-build` with no subcommand just prints help.
-    if safe_exec "yazi build system" cargo install --force yazi-build; then
-        safe_exec "yazi" "${CARGO_HOME:-$HOME/.cargo}/bin/yazi-build" install
+    case "$(uname -m)" in
+        x86_64)          yazi_target=x86_64-unknown-linux-musl ;;
+        aarch64 | arm64) yazi_target=aarch64-unknown-linux-gnu ;;
+        *)               yazi_target="" ;;
+    esac
+
+    if [ -z "$yazi_target" ]; then
+        log_warn "No yazi release build for $(uname -m), skipping"
+    else
+        yazi_tmp="$(mktemp -d)"
+        yazi_dir="yazi-${yazi_target}"
+        if curl -fsSL -o "$yazi_tmp/yazi.zip" \
+            "https://github.com/sxyazi/yazi/releases/latest/download/${yazi_dir}.zip" \
+            && unzip -q -d "$yazi_tmp" "$yazi_tmp/yazi.zip"; then
+            # `ya` is the companion CLI (plugin/package manager); yazi's own docs treat the
+            # pair as one install.
+            safe_exec "yazi" sudo install -m 0755 \
+                "$yazi_tmp/$yazi_dir/yazi" "$yazi_tmp/$yazi_dir/ya" /usr/local/bin/
+        else
+            record_failure "yazi download"
+        fi
+        rm -rf "$yazi_tmp"
     fi
 else
     log_skip "Yazi already installed"

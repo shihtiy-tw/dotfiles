@@ -465,7 +465,8 @@ test_devops_tools() {
 test_cargo_packages() {
     log_section "Cargo Packages"
 
-    # Ubuntu builds it with `cargo install yazi-build`, Arch installs the pacman package.
+    # Ubuntu takes the upstream release archive (no cargo install path exists any more),
+    # Arch installs the pacman package.
     expect_on "ubuntu arch" "yazi" test_command yazi
 }
 
