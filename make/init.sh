@@ -54,11 +54,25 @@ link_config() {
         # Use timestamp to avoid overwriting existing backups
         local backup_path="$target.backup.$(date +%s)"
         log_warn "Backing up: $target -> $backup_path"
-        mv "$target" "$backup_path"
+        # Bail out if the backup fails. This used to fall through to an
+        # unconditional `rm -rf "$target"`, which destroyed the original whenever
+        # the mv failed (cross-device, read-only mount, permissions) - and targets
+        # include the ~/.config/nvim/lua directory and ~/.aws/config.
+        if ! mv "$target" "$backup_path"; then
+            log_error "Backup failed; refusing to replace $target"
+            return 1
+        fi
     fi
 
-    # Ensure target is gone (redundant safety check)
-    rm -rf "$target"
+    # Belt-and-braces: the backup above should have cleared the target. If anything
+    # is still here, remove just that entry - never recursively, so a surprise
+    # directory fails loudly instead of being deleted.
+    if [ -e "$target" ] || [ -L "$target" ]; then
+        if ! rm -f "$target"; then
+            log_error "Could not clear $target; skipping"
+            return 1
+        fi
+    fi
 
     # Create symlink
     # Use -n (no-dereference) if available to avoid linking inside a directory

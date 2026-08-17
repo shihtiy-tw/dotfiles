@@ -52,7 +52,15 @@ log_section "Installing Python"
 
 if [ "$HOME" = "/root" ]; then
     safe_exec "Python3 packages" sudo yum -y install python3*
-    safe_exec "EPEL release" sudo yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+    # Derive the EPEL major version instead of pinning el7. This was hardcoded to
+    # epel-release-latest-7, which is wrong on Amazon Linux 2023 (el9).
+    epel_major="$(rpm -E %{rhel} 2>/dev/null || true)"
+    if [[ "$epel_major" =~ ^[0-9]+$ ]]; then
+        safe_exec "EPEL release" sudo yum install -y \
+            "https://dl.fedoraproject.org/pub/epel/epel-release-latest-${epel_major}.noarch.rpm"
+    else
+        log_warn "Could not determine EPEL major version; skipping EPEL"
+    fi
 fi
 
 ################################################################################
@@ -75,11 +83,19 @@ log_section "Installing Development Tools"
 
 # tig
 safe_exec "ncurses" sudo yum install ncurses-devel ncurses -y
-if [ ! -d "$HOME/dotfiles/tig" ]; then
+if ! command_exists tig; then
     log_info "Installing tig..."
-    git clone git://github.com/jonas/tig.git "$HOME/dotfiles/tig"
-    make -C "$HOME/dotfiles/tig" || log_error "tig make failed"
-    make -C "$HOME/dotfiles/tig" install || log_error "tig install failed"
+    # Was `git clone git://...` - GitHub disabled the unauthenticated git://
+    # protocol in 2022, so this could only ever fail. Also moved out of
+    # $HOME/dotfiles: cloning and building inside the dotfiles repo left an
+    # untracked nested checkout behind on every run.
+    tig_src="$HOME/.local/src/tig"
+    if [ ! -d "$tig_src" ]; then
+        safe_exec "tig clone" git clone --depth 1 https://github.com/jonas/tig.git "$tig_src"
+    fi
+    # prefix into ~/.local so `make install` does not need root.
+    make -C "$tig_src" prefix="$HOME/.local" || log_error "tig make failed"
+    make -C "$tig_src" prefix="$HOME/.local" install || log_error "tig install failed"
     log_success "Tig installed"
 else
     log_skip "Tig already installed"
@@ -189,7 +205,34 @@ log_section "Installing Go"
 
 if ! command -v go &> /dev/null; then
     log_info "Installing Go..."
-    wget -q -O - https://git.io/vQhTU | bash
+    # Was `wget -q -O - https://git.io/vQhTU | bash`. git.io was shut down by
+    # GitHub in 2022, so that piped an HTML error page straight into bash.
+    case "$(uname -m)" in
+        x86_64)          go_arch=amd64 ;;
+        aarch64 | arm64) go_arch=arm64 ;;
+        *)               go_arch="" ;;
+    esac
+
+    if [ -z "$go_arch" ]; then
+        log_error "Unsupported architecture for Go: $(uname -m)"
+    else
+        go_version="$(curl -fsSL 'https://go.dev/VERSION?m=text' 2>/dev/null | head -1)"
+        if [[ "$go_version" =~ ^go[0-9] ]]; then
+            go_tarball="$(mktemp -d)/go.tar.gz"
+            if curl -fsSL -o "$go_tarball" \
+                "https://go.dev/dl/${go_version}.linux-${go_arch}.tar.gz"; then
+                # The documented upgrade path: remove the old tree before extracting.
+                safe_exec "Remove previous Go" sudo rm -rf /usr/local/go
+                safe_exec "Extract Go" sudo tar -C /usr/local -xzf "$go_tarball"
+                log_success "Go ${go_version} installed to /usr/local/go"
+            else
+                log_error "Go download failed"
+            fi
+            rm -rf "$(dirname "$go_tarball")"
+        else
+            log_error "Could not determine latest Go version"
+        fi
+    fi
 else
     log_skip "Go already installed"
 fi

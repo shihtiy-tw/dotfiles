@@ -6,7 +6,6 @@ cargo install basalt-tui
 
 uv tool install parllama
 
-sudo pacman -S github-cli
+sudo pacman -S --noconfirm github-cli
 gh extension install dlvhdr/gh-dash
 gh extension upgrade dash
-

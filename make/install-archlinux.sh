@@ -32,6 +32,31 @@ source "$SCRIPT_DIR/modules/common/agent-deck.sh"
 source "$SCRIPT_DIR/modules/common/vibe-kanban.sh"
 
 ################################################################################
+# HEADLESS MODE
+################################################################################
+
+# Set DOTFILES_HEADLESS=1 to skip desktop applications, the display manager, and
+# host-hardware drivers. None of them are usable on a server, in a VM guest, or in
+# a container - and together they account for well over 10GB of downloads plus DKMS
+# module builds against a kernel that may not even be running.
+#
+# Everything else (shells, editors, languages, CLI tooling) still installs.
+DOTFILES_HEADLESS="${DOTFILES_HEADLESS:-0}"
+
+# Usage: if headless_skip "GTK themes"; then ... fi   <- true means "skip this"
+headless_skip() {
+    if [ "$DOTFILES_HEADLESS" = "1" ]; then
+        log_skip "$1 (DOTFILES_HEADLESS=1)"
+        return 0
+    fi
+    return 1
+}
+
+if [ "$DOTFILES_HEADLESS" = "1" ]; then
+    log_warn "DOTFILES_HEADLESS=1: skipping GUI apps, display manager, and hardware drivers"
+fi
+
+################################################################################
 # SYSTEM UTILITIES
 ################################################################################
 
@@ -39,7 +64,9 @@ log_section "Installing System Utilities"
 
 # Core utilities
 safe_exec "dbus" sudo pacman --noconfirm -S dbus
-safe_exec "intel-ucode" sudo pacman --noconfirm -S intel-ucode
+# CPU microcode is loaded by the bootloader for the physical host, so it does nothing
+# in a container or VM guest.
+headless_skip "intel-ucode" || safe_exec "intel-ucode" sudo pacman --noconfirm -S intel-ucode
 safe_exec "fuse2" sudo pacman --noconfirm -S fuse2
 safe_exec "lshw" sudo pacman --noconfirm -S lshw
 safe_exec "powertop" sudo pacman --noconfirm -S powertop
@@ -68,45 +95,51 @@ safe_exec "less vi" sudo pacman --noconfirm -S less vi
 
 log_section "System Configuration"
 
-# Session manager
-log_info "Enabling session manager..."
-safe_exec "ly" sudo pacman --noconfirm -S ly
-sudo systemctl enable ly || true
-
-# Fonts
+# Fonts (kept in headless mode: terminus-font is a console font, and the rest are
+# tiny and harmless)
 safe_exec "fonts" sudo pacman --noconfirm -S ttf-dejavu ttf-freefont ttf-liberation ttf-droid terminus-font
 safe_exec "noto fonts" sudo pacman --noconfirm -S noto-fonts noto-fonts-emoji ttf-ubuntu-font-family ttf-roboto ttf-roboto-mono ttf-ibm-plex
 
-# Sound support
-safe_exec "alsa" sudo pacman --noconfirm -S alsa-utils alsa-plugins
-safe_exec "sof-firmware" sudo pacman --noconfirm -S sof-firmware
+# Everything below this point drives a display, a speaker, a printer, a battery or a
+# GPU. On a headless machine it is dead weight, and the systemctl enable calls fail
+# anyway without a running systemd.
+if ! headless_skip "desktop and hardware configuration"; then
+    # Session manager
+    log_info "Enabling session manager..."
+    safe_exec "ly" sudo pacman --noconfirm -S ly
+    sudo systemctl enable ly || true
 
-# Bluetooth
-safe_exec "bluetooth" sudo pacman --noconfirm -S bluez bluez-utils blueman
-sudo systemctl enable bluetooth || true
+    # Sound support
+    safe_exec "alsa" sudo pacman --noconfirm -S alsa-utils alsa-plugins
+    safe_exec "sof-firmware" sudo pacman --noconfirm -S sof-firmware
 
-# Printing
-safe_exec "cups" sudo pacman --noconfirm -S cups cups-filters cups-pdf system-config-printer
-safe_exec "hplip" sudo pacman --noconfirm -S hplip
-sudo systemctl enable cups.service || true
+    # Bluetooth
+    safe_exec "bluetooth" sudo pacman --noconfirm -S bluez bluez-utils blueman
+    sudo systemctl enable bluetooth || true
 
-# Power management
-safe_exec "tlp" sudo pacman --noconfirm -S tlp tlp-rdw
-sudo systemctl enable tlp || true
-sudo systemctl enable fstrim.timer || true
+    # Printing
+    safe_exec "cups" sudo pacman --noconfirm -S cups cups-filters cups-pdf system-config-printer
+    safe_exec "hplip" sudo pacman --noconfirm -S hplip
+    sudo systemctl enable cups.service || true
 
-# GTK themes
-safe_exec "gtk themes" sudo pacman --noconfirm -S arc-gtk-theme adapta-gtk-theme materia-gtk-theme papirus-icon-theme
+    # Power management
+    safe_exec "tlp" sudo pacman --noconfirm -S tlp tlp-rdw
+    sudo systemctl enable tlp || true
+    sudo systemctl enable fstrim.timer || true
 
-# NetworkManager addons
-safe_exec "nm-connection-editor" sudo pacman --noconfirm -S nm-connection-editor networkmanager-openvpn
+    # GTK themes
+    safe_exec "gtk themes" sudo pacman --noconfirm -S arc-gtk-theme adapta-gtk-theme materia-gtk-theme papirus-icon-theme
 
-# Graphics drivers
-safe_exec "vulkan intel" sudo pacman --noconfirm -S mesa vulkan-intel || true
-safe_exec "nvidia-utils" sudo pacman --noconfirm -S nvidia-utils || true
+    # NetworkManager addons
+    safe_exec "nm-connection-editor" sudo pacman --noconfirm -S nm-connection-editor networkmanager-openvpn
 
-# Keyboard management
-safe_exec "xorg-xmodmap" sudo pacman --noconfirm -S xorg-xmodmap xkeycaps
+    # Graphics drivers
+    safe_exec "vulkan intel" sudo pacman --noconfirm -S mesa vulkan-intel || true
+    safe_exec "nvidia-utils" sudo pacman --noconfirm -S nvidia-utils || true
+
+    # Keyboard management
+    safe_exec "xorg-xmodmap" sudo pacman --noconfirm -S xorg-xmodmap xkeycaps
+fi
 
 ################################################################################
 # GENERAL PURPOSE APPS
@@ -114,31 +147,38 @@ safe_exec "xorg-xmodmap" sudo pacman --noconfirm -S xorg-xmodmap xkeycaps
 
 log_section "Installing General Purpose Apps"
 
-safe_exec "firefox" sudo pacman --noconfirm -S firefox
-safe_exec "obsidian" sudo pacman --noconfirm -S obsidian
-safe_exec "bitwarden" sudo pacman --noconfirm -S bitwarden bitwarden-cli
-safe_exec "mousepad" sudo pacman --noconfirm -S mousepad
-safe_exec "file-roller" sudo pacman --noconfirm -S file-roller
-safe_exec "evince" sudo pacman --noconfirm -S evince
-safe_exec "xournalpp" sudo pacman --noconfirm -S xournalpp
-safe_exec "libreoffice" sudo pacman --noconfirm -S libreoffice
-safe_exec "gimp" sudo pacman --noconfirm -S gimp
-safe_exec "gpick" sudo pacman --noconfirm -S gpick
-safe_exec "inkscape" sudo pacman --noconfirm -S inkscape
-safe_exec "fontforge" sudo pacman --noconfirm -S fontforge
-safe_exec "gparted" sudo pacman --noconfirm -S gparted
-safe_exec "vlc" sudo pacman --noconfirm -S vlc
-safe_exec "remmina" sudo pacman --noconfirm -S remmina
-safe_exec "shotcut" sudo pacman --noconfirm -S shotcut
-safe_exec "evolution" sudo pacman --noconfirm -S evolution
-safe_exec "redshift" sudo pacman --noconfirm -S redshift
-safe_exec "obs-studio" sudo pacman --noconfirm -S obs-studio
-safe_exec "wireshark-qt" sudo pacman --noconfirm -S wireshark-qt
-safe_exec "spotify-launcher" sudo pacman --noconfirm -S spotify-launcher
-safe_exec "telegram-desktop" sudo pacman --noconfirm -S telegram-desktop
+# CLI tools from this section - always installed.
 safe_exec "rclone" sudo pacman --noconfirm -S rclone
 safe_exec "openvpn wireguard" sudo pacman --noconfirm -S openvpn wireguard-tools
-safe_exec "arandr" sudo pacman --noconfirm -S arandr
+
+# Desktop applications. This is the single biggest download in the script
+# (libreoffice, gimp, inkscape, obs-studio, vlc and firefox alone are several GB) and
+# none of it can be launched without a display server.
+if ! headless_skip "desktop applications"; then
+    safe_exec "firefox" sudo pacman --noconfirm -S firefox
+    safe_exec "obsidian" sudo pacman --noconfirm -S obsidian
+    safe_exec "bitwarden" sudo pacman --noconfirm -S bitwarden bitwarden-cli
+    safe_exec "mousepad" sudo pacman --noconfirm -S mousepad
+    safe_exec "file-roller" sudo pacman --noconfirm -S file-roller
+    safe_exec "evince" sudo pacman --noconfirm -S evince
+    safe_exec "xournalpp" sudo pacman --noconfirm -S xournalpp
+    safe_exec "libreoffice" sudo pacman --noconfirm -S libreoffice
+    safe_exec "gimp" sudo pacman --noconfirm -S gimp
+    safe_exec "gpick" sudo pacman --noconfirm -S gpick
+    safe_exec "inkscape" sudo pacman --noconfirm -S inkscape
+    safe_exec "fontforge" sudo pacman --noconfirm -S fontforge
+    safe_exec "gparted" sudo pacman --noconfirm -S gparted
+    safe_exec "vlc" sudo pacman --noconfirm -S vlc
+    safe_exec "remmina" sudo pacman --noconfirm -S remmina
+    safe_exec "shotcut" sudo pacman --noconfirm -S shotcut
+    safe_exec "evolution" sudo pacman --noconfirm -S evolution
+    safe_exec "redshift" sudo pacman --noconfirm -S redshift
+    safe_exec "obs-studio" sudo pacman --noconfirm -S obs-studio
+    safe_exec "wireshark-qt" sudo pacman --noconfirm -S wireshark-qt
+    safe_exec "spotify-launcher" sudo pacman --noconfirm -S spotify-launcher
+    safe_exec "telegram-desktop" sudo pacman --noconfirm -S telegram-desktop
+    safe_exec "arandr" sudo pacman --noconfirm -S arandr
+fi
 
 ################################################################################
 # YAY (AUR HELPER)
@@ -208,7 +248,7 @@ fi
 # Docker configuration
 log_info "Configuring Docker..."
 sudo systemctl enable docker || true
-sudo usermod -a -G docker "$USER" || true
+sudo usermod -a -G docker "${USER:-$(id -un)}" || true
 # NOTE: newgrp docker is NOT used here as it blocks the script
 log_warn "Docker group added. You must LOG OUT and back in for docker group to take effect."
 
@@ -239,7 +279,8 @@ safe_exec "maven gradle" sudo pacman --noconfirm -S maven gradle
 # C/C++
 safe_exec "gcc gdb clang" sudo pacman --noconfirm -S gcc gdb clang
 safe_exec "cmake ninja" sudo pacman --noconfirm -S cmake ninja
-safe_exec "cuda" sudo pacman --noconfirm -S cuda || true
+# ~5GB and useless without an NVIDIA GPU passed through.
+headless_skip "cuda" || safe_exec "cuda" sudo pacman --noconfirm -S cuda || true
 safe_exec "nasm boost" sudo pacman --noconfirm -S nasm boost
 
 # Python
@@ -268,11 +309,15 @@ install_bun
 
 log_section "Installing Virtualization Tools"
 
-safe_exec "cdrtools qemu" sudo pacman --noconfirm -S cdrtools qemu-full
-safe_exec "virtualbox" sudo pacman --noconfirm -S linux-headers virtualbox-host-dkms virtualbox || true
+# qemu-full is ~2GB, virtualbox-host-dkms compiles kernel modules against the running
+# kernel (which a container does not own), and wine needs a display server.
+if ! headless_skip "virtualization and wine"; then
+    safe_exec "cdrtools qemu" sudo pacman --noconfirm -S cdrtools qemu-full
+    safe_exec "virtualbox" sudo pacman --noconfirm -S linux-headers virtualbox-host-dkms virtualbox || true
 
-# Wine
-safe_exec "wine" sudo pacman --noconfirm -S wine wine-mono wine-gecko winetricks zenity
+    # Wine
+    safe_exec "wine" sudo pacman --noconfirm -S wine wine-mono wine-gecko winetricks zenity
+fi
 
 ################################################################################
 # AUR PACKAGES
@@ -281,18 +326,25 @@ safe_exec "wine" sudo pacman --noconfirm -S wine wine-mono wine-gecko winetricks
 log_section "Installing AUR Packages"
 
 if command -v yay &> /dev/null; then
-    # Install common AUR packages
+    # CLI packages - always installed.
     AUR_PACKAGES=(
-        "google-chrome"
         "aws-cli-v2"
         "aws-session-manager-plugin"
-        "sublime-text-4"
         "lazydocker"
         "lazygit"
         "amazon-q-bin"
-        "claude-desktop"
     )
-    
+
+    # GUI packages. claude-desktop in particular is a from-source Electron build that
+    # takes a long time and cannot run without a display.
+    if ! headless_skip "AUR desktop applications"; then
+        AUR_PACKAGES+=(
+            "google-chrome"
+            "sublime-text-4"
+            "claude-desktop"
+        )
+    fi
+
     for pkg in "${AUR_PACKAGES[@]}"; do
         log_info "Installing $pkg from AUR..."
         yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" "$pkg" || log_warn "Failed to install $pkg"

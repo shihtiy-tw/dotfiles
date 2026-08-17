@@ -1,0 +1,14 @@
+# Termux test image for make/install-termux.sh
+#
+# The upstream CI image for Termux packages. It is the closest thing to Android
+# available in a container: real Termux prefix at /data/data/com.termux/files/usr,
+# real `pkg`, no sudo, no systemd, runs as root.
+#
+# Caveats this image cannot cover: no Android permissions model, no termux-api, and
+# /system is a stub. Treat Termux results as indicative, not conclusive.
+FROM termux/termux-docker:x86_64
+
+# `pkg` is a wrapper over apt with the Termux repos already configured.
+RUN pkg update -y && pkg install -y bash coreutils findutils git make
+
+ENTRYPOINT ["bash", "/staging/make/test/entrypoint.sh"]

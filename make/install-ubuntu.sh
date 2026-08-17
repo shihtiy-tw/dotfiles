@@ -16,6 +16,11 @@
 set -u  # Exit on undefined variable
 set -o pipefail  # Exit on pipe failure
 
+# Keep apt non-interactive. Without this, `apt upgrade` and `apt full-upgrade` can
+# stop on an ncurses dialog (tzdata, service restarts) even when -y is passed,
+# which hangs an unattended run indefinitely.
+export DEBIAN_FRONTEND=noninteractive
+
 ################################################################################
 # SETUP - Source Shared Modules
 ################################################################################
@@ -162,9 +167,9 @@ LATEST_VERSION=$(curl -s https://api.github.com/repos/so-fancy/diff-so-fancy/rel
 sudo curl -L -o /usr/local/bin/diff-so-fancy "https://github.com/so-fancy/diff-so-fancy/releases/download/v${LATEST_VERSION}/diff-so-fancy"
 sudo chmod +x /usr/local/bin/diff-so-fancy
 
-sudo apt install git-extras
+sudo apt install -y git-extras
 
-sudo apt install git-lfs
+sudo apt install -y git-lfs
 
 # See ~/dotfiles/git/commit-conventions.txt
 git config --global commit.template ~/dotfiles/git/commit-conventions.txt
@@ -177,7 +182,7 @@ sudo apt install pre-commit -y
 install_gitflow
 
 # tree
-sudo apt install tree
+sudo apt install -y tree
 
 # zsh
 sudo apt install zsh powerline fonts-powerline -y
@@ -275,7 +280,7 @@ safe_exec "Silver Searcher" sudo apt install -y silversearcher-ag
 log_section "Installing Docker"
 
 log_info "Removing old Docker packages..."
-for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do 
+for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do
     sudo apt-get remove -y "$pkg" 2>/dev/null || true
 done
 
@@ -293,7 +298,7 @@ echo \
   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
   $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-  
+
 safe_exec "apt update after Docker repo" sudo apt-get update
 
 # Install Docker packages
@@ -303,7 +308,7 @@ safe_exec "Docker installation" sudo apt-get install -y docker-ce docker-ce-cli 
 # Configure Docker group for non-root access
 log_info "Configuring Docker group for non-root usage..."
 sudo groupadd docker 2>/dev/null || log_skip "Docker group already exists"
-safe_exec "Add user to docker group" sudo usermod -aG docker "$USER"
+safe_exec "Add user to docker group" sudo usermod -aG docker "${USER:-$(id -un)}"
 
 # IMPORTANT: Docker group changes require logout/login or system restart to take effect
 # The 'newgrp docker' command would create a new shell session and block the script
@@ -363,13 +368,13 @@ echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
 https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
 sudo tee /etc/apt/sources.list.d/hashicorp.list
 sudo apt update
-sudo apt-get install terraform
+sudo apt-get install -y terraform
 
 # Packer
 # https://developer.hashicorp.com/packer/tutorials/docker-get-started/get-started-install-cli
 curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
 sudo apt-add-repository -y "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-sudo apt-get update && sudo apt-get install packer
+sudo apt-get update && sudo apt-get install -y packer
 
 ################################################################################
 # AI TOOLS
@@ -401,4 +406,3 @@ log_info "4. (Optional) Install Tmux plugins: Press Ctrl+A then I in tmux"
 log_info ""
 log_warn "Important: Some tools require a logout/login to work properly!"
 echo ""
-

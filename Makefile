@@ -19,6 +19,10 @@ RESET=\033[0m
 .PHONY: clean
 .PHONY: all
 .PHONY: default
+.PHONY: remove_env
+.PHONY: remove_env-dry-run
+.PHONY: test-container
+.PHONY: test-container-full
 
 default: help
 
@@ -39,9 +43,8 @@ help:
 		@echo "  $(YELLOW)add$(RESET):              add changes to git"
 		@echo "  $(YELLOW)commit$(RESET):           commit changes"
 		@echo "  $(YELLOW)ls$(RESET):               show dotfiles"
-		@echo "  $(YELLOW)rm_env$(RESET):           remove env"
-		@echo "  $(YELLOW)aws$(RESET):              install aws tool"
-		@echo "  $(YELLOW)kubernetes$(RESET):       install kubernetes tool"
+		@echo "  $(YELLOW)remove_env$(RESET):       unlink dotfiles and restore backups"
+		@echo "  $(YELLOW)test-container$(RESET):   run installers in throwaway containers"
 
 # PHONY: help
 
@@ -153,26 +156,10 @@ remove_env:
 #\n\
 	#"
 
-	if [ -e ${HOME}/.zshrc.backup ]; then \
-		rm ${HOME}/.zshrc \
-		mv ${HOME}/.zshrc.backup ${HOME}/.zshrc; \
-	fi
-	if [ -e ${HOME}/.bashrc.backup ]; then \
-		rm ${HOME}/.bashrc \
-		mv ${HOME}/.bash.backup ${HOME}/.bashrc; \
-	fi
-	if [ -e ${HOME}/.tmux.conf.backup ]; then \
-		rm ${HOME}/.tmux.conf.backup \
-		mv ${HOME}/.tmux.conf.backup ${HOME}/.tmux.conf; \
-	fi
-	if [ -e ${HOME}/.gitconfig.backup ]; then \
-		rm ${HOME}/.gitconfig \
-		mv ${HOME}/.gitconfig.backup ${HOME}/.gitconfig; \
-	fi
-	if [ -e ${HOME}/.config/nvim/init.vim.backup ]; then \
-		rm ${HOME}/.config/nvim/init.vim \
-		mv ${HOME}/.config/nvim/init.vim.backup ${HOME}/.config/nvim/init.vim; \
-	fi
+	@./make/remove-env.sh
+
+remove_env-dry-run:
+	@./make/remove-env.sh --dry-run
 
 ################################################################################
 # TEST TARGETS
@@ -198,5 +185,14 @@ test-verbose:
 	@echo " $(CYAN)Running all tests with verbose output...$(RESET)"
 	@./make/test.sh --verbose
 
-# TODO: add aws and kubernetes script
+# Run the installers inside throwaway containers. See make/test/README.md.
+# NEVER run the installers directly on your own machine.
+test-container:
+	@echo " $(CYAN)Running fast container tests (all distros)...$(RESET)"
+	@./make/test/run.sh --phase fast
 
+test-container-full:
+	@echo " $(CYAN)Running full container installs (this takes a while)...$(RESET)"
+	@./make/test/run.sh --phase full
+
+# TODO: add aws and kubernetes script
