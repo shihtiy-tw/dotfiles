@@ -7,10 +7,11 @@
 # ~/.zshrc, ~/.gitconfig, ~/.aws/config and ~/.config/nvim/*.
 #
 # Inputs (environment):
-#   PHASE            fast | full          (default: fast)
+#   PHASE            fast | full | extras (default: fast)
 #   DISTRO           label for the report (default: derived from /etc/os-release)
 #   STAGING          read-only repo mount (default: /staging)
 #   INSTALL_TIMEOUT  seconds for the installer step (default: 3600)
+#   EXTRAS_TIMEOUT   seconds for each optional installer (default: 900)
 #
 # Output: a human log plus a machine-readable ##### SUMMARY block.
 # Exit code: number of failed steps (0 = everything passed).
@@ -21,6 +22,7 @@ set -u
 PHASE="${PHASE:-fast}"
 STAGING="${STAGING:-/staging}"
 INSTALL_TIMEOUT="${INSTALL_TIMEOUT:-3600}"
+EXTRAS_TIMEOUT="${EXTRAS_TIMEOUT:-900}"
 DOTFILES="$HOME/dotfiles"
 
 if [ -z "${DISTRO:-}" ]; then
@@ -228,6 +230,32 @@ step_appimage_check() {
     return 1
 }
 
+# Run one of the optional tool installers (install-aws.sh, install-gcp.sh, ...).
+#
+# These are not reachable from `make install` - they are opt-in tool sets - so nothing in
+# the fast or full phase ever executed them, which is exactly why they accumulated the
+# most rot in the repo: a missing kubectl download, an apt-only helm block, a `pacman` call
+# in the generic TUI script, and an `npx <github url>` that launched an interactive CLI
+# instead of installing anything.
+step_optional() {
+    local script="$1"
+
+    if [ ! -f "$DOTFILES/make/$script" ]; then
+        echo "$script does not exist" >&2
+        return 1
+    fi
+    if [ ! -x "$DOTFILES/make/$script" ]; then
+        echo "$script is not executable (mode $(stat -c '%a' "$DOTFILES/make/$script"))" >&2
+        return 1
+    fi
+
+    if command -v timeout >/dev/null 2>&1; then
+        timeout --signal=TERM --kill-after=30 "$EXTRAS_TIMEOUT" "$DOTFILES/make/$script"
+    else
+        "$DOTFILES/make/$script"
+    fi
+}
+
 ################################################################################
 # MAIN
 ################################################################################
@@ -265,6 +293,20 @@ run_step symlinks step_symlinks
 if [ "$PHASE" = "full" ]; then
     run_step appimage_check step_appimage_check
     run_step make_test step_make_test
+fi
+
+# The optional tool sets. Deliberately after init/symlinks (some of them look for shell
+# config that init.sh links) and before repo_dirty, which is the real test of two of the
+# decisions in these scripts: gcloud's installer is run with --path-update=false so it
+# cannot append to the symlinked ~/.zshrc, and kustomize's upstream installer is given an
+# explicit target because it otherwise defaults to $PWD and drops a binary in the checkout.
+if [ "$PHASE" = "extras" ]; then
+    run_step aws        step_optional install-aws.sh
+    run_step gcp        step_optional install-gcp.sh
+    run_step azure      step_optional install-azure.sh
+    run_step kubernetes step_optional install-kubernetes.sh
+    run_step llm        step_optional install-llm.sh
+    run_step tui        step_optional install-tui.sh
 fi
 
 run_step repo_dirty step_repo_dirty

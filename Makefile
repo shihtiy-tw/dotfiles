@@ -23,6 +23,14 @@ RESET=\033[0m
 .PHONY: remove_env-dry-run
 .PHONY: test-container
 .PHONY: test-container-full
+.PHONY: test-container-extras
+.PHONY: aws
+.PHONY: gcp
+.PHONY: azure
+.PHONY: kubernetes
+.PHONY: llm
+.PHONY: tui
+.PHONY: cloud
 
 default: help
 
@@ -45,6 +53,14 @@ help:
 		@printf '%b\n' "  $(YELLOW)ls$(RESET):               show dotfiles"
 		@printf '%b\n' "  $(YELLOW)remove_env$(RESET):       unlink dotfiles and restore backups"
 		@printf '%b\n' "  $(YELLOW)test-container$(RESET):   run installers in throwaway containers"
+		@printf '%b\n' " $(GREEN)Optional tool sets:$(RESET) "
+		@printf '%b\n' "  $(YELLOW)aws$(RESET):              AWS CLI v2 + Session Manager plugin"
+		@printf '%b\n' "  $(YELLOW)gcp$(RESET):              Google Cloud CLI + GKE auth plugin"
+		@printf '%b\n' "  $(YELLOW)azure$(RESET):            Azure CLI + kubelogin"
+		@printf '%b\n' "  $(YELLOW)kubernetes$(RESET):       kubectl, eksctl, helm, krew, k9s, kustomize"
+		@printf '%b\n' "  $(YELLOW)llm$(RESET):              llm CLI + Gemini CLI"
+		@printf '%b\n' "  $(YELLOW)tui$(RESET):              basalt, parllama, gh-dash"
+		@printf '%b\n' "  $(YELLOW)cloud$(RESET):            aws + gcp + azure + kubernetes"
 
 # PHONY: help
 
@@ -194,4 +210,38 @@ test-container-full:
 	@printf '%b\n' " $(CYAN)Running full container installs (this takes a while)...$(RESET)"
 	@./make/test/run.sh --phase full
 
-# TODO: add aws and kubernetes script
+test-container-extras:
+	@printf '%b\n' " $(CYAN)Running the optional tool installers in containers...$(RESET)"
+	@./make/test/run.sh --phase extras
+
+################################################################################
+# OPTIONAL TOOL SETS
+#
+# Not part of `make install` - these are opt-in, and each is safe to re-run.
+################################################################################
+
+aws:
+	@printf '%b\n' " $(CYAN)Installing AWS tools...$(RESET)"
+	@./make/install-aws.sh
+
+gcp:
+	@printf '%b\n' " $(CYAN)Installing Google Cloud tools...$(RESET)"
+	@./make/install-gcp.sh
+
+azure:
+	@printf '%b\n' " $(CYAN)Installing Azure tools...$(RESET)"
+	@./make/install-azure.sh
+
+kubernetes:
+	@printf '%b\n' " $(CYAN)Installing Kubernetes tools...$(RESET)"
+	@./make/install-kubernetes.sh
+
+llm:
+	@printf '%b\n' " $(CYAN)Installing LLM tooling...$(RESET)"
+	@./make/install-llm.sh
+
+tui:
+	@printf '%b\n' " $(CYAN)Installing terminal UI tools...$(RESET)"
+	@./make/install-tui.sh
+
+cloud: aws gcp azure kubernetes

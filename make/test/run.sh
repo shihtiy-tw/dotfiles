@@ -5,12 +5,15 @@
 # Usage:
 #   ./make/test/run.sh                          # fast phase, all distros
 #   ./make/test/run.sh --phase full ubuntu      # full install, one distro
+#   ./make/test/run.sh --phase extras ubuntu    # the opt-in tool sets only
 #   ./make/test/run.sh --no-headless archlinux  # include the 10GB of GUI packages
 #   ./make/test/run.sh --keep-image             # skip the image rebuild
 #
 # Phases:
 #   fast   syntax + dispatch + `make init` + `make test-symlinks`   (~1 min)
 #   full   the whole installer end-to-end, then `make test`         (20-60 min)
+#   extras the six optional installers - aws, gcp, azure, kubernetes,
+#          llm, tui - which no `make install` path ever reaches      (10-25 min)
 #
 # Logs land in make/test/logs/<distro>-<phase>.log (gitignored).
 # Exit code is the number of distros that reported failures.
@@ -28,6 +31,7 @@ PHASE=fast
 HEADLESS=1
 BUILD=1
 INSTALL_TIMEOUT=3600
+EXTRAS_TIMEOUT=900
 DISTROS=()
 
 die() { echo "error: $*" >&2; exit 2; }
@@ -40,15 +44,17 @@ while [ $# -gt 0 ]; do
         --keep-image)   BUILD=0; shift ;;
         --timeout)      INSTALL_TIMEOUT="${2:-}"; shift 2 ;;
         --timeout=*)    INSTALL_TIMEOUT="${1#*=}"; shift ;;
-        -h | --help)    sed -n '2,20p' "${BASH_SOURCE[0]}"; exit 0 ;;
+        --extras-timeout)   EXTRAS_TIMEOUT="${2:-}"; shift 2 ;;
+        --extras-timeout=*) EXTRAS_TIMEOUT="${1#*=}"; shift ;;
+        -h | --help)    sed -n '2,22p' "${BASH_SOURCE[0]}"; exit 0 ;;
         -*)             die "unknown option: $1" ;;
         *)              DISTROS+=("$1"); shift ;;
     esac
 done
 
 case "$PHASE" in
-    fast | full) ;;
-    *) die "--phase must be 'fast' or 'full', got '$PHASE'" ;;
+    fast | full | extras) ;;
+    *) die "--phase must be 'fast', 'full' or 'extras', got '$PHASE'" ;;
 esac
 
 [ "${#DISTROS[@]}" -eq 0 ] && DISTROS=("${ALL_DISTROS[@]}")
@@ -105,6 +111,7 @@ for distro in "${DISTROS[@]}"; do
         -e "PHASE=$PHASE" \
         -e "DISTRO=$distro" \
         -e "INSTALL_TIMEOUT=$INSTALL_TIMEOUT" \
+        -e "EXTRAS_TIMEOUT=$EXTRAS_TIMEOUT" \
         -e "DOTFILES_HEADLESS=$HEADLESS" \
         "$image" > "$log" 2>&1
     rc=$?
