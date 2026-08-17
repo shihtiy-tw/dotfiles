@@ -2,13 +2,36 @@
 #
 # The upstream CI image for Termux packages. It is the closest thing to Android
 # available in a container: real Termux prefix at /data/data/com.termux/files/usr,
-# real `pkg`, no sudo, no systemd, runs as root.
+# real `pkg`, no sudo, no systemd.
+#
+# It already runs as uid 1000 (system), which is what we want and what Termux itself
+# assumes - `pkg` refuses to run as root, and there is no sudo to get back down.
 #
 # Caveats this image cannot cover: no Android permissions model, no termux-api, and
 # /system is a stub. Treat Termux results as indicative, not conclusive.
 FROM termux/termux-docker:x86_64
 
+# uid 1000 (system) is what Termux actually runs as, and this line is required twice over:
+#
+#  - At build time. The base image declares no USER, so RUN would execute as root and
+#    `pkg` refuses that outright ("Error: Cannot run 'pkg' command as root").
+#  - At run time. The base image drops to uid 1000 inside its own /entrypoint.sh, and the
+#    ENTRYPOINT below replaces that script - so without this the installer would run as
+#    root, which no real Termux install ever does and which `pkg` would reject anyway.
+USER 1000
+
 # `pkg` is a wrapper over apt with the Termux repos already configured.
 RUN pkg update -y && pkg install -y bash coreutils findutils git make
+
+# Termux has no /bin, /usr/bin/env or /tmp, so a `#!/bin/bash` or `#!/usr/bin/env bash`
+# shebang cannot be resolved by the kernel. On a real device that does not matter: the
+# termux-exec shim is preloaded into every process by the app, and it rewrites those
+# paths into $PREFIX as execve() is called. The docker image ships the library but does
+# not set LD_PRELOAD, so without this line the harness reports "bad interpreter" for
+# every script in this repo - a container artifact with no counterpart on real hardware.
+#
+# It has to be inherited by the *calling* shell, not set per-command: the interception
+# happens in the process invoking execve(), before the new program image exists.
+ENV LD_PRELOAD=/data/data/com.termux/files/usr/lib/libtermux-exec.so
 
 ENTRYPOINT ["bash", "/staging/make/test/entrypoint.sh"]

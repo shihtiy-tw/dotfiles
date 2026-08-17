@@ -34,6 +34,7 @@ source "$SCRIPT_DIR/modules/helpers/logger.sh"
 TESTS_PASSED=0
 TESTS_FAILED=0
 TESTS_FIXED=0
+TESTS_SKIPPED=0
 
 # Parse arguments
 FIX_MODE=false
@@ -72,10 +73,26 @@ SYMLINKS=(
     # Ghostty terminal
     "$HOME/.config/ghostty/config:$DOTFILES_DIR/ghostty/ghostty.conf"
 
+    # Alacritty terminal
+    #
+    # init.sh:128 has always linked this; the table just never listed it, so a missing or
+    # wrong ~/.config/alacritty/alacritty.yml went unreported on every platform.
+    "$HOME/.config/alacritty/alacritty.yml:$DOTFILES_DIR/alacritty/alacritty.yml"
+
     # Opencode
     "$HOME/.config/opencode/opencode.jsonc:$DOTFILES_DIR/opencode/opencode.jsonc"
+)
 
-    # Oh-My-Zsh theme symlink
+# Symlinks that init.sh only creates when their target already exists.
+#
+# The spaceship theme is the one case: init.sh:133-138 links it only if
+# ~/.oh-my-zsh/custom/themes exists *and* the spaceship-prompt clone is present, because
+# the source of the link is itself installed by oh-my-zsh.sh rather than by this repo.
+# Asserting it unconditionally made this the only failing check on all four distros in a
+# container where oh-my-zsh had not been installed - a guaranteed false negative that
+# gave `make test-symlinks` a non-zero exit for a symlink init.sh had correctly declined
+# to create.
+CONDITIONAL_SYMLINKS=(
     "$HOME/.oh-my-zsh/custom/themes/spaceship.zsh-theme:$HOME/.oh-my-zsh/custom/themes/spaceship-prompt/spaceship.zsh-theme"
 )
 
@@ -158,9 +175,15 @@ fix_symlink() {
 test_symlink() {
     local symlink_path="$1"
     local target="$2"
-    local display_path="${symlink_path/#$HOME/~}"
-    local display_target="${target/#$HOME/~}"
-    display_target="${display_target/#$DOTFILES_DIR/\$DOTFILES}"
+    # The ~ has to be escaped. Unescaped, it is tilde-expanded back to $HOME in the
+    # replacement position, making the whole substitution a silent no-op - which is why
+    # every line of this report used to print the full /home/<user> path.
+    #
+    # $DOTFILES_DIR is substituted before $HOME because the checkout normally lives
+    # under $HOME; shortening $HOME first would stop the $DOTFILES pattern matching.
+    local display_path="${symlink_path/#"$HOME"/\~}"
+    local display_target="${target/#"$DOTFILES_DIR"/\$DOTFILES}"
+    display_target="${display_target/#"$HOME"/\~}"
 
     check_symlink "$symlink_path" "$target"
     local result=$?
@@ -227,22 +250,23 @@ main() {
     echo ""
 
     log_section "Shell Configuration"
+    local entry symlink_path target
     for entry in "${SYMLINKS[@]}"; do
-        # Parse entry
-        local symlink_path="${entry%%:*}"
-        local target="${entry#*:}"
-
-        # Group by category based on path
-        case "$symlink_path" in
-            */.zshrc|*/.bashrc)
-                # Shell configs - already in section
-                ;;
-            *)
-                # Continue with test
-                ;;
-        esac
-
+        symlink_path="${entry%%:*}"
+        target="${entry#*:}"
         test_symlink "$symlink_path" "$target"
+    done
+
+    log_section "Conditional Symlinks"
+    for entry in "${CONDITIONAL_SYMLINKS[@]}"; do
+        symlink_path="${entry%%:*}"
+        target="${entry#*:}"
+        if [[ -e "$target" ]]; then
+            test_symlink "$symlink_path" "$target"
+        else
+            log_test "SKIP" "${symlink_path/#"$HOME"/\~} (source not installed: ${target/#"$HOME"/\~})"
+            TESTS_SKIPPED=$((TESTS_SKIPPED + 1))
+        fi
     done
 
     # Print summary
@@ -250,6 +274,9 @@ main() {
     echo ""
     echo -e "${LOG_GREEN}Valid:${LOG_NC}   $TESTS_PASSED"
     echo -e "${LOG_RED}Invalid:${LOG_NC} $TESTS_FAILED"
+    if [[ $TESTS_SKIPPED -gt 0 ]]; then
+        echo -e "${LOG_CYAN}Skipped:${LOG_NC} $TESTS_SKIPPED"
+    fi
     if $FIX_MODE && [[ $TESTS_FIXED -gt 0 ]]; then
         echo -e "${LOG_YELLOW}Fixed:${LOG_NC}   $TESTS_FIXED"
     fi

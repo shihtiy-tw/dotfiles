@@ -18,8 +18,12 @@ install_vibe_kanban() {
         return 1
     fi
 
-    log_info "Installing vibe-kanban globally via npm..."
-    if npm install -g vibe-kanban; then
+    # Install under ~/.local rather than npm's default global prefix. When npm comes from
+    # the distro (Arch, Debian) that prefix is /usr, so `npm install -g` dies with EACCES
+    # on /usr/lib/node_modules for any non-root user. ~/.local/bin is on PATH via
+    # zsh/env.zsh and works the same whether npm came from nvm or from a package.
+    log_info "Installing vibe-kanban via npm into ~/.local..."
+    if npm install -g --prefix "$HOME/.local" vibe-kanban; then
         log_success "Vibe Kanban installed"
         return 0
     else

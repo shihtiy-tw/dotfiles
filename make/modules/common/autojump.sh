@@ -40,14 +40,17 @@ install_autojump() {
 
     log_info "Installing autojump from source..."
 
-    local tmp_dir="/tmp/autojump-install-$$"
+    local tmp_dir="${TMPDIR:-/tmp}/autojump-install-$$"
 
-    if ! git clone https://github.com/wting/autojump.git "$tmp_dir"; then
+    if ! git clone --depth 1 https://github.com/wting/autojump.git "$tmp_dir"; then
         log_error "Failed to clone autojump repository"
         return 1
     fi
 
-    if (cd "$tmp_dir" && python3 install.py); then
+    # autojump's install.py picks its target shell from $SHELL and hard-fails with
+    # "Unsupported shell: None" when it is unset - which is the norm under docker,
+    # cloud-init and packer. Fall back to bash rather than leaving it undefined.
+    if (cd "$tmp_dir" && SHELL="${SHELL:-/bin/bash}" python3 install.py); then
         log_success "Autojump installed"
         rm -rf "$tmp_dir"
         return 0

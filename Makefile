@@ -132,19 +132,19 @@ init:
 		@./make/init.sh
 
 status:
-	/usr/bin/git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME} status
+	git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME} status
 
 diff:
-	/usr/bin/git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME} diff
+	git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME} diff
 
 add:
-	/usr/bin/git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME} add
+	git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME} add
 
 commit:
-	/usr/bin/git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME} commit -v
+	git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME} commit -v
 
 ls:
-	/usr/bin/git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME} ls-tree --full-tree -r HEAD
+	git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME} ls-tree --full-tree -r HEAD
 
 remove_env:
 	#@echo "\n\

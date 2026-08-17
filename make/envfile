@@ -12,5 +12,10 @@ VIMRCBACKUPPATH = "${HOME}/.vimrc_backup"
 INITVIMPATH = "${HOME}/.config/nvim/init.vim"
 INITVIMBACKUPPATH = "${HOME}/.config/nvim/init.vim_backup"
 
-GOPATH := /usr/local/go
-PATH := ${PATH}:${GOPATH}/bin
+# GOROOT is the toolchain, GOPATH is the writable workspace. This used to set
+# GOPATH := /usr/local/go, which pointed the module cache at a root-owned tree and
+# made every non-root `go install` fail with "mkdir /usr/local/go/pkg/mod:
+# permission denied". Both bin dirs go on PATH; neither has to exist.
+GOROOT := /usr/local/go
+GOPATH := ${HOME}/go
+PATH := ${PATH}:${GOROOT}/bin:${GOPATH}/bin

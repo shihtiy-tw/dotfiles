@@ -24,9 +24,14 @@ fi
 # CONFIGURATION
 ################################################################################
 
-readonly NVM_VERSION="v0.40.0"
-readonly NVM_DIR_PATH="${NVM_DIR:-$HOME/.nvm}"
-readonly DEFAULT_NODE_VERSION="20"
+# Do NOT name this NVM_VERSION and do NOT make it readonly. nvm.sh gets sourced into
+# this same shell by _load_nvm, and it uses NVM_VERSION as a function-local during
+# version resolution (nvm_ensure_version_prefix). A readonly global of that name makes
+# nvm's `local NVM_VERSION` fail, after which `nvm install 20` silently resolves to
+# whatever node is already on PATH - and still reports success.
+NVM_INSTALLER_VERSION="v0.40.0"
+NVM_DIR_PATH="${NVM_DIR:-$HOME/.nvm}"
+DEFAULT_NODE_VERSION="20"
 
 ################################################################################
 # FUNCTIONS
@@ -42,9 +47,9 @@ install_nvm() {
         return 0
     fi
 
-    log_info "Installing NVM $NVM_VERSION..."
+    log_info "Installing NVM $NVM_INSTALLER_VERSION..."
 
-    if curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/$NVM_VERSION/install.sh" | bash; then
+    if curl -fsSL "https://raw.githubusercontent.com/nvm-sh/nvm/$NVM_INSTALLER_VERSION/install.sh" | bash; then
         log_success "NVM installed"
         _load_nvm
         return 0
@@ -85,21 +90,34 @@ install_node() {
         return 1
     fi
 
-    if nvm install "$version"; then
-        log_success "Node.js $version installed"
-        nvm use "$version"
-        log_info "Node version: $(node -v)"
-        log_info "NPM version: $(npm -v)"
-        return 0
-    else
+    if ! nvm install "$version"; then
         log_error "Failed to install Node.js $version"
         return 1
     fi
+
+    if ! nvm use "$version"; then
+        log_error "Installed Node.js $version but could not select it"
+        return 1
+    fi
+
+    # Confirm we got the version we asked for rather than trusting nvm's exit status.
+    # nvm reports success even when version resolution silently falls back to whatever
+    # node is already on PATH, which is how `nvm install 20` once yielded v26.
+    local active
+    active="$(node -v 2>/dev/null)"
+    if [[ "$version" =~ ^[0-9]+$ ]] && [[ "$active" != "v$version."* ]]; then
+        log_error "Asked for Node.js $version but got $active"
+        return 1
+    fi
+
+    log_success "Node.js $version installed ($active)"
+    log_info "NPM version: $(npm -v)"
+    return 0
 }
 
 # Install NVM and default Node version
 install_nvm_with_node() {
-    install_nvm
+    install_nvm || return 1
     install_node "$DEFAULT_NODE_VERSION"
 }
 

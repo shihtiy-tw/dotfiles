@@ -19,7 +19,31 @@ set -o pipefail  # Exit on pipe failure
 # Keep apt non-interactive. Without this, `apt upgrade` and `apt full-upgrade` can
 # stop on an ncurses dialog (tzdata, service restarts) even when -y is passed,
 # which hangs an unattended run indefinitely.
+#
+# Exporting it is not enough on its own: every apt call here goes through sudo, and
+# sudo's default env_reset strips DEBIAN_FRONTEND before apt ever sees it. A container
+# run confirmed this - debconf still reported "unable to initialize frontend: Dialog"
+# and only survived because there was no controlling terminal to draw on.
 export DEBIAN_FRONTEND=noninteractive
+
+# So wrap sudo and re-inject the variable for the package tools. `sudo env VAR=...` is
+# used rather than `sudo -E` or `sudo VAR=...` because those two need the SETENV sudoers
+# tag and are refused under a stock `%sudo ALL=(ALL:ALL) ALL`; running /usr/bin/env as
+# root is subject to no such policy. `command sudo` prevents this recursing into itself.
+sudo() {
+    case "${1:-}" in
+        apt | apt-get | aptitude | dpkg | dpkg-reconfigure | debconf-set-selections)
+            command sudo env \
+                DEBIAN_FRONTEND=noninteractive \
+                DEBCONF_NONINTERACTIVE_SEEN=true \
+                NEEDRESTART_MODE=a \
+                "$@"
+            ;;
+        *)
+            command sudo "$@"
+            ;;
+    esac
+}
 
 ################################################################################
 # SETUP - Source Shared Modules
@@ -116,10 +140,10 @@ safe_exec "fcitx5" sudo apt install -y fcitx5
 log_section "Installing Programming Languages"
 
 # Rust: Systems programming language - Using shared module
-install_rustup
+safe_exec "Rust toolchain (rustup)" install_rustup
 
 # Bun: Javascript runtime - Using shared module
-install_bun
+safe_exec "Bun" install_bun
 
 # Java: JDK for Java development
 log_info "Installing Java JDK..."
@@ -139,19 +163,32 @@ safe_exec "ruby" sudo apt install -y ruby
 safe_exec "ruby-dev" sudo apt-get install -y ruby-dev
 
 # RubyGems: Ruby package manager upgrade
+#
+# Unpacked into a mktemp dir with a trap rather than the current directory. This used to
+# download and extract into $PWD - which is the dotfiles checkout when run via `make
+# install` - then `cd "$HOME"` *before* the `rm`, so the cleanup ran in the wrong place
+# and left rubygems-<ver>.tgz and rubygems-<ver>/ as untracked files in the repo.
+# `ruby setup.rb` also needs root to write /usr/local/lib/site_ruby, and the success was
+# logged unconditionally, so an EACCES failure still reported "RubyGems upgraded".
 log_info "Upgrading RubyGems to version $RUBY_GEM_VERSION..."
-if wget https://rubygems.org/rubygems/rubygems-"$RUBY_GEM_VERSION".tgz; then
-    tar xvzf rubygems-"$RUBY_GEM_VERSION".tgz
-    (cd rubygems-"$RUBY_GEM_VERSION" && ruby setup.rb) || log_error "RubyGems setup failed"
-    cd "$HOME" || true
-    rm -f rubygems-"$RUBY_GEM_VERSION".tgz
-    log_success "RubyGems upgraded"
+_rubygems_tmp="$(mktemp -d)"
+trap 'rm -rf "$_rubygems_tmp"' EXIT
+if wget -q -O "$_rubygems_tmp/rubygems.tgz" \
+    "https://rubygems.org/rubygems/rubygems-$RUBY_GEM_VERSION.tgz"; then
+    if tar xzf "$_rubygems_tmp/rubygems.tgz" -C "$_rubygems_tmp" &&
+        (cd "$_rubygems_tmp/rubygems-$RUBY_GEM_VERSION" && sudo ruby setup.rb); then
+        log_success "RubyGems upgraded"
+    else
+        log_error "RubyGems setup failed"
+    fi
 else
     log_error "Failed to download RubyGems"
 fi
+rm -rf "$_rubygems_tmp"
+trap - EXIT
 
 # NVM and Node.js - Using shared module
-install_nvm_with_node
+safe_exec "NVM and Node.js" install_nvm_with_node
 
 # git-sim
 sudo apt install pipx -y
@@ -171,15 +208,17 @@ sudo apt install -y git-extras
 
 sudo apt install -y git-lfs
 
-# See ~/dotfiles/git/commit-conventions.txt
-git config --global commit.template ~/dotfiles/git/commit-conventions.txt
-git config --global core.editor=nvim +18 -c 'startinsert'
+# commit.template and core.editor are not set here. git/gitconfig already carries both
+# (commit.template at :62, core.editor at :48) and `make init` symlinks ~/.gitconfig to
+# it, so writing them into ~/.gitconfig first only got them backed up and replaced.
+# The core.editor line was also malformed - `git config --global core.editor=nvim +18 -c
+# 'startinsert'` is not valid syntax and just printed the usage message.
 
 # precommit
 sudo apt install pre-commit -y
 
 # gitflow-cjs - Using shared module
-install_gitflow
+safe_exec "git-flow" install_gitflow
 
 # tree
 sudo apt install -y tree
@@ -192,7 +231,7 @@ sudo apt install shellcheck -y
 
 # oh-my-zsh: Framework and plugins - Using shared module
 # This replaces ~30 lines of manual installation with a single function call
-install_oh_my_zsh
+safe_exec "oh-my-zsh" install_oh_my_zsh
 
 # bash-it
 #if [ ! -d ${HOME}/.bash_it ]; then \
@@ -213,7 +252,7 @@ log_info "Installing tmux..."
 safe_exec "tmux" sudo apt install -y tmux
 
 # Tmux Plugin Manager (TPM) - Using shared module
-install_tmux_tpm
+safe_exec "tmux plugin manager" install_tmux_tpm
 
 # vim
 # sudo apt-get install vim -y
@@ -223,34 +262,56 @@ log_info "Installing libfuse2 for AppImage support..."
 safe_exec "libfuse2" sudo apt install -y libfuse2
 
 # Neovim: Modern Vim-based text editor
+#
+# The asset used to be `nvim.appimage`; upstream renamed it to include the architecture
+# and the old name is now a 404. Because `curl -LO` has no -f it exited 0 having written
+# the 9-byte "Not Found" body, which then got moved to /usr/local/bin/nvim - and
+# test-install.sh only runs `command -v nvim`, so it reported neovim as installed.
+# -f makes an HTTP error a download failure, and the download lands in a temp dir so a
+# failure cannot leave anything behind in the current directory.
 log_info "Installing Neovim (latest via AppImage)..."
 if ! command -v nvim &> /dev/null; then
-    if curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage; then
-        chmod u+x nvim.appimage
-        safe_exec "neovim install" sudo mv nvim.appimage /usr/local/bin/nvim
+    case "$(uname -m)" in
+        x86_64) NVIM_APPIMAGE="nvim-linux-x86_64.appimage" ;;
+        aarch64 | arm64) NVIM_APPIMAGE="nvim-linux-arm64.appimage" ;;
+        *) NVIM_APPIMAGE="" ;;
+    esac
+
+    if [ -z "$NVIM_APPIMAGE" ]; then
+        log_error "No Neovim AppImage published for $(uname -m)"
     else
-        log_error "Failed to download Neovim AppImage"
+        _nvim_tmp="$(mktemp -d)"
+        if curl -fsSL -o "$_nvim_tmp/nvim" \
+            "https://github.com/neovim/neovim/releases/latest/download/$NVIM_APPIMAGE"; then
+            chmod u+x "$_nvim_tmp/nvim"
+            safe_exec "neovim install" sudo install -m 0755 "$_nvim_tmp/nvim" /usr/local/bin/nvim
+        else
+            log_error "Failed to download Neovim AppImage ($NVIM_APPIMAGE)"
+        fi
+        rm -rf "$_nvim_tmp"
     fi
 else
-
     log_skip "Neovim already installed"
 fi
 
 # FZF: Fuzzy finder - Using shared module
-install_fzf
+safe_exec "FZF" install_fzf
 
 # ack
 #mkdir -p ${HOME}/.local/share/bin
 #curl https://beyondgrep.com/ack-v3.1.2 > ${HOME}/.local/share/bin/ack && chmod 0755 ${HOME}/.local/share/bin/ack
 
 # Autojump: Smart directory navigation - Using shared module
-install_autojump
+safe_exec "autojump" install_autojump
 
 # Yazi: Modern terminal file manager written in Rust
 log_info "Installing yazi file manager..."
 if ! command -v yazi &> /dev/null; then
     rustup update || log_error "rustup update failed"
-    safe_exec "yazi" cargo install --locked yazi-fm yazi-cli
+    # yazi-fm/yazi-cli now refuse to build directly: their build.rs aborts with "must be
+    # built with `cargo install --force yazi-build`". The old invocation burned ~2.5
+    # minutes of compilation before hitting that panic.
+    safe_exec "yazi" cargo install --force yazi-build
 else
     log_skip "Yazi already installed"
 fi
@@ -264,7 +325,7 @@ else
 fi
 
 # Pyenv: Python version manager - Using shared module
-install_pyenv
+safe_exec "pyenv" install_pyenv
 
 # Source autojump if available
 load_autojump || true
@@ -326,7 +387,13 @@ log_info "Installing ImageMagick..."
 safe_exec "imagemagick" sudo apt install -y imagemagick
 
 # Mainline: Kernel update tool
+#
+# software-properties-common must come first: it is what provides add-apt-repository.
+# It used to be installed further down with the terraform prerequisites, so both PPA
+# calls failed with "sudo: add-apt-repository: command not found" and `mainline` was
+# never installed - the log only showed "E: Unable to locate package mainline".
 log_info "Installing Mainline kernel tool..."
+safe_exec "software-properties-common" sudo apt-get install -y software-properties-common
 safe_exec "PPA cappelikan" sudo add-apt-repository ppa:cappelikan/ppa -y
 safe_exec "apt update for mainline" sudo apt update
 # FIX: Add -y flag to full-upgrade for non-interactive execution
@@ -383,10 +450,10 @@ sudo apt-get update && sudo apt-get install -y packer
 log_section "Installing AI Tools"
 
 # Agent Deck: AI workspace manager - Using shared module
-install_agent_deck
+safe_exec "Agent Deck" install_agent_deck
 
 # Vibe Kanban: AI-native kanban - Using shared module
-install_vibe_kanban
+safe_exec "Vibe Kanban" install_vibe_kanban
 
 # Return to home directory
 cd "$HOME" || exit
@@ -396,7 +463,6 @@ cd "$HOME" || exit
 ################################################################################
 
 log_section "Installation Complete!"
-log_success "All packages and tools have been installed."
 log_info ""
 log_info "NEXT STEPS:"
 log_info "1. Run 'make init' to set up dotfile symlinks"
@@ -406,3 +472,9 @@ log_info "4. (Optional) Install Tmux plugins: Press Ctrl+A then I in tmux"
 log_info ""
 log_warn "Important: Some tools require a logout/login to work properly!"
 echo ""
+
+# Exit non-zero if any step failed. Without this the script returned 0 no matter what -
+# a run with ten broken installs was indistinguishable from a clean one, so `make
+# install` could never be used as a gate.
+install_summary
+exit $?

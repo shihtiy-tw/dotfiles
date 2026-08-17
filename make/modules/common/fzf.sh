@@ -45,7 +45,14 @@ install_fzf() {
         return 1
     fi
 
-    if yes | "$FZF_DIR/install"; then
+    # Use the non-interactive flags rather than `yes | ./install`. Under `set -o pipefail`
+    # (which the installers enable) `yes` dies of SIGPIPE when ./install exits, the
+    # pipeline adopts status 141, and a perfectly good install gets reported as a failure.
+    #
+    # --no-update-rc is deliberate: ~/.zshrc is a symlink into this repo, so letting the
+    # installer append its source line would edit a tracked file. zsh/zshrc already
+    # sources ~/.fzf.zsh itself.
+    if "$FZF_DIR/install" --key-bindings --completion --no-update-rc </dev/null; then
         log_success "FZF installed"
         return 0
     else

@@ -50,9 +50,13 @@ fi
 # macOS framework Python user bin, when present
 path=($path "${HOME}/Library/Python/3.9/bin"(N-/))
 
-# Golang
+# Golang. GOPATH is the workspace, /usr/local/go is the toolchain: keep them apart.
+# Pointing GOPATH at the toolchain makes `go install` try to write a module cache
+# into a root-owned tree. /usr/local/go/bin is where the official tarball lands (the
+# route make/install-amazon-linux.sh takes); it does not exist when go came from a
+# package manager, and (N-/) drops it then.
 export GOPATH="${HOME}/go"
-path=("$GOPATH/bin"(N-/) $path)
+path=("$GOPATH/bin"(N-/) /usr/local/go/bin(N-/) $path)
 
 # Java. Only extend PATH when JAVA_HOME is actually set: `$PATH:$JAVA_HOME` with
 # an empty JAVA_HOME appends an empty element, and zsh resolves an empty PATH
@@ -67,6 +71,10 @@ path=($path ${HOME}/.gem/ruby/*/bin(N-/))
 # Rust. ~/.cargo/env is a script to source, not a directory - all it does is add
 # this bin dir, so add it directly.
 path=($path "${HOME}/.cargo/bin"(N-/))
+
+# fzf, when installed from git rather than a package. ~/.fzf.zsh also adds this, but
+# zshrc only reaches that branch if fzf is already a command, so add it here too.
+path=($path "${HOME}/.fzf/bin"(N-/))
 
 # kubectl krew
 path=($path "${KREW_ROOT:-${HOME}/.krew}/bin"(N-/))

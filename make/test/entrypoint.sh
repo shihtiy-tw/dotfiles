@@ -113,16 +113,37 @@ step_dispatch() {
         *)                  expected="" ;;
     esac
 
-    if [ -z "$expected" ]; then
-        echo "NO DISPATCH ARM matches ID=${id:-<none>}: 'make install' would be a silent no-op"
+    if [ -n "$expected" ]; then
+        # Checked statically rather than by running it: on a supported distro the
+        # dispatcher's whole job is to exec the installer, which is what the `install`
+        # step is for.
+        if grep -q "$expected" "$DOTFILES/make/install-init.sh"; then
+            echo "dispatches to $expected"
+            return 0
+        fi
+        echo "install-init.sh does not reference $expected"
         return 1
     fi
-    if grep -q "$expected" "$DOTFILES/make/install-init.sh"; then
-        echo "dispatches to $expected"
-        return 0
+
+    # Unsupported platform (Termux, or any distro with no arm). The requirement here is
+    # not that an installer runs - it is that `make install` REFUSES, loudly. It used to
+    # print three "cat: /etc/os-release: No such file or directory" lines, fall off the
+    # end of the if/elif chain and exit 0, so an unsupported OS reported a successful
+    # provisioning run having installed precisely nothing.
+    #
+    # Safe to actually execute: every path that reaches this point exits before touching
+    # the system.
+    echo "no dispatch arm for ID=${id:-<none>} - checking that it fails loudly"
+    local out rc=0
+    out="$(bash "$DOTFILES/make/install-init.sh" 2>&1)" || rc=$?
+    echo "$out" | sed 's/^/    /'
+
+    if [ "$rc" -eq 0 ]; then
+        echo "REGRESSION: install-init.sh exited 0 on an unsupported platform"
+        return 1
     fi
-    echo "install-init.sh does not reference $expected"
-    return 1
+    echo "correctly refused with exit $rc"
+    return 0
 }
 
 step_install() {
@@ -164,11 +185,17 @@ step_repo_dirty() {
     echo "repo copy is clean"
 }
 
-# Termux never reaches the module system: install-termux.sh clones into the CWD
-# before its own `cd "$HOME"`, never sources make/modules, never calls init.sh, and
-# ends in an interactive TUI. Run it under a hard cap so the hang is evidence.
+# Termux never reaches the module system: install-termux.sh clones a *second* copy of
+# the repo into whatever the CWD happens to be (line 10, before its own `cd "$HOME"`),
+# never sources make/modules, and never calls init.sh - so it links no configs at all.
+#
+# It does NOT hang, which is what an earlier version of this comment claimed. Measured
+# in this container: termux-style's ./install reads its menu from stdin, gets EOF
+# immediately with stdin at /dev/null, and exits 0 in about 35 seconds. The timeout
+# below stays as a guard against that changing upstream, not as an expected outcome.
+# The real defect is that a wholly ineffective run reports success.
 step_termux_installer() {
-    echo "running install-termux.sh under a 300s cap (expected to hang at ./install)"
+    echo "running install-termux.sh under a 300s cap"
     if command -v timeout >/dev/null 2>&1; then
         timeout --signal=TERM --kill-after=15 300 "$DOTFILES/make/install-termux.sh"
     else

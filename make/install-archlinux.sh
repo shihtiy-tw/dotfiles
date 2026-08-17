@@ -75,13 +75,18 @@ safe_exec "acpi" sudo pacman --noconfirm -S acpi
 
 # Build essentials
 safe_exec "base-devel" sudo pacman --noconfirm -S base-devel
-safe_exec "git" sudo pacman --noconfirm -S git
+safe_exec "git" sudo pacman --noconfirm -S git git-lfs
 safe_exec "zip unzip" sudo pacman --noconfirm -S zip unzip p7zip
 safe_exec "htop" sudo pacman --noconfirm -S htop
 safe_exec "tree" sudo pacman --noconfirm -S tree
 safe_exec "dialog" sudo pacman --noconfirm -S dialog
 safe_exec "reflector" sudo pacman --noconfirm -S reflector
 safe_exec "bash-completion" sudo pacman --noconfirm -S bash-completion
+
+# zsh itself. archlinux:base does not ship it, and this script was installing oh-my-zsh,
+# seven zsh plugins and the spaceship theme, symlinking ~/.zshrc, then printing a hint to
+# run `chsh -s $(which zsh)` - on a machine where zsh did not exist.
+safe_exec "zsh" sudo pacman --noconfirm -S zsh zsh-completions
 
 # Network tools
 safe_exec "network tools" sudo pacman --noconfirm -S iw wpa_supplicant tcpdump mtr net-tools
@@ -196,6 +201,33 @@ else
     log_skip "yay already installed"
 fi
 
+# Install one AUR package.
+#
+# The -S is not optional. `yay <pkg>` with no operation is yay's *interactive search*
+# mode: it prints a numbered list of matches and waits for you to type numbers. Piping
+# `yes` into that feeds it "y", which is not a number, so yay printed "there is nothing
+# to do" and exited 0 - and every AUR package here silently installed nothing while the
+# log claimed otherwise.
+#
+# No `yes |` either: --noconfirm plus the three --answer* flags is already
+# non-interactive, and the pipe both hid the real exit status and tripped `pipefail`
+# when yay exited before `yes` was done writing.
+#
+# yay resolves the official repos first, so packages that have since graduated out of the
+# AUR (lazygit, lazydocker, aws-cli-v2, kind) get the signed binary package for free.
+aur_install() {
+    local pkg="$1"
+    log_info "Installing $pkg from AUR..."
+    if LANG=C yay -S --noconfirm \
+        --answerdiff None --answerclean None --answeredit None \
+        --mflags "--noconfirm" "$pkg"; then
+        log_success "$pkg installed"
+        return 0
+    fi
+    log_warn "Failed to install $pkg"
+    return 1
+}
+
 ################################################################################
 # DEVELOPMENT TOOLS
 ################################################################################
@@ -203,7 +235,7 @@ fi
 log_section "Installing Development Tools"
 
 safe_exec "neovim" sudo pacman --noconfirm -S neovim
-safe_exec "zed" sudo pacman --noconfirm -S zed || true
+headless_skip "zed editor" || safe_exec "zed" sudo pacman --noconfirm -S zed || true
 safe_exec "tree-sitter" sudo pacman --noconfirm -S tree-sitter tree-sitter-cli
 safe_exec "stow" sudo pacman --noconfirm -S stow
 safe_exec "sqlite3" sudo pacman --noconfirm -S sqlite
@@ -214,7 +246,7 @@ safe_exec "nmap masscan" sudo pacman --noconfirm -S nmap masscan
 safe_exec "pgcli" sudo pacman --noconfirm -S pgcli
 safe_exec "redis" sudo pacman --noconfirm -S redis
 safe_exec "apache" sudo pacman --noconfirm -S apache
-safe_exec "meld" sudo pacman --noconfirm -S meld
+headless_skip "meld" || safe_exec "meld" sudo pacman --noconfirm -S meld
 safe_exec "websocat" sudo pacman --noconfirm -S websocat
 safe_exec "sshpass" sudo pacman --noconfirm -S sshpass
 safe_exec "git-filter-repo" sudo pacman --noconfirm -S git-filter-repo
@@ -242,7 +274,7 @@ safe_exec "k9s" sudo pacman --noconfirm -S k9s
 
 # AUR: kind
 if command -v yay &> /dev/null; then
-    yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" kind || true
+    aur_install kind || true
 fi
 
 # Docker configuration
@@ -287,6 +319,7 @@ safe_exec "nasm boost" sudo pacman --noconfirm -S nasm boost
 safe_exec "python" sudo pacman --noconfirm -S python python-pip python-poetry
 safe_exec "pyenv" sudo pacman --noconfirm -S pyenv
 safe_exec "uv" sudo pacman --noconfirm -S uv
+safe_exec "pipx" sudo pacman --noconfirm -S python-pipx
 
 # Lua
 safe_exec "lua" sudo pacman --noconfirm -S lua
@@ -298,10 +331,10 @@ safe_exec "nodejs npm yarn" sudo pacman --noconfirm -S nodejs npm yarn
 safe_exec "rust" sudo pacman --noconfirm -S rust
 
 # NVM for Node version management - using shared module
-install_nvm_with_node
+safe_exec "NVM and Node.js" install_nvm_with_node
 
 # Bun - Using shared module
-install_bun
+safe_exec "Bun" install_bun
 
 ################################################################################
 # VIRTUALIZATION
@@ -346,8 +379,7 @@ if command -v yay &> /dev/null; then
     fi
 
     for pkg in "${AUR_PACKAGES[@]}"; do
-        log_info "Installing $pkg from AUR..."
-        yes | LANG=C yay --answerdiff None --answerclean None --mflags "--noconfirm" "$pkg" || log_warn "Failed to install $pkg"
+        aur_install "$pkg" || true
     done
 else
     log_warn "yay not available, skipping AUR packages"
@@ -369,8 +401,12 @@ safe_exec "powerline" sudo pacman --noconfirm -S powerline
 safe_exec "github-cli" sudo pacman --noconfirm -S github-cli
 safe_exec "bats" sudo pacman --noconfirm -S bats
 safe_exec "yazi" sudo pacman --noconfirm -S yazi
-safe_exec "ghostty" sudo pacman --noconfirm -S ghostty
-safe_exec "kitty" sudo pacman --noconfirm -S kitty
+# GUI terminal emulators. A container or server already has a terminal; these need a
+# display server to open a window in.
+if ! headless_skip "GUI terminal emulators"; then
+    safe_exec "ghostty" sudo pacman --noconfirm -S ghostty
+    safe_exec "kitty" sudo pacman --noconfirm -S kitty
+fi
 
 # System monitoring
 safe_exec "monitoring tools" sudo pacman --noconfirm -S sysstat iotop iftop atop nvtop
@@ -386,19 +422,19 @@ sudo mandb || true
 log_section "Shell Configuration"
 
 # Autojump - using shared module
-install_autojump
+safe_exec "autojump" install_autojump
 
 # Oh-My-Zsh - using shared module
-install_oh_my_zsh
+safe_exec "oh-my-zsh" install_oh_my_zsh
 
 # Tmux TPM - using shared module
-install_tmux_tpm
+safe_exec "tmux plugin manager" install_tmux_tpm
 
 # Gitflow - using shared module
-install_gitflow
+safe_exec "git-flow" install_gitflow
 
 # FZF - using shared module
-install_fzf
+safe_exec "FZF" install_fzf
 
 ################################################################################
 # AI TOOLS
@@ -407,10 +443,10 @@ install_fzf
 log_section "Installing AI Tools"
 
 # Agent Deck: AI workspace manager - Using shared module
-install_agent_deck
+safe_exec "Agent Deck" install_agent_deck
 
 # Vibe Kanban: AI-native kanban - Using shared module
-install_vibe_kanban
+safe_exec "Vibe Kanban" install_vibe_kanban
 
 ################################################################################
 # INPUT METHODS
@@ -418,7 +454,11 @@ install_vibe_kanban
 
 log_section "Installing Input Methods"
 
-safe_exec "fcitx5" sudo pacman --noconfirm -S fcitx5 fcitx5-configtool fcitx5-rime rime-bopomofo
+# An input method framework needs a display server to feed. Nothing to type into on a
+# server or in a container.
+if ! headless_skip "input methods"; then
+    safe_exec "fcitx5" sudo pacman --noconfirm -S fcitx5 fcitx5-configtool fcitx5-rime rime-bopomofo
+fi
 
 ################################################################################
 # MISCELLANEOUS
@@ -426,15 +466,29 @@ safe_exec "fcitx5" sudo pacman --noconfirm -S fcitx5 fcitx5-configtool fcitx5-ri
 
 log_section "Installing Miscellaneous Tools"
 
-safe_exec "flameshot" sudo pacman --noconfirm -S flameshot
-safe_exec "ollama-cuda" sudo pacman --noconfirm -S ollama-cuda || true
 safe_exec "darkman" sudo pacman --noconfirm -S darkman
-safe_exec "discord" sudo pacman --noconfirm -S discord
-safe_exec "calibre" sudo pacman --noconfirm -S calibre
 safe_exec "plantuml" sudo pacman --noconfirm -S plantuml
-safe_exec "qt5-tools" sudo pacman --noconfirm -S qt5-tools
-safe_exec "remote desktop" sudo pacman --noconfirm -S rdesktop freerdp
-safe_exec "arch-wiki-docs" sudo pacman --noconfirm -S arch-wiki-docs
+
+# ollama-cuda pulls cuda, opencl-nvidia and gcc15 as hard dependencies: ~3GB downloaded,
+# ~6GB installed. Without this gate it re-imported the very cuda that the gate at the
+# CUDA section had just skipped. Headless hosts get the CPU build instead, which is the
+# same binary minus the GPU backend.
+if headless_skip "ollama CUDA backend"; then
+    safe_exec "ollama" sudo pacman --noconfirm -S ollama || true
+else
+    safe_exec "ollama-cuda" sudo pacman --noconfirm -S ollama-cuda || true
+fi
+
+# Display-server clients. Every one of these needs an X or Wayland session to open a
+# window; arch-wiki-docs alone is 225MB of HTML.
+if ! headless_skip "miscellaneous desktop applications"; then
+    safe_exec "flameshot" sudo pacman --noconfirm -S flameshot
+    safe_exec "discord" sudo pacman --noconfirm -S discord
+    safe_exec "calibre" sudo pacman --noconfirm -S calibre
+    safe_exec "qt5-tools" sudo pacman --noconfirm -S qt5-tools
+    safe_exec "remote desktop" sudo pacman --noconfirm -S rdesktop freerdp
+    safe_exec "arch-wiki-docs" sudo pacman --noconfirm -S arch-wiki-docs
+fi
 
 # Nerd fonts
 log_info "Installing Nerd Fonts..."
@@ -450,8 +504,6 @@ log_section "Installation Complete"
 cd "$HOME" || true
 
 echo ""
-log_success "Arch Linux setup complete!"
-echo ""
 log_info "Next steps:"
 echo "  1. Run 'make init' to create dotfile symlinks"
 echo "  2. LOG OUT and back in for docker group to take effect"
@@ -461,3 +513,9 @@ echo "  5. Switch JVM: archlinux-java set VERSION"
 echo ""
 log_warn "Some packages may require manual configuration - check their documentation."
 echo ""
+
+# Exit non-zero if any step failed. Without this the script returned 0 no matter what -
+# a run with ten broken installs was indistinguishable from a clean one, so `make
+# install` could never be used as a gate.
+install_summary
+exit $?
