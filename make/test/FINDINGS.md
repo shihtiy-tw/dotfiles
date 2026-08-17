@@ -15,6 +15,36 @@ nothing here is verified for it.
 
 ---
 
+## Where things stand
+
+Both columns are full `make install` → `make init` → `make test` runs in a fresh container.
+"Before" is the state the scripts were in when the audit started; "after" is the same
+harness re-run against the fixes.
+
+| | Before | After |
+| --- | --- | --- |
+| **Ubuntu 24.04** | installer died at line 331 of 480; 3 of 10 harness steps failed; 43 pass / 11 fail | installer runs to the end: 58 steps completed, 1 failed (yazi, fixed after this run); **52 pass / 2 fail** |
+| **Arch** | 1 of 10 failed; yay build broken so every AUR package skipped, while the run reported success; 53 pass / 0 fail | 0 of 10 failed; yay builds, 90 steps completed, 0 failed; **53 pass / 0 fail** |
+| **Amazon Linux 2023** | 2 of 10 failed; pip, ripgrep and diff-so-fancy could not install; 32 pass / 3 fail | installer exits 0 and means it: 32 steps completed, 0 failed; **34 pass / 1 fail** |
+| **Termux** | `make install` printed three `/etc/os-release` errors and exited 0 having done nothing | dispatcher refuses with exit 1 and a clear message; 13 of 13 symlinks valid; **0 fail** |
+
+Of the three failures left in that column, two are the same test — `neovim (nvim) runs`,
+on Ubuntu and Amazon Linux — and it is an artifact of the container rather than a defect:
+those two install Neovim as an AppImage, which needs FUSE to self-mount, and the containers
+are deliberately run without `--device /dev/fuse`. The test is right to fail — on a real
+machine without FUSE `nvim` genuinely would not start, and you would want to know — so it
+was left alone. The harness carries a separate `appimage_check` step that unpacks the image
+with `--appimage-extract` and runs the binary directly; it passes on both. The third,
+Ubuntu's `yazi`, was a real breakage; it was fixed after this run and verified in its own
+container. `docker group membership` is skipped rather than failed for the same
+container-artifact reason — it needs a fresh login session.
+
+Neither the `modules/common/modules/common/…` path errors from the `SCRIPT_DIR` collision
+nor any repo-dirtying appear in any of the four logs: `repo_dirty` reports "repo copy is
+clean" everywhere.
+
+---
+
 ## Fixed
 
 ### Cross-platform
@@ -34,6 +64,8 @@ nothing here is verified for it.
 | `modules/common/gitflow.sh` — clone left in `$PWD` | The AVH installer git-clones into its working directory. Run from the repo, which is where `make install` runs, it left an untracked `gitflow/` behind on Ubuntu and Arch. Now runs in a `mktemp -d`. |
 | `envfile` — `GOROOT := /usr/local/go` | `Makefile:3` exports every name in `envfile` into every recipe's environment, so this overrode the `GOROOT` each Go toolchain has compiled in. On Arch, where Go lives in `/usr/lib/go`, the yay build inside `make install` died with `go: cannot find GOROOT directory: /usr/local/go` — no AUR helper, so every AUR package was skipped for the rest of the run. Setting `GOPATH` is enough; `GOROOT` must not be set. |
 | `Makefile` — `@echo` with `\033`/`\n` throughout | `make` runs recipes under `/bin/sh`, and where that is bash the builtin `echo` does not interpret backslash escapes, so `help`, `hello`, `install`, `init`, `dark`, `light` and all seven test targets printed their escapes literally. Converted to `printf '%b\n'`. |
+| `envtest.sh` — no shebang, duplicated lines | Not executable as a script (the only shellcheck error left in `make/`), and its first three lines were the same `echo ${ZSHRCPATH}` while `ZSHRCBACKUPPATH` went unprinted. Shebang added, duplicates removed, expansions quoted, mode `0755`. Same duplicate fixed in the Makefile's `env` target. |
+| `envfile` — values wrapped in literal `"` | `ZSHRCPATH = "${HOME}/.zshrc"` put the quote *characters* into the exported value, so `$ZSHRCPATH` named a file that cannot exist. Nothing consumes these today beyond the `env` diagnostic, which is the only reason it never bit — but it is a loaded gun for the next person who writes `rm "$ZSHRCPATH"`. Quotes removed; make does not need them. |
 | `logger.sh` — new `record_failure` | Steps that are a clone-then-build, or that skip a later block, could not be expressed as one `safe_exec` command, so they called `log_error` and never reached the ledger. Arch logged "yay installation failed", then "yay not available, skipping AUR packages", then **"All steps completed successfully"** and exited 0. |
 
 ### Ubuntu
@@ -54,12 +86,19 @@ nothing here is verified for it.
   `make install`), then `cd "$HOME"` ran *before* the cleanup, so the tarball and
   extracted directory were left behind as untracked files. `ruby setup.rb` also needs root
   to write `/usr/local/lib/site_ruby`, and success was logged unconditionally.
-- **yazi could not build, and the obvious fix was not enough either.** `yazi-fm`/`yazi-cli`
-  now abort in `build.rs` demanding `cargo install --force yazi-build`, after ~2.5 minutes
-  of compilation. But that crate is only the build *system*: measured in a container, the
-  one executable it puts in `~/.cargo/bin` is `yazi-build` itself, so the step reported
-  success while leaving no `yazi` on the machine. It has to be run afterwards
-  (`yazi-build install`); with no subcommand it just prints help.
+- **yazi had no working `cargo install` path at all** — it took three container runs to
+  establish that. `yazi-fm`/`yazi-cli` abort in `build.rs` demanding
+  `cargo install --force yazi-build`, after ~2.5 minutes of compilation, and have not been
+  published since 26.5.6 (`yazi-build` is at 26.8.15). But `yazi-build` is only the build
+  *system*: the one executable it puts in `~/.cargo/bin` is `yazi-build` itself, so that
+  step reported success while leaving no `yazi` on the machine. Running it does not help
+  either — it shells out to `cargo --config .cargo/release.toml` inside the crates.io
+  registry source directory, where no such file exists, because it is written to run from a
+  checkout of the yazi repo. `--config` accepts either a path or a dotted key=value, so a
+  missing file is not reported as missing; cargo tries to parse the path as TOML and dies
+  with `failed to parse value from --config argument`. Now installed from the upstream
+  release archive, like Go, Neovim and ripgrep elsewhere in these scripts, which also skips
+  the Rust build. `ya` goes with it, since upstream ships them as a pair.
 - **`gh`, `terraform` and `packer` were installed by bare `&&` chains** that never reached
   the failure ledger, so a machine that ended up with none of the three still reported a
   successful run. Now wrapped in functions and passed to `safe_exec`. Packer also dropped
@@ -246,8 +285,6 @@ than `~/.pyenv`. The oracle now encodes this. Worth confirming it is intentional
 
 ### 5. Smaller things
 
-- `make/envtest.sh` has no shebang and its body is three identical `echo ${ZSHRCPATH}`
-  lines. It looks vestigial.
 - `make/envfile` is only used for the `env`/`remove_env` targets and the variables it
   defines largely duplicate what `init.sh` computes.
 - `Makefile:53-63` is a commented-out older copy of the `help` text that mentions an

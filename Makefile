@@ -64,7 +64,6 @@ help:
 
 env:
 		@echo ${ZSHRCPATH}
-		@echo ${ZSHRCPATH}
 		@echo ${ZSHRCBACKUPPATH}
 		@echo ${BASHRCPATH}
 		@echo ${BASHRCBACKUPPATH}
