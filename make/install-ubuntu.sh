@@ -179,10 +179,10 @@ if wget -q -O "$_rubygems_tmp/rubygems.tgz" \
         (cd "$_rubygems_tmp/rubygems-$RUBY_GEM_VERSION" && sudo ruby setup.rb); then
         log_success "RubyGems upgraded"
     else
-        log_error "RubyGems setup failed"
+        record_failure "RubyGems setup"
     fi
 else
-    log_error "Failed to download RubyGems"
+    record_failure "RubyGems download"
 fi
 rm -rf "$_rubygems_tmp"
 trap - EXIT
@@ -191,22 +191,38 @@ trap - EXIT
 safe_exec "NVM and Node.js" install_nvm_with_node
 
 # git-sim
-sudo apt install pipx -y
-sudo apt update
-sudo apt install build-essential python3-dev libcairo2-dev libpango1.0-dev ffmpeg -y
-pipx install manim
-pipx install git-sim
+safe_exec "pipx" sudo apt install pipx -y
+safe_exec "manim build dependencies" sudo apt install -y \
+    build-essential python3-dev libcairo2-dev libpango1.0-dev ffmpeg
+safe_exec "manim" pipx install manim
+safe_exec "git-sim" pipx install git-sim
 
 # git
 #
-#$ curl https://github.com/so-fancy/diff-so-fancy/releases/download/v1.4.4/diff-so-fancy -o /usr/local/bin/diff-so-fancy
-LATEST_VERSION=$(curl -s https://api.github.com/repos/so-fancy/diff-so-fancy/releases/latest | grep -Po '"tag_name": "v\K[^"]*')
-sudo curl -L -o /usr/local/bin/diff-so-fancy "https://github.com/so-fancy/diff-so-fancy/releases/download/v${LATEST_VERSION}/diff-so-fancy"
-sudo chmod +x /usr/local/bin/diff-so-fancy
+# Two bugs here, both of the same shape as the Neovim one further down. The version was
+# scraped out of the GitHub API into an unquoted variable, so an API hiccup or a rate limit
+# produced the URL .../download/v/diff-so-fancy - and `curl -L` without -f writes the 404
+# body to the destination and exits 0, installing an HTML error page as the executable.
+# /releases/latest/download/ needs no scraping at all, and the release asset is the
+# fatpacked self-contained script.
+install_diff_so_fancy() {
+    local tmp
+    tmp="$(mktemp -d)" || return 1
+    if curl -fsSL -o "$tmp/diff-so-fancy" \
+        https://github.com/so-fancy/diff-so-fancy/releases/latest/download/diff-so-fancy; then
+        sudo install -m 0755 "$tmp/diff-so-fancy" /usr/local/bin/diff-so-fancy
+        local rc=$?
+        rm -rf "$tmp"
+        return "$rc"
+    fi
+    rm -rf "$tmp"
+    return 1
+}
 
-sudo apt install -y git-extras
+safe_exec "diff-so-fancy" install_diff_so_fancy
 
-sudo apt install -y git-lfs
+safe_exec "git-extras" sudo apt install -y git-extras
+safe_exec "git-lfs" sudo apt install -y git-lfs
 
 # commit.template and core.editor are not set here. git/gitconfig already carries both
 # (commit.template at :62, core.editor at :48) and `make init` symlinks ~/.gitconfig to
@@ -278,7 +294,7 @@ if ! command -v nvim &> /dev/null; then
     esac
 
     if [ -z "$NVIM_APPIMAGE" ]; then
-        log_error "No Neovim AppImage published for $(uname -m)"
+        record_failure "Neovim (no AppImage for $(uname -m))"
     else
         _nvim_tmp="$(mktemp -d)"
         if curl -fsSL -o "$_nvim_tmp/nvim" \
@@ -286,7 +302,7 @@ if ! command -v nvim &> /dev/null; then
             chmod u+x "$_nvim_tmp/nvim"
             safe_exec "neovim install" sudo install -m 0755 "$_nvim_tmp/nvim" /usr/local/bin/nvim
         else
-            log_error "Failed to download Neovim AppImage ($NVIM_APPIMAGE)"
+            record_failure "Neovim AppImage download"
         fi
         rm -rf "$_nvim_tmp"
     fi
@@ -311,7 +327,14 @@ if ! command -v yazi &> /dev/null; then
     # yazi-fm/yazi-cli now refuse to build directly: their build.rs aborts with "must be
     # built with `cargo install --force yazi-build`". The old invocation burned ~2.5
     # minutes of compilation before hitting that panic.
-    safe_exec "yazi" cargo install --force yazi-build
+    #
+    # That crate is only the build system, and installing it is not enough - measured in a
+    # container, the one executable it puts in ~/.cargo/bin is `yazi-build` itself, so the
+    # step reported success while leaving no `yazi` on the machine. It has to be run, and
+    # `yazi-build` with no subcommand just prints help.
+    if safe_exec "yazi build system" cargo install --force yazi-build; then
+        safe_exec "yazi" "${CARGO_HOME:-$HOME/.cargo}/bin/yazi-build" install
+    fi
 else
     log_skip "Yazi already installed"
 fi
@@ -411,37 +434,45 @@ safe_exec "tig" sudo apt-get install -y tig
 
 # gh
 # https://github.com/cli/cli/blob/trunk/docs/install_linux.md
-(type -p wget >/dev/null || (sudo apt update && sudo apt-get install wget -y)) \
-	&& sudo mkdir -p -m 755 /etc/apt/keyrings \
-	&& wget -qO- https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null \
-	&& sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
-	&& echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
-	&& sudo apt update \
-	&& sudo apt install gh -y
-sudo apt update -y
-sudo apt install gh -y
-gh extension install dlvhdr/gh-dash
+#
+# Each third-party-repo install below is wrapped in a function so the whole chain reaches
+# the failure ledger. As bare `&&` sequences they could not: safe_exec takes a command, so
+# a break anywhere in the chain was invisible to install_summary and a machine that ended
+# up with no gh, no terraform and no packer still reported a successful run. The duplicate
+# `apt update -y; apt install gh -y` that used to follow this block is gone with it.
+install_gh() {
+	sudo mkdir -p -m 755 /etc/apt/keyrings \
+		&& wget -qO- https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null \
+		&& sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
+		&& echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+		&& sudo apt update \
+		&& sudo apt install gh -y
+}
+
+safe_exec "wget (gh prerequisite)" sudo apt-get install -y wget
+safe_exec "gh (GitHub CLI)" install_gh
+safe_exec "gh-dash extension" gh extension install dlvhdr/gh-dash
 
 # terraform
 # https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli
-sudo apt-get update && sudo apt-get install -y gnupg software-properties-common
-wget -O- https://apt.releases.hashicorp.com/gpg | \
-gpg --dearmor | \
-sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null
-gpg --no-default-keyring \
---keyring /usr/share/keyrings/hashicorp-archive-keyring.gpg \
---fingerprint
-echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
-https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
-sudo tee /etc/apt/sources.list.d/hashicorp.list
-sudo apt update
-sudo apt-get install -y terraform
+install_terraform() {
+	wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor \
+		| sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null \
+		&& echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list > /dev/null \
+		&& sudo apt-get update \
+		&& sudo apt-get install -y terraform
+}
+
+safe_exec "gnupg" sudo apt-get install -y gnupg software-properties-common
+safe_exec "terraform" install_terraform
 
 # Packer
 # https://developer.hashicorp.com/packer/tutorials/docker-get-started/get-started-install-cli
-curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
-sudo apt-add-repository -y "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-sudo apt-get update && sudo apt-get install -y packer
+#
+# Packer ships from the same HashiCorp repository the terraform block above just added, so
+# it needs no second key and no second source list. The old block re-added both with
+# `apt-key add`, which Ubuntu 24.04 no longer ships, and hardcoded arch=amd64.
+safe_exec "packer" sudo apt-get install -y packer
 
 ################################################################################
 # AI TOOLS

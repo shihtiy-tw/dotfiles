@@ -53,19 +53,26 @@ install_gitflow() {
         return 1
     fi
 
+    # The installer git-clones gitflow into its working directory and leaves the clone
+    # behind, so it has to be run somewhere disposable. Run from the repo - which is where
+    # `make install` runs - it dropped an untracked gitflow/ directory into the checkout.
+    local work_dir
+    work_dir="$(mktemp -d "${TMPDIR:-/tmp}/gitflow-work-XXXXXX")" || return 1
+
     # This is the only sudo in make/modules/. Everything else here installs under $HOME,
     # so resolve it rather than assuming: already root needs no sudo, and Termux has no
     # sudo at all - there we install under ~/.local, which the installer honours.
     local rc=0
     if [ "$(id -u)" -eq 0 ]; then
-        bash "$tmp_installer" install stable || rc=$?
+        (cd "$work_dir" && bash "$tmp_installer" install stable) || rc=$?
     elif command_exists sudo; then
-        sudo bash "$tmp_installer" install stable || rc=$?
+        (cd "$work_dir" && sudo bash "$tmp_installer" install stable) || rc=$?
     else
-        PREFIX="$HOME/.local" bash "$tmp_installer" install stable || rc=$?
+        (cd "$work_dir" && PREFIX="$HOME/.local" bash "$tmp_installer" install stable) || rc=$?
     fi
 
     rm -f "$tmp_installer"
+    rm -rf "$work_dir"
 
     if [ "$rc" -eq 0 ]; then
         log_success "Git-flow (AVH) installed"

@@ -65,10 +65,17 @@ log_section "Installing Python"
 # for every ordinary user - so python3-pip was never installed and every later `pip3`
 # call failed with "command not found".
 #
-# The quotes on 'python3*' matter: unquoted, the shell expands the glob against the
-# current directory before yum ever sees it.
-safe_exec "Python3 packages" sudo yum -y install 'python3*'
-safe_exec "pip3" sudo yum -y install python3-pip
+# It also used to install the glob 'python3*', which cannot succeed on AL2023: the pattern
+# matches several hundred packages including mutually exclusive ones, and dnf aborts the
+# whole transaction on the conflicts rather than picking. Measured in a container:
+#
+#   package python3-perf6.18-... conflicts with python3-perf provided by python3-perf-1:6.1...
+#   package python3-pytest4-... conflicts with python3.9dist(pytest) provided by python3-pytest-6...
+#
+# So nothing at all was installed, including pip. Name what is actually needed instead -
+# the interpreter, pip, and the headers pyenv and pip wheels build against.
+safe_exec "Python3" sudo yum -y install python3 python3-pip python3-devel \
+    python3-setuptools python3-wheel
 
 # No EPEL here. This was pinned to epel-release-latest-7 (wrong on AL2023, which is el9),
 # and deriving the major version does not help either: `rpm -E %{rhel}` returns the
@@ -112,8 +119,8 @@ if ! command_exists tig; then
         safe_exec "tig clone" git clone --depth 1 https://github.com/jonas/tig.git "$tig_src"
     fi
     # prefix into ~/.local so `make install` does not need root.
-    make -C "$tig_src" prefix="$HOME/.local" || log_error "tig make failed"
-    make -C "$tig_src" prefix="$HOME/.local" install || log_error "tig install failed"
+    make -C "$tig_src" prefix="$HOME/.local" || record_failure "tig build"
+    make -C "$tig_src" prefix="$HOME/.local" install || record_failure "tig install"
     log_success "Tig installed"
 else
     log_skip "Tig already installed"
@@ -132,13 +139,18 @@ if [ ! -f /usr/local/bin/diff-so-fancy ]; then
     # curl -f, and only report success if the download actually happened. This used to
     # call wget - absent on AL2023 - outside safe_exec, then log success unconditionally,
     # so the log claimed diff-so-fancy was installed when nothing had been downloaded.
+    #
+    # The third_party/build_fatpack/ path this used to fetch is a 404 on every branch -
+    # upstream's default branch is `next` and that directory is not in the tree. The
+    # release asset is the fatpacked, self-contained perl script, and /releases/latest/
+    # avoids having to scrape the tag out of the GitHub API first.
     dsf_tmp="$(mktemp -d)"
     if curl -fsSL -o "$dsf_tmp/diff-so-fancy" \
-        https://raw.githubusercontent.com/so-fancy/diff-so-fancy/master/third_party/build_fatpack/diff-so-fancy; then
+        https://github.com/so-fancy/diff-so-fancy/releases/latest/download/diff-so-fancy; then
         safe_exec "diff-so-fancy install" \
             sudo install -m 0755 "$dsf_tmp/diff-so-fancy" /usr/local/bin/diff-so-fancy
     else
-        log_error "Failed to download diff-so-fancy"
+        record_failure "diff-so-fancy download"
     fi
     rm -rf "$dsf_tmp"
 else
@@ -206,14 +218,14 @@ if ! command -v nvim &> /dev/null; then
     esac
 
     if [ -z "$nvim_appimage" ]; then
-        log_error "No Neovim AppImage published for $(uname -m)"
+        record_failure "Neovim (no AppImage for $(uname -m))"
     else
         nvim_tmp="$(mktemp -d)"
         if curl -fsSL -o "$nvim_tmp/nvim" \
             "https://github.com/neovim/neovim/releases/latest/download/$nvim_appimage"; then
             safe_exec "Neovim install" sudo install -m 0755 "$nvim_tmp/nvim" /usr/bin/nvim
         else
-            log_error "Failed to download Neovim AppImage ($nvim_appimage)"
+            record_failure "Neovim AppImage download"
         fi
         rm -rf "$nvim_tmp"
     fi
@@ -265,7 +277,7 @@ if ! command -v go &> /dev/null; then
     esac
 
     if [ -z "$go_arch" ]; then
-        log_error "Unsupported architecture for Go: $(uname -m)"
+        record_failure "Go (unsupported architecture $(uname -m))"
     else
         go_version="$(curl -fsSL 'https://go.dev/VERSION?m=text' 2>/dev/null | head -1)"
         if [[ "$go_version" =~ ^go[0-9] ]]; then
@@ -277,11 +289,11 @@ if ! command -v go &> /dev/null; then
                 safe_exec "Extract Go" sudo tar -C /usr/local -xzf "$go_tarball"
                 log_success "Go ${go_version} installed to /usr/local/go"
             else
-                log_error "Go download failed"
+                record_failure "Go download"
             fi
             rm -rf "$(dirname "$go_tarball")"
         else
-            log_error "Could not determine latest Go version"
+            record_failure "Go (could not determine latest version)"
         fi
     fi
 else
@@ -306,12 +318,51 @@ else
 fi
 
 ################################################################################
-# SILVER SEARCHER
+# CODE SEARCH (RIPGREP)
 ################################################################################
 
 # the_silver_searcher only exists in EPEL, and epel-release.noarch is not a package on
-# AL2023 either. ripgrep covers the same ground and is in the AL2023 repos.
-safe_exec "ripgrep" sudo yum install -y ripgrep || true
+# AL2023 either. ripgrep covers the same ground - but it is not in the AL2023 repos
+# either, contrary to what an earlier version of this comment said: `yum install ripgrep`
+# fails with "No match for argument: ripgrep". So install the upstream static build, the
+# same way Go and the Neovim AppImage are handled above.
+log_section "Installing ripgrep"
+
+if ! command -v rg &> /dev/null; then
+    # musl on x86_64 is what upstream publishes as the portable build; there is no musl
+    # aarch64 asset with a plain `rg` in it, so arm64 takes the gnu one.
+    case "$(uname -m)" in
+        x86_64)          rg_target=x86_64-unknown-linux-musl ;;
+        aarch64 | arm64) rg_target=aarch64-unknown-linux-gnu ;;
+        *)               rg_target="" ;;
+    esac
+
+    if [ -z "$rg_target" ]; then
+        record_failure "ripgrep (no upstream build for $(uname -m))"
+    else
+        # grep, not jq: jq is not installed at this point in the run.
+        rg_version="$(curl -fsSL https://api.github.com/repos/BurntSushi/ripgrep/releases/latest 2>/dev/null \
+            | grep -o '"tag_name": *"[^"]*"' | head -1 | cut -d'"' -f4)"
+
+        if [ -z "$rg_version" ]; then
+            record_failure "ripgrep (could not determine latest version)"
+        else
+            rg_tmp="$(mktemp -d)"
+            rg_dir="ripgrep-${rg_version}-${rg_target}"
+            if curl -fsSL -o "$rg_tmp/rg.tar.gz" \
+                "https://github.com/BurntSushi/ripgrep/releases/download/${rg_version}/${rg_dir}.tar.gz" \
+                && tar -C "$rg_tmp" -xzf "$rg_tmp/rg.tar.gz"; then
+                safe_exec "ripgrep" \
+                    sudo install -m 0755 "$rg_tmp/$rg_dir/rg" /usr/local/bin/rg
+            else
+                record_failure "ripgrep download"
+            fi
+            rm -rf "$rg_tmp"
+        fi
+    fi
+else
+    log_skip "ripgrep already installed"
+fi
 
 ################################################################################
 # COMPLETION

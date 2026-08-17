@@ -61,15 +61,36 @@ install_autojump() {
     fi
 }
 
-# Load autojump into current session
+# Load autojump into current session.
+#
+# autojump's own autojump.bash reads $XDG_DATA_HOME without a default, so sourcing it from
+# an installer running under `set -u` was a fatal shell error - it killed install-ubuntu.sh
+# at line 331 of 480, after two thirds of the packages but before install_summary, so the
+# run died with one cryptic line and no ledger. Everything below that point (silversearcher,
+# docker, imagemagick, mainline, gcc-14, tig, gh, terraform, packer, agent-deck,
+# vibe-kanban) had never been installed on a fresh machine.
+#
+# `load_autojump || true` at the call site cannot catch this: an unbound variable aborts the
+# shell outright rather than returning non-zero. So relax nounset around the source, and
+# give XDG_DATA_HOME the value the spec says it defaults to.
 load_autojump() {
     local autojump_sh="$AUTOJUMP_DIR/etc/profile.d/autojump.sh"
 
-    if file_exists "$autojump_sh"; then
-        # shellcheck source=/dev/null
-        source "$autojump_sh"
-        log_info "Autojump loaded into current session"
+    file_exists "$autojump_sh" || return 0
+
+    local restore_nounset=0
+    if [[ -o nounset ]]; then
+        restore_nounset=1
+        set +u
     fi
+
+    export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
+    # shellcheck source=/dev/null
+    source "$autojump_sh"
+
+    [[ "$restore_nounset" -eq 1 ]] && set -u
+    log_info "Autojump loaded into current session"
+    return 0
 }
 
 # Verify autojump installation

@@ -141,6 +141,21 @@ safe_exec() {
     fi
 }
 
+# Record a failure that did not come from safe_exec.
+# Usage: record_failure "description"
+#
+# Some steps cannot be expressed as a single command - a clone followed by a build, or a
+# prerequisite whose absence makes a later block skip itself. Those used to call log_error
+# and nothing else, so they never reached the ledger: the Arch run logged "yay installation
+# failed", then "yay not available, skipping AUR packages", and still finished with "All
+# steps completed successfully" and exit 0.
+record_failure() {
+    local description="$1"
+    log_error "Failed: $description"
+    SAFE_EXEC_FAILURES=$((SAFE_EXEC_FAILURES + 1))
+    SAFE_EXEC_FAILED_STEPS+=("$description")
+}
+
 # Print the failure ledger. Returns 0 only if every safe_exec step succeeded, so an
 # installer can end with `install_summary` and give `make install` a meaningful status.
 install_summary() {
@@ -199,4 +214,5 @@ symlink_exists() {
 
 export -f log_info log_success log_error log_warn log_skip log_section log_test
 export -f safe_exec quiet_exec command_exists dir_exists file_exists symlink_exists
+export -f record_failure install_summary
 export -f _log_timestamp

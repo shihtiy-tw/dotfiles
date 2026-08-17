@@ -193,10 +193,20 @@ log_section "Installing YAY (AUR Helper)"
 
 if ! command -v yay &> /dev/null; then
     log_info "Installing yay..."
-    git clone https://aur.archlinux.org/yay.git /tmp/yay
-    (cd /tmp/yay && makepkg -si --noconfirm) || log_error "yay installation failed"
+    # The old version logged "yay installed" unconditionally, one line after logging that
+    # the build had failed, and recorded nothing in the ledger. Every AUR package for the
+    # rest of the run was then skipped with a warning while `make install` exited 0.
+    #
+    # /tmp/yay is removed first: makepkg refuses to build in a directory left over from a
+    # previous attempt, so a second run failed for a different reason than the first.
     rm -rf /tmp/yay
-    log_success "yay installed"
+    if git clone https://aur.archlinux.org/yay.git /tmp/yay \
+        && (cd /tmp/yay && makepkg -si --noconfirm); then
+        log_success "yay installed"
+    else
+        record_failure "yay (AUR helper) - every AUR package below will be skipped"
+    fi
+    rm -rf /tmp/yay
 else
     log_skip "yay already installed"
 fi
@@ -224,7 +234,10 @@ aur_install() {
         log_success "$pkg installed"
         return 0
     fi
-    log_warn "Failed to install $pkg"
+    # Recorded, not just warned. The call site uses `|| true` so one broken AUR package
+    # does not abandon the rest, but the run still has to admit the environment came out
+    # incomplete rather than exiting 0.
+    record_failure "$pkg (AUR)"
     return 1
 }
 

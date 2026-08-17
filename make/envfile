@@ -12,10 +12,18 @@ VIMRCBACKUPPATH = "${HOME}/.vimrc_backup"
 INITVIMPATH = "${HOME}/.config/nvim/init.vim"
 INITVIMBACKUPPATH = "${HOME}/.config/nvim/init.vim_backup"
 
-# GOROOT is the toolchain, GOPATH is the writable workspace. This used to set
-# GOPATH := /usr/local/go, which pointed the module cache at a root-owned tree and
-# made every non-root `go install` fail with "mkdir /usr/local/go/pkg/mod:
-# permission denied". Both bin dirs go on PATH; neither has to exist.
-GOROOT := /usr/local/go
+# GOPATH is the writable workspace. This used to be GOPATH := /usr/local/go, which is the
+# toolchain directory, not a workspace - it pointed the module cache at a root-owned tree
+# and made every non-root `go install` fail with "mkdir /usr/local/go/pkg/mod: permission
+# denied".
+#
+# Do NOT set GOROOT here. Makefile:3 exports every name in this file into every recipe's
+# environment, so a hardcoded GOROOT overrides the one each Go toolchain has compiled in.
+# On Arch, where go lives in /usr/lib/go, that broke the yay build inside `make install`
+# with "go: cannot find GOROOT directory: /usr/local/go" - which meant no AUR helper, so
+# every AUR package was skipped for the rest of the run.
+#
+# /usr/local/go/bin still goes on PATH for the case where Go was installed from the
+# upstream tarball; the directory does not have to exist.
 GOPATH := ${HOME}/go
-PATH := ${PATH}:${GOROOT}/bin:${GOPATH}/bin
+PATH := ${PATH}:/usr/local/go/bin:${GOPATH}/bin
