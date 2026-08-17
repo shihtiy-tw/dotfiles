@@ -102,6 +102,13 @@ install_llm() {
 
 if command_exists llm && llm --version > /dev/null 2>&1; then
     log_skip "llm already installed ($(llm --version 2>&1))"
+elif [[ "$(detect_platform)" == "termux" ]] && command_exists uv && ! command_exists cargo; then
+    # llm -> openai -> jiter, and jiter publishes no Android wheel, so uv falls back to
+    # building it: "Rust not found, installing into a temporary directory" and then
+    # "Target triple not supported by rustup: x86_64-unknown-linux-android". Same shape as
+    # parllama/tiktoken in install-tui.sh. `pkg install rust` first if you want to try.
+    record_unsupported "llm" \
+        "its jiter dependency ships no Android wheel and needs a Rust compiler"
 elif command_exists uv; then
     safe_exec "llm${LLM_PYTHON:+ (python $LLM_PYTHON)}" install_llm
     [[ -d "$HOME/.local/bin" ]] && export PATH="$HOME/.local/bin:$PATH"

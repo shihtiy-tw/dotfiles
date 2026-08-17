@@ -17,6 +17,7 @@ make test-container-full       # full installers               (20-60 min each)
 
 ./make/test/run.sh --phase fast ubuntu
 ./make/test/run.sh --phase full archlinux --no-headless   # include the ~10GB of GUI packages
+./make/test/run.sh --phase extras ubuntu                  # the optional tool sets only
 ./make/test/run.sh --keep-image ubuntu                    # skip the image rebuild
 ```
 
@@ -29,6 +30,7 @@ the number of distros that reported failures.
 | ------ | ----- |
 | `fast` | stage repo → `bash -n` over `make/` → shellcheck (advisory) → dispatch check → `make init` → `make test-symlinks` → repo-dirty check |
 | `full` | the above, plus the whole installer end-to-end, an AppImage check, and `make test` as the oracle |
+| `extras` | the fast steps, plus the six optional installers — `aws`, `gcp`, `azure`, `kubernetes`, `llm`, `tui` — which no `make install` path reaches and no `make test` assertion covers. Each gets `EXTRAS_TIMEOUT` seconds (default 900); override with `--extras-timeout`. |
 
 Each step prints `##### STEP <name>` / `##### END <name> rc=<n>`, and the run ends with
 a machine-readable block:

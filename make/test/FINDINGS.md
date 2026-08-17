@@ -19,7 +19,8 @@ nothing here is verified for it.
 
 Both columns are full `make install` → `make init` → `make test` runs in a fresh container.
 "Before" is the state the scripts were in when the audit started; "after" is the same
-harness re-run against the fixes.
+harness re-run against the fixes. The optional installers, which no `make install` path
+reaches, are covered separately below.
 
 | | Before | After |
 | --- | --- | --- |
@@ -42,6 +43,43 @@ container-artifact reason — it needs a fresh login session.
 Neither the `modules/common/modules/common/…` path errors from the `SCRIPT_DIR` collision
 nor any repo-dirtying appear in any of the four logs: `repo_dirty` reports "repo copy is
 clean" everywhere.
+
+### The optional installers
+
+`make install` never touches `install-aws.sh`, `install-llm.sh`, `install-tui.sh` or
+`install-kubernetes.sh`, so the two phases above said nothing about them — and `make test`
+asserts none of the tools they provide, which is why they had rotted unnoticed. The harness
+grew a third phase, `--phase extras`, that runs all six optional installers (the two new
+ones included) after `init` and before `repo_dirty`. Three rounds of run-and-fix:
+
+| | Run 1 | Run 2 | Final |
+| --- | --- | --- | --- |
+| **Ubuntu 24.04** | 5 failed | 1 | **0 of 13** |
+| **Arch** | 2 failed | 1 | **0 of 13** |
+| **Amazon Linux 2023** | 3 failed | 1 | **0 of 13** |
+| **Termux** | 6 failed | 3 | **0 of 13**, 6 recorded unsupported |
+
+Four of those were real defects rather than container artifacts, and all four are listed
+under "Optional installers" below: the `uv` installer writing into `~/.zshrc`, `gh` not
+existing in the apt or dnf archives, `llm` being unrunnable as published, and Azure's
+codename detection. `repo_dirty` failed on three of the four distros in run 1 and is clean
+on all four now.
+
+What Termux has left is not failure but absence — six things upstream does not publish for
+Android. Two share a root cause: a PyPI dependency with no Android wheel, so uv falls back
+to building it and there is no Rust compiler. `parllama` hits it through `tiktoken`, `llm`
+through `openai` → `jiter`. Both are gated on `cargo` rather than on the platform, so
+`pkg install rust` and a re-run will attempt them — though this container also reported
+"Target triple not supported by rustup: x86_64-unknown-linux-android", an artifact of the
+x86_64 CI image; a real `aarch64-linux-android` device has a rustup target. The other four
+are flatter: `gh-dash` says so itself ("gh-dash unsupported for android-amd64"), the AWS CLI
+v2 and the Azure CLI have no Android build at all and are refused before downloading
+anything, and gcloud offers no `gke-gcloud-auth-plugin` component for this platform.
+
+All six go through `record_unsupported`, a third outcome class added to `logger.sh`
+alongside success and failure — "not applicable on this platform" was previously scored as a
+failure, which made the ledger unusable on Termux. `install_summary` lists them separately
+and exits 0, reporting "All applicable steps completed successfully".
 
 ---
 
@@ -174,6 +212,83 @@ clean" everywhere.
   `third_party/build_fatpack/diff-so-fancy`; upstream's default branch is `next` and that
   directory is not in the tree. The release asset is the fatpacked self-contained script.
 
+### Optional installers
+
+`make aws`, `make kubernetes`, `make llm` and `make tui` were unreachable from `make install`
+and unasserted by `make test`, so nothing had ever exercised them. Every one of the four was
+broken. `make gcp` and `make azure` are new.
+
+- **`install-kubernetes.sh` never downloaded kubectl.** `chmod +x ./kubectl` then a copy to
+  `$HOME/bin/kubectl` — with no `curl` for the binary anywhere in the file. It also detected
+  the architecture correctly at the top and then overwrote it with a hardcoded
+  `ARCH=amd64` before the eksctl download, so eksctl was wrong on arm64. kubectl now
+  downloads with checksum verification; note that upstream's `.sha256` is a bare digest, so
+  the checklist line has to be assembled locally before `sha256sum -c` will take it.
+- **`install-llm.sh` produced an `llm` that could not run.** llm 0.32 depends on openai 3.x,
+  which now depends on the renamed `httpx2` distribution, while llm's own `models.py` still
+  does a bare `import httpx` without declaring it — so a stock `uv tool install llm` yields
+  a binary that tracebacks with `ModuleNotFoundError` on every invocation, `llm --version`
+  included. Fixed with `--with httpx`. The interpreter pin is **not** what fixes this: the
+  container run confirmed 3.12 resolves `httpx2` exactly as 3.14 does. The failure also used
+  to surface one step later as "llm-ollama plugin failed", pointing at the wrong thing, so
+  the install now verifies `llm --version` itself.
+- **`uv`'s installer dirtied the repo.** Left to itself it appends
+  `. "$HOME/.local/bin/env"` to `~/.zshrc` — which `init.sh` symlinks *into this repo* — so
+  `make llm` left the checkout modified. Suppressed with `UV_NO_MODIFY_PATH=1` (the
+  `--no-modify-path` flag is deprecated upstream in favour of the variable, and the variable
+  takes precedence over `INSTALLER_NO_MODIFY_PATH`). The appended line was redundant anyway:
+  `zsh/env.zsh:37` already puts `~/.local/bin` on `PATH`. This is the defect that made
+  `repo_dirty` fail on three distros.
+- **`install-tui.sh` was Arch-only, hardcoded.** It ran `sudo pacman -S --noconfirm
+  github-cli` in a file that claims to be the generic TUI installer. `gh` is **not** in the
+  Ubuntu, Debian or Amazon Linux 2023 archives — the run confirmed both messages ("E: Unable
+  to locate package gh", "No match for argument: gh") — so even a portable `pkg_install gh`
+  would have been dead code on the two platforms most likely to need it. GitHub publishes
+  its own apt and rpm repositories; both are now wired up per package manager. The rpm one
+  is written directly rather than through `dnf config-manager`, which lives in
+  `dnf-plugins-core` and is absent from the `amazonlinux:2023` base image.
+- **`gh extension upgrade dash` always failed.** The extension is named `gh-dash`, so the
+  upgrade could only ever report "extension not found" — and upgrading immediately after a
+  fresh install was redundant regardless.
+- **`basalt` was a bare `cargo install` with nothing checking for cargo**, so it failed with
+  "cargo: command not found" on any machine where Rust had not been installed first. `uv`
+  and `cargo` are also on `PATH` for the run now: `make llm && make tui` back to back
+  reported "uv not installed - skipping parllama" one step after installing uv, because
+  neither `~/.local/bin` nor `~/.cargo/bin` is on a non-interactive shell's `PATH`.
+- **`llm models default deepseek-r1:1.5b` ran unconditionally**, which only succeeds when
+  Ollama is installed, its daemon is up, *and* that model has been pulled — none of which the
+  script arranges, so on a fresh machine it always failed. Now gated on all three with the
+  commands to fix each. Ollama itself is deliberately not installed: it wants a system
+  service and multi-gigabyte weights.
+- **The Gemini CLI line installed nothing.** `npx https://github.com/google-gemini/gemini-cli`
+  fetches the repo and *runs* it, so under an unattended run with no TTY it hangs until
+  killed. Installs the published package instead.
+- **`install-aws.sh` downloaded 60 MB before finding out it had no `unzip`.** Prerequisites
+  are checked first now, and Termux is refused up front — the AWS CLI v2 has no Android
+  build, so the download could never have been useful there.
+- **Azure's `lsb_release -cs` names a suite Microsoft does not publish.** On a Debian
+  derivative it returns the derivative's own codename (Mint's `wilma`), which does not exist
+  under `packages.microsoft.com/repos/azure-cli/`. Reads `UBUNTU_CODENAME:-VERSION_CODENAME`
+  from `/etc/os-release` instead, the same pattern `install-ubuntu.sh:402` already uses.
+- **Go binaries cannot verify TLS under Termux.** They look for `/etc/ssl/certs`, which does
+  not exist inside the Termux prefix, so `gh extension install` failed with "x509:
+  certificate signed by unknown authority" while `curl` to the same host worked. A shared
+  `setup_go_tls` helper points `SSL_CERT_FILE` at `$PREFIX/etc/tls/cert.pem`; krew hit this
+  too, and kubectl, eksctl, k9s and kustomize were all latent.
+- **`helm`'s installer self-checks.** `get-helm-3` ends with `helm version`, so unless the
+  install directory is already on `PATH` it reports "helm not found. Is ... on your $PATH?"
+  and exits non-zero having installed helm perfectly (checksum verified). It also aborts
+  outright without the `openssl` CLI rather than skipping verification, which is why
+  `openssl` is now a checked prerequisite — as `openssl-tool` on Termux.
+- **`pkg_refresh` was dead code.** Nothing called it, so on a container with an empty
+  `/var/lib/apt/lists` apt reported "Unable to locate package unzip" for a package that
+  plainly exists. `pkg_install` now refreshes once per run. Relatedly, `ensure_cmds` return
+  values were being discarded, so a missing prerequisite surfaced sixteen lines later as
+  `unzip: command not found` instead of at the check meant to catch it.
+- `install_binary` gained a `$PREFIX/bin` branch: `/usr/local/bin` is not on Termux's
+  `PATH`, and `can_root` is true on a rooted device with `tsu`, so binaries were being
+  installed somewhere nothing would find them.
+
 ### Test oracles
 
 These were reporting failures for tools that were installed and working, which is worse
@@ -256,17 +371,7 @@ Note that if Termux support is added, dispatch must invoke installers as
 `bash "$script"` rather than relying on shebangs: `#!/usr/bin/env bash` does not work
 there either, because `/usr/bin/env` is also absent.
 
-### 2. `install-kubernetes.sh` never downloads kubectl
-
-`:26` runs `chmod +x ./kubectl` and `:27` copies it to `$HOME/bin/kubectl`, but nothing
-ever downloads the binary — the `curl` for it is simply missing. Additionally, `:14-19`
-correctly detects the architecture and then `:32` overwrites it with a hardcoded
-`ARCH=amd64`, so the eksctl download is wrong on arm64. This script is not reachable from
-any `make` target, so it was left alone; note the `# TODO: add aws and kubernetes script`
-in the Makefile. (The other `amd64` hardcode, in Ubuntu's packer block, is gone — that
-block no longer adds a repository at all.)
-
-### 3. Ubuntu's tool list has gaps the oracle now records as out-of-scope
+### 2. Ubuntu's tool list has gaps the oracle now records as out-of-scope
 
 - `htop` is never installed on Ubuntu or Amazon Linux (only Arch installs it).
 - `vim` is commented out at `install-ubuntu.sh:258`. Arch installs `vi`, not `vim`.
@@ -276,14 +381,14 @@ block no longer adds a repository at all.)
 The oracle now scopes these per platform rather than reporting a wishlist item as a
 regression. Whether to install them is your call.
 
-### 4. Arch deliberately diverges on Rust and pyenv
+### 3. Arch deliberately diverges on Rust and pyenv
 
 `install-archlinux.sh` sources neither `modules/common/rustup.sh` nor `pyenv.sh`; it
 installs the pacman `rust` and `pyenv` packages instead. That is a reasonable choice on
 Arch, but it means `rustup` is absent there and `pyenv` lives at `/usr/bin/pyenv` rather
 than `~/.pyenv`. The oracle now encodes this. Worth confirming it is intentional.
 
-### 5. Smaller things
+### 4. Smaller things
 
 - `make/envfile` is only used for the `env`/`remove_env` targets and the variables it
   defines largely duplicate what `init.sh` computes.
