@@ -40,20 +40,10 @@ log_info "Installing Kubernetes tools for ${OS_LOWER}/${ARCH}..."
 # install-amazon-linux.sh:44 only pulls openssl-devel, which need not bring the CLI.
 ensure_cmds curl tar openssl || log_warn "Some prerequisites could not be installed"
 
-# Go binaries look for /etc/ssl/certs, which does not exist under the Termux prefix, so
-# every HTTPS call fails with "x509: certificate signed by unknown authority" even though
-# curl works. krew hit this in the container run; kubectl, eksctl, k9s and kustomize would
-# have hit it on first use, having reported a successful install.
-if [[ "$(detect_platform)" == "termux" ]]; then
-    if [[ -f "${PREFIX:-}/etc/tls/cert.pem" ]]; then
-        export SSL_CERT_FILE="$PREFIX/etc/tls/cert.pem"
-        log_info "Termux detected - pointing Go tools at $SSL_CERT_FILE"
-    else
-        log_warn "Termux detected and no CA bundle found at \$PREFIX/etc/tls/cert.pem."
-        log_warn "  Go-based tools (kubectl, krew, eksctl, k9s) will fail TLS verification."
-        log_warn "  Fix with: pkg install ca-certificates"
-    fi
-fi
+# Every tool here is a Go binary. On Termux they cannot find a CA bundle without help, so
+# krew failed outright while kubectl, eksctl, k9s and kustomize were reported installed
+# despite being unable to make an HTTPS call.
+setup_go_tls || true
 
 ################################################################################
 # kubectl
@@ -176,12 +166,24 @@ install_helm() {
 
     chmod +x "$workdir/get-helm-3"
 
-    if can_root && [[ "$(id -u)" -ne 0 ]]; then
-        USE_SUDO=true HELM_INSTALL_DIR=/usr/local/bin bash "$workdir/get-helm-3" || rc=$?
-    elif [[ "$(id -u)" -eq 0 ]]; then
-        USE_SUDO=false HELM_INSTALL_DIR=/usr/local/bin bash "$workdir/get-helm-3" || rc=$?
+    local dest
+    if [[ "$(detect_platform)" == "termux" && -n "${PREFIX:-}" ]]; then
+        dest="$PREFIX/bin"
+    elif can_root; then
+        dest=/usr/local/bin
     else
-        USE_SUDO=false HELM_INSTALL_DIR="$(user_bin_dir)" bash "$workdir/get-helm-3" || rc=$?
+        dest="$(user_bin_dir)"
+    fi
+
+    # get-helm-3 ends by running `helm version` to check its own work, so the install dir has
+    # to be on PATH or it reports "helm not found. Is ... on your $PATH?" and exits non-zero
+    # having installed helm perfectly well - which is exactly what happened on Termux.
+    export PATH="$dest:$PATH"
+
+    if [[ "$(id -u)" -ne 0 ]] && can_root && [[ "$dest" == /usr/local/bin ]]; then
+        USE_SUDO=true HELM_INSTALL_DIR="$dest" bash "$workdir/get-helm-3" || rc=$?
+    else
+        USE_SUDO=false HELM_INSTALL_DIR="$dest" bash "$workdir/get-helm-3" || rc=$?
     fi
 
     rm -rf "$workdir"

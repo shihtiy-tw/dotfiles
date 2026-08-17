@@ -238,6 +238,29 @@ ensure_cmds() {
     pkg_install "${missing[@]}"
 }
 
+# Point Go-built tools at a CA bundle they can actually find.
+#
+# Go binaries look for /etc/ssl/certs, which does not exist under the Termux prefix, so every
+# HTTPS call fails with "x509: certificate signed by unknown authority" even though curl
+# works fine off Termux's own bundle. Observed on krew and on `gh extension install`. Call
+# this before running any Go tool that talks to the network; it is a no-op elsewhere.
+setup_go_tls() {
+    [[ "$(detect_platform)" == "termux" ]] || return 0
+    [[ -n "${SSL_CERT_FILE:-}" ]] && return 0
+
+    local bundle="${PREFIX:-}/etc/tls/cert.pem"
+    if [[ -f "$bundle" ]]; then
+        export SSL_CERT_FILE="$bundle"
+        log_info "Termux detected - pointing Go tools at $bundle"
+        return 0
+    fi
+
+    log_warn "Termux detected and no CA bundle found at \$PREFIX/etc/tls/cert.pem."
+    log_warn "  Go-based tools will fail TLS verification with an x509 error."
+    log_warn "  Fix with: pkg install ca-certificates"
+    return 1
+}
+
 ################################################################################
 # BINARY INSTALLATION
 ################################################################################

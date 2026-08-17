@@ -23,6 +23,12 @@ log_section "Terminal UI Tools"
 [[ -d "$HOME/.local/bin" ]] && export PATH="$HOME/.local/bin:$PATH"
 [[ -d "$HOME/.cargo/bin" ]] && export PATH="$HOME/.cargo/bin:$PATH"
 
+PLATFORM="$(detect_platform)"
+
+# gh is a Go binary, and `gh extension install` talks to api.github.com. Without a findable
+# CA bundle it fails with an x509 error on Termux even though gh itself installed fine.
+setup_go_tls || true
+
 ################################################################################
 # basalt: Obsidian vault TUI
 ################################################################################
@@ -44,10 +50,16 @@ fi
 
 if command_exists parllama; then
     log_skip "parllama already installed"
-elif command_exists uv; then
-    safe_exec "parllama" uv tool install parllama
-else
+elif ! command_exists uv; then
     log_warn "uv not installed - skipping parllama (run make/install-llm.sh first)"
+elif [[ "$PLATFORM" == "termux" ]] && ! command_exists cargo; then
+    # parllama -> par-ai-core -> tiktoken, which publishes no Android wheel, so uv falls back
+    # to building it and stops with "error: can't find Rust compiler". A platform limitation,
+    # not a failed install.
+    record_unsupported "parllama" \
+        "its tiktoken dependency ships no Android wheel and needs a Rust compiler"
+else
+    safe_exec "parllama" uv tool install parllama
 fi
 
 ################################################################################

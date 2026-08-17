@@ -67,16 +67,22 @@ fi
 
 # https://github.com/simonw/llm
 #
-# The interpreter is pinned. Left to itself uv picks the newest CPython it can find, and on
-# 3.14 the dependency resolution pulls `httpx2` (openai 3.x depends on the renamed
-# distribution) while llm's own models.py still does `import httpx` - so the installed `llm`
-# binary tracebacks on every invocation, including `llm --version`. Reproduced identically
-# on Ubuntu and Arch in the container run; Amazon Linux escaped it only because its python3
-# is 3.9. Pinning also makes the install reproducible across distros, which is the point.
+# `--with httpx` is load-bearing. llm 0.32 depends on openai 3.x, which now depends on the
+# renamed `httpx2` distribution, but llm's own models.py still does a bare `import httpx`
+# without declaring it - so a stock `uv tool install llm` produces a binary that tracebacks
+# with ModuleNotFoundError on every invocation, `llm --version` included. Naming httpx
+# explicitly puts it in the tool's environment. Verified in a container: without it `llm
+# --version` fails, with it llm 0.32 runs and `llm install llm-ollama` succeeds. Harmless
+# once upstream declares the dependency properly.
+#
+# The interpreter is pinned separately, for reproducibility rather than for this bug: left
+# alone, uv resolved llm 0.32 on Ubuntu/Arch and llm 0.27.1 on Amazon Linux, whose system
+# python3 is 3.9. Pinning is NOT what fixes the import - the container run confirmed 3.12
+# resolves httpx2 exactly like 3.14 does.
 LLM_PYTHON="${LLM_PYTHON:-3.12}"
 
 install_llm() {
-    uv tool install --python "$LLM_PYTHON" llm || return 1
+    uv tool install --python "$LLM_PYTHON" --with httpx llm || return 1
     [[ -d "$HOME/.local/bin" ]] && export PATH="$HOME/.local/bin:$PATH"
     # An install that cannot be run is not an install. Without this check the failure
     # surfaced one step later as "llm-ollama plugin failed", pointing at the wrong thing.
@@ -165,7 +171,8 @@ if command_exists llm; then
     if llm --version > /dev/null 2>&1; then
         log_info "llm: $(llm --version 2>/dev/null)"
     else
-        log_warn "llm: on PATH but not runnable (try: uv tool install --python 3.12 --force llm)"
+        log_warn "llm: on PATH but not runnable"
+        log_warn "  try: uv tool install --python $LLM_PYTHON --force --with httpx llm"
     fi
 fi
 if command_exists gemini; then
