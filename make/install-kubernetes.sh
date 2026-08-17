@@ -34,7 +34,26 @@ OS_LOWER="$(echo "$OS_NAME" | tr '[:upper:]' '[:lower:]')"
 
 log_info "Installing Kubernetes tools for ${OS_LOWER}/${ARCH}..."
 
-ensure_cmds curl tar
+# openssl is here for helm: upstream's get-helm-3 aborts with "In order to verify checksum,
+# openssl must first be installed" rather than skipping verification. Amazon Linux hit this
+# in the container run - openssl is in the AL2023 repos but is not preinstalled, and
+# install-amazon-linux.sh:44 only pulls openssl-devel, which need not bring the CLI.
+ensure_cmds curl tar openssl || log_warn "Some prerequisites could not be installed"
+
+# Go binaries look for /etc/ssl/certs, which does not exist under the Termux prefix, so
+# every HTTPS call fails with "x509: certificate signed by unknown authority" even though
+# curl works. krew hit this in the container run; kubectl, eksctl, k9s and kustomize would
+# have hit it on first use, having reported a successful install.
+if [[ "$(detect_platform)" == "termux" ]]; then
+    if [[ -f "${PREFIX:-}/etc/tls/cert.pem" ]]; then
+        export SSL_CERT_FILE="$PREFIX/etc/tls/cert.pem"
+        log_info "Termux detected - pointing Go tools at $SSL_CERT_FILE"
+    else
+        log_warn "Termux detected and no CA bundle found at \$PREFIX/etc/tls/cert.pem."
+        log_warn "  Go-based tools (kubectl, krew, eksctl, k9s) will fail TLS verification."
+        log_warn "  Fix with: pkg install ca-certificates"
+    fi
+fi
 
 ################################################################################
 # kubectl

@@ -161,6 +161,7 @@ can_root() {
 
 # Refresh the package index. Best-effort: a stale index is not worth aborting over.
 pkg_refresh() {
+    _PKG_REFRESHED=1
     case "$(pkg_manager)" in
         apt)    as_root apt-get update -qq ;;
         pacman) as_root pacman -Sy --noconfirm ;;
@@ -179,6 +180,19 @@ pkg_refresh() {
 # forever rather than failing.
 pkg_install() {
     [[ $# -gt 0 ]] || return 0
+
+    # Refresh once per script run before the first install. Without this, an apt whose
+    # /var/lib/apt/lists is empty reports "Unable to locate package unzip" for packages
+    # that plainly exist - which is what happened to aws, azure and tui in the container
+    # run, because the extras phase never goes through install-ubuntu.sh's apt-get update.
+    # Debian derivatives ship an empty index in exactly the same way after a
+    # `rm -rf /var/lib/apt/lists/*`, so this is not only a test artifact.
+    if [[ "${_PKG_REFRESHED:-0}" -ne 1 ]]; then
+        case "$(pkg_manager)" in
+            apt | dnf | yum | pkg) pkg_refresh || log_warn "Index refresh failed, trying anyway" ;;
+            *) _PKG_REFRESHED=1 ;;
+        esac
+    fi
 
     case "$(pkg_manager)" in
         apt)    as_root apt-get install -y "$@" ;;
@@ -211,6 +225,8 @@ ensure_cmds() {
             tar:*)        pkg=tar ;;
             gpg:apt)      pkg=gnupg ;;
             gpg:*)        pkg=gnupg2 ;;
+            # Termux splits the openssl CLI out of the library package.
+            openssl:pkg)  pkg=openssl-tool ;;
             *)            pkg="$cmd" ;;
         esac
         missing+=("$pkg")
@@ -239,6 +255,14 @@ user_bin_dir() {
 install_binary() {
     local src="$1"
     local name="${2:-$(basename "$src")}"
+
+    # Termux has no /usr/local/bin on PATH - and on a rooted device with tsu, can_root is
+    # true, so without this a binary would be installed somewhere the shell never looks.
+    # $PREFIX/bin is the platform's own equivalent and needs no privilege.
+    if [[ "$(detect_platform)" == "termux" && -n "${PREFIX:-}" && -d "$PREFIX/bin" ]]; then
+        install -m 0755 "$src" "$PREFIX/bin/$name"
+        return
+    fi
 
     if can_root; then
         as_root install -m 0755 "$src" "/usr/local/bin/$name"

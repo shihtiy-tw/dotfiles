@@ -16,6 +16,13 @@ source "$SCRIPT_DIR/modules/helpers/pkg.sh"
 
 log_section "Terminal UI Tools"
 
+# install-llm.sh installs uv into ~/.local/bin and cargo lives in ~/.cargo/bin, but neither
+# is on PATH for a non-interactive shell. Without this, running `make llm && make tui` back
+# to back reported "uv not installed - skipping parllama" one step after uv was installed -
+# observed on both Arch and Amazon Linux.
+[[ -d "$HOME/.local/bin" ]] && export PATH="$HOME/.local/bin:$PATH"
+[[ -d "$HOME/.cargo/bin" ]] && export PATH="$HOME/.cargo/bin:$PATH"
+
 ################################################################################
 # basalt: Obsidian vault TUI
 ################################################################################
@@ -48,13 +55,47 @@ fi
 ################################################################################
 
 # This was `sudo pacman -S --noconfirm github-cli`, hardcoded, so the script could only
-# ever work on Arch despite being the generic TUI installer. The package name also differs
-# per distro. Both install-ubuntu.sh and install-archlinux.sh already install gh as part of
-# `make install`, so most of the time this is a no-op.
+# ever work on Arch despite being the generic TUI installer. Both install-ubuntu.sh and
+# install-archlinux.sh already install gh as part of `make install`, so most of the time
+# this is a no-op.
+#
+# gh is only in the distro archives on Arch, Fedora and Homebrew. It is NOT in Ubuntu's or
+# Debian's, and NOT in the Amazon Linux 2023 repos - the container run confirmed both
+# ("E: Unable to locate package gh" and "No match for argument: gh"), so a plain
+# `pkg_install gh` was dead code on the two platforms most likely to run this. GitHub
+# publishes its own repos; install-ubuntu.sh:462-469 already wires up the apt one.
+
+install_gh_apt_repo() {
+    ensure_cmds curl gpg || return 1
+    as_root install -m 0755 -d /etc/apt/keyrings || return 1
+    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
+        | as_root tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null || return 1
+    as_root chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg || return 1
+    echo "deb [arch=$(detect_arch) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
+        | as_root tee /etc/apt/sources.list.d/github-cli.list > /dev/null || return 1
+    pkg_refresh
+}
+
+install_gh_rpm_repo() {
+    # Written directly rather than via `dnf config-manager --add-repo`, which lives in the
+    # dnf-plugins-core package and is absent from the amazonlinux:2023 base image.
+    as_root tee /etc/yum.repos.d/gh-cli.repo > /dev/null <<'EOF'
+[gh-cli]
+name=packages for the GitHub CLI
+baseurl=https://cli.github.com/packages/rpm
+enabled=1
+gpgcheck=1
+gpgkey=https://cli.github.com/packages/githubcli-archive-keyring.asc
+EOF
+}
+
 install_gh() {
     case "$(pkg_manager)" in
-        pacman) pkg_install github-cli ;;
-        apt | dnf | yum | brew) pkg_install gh ;;
+        pacman)     pkg_install github-cli ;;
+        brew)       pkg_install gh ;;
+        pkg)        pkg_install gh ;;   # termux-main carries it
+        apt)        install_gh_apt_repo && pkg_install gh ;;
+        dnf | yum)  install_gh_rpm_repo && pkg_install gh ;;
         *)
             log_error "No gh package known for this platform"
             return 1

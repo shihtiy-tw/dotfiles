@@ -156,11 +156,37 @@ record_failure() {
     SAFE_EXEC_FAILED_STEPS+=("$description")
 }
 
+# Record that a step does not apply to this platform at all.
+# Usage: record_unsupported "description" "reason"
+#
+# The ledger used to have only two outcomes, success and failure, so "upstream publishes no
+# build for this platform" was scored identically to "the install broke". The Termux
+# container run made that untenable: five of its six red steps were tools that simply do
+# not exist for Android, and reporting them as failures buries the one that was a genuine
+# bug. This logs prominently and lists itself in the summary, but does not affect the exit
+# status.
+UNSUPPORTED_STEPS=()
+
+record_unsupported() {
+    local description="$1"
+    local reason="${2:-not available on this platform}"
+    log_warn "Not supported here: $description ($reason)"
+    UNSUPPORTED_STEPS+=("$description - $reason")
+}
+
 # Print the failure ledger. Returns 0 only if every safe_exec step succeeded, so an
 # installer can end with `install_summary` and give `make install` a meaningful status.
 install_summary() {
+    if [[ "${#UNSUPPORTED_STEPS[@]}" -gt 0 ]]; then
+        log_warn "${#UNSUPPORTED_STEPS[@]} step(s) skipped as unsupported on this platform:"
+        local skipped
+        for skipped in "${UNSUPPORTED_STEPS[@]}"; do
+            echo "  - $skipped" >&2
+        done
+    fi
+
     if [[ "$SAFE_EXEC_FAILURES" -eq 0 ]]; then
-        log_success "All steps completed successfully"
+        log_success "All applicable steps completed successfully"
         return 0
     fi
 
@@ -214,5 +240,5 @@ symlink_exists() {
 
 export -f log_info log_success log_error log_warn log_skip log_section log_test
 export -f safe_exec quiet_exec command_exists dir_exists file_exists symlink_exists
-export -f record_failure install_summary
+export -f record_failure record_unsupported install_summary
 export -f _log_timestamp

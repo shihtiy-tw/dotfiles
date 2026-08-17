@@ -32,11 +32,29 @@ ensure_cmds curl
 # command not found".
 install_uv() {
     # Installs to ~/.local/bin, which zsh/env.zsh:37 already has on PATH.
-    curl -fsSL https://astral.sh/uv/install.sh | sh
+    #
+    # UV_NO_MODIFY_PATH=1 is not optional here. Left to itself the installer appends
+    # `. "$HOME/.local/bin/env"` to ~/.zshrc - and init.sh symlinks that file into this
+    # repo, so `make llm` used to leave the checkout dirty. Caught by the container
+    # harness's repo_dirty step. The line is redundant anyway: zsh/env.zsh:37 already puts
+    # ~/.local/bin on PATH. (The `--no-modify-path` flag is deprecated upstream in favour
+    # of this variable.)
+    curl -fsSL https://astral.sh/uv/install.sh | env UV_NO_MODIFY_PATH=1 sh
 }
 
 if command_exists uv; then
     log_skip "uv already installed"
+elif [[ "$(detect_platform)" == "termux" ]]; then
+    # Astral publishes no x86_64-linux-android build; the installer says so itself
+    # ("there isn't a download for your platform x86_64-linux-android"). Termux packages uv
+    # separately, so try that before giving up. Not routed through safe_exec: a failure here
+    # means "unavailable on this platform", which should not be counted against the run.
+    if pkg_install uv; then
+        log_success "Installed uv from termux-main"
+    else
+        record_unsupported "uv" "no Android build from astral.sh, and pkg install uv failed"
+    fi
+    [[ -d "$HOME/.local/bin" ]] && export PATH="$HOME/.local/bin:$PATH"
 else
     safe_exec "uv" install_uv
     # The installer cannot change this shell's PATH, so pick it up for the steps below.
@@ -47,18 +65,40 @@ fi
 # llm
 ################################################################################
 
-if command_exists llm; then
+# https://github.com/simonw/llm
+#
+# The interpreter is pinned. Left to itself uv picks the newest CPython it can find, and on
+# 3.14 the dependency resolution pulls `httpx2` (openai 3.x depends on the renamed
+# distribution) while llm's own models.py still does `import httpx` - so the installed `llm`
+# binary tracebacks on every invocation, including `llm --version`. Reproduced identically
+# on Ubuntu and Arch in the container run; Amazon Linux escaped it only because its python3
+# is 3.9. Pinning also makes the install reproducible across distros, which is the point.
+LLM_PYTHON="${LLM_PYTHON:-3.12}"
+
+install_llm() {
+    uv tool install --python "$LLM_PYTHON" llm || return 1
+    [[ -d "$HOME/.local/bin" ]] && export PATH="$HOME/.local/bin:$PATH"
+    # An install that cannot be run is not an install. Without this check the failure
+    # surfaced one step later as "llm-ollama plugin failed", pointing at the wrong thing.
+    llm --version > /dev/null 2>&1
+}
+
+if command_exists llm && llm --version > /dev/null 2>&1; then
     log_skip "llm already installed ($(llm --version 2>&1))"
 elif command_exists uv; then
-    # https://github.com/simonw/llm
-    safe_exec "llm" uv tool install llm
+    safe_exec "llm (python $LLM_PYTHON)" install_llm
     [[ -d "$HOME/.local/bin" ]] && export PATH="$HOME/.local/bin:$PATH"
+elif [[ "$(detect_platform)" == "termux" ]]; then
+    record_unsupported "llm" "requires uv, which has no Android build"
 else
     record_failure "llm (uv unavailable)"
 fi
 
 # Plugin lives in llm's own virtualenv, so it goes through `llm install`, not uv/pip.
-if command_exists llm; then
+# `llm --version` is retested rather than just `command_exists`: a broken install leaves the
+# wrapper script on PATH, so command_exists alone would send us into a plugin install that
+# can only traceback.
+if command_exists llm && llm --version > /dev/null 2>&1; then
     if llm plugins 2>/dev/null | grep -q 'llm-ollama'; then
         log_skip "llm-ollama plugin already installed"
     else
@@ -118,7 +158,22 @@ fi
 # SUMMARY
 ################################################################################
 
-command_exists llm    && log_info "llm: $(llm --version 2>&1)"
-command_exists gemini && log_info "gemini: $(gemini --version 2>&1 | head -1)"
+# `2>&1` in a version probe is a trap: when the tool is installed but broken, it prints a
+# whole Python traceback into what is meant to be a one-line summary. Ask for the version,
+# and if it cannot answer, say that instead.
+if command_exists llm; then
+    if llm --version > /dev/null 2>&1; then
+        log_info "llm: $(llm --version 2>/dev/null)"
+    else
+        log_warn "llm: on PATH but not runnable (try: uv tool install --python 3.12 --force llm)"
+    fi
+fi
+if command_exists gemini; then
+    if gemini --version > /dev/null 2>&1; then
+        log_info "gemini: $(gemini --version 2>/dev/null | head -1)"
+    else
+        log_warn "gemini: on PATH but not runnable"
+    fi
+fi
 
 install_summary

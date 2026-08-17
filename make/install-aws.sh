@@ -27,7 +27,23 @@ if [[ "$ARCH_UNAME" == "unsupported" ]]; then
     exit 1
 fi
 
-ensure_cmds curl unzip
+# Bail before downloading 60MB. AWS publishes only glibc x86_64/aarch64 bundles for Linux,
+# and its installer needs root - neither of which Termux has. The container run reached the
+# "needs root" error only after the whole archive had been fetched and unpacked.
+if [[ "$PLATFORM" == "termux" ]]; then
+    record_unsupported "AWS CLI v2" "no Android build, and its installer requires root"
+    log_warn "  On Termux use v1 instead: pkg install python-pip && pip install awscli"
+    install_summary
+    exit $?
+fi
+
+# Status checked: a missing unzip used to surface 16 lines later as
+# "install-aws.sh: line 46: unzip: command not found", which points at the wrong thing.
+if ! ensure_cmds curl unzip; then
+    record_failure "prerequisites (curl, unzip)"
+    install_summary
+    exit $?
+fi
 
 ################################################################################
 # AWS CLI v2

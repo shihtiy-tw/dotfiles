@@ -33,12 +33,19 @@ install_azure_cli_apt() {
     local keyring=/etc/apt/keyrings/microsoft.gpg
     local codename
 
-    ensure_cmds gpg
-    pkg_install ca-certificates apt-transport-https lsb-release || return 1
+    ensure_cmds gpg || return 1
+    pkg_install ca-certificates apt-transport-https || return 1
 
-    codename="$(lsb_release -cs 2>/dev/null)"
+    # UBUNTU_CODENAME first, VERSION_CODENAME second - deliberately NOT `lsb_release -cs`.
+    # On the Debian derivatives detect_platform accepts (linuxmint, pop, elementary, zorin)
+    # lsb_release returns the derivative's own codename - "wilma", "vanessa" - which does not
+    # exist under packages.microsoft.com/repos/azure-cli/, so apt-get update succeeds and
+    # the install then fails with nothing to point at. UBUNTU_CODENAME gives the upstream
+    # Ubuntu suite on exactly those distros. Same pattern as install-ubuntu.sh:402. It also
+    # drops the lsb-release dependency, which is not installed by default everywhere.
+    codename="$(. /etc/os-release 2>/dev/null && echo "${UBUNTU_CODENAME:-${VERSION_CODENAME:-}}")"
     if [[ -z "$codename" ]]; then
-        log_error "Could not determine the distribution codename"
+        log_error "Could not determine the distribution codename from /etc/os-release"
         return 1
     fi
 
@@ -90,6 +97,10 @@ install_azure_cli() {
 
 if command_exists az; then
     log_skip "Azure CLI already installed"
+elif [[ "$PLATFORM" == "termux" ]]; then
+    # Microsoft publishes no Android build, and the CLI is a large Python application. Not a
+    # failure - kubelogin below is a static Go binary and does work here.
+    record_unsupported "Azure CLI" "Microsoft publishes no build for Android/Termux"
 else
     safe_exec "Azure CLI" install_azure_cli
 fi
@@ -107,7 +118,7 @@ install_kubelogin() {
         return 0
     fi
 
-    ensure_cmds unzip
+    ensure_cmds unzip || return 1
 
     local workdir
     workdir="$(mktemp -d)"

@@ -39,7 +39,13 @@ ensure_cmds curl tar
 
 # gcloud is Python; the archive bundles its own interpreter only on some platforms, so
 # make sure there is a system one.
-command_exists python3 || pkg_install python3
+if ! command_exists python3; then
+    # Worth announcing: on Termux the python package drags in clang/llvm/ndk-sysroot, which
+    # measured at 114MB of downloads and 644MB on disk in the container run. Not something to
+    # trigger silently on a phone.
+    log_info "python3 is missing and will be installed (this can be a large download)"
+    pkg_install python3 || log_warn "Could not install python3 - the SDK may not run"
+fi
 
 install_gcloud() {
     local workdir
@@ -105,6 +111,13 @@ if [[ -x "$GCLOUD_DIR/bin/gcloud" ]]; then
     if "$GCLOUD_DIR/bin/gcloud" components list --only-local-state --format='value(id)' 2>/dev/null \
         | grep -qx 'gke-gcloud-auth-plugin'; then
         log_skip "gke-gcloud-auth-plugin already installed"
+    elif ! "$GCLOUD_DIR/bin/gcloud" components list --format='value(id)' 2>/dev/null \
+        | grep -qx 'gke-gcloud-auth-plugin'; then
+        # The component is not offered for every platform - on Termux the install dies with
+        # "The following components are unknown [gke-gcloud-auth-plugin]". The rest of the
+        # SDK works there, so this is a platform gap, not a failed run.
+        record_unsupported "gke-gcloud-auth-plugin" \
+            "gcloud offers no such component for $(detect_platform)/$(uname -m)"
     else
         safe_exec "gke-gcloud-auth-plugin" \
             "$GCLOUD_DIR/bin/gcloud" components install gke-gcloud-auth-plugin --quiet
