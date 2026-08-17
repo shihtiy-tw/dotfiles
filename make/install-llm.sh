@@ -79,10 +79,21 @@ fi
 # alone, uv resolved llm 0.32 on Ubuntu/Arch and llm 0.27.1 on Amazon Linux, whose system
 # python3 is 3.9. Pinning is NOT what fixes the import - the container run confirmed 3.12
 # resolves httpx2 exactly like 3.14 does.
-LLM_PYTHON="${LLM_PYTHON:-3.12}"
+# Not pinned on Termux: uv can only satisfy --python by downloading a managed CPython, and
+# Astral publishes none for Android, so the pin turns into "No interpreter found for Python
+# 3.12 in managed installations or search path". Use whatever python Termux has.
+if [[ "$(detect_platform)" == "termux" ]]; then
+    LLM_PYTHON=""
+else
+    LLM_PYTHON="${LLM_PYTHON:-3.12}"
+fi
 
 install_llm() {
-    uv tool install --python "$LLM_PYTHON" --with httpx llm || return 1
+    if [[ -n "$LLM_PYTHON" ]]; then
+        uv tool install --python "$LLM_PYTHON" --with httpx llm || return 1
+    else
+        uv tool install --with httpx llm || return 1
+    fi
     [[ -d "$HOME/.local/bin" ]] && export PATH="$HOME/.local/bin:$PATH"
     # An install that cannot be run is not an install. Without this check the failure
     # surfaced one step later as "llm-ollama plugin failed", pointing at the wrong thing.
@@ -92,7 +103,7 @@ install_llm() {
 if command_exists llm && llm --version > /dev/null 2>&1; then
     log_skip "llm already installed ($(llm --version 2>&1))"
 elif command_exists uv; then
-    safe_exec "llm (python $LLM_PYTHON)" install_llm
+    safe_exec "llm${LLM_PYTHON:+ (python $LLM_PYTHON)}" install_llm
     [[ -d "$HOME/.local/bin" ]] && export PATH="$HOME/.local/bin:$PATH"
 elif [[ "$(detect_platform)" == "termux" ]]; then
     record_unsupported "llm" "requires uv, which has no Android build"
@@ -172,7 +183,7 @@ if command_exists llm; then
         log_info "llm: $(llm --version 2>/dev/null)"
     else
         log_warn "llm: on PATH but not runnable"
-        log_warn "  try: uv tool install --python $LLM_PYTHON --force --with httpx llm"
+        log_warn "  try: uv tool install${LLM_PYTHON:+ --python $LLM_PYTHON} --force --with httpx llm"
     fi
 fi
 if command_exists gemini; then

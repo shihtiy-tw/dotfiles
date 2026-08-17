@@ -124,12 +124,28 @@ fi
 # gh-dash: PR/issue dashboard. The extension is named gh-dash, not dash - the old
 # `gh extension upgrade dash` therefore always failed with "extension not found", and
 # upgrading immediately after a fresh install was redundant anyway.
+install_gh_dash() {
+    local out rc=0
+    out="$(gh extension install dlvhdr/gh-dash 2>&1)" || rc=$?
+    [[ -n "$out" ]] && echo "$out"
+
+    # The extension ships prebuilt binaries and publishes none for Android, where it says so
+    # explicitly: "gh-dash unsupported for android-amd64." That is a platform gap, not a
+    # failed install, so it must not land in the failure ledger. Matched on the message
+    # rather than on the platform so any future arch gap is reported the same way.
+    if [[ "$rc" -ne 0 ]] && [[ "$out" == *unsupported\ for* ]]; then
+        record_unsupported "gh-dash" "upstream publishes no binary for this platform"
+        return 0
+    fi
+    return "$rc"
+}
+
 if command_exists gh; then
     if gh extension list 2>/dev/null | grep -q 'dlvhdr/gh-dash'; then
         log_skip "gh-dash already installed"
         safe_exec "gh-dash upgrade" gh extension upgrade dlvhdr/gh-dash
     else
-        safe_exec "gh-dash" gh extension install dlvhdr/gh-dash
+        safe_exec "gh-dash" install_gh_dash
     fi
 else
     log_warn "gh unavailable - skipping gh-dash"
