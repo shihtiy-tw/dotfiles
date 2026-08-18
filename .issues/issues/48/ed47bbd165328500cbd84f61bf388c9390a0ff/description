@@ -1,0 +1,69 @@
+Audit and repair the make/ installers against real containers
+
+The per-OS installers in make/ had not been run end to end in a long time and were broken
+on every platform. They are almost pure side effects (~238 sudo calls, ~40 network
+downloads, symlinks into $HOME), so they were exercised inside throwaway containers for
+Ubuntu 24.04, Arch, Amazon Linux 2023 and Termux. The harness lives in make/test/ (see
+make/test/README.md); the full write-up is make/test/FINDINGS.md.
+
+Results, full `make install` -> `make init` -> `make test` per distro:
+
+  Ubuntu 24.04   before: installer died at line 331 of 480; 43 pass / 11 fail
+                 after:  runs to the end, 58 steps completed; 52 pass / 2 fail
+  Arch           before: yay build broken so every AUR package silently skipped, while
+                         the run reported success; 53 pass / 0 fail
+                 after:  yay builds, 90 steps completed, 0 failed
+  Amazon Linux   before: pip, ripgrep and diff-so-fancy could not install
+                 after:  exits 0 and means it, 32 steps completed, 0 failed
+  Termux         before: three /etc/os-release errors, then exit 0 having done nothing
+                 after:  dispatcher refuses with exit 1 and a clear message
+
+The two remaining Ubuntu/Amazon Linux failures are one test, `neovim (nvim) runs`, and are
+a container artifact: both install Neovim as an AppImage, which needs FUSE, and the
+containers deliberately run without --device /dev/fuse. A separate appimage_check step
+unpacks and runs the binary; it passes on both.
+
+The six optional installers (aws, gcp, azure, kubernetes, llm, tui) reach no `make install`
+path and are asserted by no test, which is why they had rotted unnoticed. They now have
+their own `--phase extras` and are 0 of 13 failed on all four platforms.
+
+Highest-impact defects found:
+
+- modules/common/autojump.sh sourced autojump.bash under `set -u`. Reading an unset
+  $XDG_DATA_HOME there is a *fatal* shell error rather than a non-zero return, so
+  `load_autojump || true` could not catch it and install-ubuntu.sh died at line 331 of
+  480. Everything below had never been installed on a fresh machine: docker, gh,
+  terraform, packer, tig, gcc-14, imagemagick, silversearcher and more. Nine of Ubuntu's
+  eleven test failures traced back here.
+- Every module re-derived SCRIPT_DIR into the same variable name its caller was using, so
+  the second and later `source` lines resolved to modules/common/modules/common/... and
+  only the first module in each list ever loaded. Renamed to MODULE_DIR.
+- `readonly NVM_VERSION` collided with nvm's own function-local of that name, so
+  `nvm install 20` silently resolved to whatever node was already on PATH and still
+  reported success.
+- `make install` exited 0 no matter what: no failure aggregation existed, so a run with
+  ten broken steps was indistinguishable from a clean one and could never gate anything.
+  safe_exec now records failures and install_summary turns the tally into an exit code.
+- Data loss: remove_env deleted a file *and* its backup (a missing && turned the restore
+  into one `rm` with four operands), and install-aws.sh's relative `rm -rf aws/` deleted
+  the repo's own aws config directory when run from the root.
+- uv's installer appends `. "$HOME/.local/bin/env"` to ~/.zshrc, which init.sh symlinks
+  into this repo, so `make llm` left the checkout dirty. Suppressed with
+  UV_NO_MODIFY_PATH=1.
+- gh is not in the Ubuntu, Debian or Amazon Linux 2023 archives, and install-tui.sh
+  hardcoded `pacman -S github-cli` in what claims to be the generic TUI installer.
+- llm 0.32 is unrunnable as published: it does a bare `import httpx` without declaring it
+  while openai 3.x now pulls the renamed httpx2 distribution. Fixed with `--with httpx`.
+- install-kubernetes.sh chmod +x'd and installed a kubectl it never downloaded, and
+  overwrote its own correct arch detection with a hardcoded amd64 before fetching eksctl.
+- Two installers wrote a 404 body to disk as an executable: `curl -LO` without -f exits 0,
+  so Neovim installed a 9-byte "Not Found" page as the editor and diff-so-fancy was one
+  API rate limit away from the same.
+
+The test oracles were wrong too, which is worse than no tests at all: test-install.sh had
+no platform scope (Amazon Linux reported 21 failures for tools its installer never
+attempts, Termux failed 57 of 61) and did not set up PATH or nvm before asserting, which
+was 5 false failures per distro.
+
+Deferred with reasoning recorded in FINDINGS.md and filed separately: CI, the
+install-termux.sh rewrite, the missing tool sets, and install-init.sh's unhandled distros.

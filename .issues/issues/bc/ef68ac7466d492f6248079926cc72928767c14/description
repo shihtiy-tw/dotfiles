@@ -1,0 +1,18 @@
+Run the container test harness in CI
+
+There is no .github/ directory in this repository at all. That is the direct reason six
+optional installers could rot until someone ran them in a container: nothing ever executed
+them, and `make test` asserts none of the tools they provide.
+
+make/test/run.sh --phase fast takes about a minute per distro and covers staging the repo,
+bash -n over make/, shellcheck, the install-init.sh dispatch decision, `make init`
+symlinks, `make test-symlinks` and a repo-dirty check. Running that over ubuntu,
+archlinux, amazonlinux and termux on push would catch this whole class of regression for
+free.
+
+The heavier phases suit a schedule rather than per-push: --phase full is 20-60 minutes per
+distro and --phase extras is 10-25.
+
+run.sh already exits with the number of distros that reported failures, and each step
+emits `##### STEP <name>` / `##### END <name> rc=<n>` plus a machine-readable summary
+block, so it needs no adaptation to be used as a CI gate.

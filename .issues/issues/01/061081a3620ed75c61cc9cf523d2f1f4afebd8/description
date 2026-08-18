@@ -1,0 +1,28 @@
+Tools the config references but no installer installs, or only one does
+
+Several tools are either never installed or installed on exactly one platform, so the shell
+config references things a freshly provisioned machine does not have:
+
+- eza is used by zsh/alias.zsh:26 and no installer installs it anywhere.
+- htop is Arch-only (install-archlinux.sh:80). lazygit and lazydocker are Arch-only too
+  (:380). vim is commented out at install-ubuntu.sh:258, and Arch installs vi, not vim.
+- terraform and packer are in the base install-ubuntu.sh only, so Arch and Amazon Linux
+  never get them. They are infrastructure tools rather than base ones, so a separate
+  make/install-infra.sh fits the existing layout better than three copies of the logic.
+- fcitx5 is installed ungated at install-ubuntu.sh:134, unlike Arch where it now sits
+  behind DOTFILES_HEADLESS. An input method framework is not useful on a headless box.
+
+Candidate new optional sets, alongside the existing six:
+
+- install-cli.sh        eza, bat, fd, delta, zoxide, dust, duf, btop
+- install-security.sh   sops, age, gitleaks, trivy. The repo has detect-private-key and
+                        detect-aws-credentials pre-commit hooks but no tool for actually
+                        storing secrets, which is the half that matters.
+- kubernetes additions  stern, and argocd or flux. kubectx/kubens are already covered by
+                        the krew ctx/ns plugins, so they are not needed separately.
+- aws additions         granted or aws-vault.
+- llm additions         aider.
+
+One caveat for any of this: test-install.sh asserts none of the optional tools, so
+`make aws && make test` is green whether or not the AWS CLI actually installed. A new set
+should arrive with assertions, scoped per platform the way the existing ones now are.
