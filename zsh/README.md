@@ -19,7 +19,7 @@ The order is deliberate:
 | 3 | `completion-cache.zsh` | writes `$ZSH_COMPCACHE/_<tool>`; must precede `compinit` |
 | 4 | `omzsh.zsh` | oh-my-zsh, which runs the one and only `compinit` |
 | 5 | `config.zsh` | options, vi mode, key bindings |
-| 6 | `alias.zsh` | command shortcuts (e.g. `gs` -> git status) |
+| 6 | `alias.zsh` | command shortcuts, and sources `~/.kubectl_aliases` if present |
 | 7 | `function.zsh` | advanced shell functions |
 | 8 | `completion.zsh` | `compdef`/`bashcompinit` wiring that needs `compinit` to have run |
 | 9 | `man.zsh` | colored man pages |
@@ -64,19 +64,32 @@ Run these from your terminal:
 - `mkdircd <dir>`: Make a directory and enter it immediately.
 
 ## Alias Cheat Sheet
+
+Git shortcuts come from oh-my-zsh's `git` plugin, not from `alias.zsh` — so it is `gst`
+for `git status`, `gco`, `gd`, and so on. Run `alias | grep '^g'` for the full list.
+
 | Alias | Command |
 | :--- | :--- |
 | `vim` | `nvim` (only when nvim is installed) |
 | `c` | `clear` |
-| `l` | `eza -lah --git`, falling back to `exa`, then `ls -lAhF` |
-| `k` | `kubectl`, echoing the expanded command first |
-| `config` | Git command for dotfiles (See main README for setup) |
+| `l` | `eza -lahF`, falling back to `exa -lahF`, then `ls -lAhF` |
+| `config` | `/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME` |
+
+`config` targets a **bare** repo at `~/.dotfiles` tracking `$HOME` directly — a different
+layout from this checkout, which lives at `~/dotfiles` and uses symlinks (`make init`).
+It is inert unless you have set that bare repo up yourself; the same `--git-dir` backs
+`make status` / `make diff` / `make add` / `make commit` / `make ls`.
+
+`k` is **not** an alias. `~/.kubectl_aliases`, if installed, defines a `k` alias, so
+`function.zsh:36-40` `unalias`es it and defines a function instead, which echoes
+`+ kubectl <args>` to stderr before running. `completion.zsh:11` then restores completion
+with `compdef k=kubectl` — a function needs that, whereas zsh follows an alias on its own.
 
 ## Optional tools
 
 The config degrades cleanly when these are missing, but they are worth installing:
 
-- [`eza`](https://github.com/eza-community/eza) - `l` uses it when present, and
-  falls back to plain `ls` otherwise.
+- [`eza`](https://github.com/eza-community/eza) - `l` uses it when present, then tries
+  `exa` (its predecessor), and falls back to plain `ls -lAhF` otherwise.
 - [`lf`](https://github.com/gokcehan/lf) - enables the `lfcd` function and its
   `Ctrl-O` binding, which is left unbound when `lf` is absent.

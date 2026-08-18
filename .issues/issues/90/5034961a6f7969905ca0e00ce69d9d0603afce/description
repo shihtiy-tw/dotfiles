@@ -1,0 +1,31 @@
+The git issue alias points at a path that does not exist
+
+git/gitconfig:24 defines:
+
+    issue = !/home/ubuntu/toolkit/git-issue/git-issue.sh
+
+/home/ubuntu does not exist on this machine (home is /home/yst), and git-issue is
+not installed anywhere on PATH nor vendored in this repo. So every `git issue`
+command fails with:
+
+    fatal: cannot exec '/home/ubuntu/toolkit/git-issue/git-issue.sh':
+    No such file or directory
+
+The .issues/ tracker itself is fine - six issues on disk, readable as plain text -
+but nothing can be created, tagged or closed with the documented workflow. The five
+issues added in c8144e7 had to be hand-written into .issues/issues/<sha>/ directly.
+
+Two things to decide:
+
+1. Where git-issue should live. Upstream offers a system-wide `make install` or a
+   per-user clone plus `git config --global alias.issue`. A hardcoded absolute path
+   in a committed, shared gitconfig is what broke this; either vendor the script as
+   a submodule, install it from make/install-*.sh, or move the alias out of the
+   committed config into ~/.gitconfig.local.
+
+2. Whether the alias belongs in the repo at all if the tool is not installed by any
+   make target. Right now the repo advertises a workflow it does not provision.
+
+.issues/README.md now documents the breakage and the shell-only fallback for
+reading issues, so this is discoverable rather than silent, but the alias is still
+broken.

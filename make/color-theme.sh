@@ -104,8 +104,8 @@ set_kitty_theme() {
 
 # Exports $THEME for anything that wants to branch on the mode. The file is
 # gitignored, so rewriting it on every switch does not dirty the repo.
-# NOTE: sourcing of this file is currently commented out in zsh/zshrc, so
-# nothing reads it yet.
+# zsh/zshrc sources it if it exists, so a new shell picks up the current mode.
+# Already-running shells do not - they would need to re-source it themselves.
 set_zsh_theme() {
 	echo "export THEME=${mode}" >"${DOTFILES}/zsh/theme.zsh"
 	log_success "zsh: theme.zsh exports THEME=${mode}"
