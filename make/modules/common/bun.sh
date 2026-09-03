@@ -14,9 +14,9 @@ fi
 readonly _BUN_MODULE_LOADED=1
 
 # Source logger if not already loaded
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+MODULE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 if [[ -z "${_LOGGER_LOADED:-}" ]]; then
-    source "$SCRIPT_DIR/../helpers/logger.sh"
+    source "$MODULE_DIR/../helpers/logger.sh"
 fi
 
 ################################################################################
@@ -26,14 +26,14 @@ fi
 # Install Bun
 install_bun() {
     log_section "Installing Bun"
-    
+
     if command -v bun &> /dev/null; then
         log_skip "Bun already installed: $(bun --version)"
         return 0
     fi
-    
+
     log_info "Installing Bun via curl..."
-    
+
     # Run the installation script
     if curl -fsSL https://bun.sh/install | bash; then
         export BUN_INSTALL="$HOME/.bun"

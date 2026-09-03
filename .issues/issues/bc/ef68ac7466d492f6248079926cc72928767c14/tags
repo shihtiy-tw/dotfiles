@@ -1,0 +1,4 @@
+open
+ci
+make
+testing

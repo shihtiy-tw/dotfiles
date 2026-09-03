@@ -47,7 +47,9 @@ return {
         "hcl",
         "python",
         "ninja",
-        "rst"
+        "rst",
+        -- noice highlights the cmdline with the regex parser
+        "regex"
       },
       incremental_selection = {
         enable = true,

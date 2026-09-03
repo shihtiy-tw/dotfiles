@@ -1,91 +1,37 @@
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-#ZSH_THEME="af-magic"
-#ZSH_THEME="fishy"
+# oh-my-zsh settings. Sourced from zshrc after env.zsh and completion-cache.zsh,
+# because oh-my-zsh runs the single compinit for the shell.
+
 ZSH_THEME="spaceship"
-#ZSH_THEME="ieni"
 
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in ${HOME}/.oh-my-zsh/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
-
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load?
-# Standard plugins can be found in ${HOME}/.oh-my-zsh/plugins/*
-# Custom plugins may be added to ${HOME}/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
+# Plugin order is load order, and three of these care about it:
+#   - zsh-completions must precede compinit (oh-my-zsh adds plugin dirs to fpath
+#     before calling it, so listing it here is enough)
+#   - fzf-tab must come after compinit and before anything that wraps ZLE widgets
+#   - zsh-syntax-highlighting must be LAST, per its README
+# Previously syntax-highlighting sat mid-list with vim-mode, system-clipboard and
+# fzf-tab loading after it.
 plugins=(
   git
   docker
-  #django
   aws
-  #colorize
-  #command-not-found
+  kube-ps1
+  autojump
   zsh-completions
-  zsh-autosuggestions
-  zsh-syntax-highlighting
   zsh-vim-mode
   zsh-system-clipboard
-  #auto-color-ls
-  #copyzshell
-  #fast-syntax-highlighting
-  #fzf-git
-  #hacker-quotes
-  kube-ps1
-  #ls
-  #web-search
-  autojump
-  fzf-tab
   zsh-vi-man
+  fzf-tab
+  zsh-autosuggestions
+  zsh-syntax-highlighting
 )
 
 ZSH_SYSTEM_CLIPBOARD_METHOD="tmux"
 
-PROMPT='$(kube_ps1)'$PROMPT
+source "$ZSH/oh-my-zsh.sh"
 
-source $ZSH/oh-my-zsh.sh
+# kube-ps1 has to be prepended *after* oh-my-zsh has loaded the theme: the theme
+# assigns PROMPT, so doing this beforehand (as this file used to) was overwritten
+# and the kube context never showed up.
+if (( $+functions[kube_ps1] )); then
+  PROMPT='$(kube_ps1)'$PROMPT
+fi

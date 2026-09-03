@@ -1,0 +1,29 @@
+# Amazon Linux test image for make/install-amazon-linux.sh
+#
+# amazonlinux:2023 is el9. The script's old hardcoded epel-release-latest-7 was wrong
+# here, which is precisely what this image exercises.
+FROM amazonlinux:2023
+
+RUN dnf -y install \
+        bash \
+        findutils \
+        gzip \
+        git \
+        make \
+        procps-ng \
+        shadow-utils \
+        sudo \
+        tar \
+        which \
+    && dnf clean all
+
+RUN useradd --create-home --shell /bin/bash tester \
+    && echo 'tester ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/tester \
+    && chmod 0440 /etc/sudoers.d/tester
+
+USER tester
+WORKDIR /home/tester
+
+ENV HOME=/home/tester
+
+ENTRYPOINT ["bash", "/staging/make/test/entrypoint.sh"]

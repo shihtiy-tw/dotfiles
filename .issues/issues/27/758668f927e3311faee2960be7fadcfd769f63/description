@@ -1,0 +1,20 @@
+install-init.sh has no path for Debian, Fedora or Manjaro
+
+The dispatcher matches only `ubuntu|linuxmint`, `amzn` and `arch` against ID in
+/etc/os-release. Debian, Fedora and ID=manjaro all fall off the end of the chain.
+
+The immediate symptom was fixed during the container audit: the /etc/os-release read is now
+guarded and an unsupported platform fails loudly, where before `make install` printed three
+"No such file or directory" lines and exited 0 having installed nothing. The underlying gap
+remains.
+
+Manjaro and Debian are cheap: Manjaro is Arch, and Debian is close enough to Ubuntu that
+both are mostly a matter of adding the ID to the existing arm. Worth checking the Ubuntu
+installer's PPA use before claiming Debian support, since add-apt-repository ppa: does not
+apply there.
+
+Fedora is a larger piece of work. install-amazon-linux.sh is the dnf-based starting point,
+but the package names differ and the EPEL handling does not carry over: on Amazon Linux
+`rpm -E %{rhel}` returns the literal string %{rhel} and AL2023 publishes no epel-release
+at all, so the EPEL attempt was removed rather than fixed. Fedora needs the opposite
+treatment.

@@ -25,9 +25,9 @@ fi
 readonly _OMZ_MODULE_LOADED=1
 
 # Source logger if not already loaded
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+MODULE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 if [[ -z "${_LOGGER_LOADED:-}" ]]; then
-    source "$SCRIPT_DIR/../helpers/logger.sh"
+    source "$MODULE_DIR/../helpers/logger.sh"
 fi
 
 ################################################################################
@@ -60,7 +60,7 @@ _install_omz_framework() {
         log_skip "Oh-My-Zsh already installed"
         return 0
     fi
-    
+
     log_info "Installing Oh-My-Zsh framework..."
     if git clone https://github.com/robbyrussell/oh-my-zsh.git "$OMZ_DIR"; then
         log_success "Oh-My-Zsh framework installed"
@@ -77,12 +77,12 @@ _install_omz_plugin() {
     local plugin_name="$1"
     local plugin_url="$2"
     local plugin_dir="$OMZ_PLUGINS_DIR/$plugin_name"
-    
+
     if dir_exists "$plugin_dir"; then
         log_skip "Plugin $plugin_name already installed"
         return 0
     fi
-    
+
     log_info "Installing Oh-My-Zsh plugin: $plugin_name"
     if git clone "$plugin_url" "$plugin_dir"; then
         log_success "Plugin $plugin_name installed"
@@ -96,7 +96,7 @@ _install_omz_plugin() {
 # Install all Oh-My-Zsh plugins
 _install_omz_plugins() {
     log_info "Installing Oh-My-Zsh plugins..."
-    
+
     for plugin_name in "${!OMZ_PLUGINS[@]}"; do
         _install_omz_plugin "$plugin_name" "${OMZ_PLUGINS[$plugin_name]}"
     done
@@ -105,19 +105,19 @@ _install_omz_plugins() {
 # Install and configure Spaceship prompt theme
 _install_spaceship_theme() {
     local theme_dir="$OMZ_THEMES_DIR/spaceship-prompt"
-    
+
     if dir_exists "$theme_dir"; then
         log_skip "Spaceship theme already installed"
         return 0
     fi
-    
+
     log_info "Installing Spaceship prompt theme..."
-    
+
     if ! git clone https://github.com/denysdovhan/spaceship-prompt.git "$theme_dir"; then
         log_error "Failed to install Spaceship theme"
         return 1
     fi
-    
+
     # Configure Spaceship prompt symbol
     local char_file="$theme_dir/sections/char.zsh"
     if file_exists "$char_file"; then
@@ -128,7 +128,7 @@ _install_spaceship_theme() {
             sed -i 's/^SPACESHIP_CHAR_SYMBOL=.*$/SPACESHIP_CHAR_SYMBOL="${SPACESHIP_CHAR_SYMBOL="$ "}"/' "$char_file"
         fi
     fi
-    
+
     # Configure VI mode (disable by default)
     local vi_mode_file="$theme_dir/sections/vi_mode.zsh"
     if file_exists "$vi_mode_file"; then
@@ -138,10 +138,10 @@ _install_spaceship_theme() {
             sed -i 's/^SPACESHIP_VI_MODE_SHOW=.*$/SPACESHIP_VI_MODE_SHOW="${SPACESHIP_VI_MODE_SHOW=false}"/' "$vi_mode_file"
         fi
     fi
-    
+
     # Create symlink for theme
     ln -sf "$theme_dir/spaceship.zsh-theme" "$OMZ_THEMES_DIR/spaceship.zsh-theme" 2>/dev/null || true
-    
+
     log_success "Spaceship theme installed and configured"
     return 0
 }
@@ -149,20 +149,20 @@ _install_spaceship_theme() {
 # Main installation function
 install_oh_my_zsh() {
     log_section "Installing Oh-My-Zsh"
-    
+
     _install_omz_framework
     _install_omz_plugins
     _install_spaceship_theme
-    
+
     log_success "Oh-My-Zsh installation complete"
 }
 
 # Verify Oh-My-Zsh installation
 verify_oh_my_zsh() {
     local all_pass=true
-    
+
     log_section "Verifying Oh-My-Zsh Installation"
-    
+
     # Check framework
     if dir_exists "$OMZ_DIR"; then
         log_test "PASS" "Oh-My-Zsh framework directory exists"
@@ -170,7 +170,7 @@ verify_oh_my_zsh() {
         log_test "FAIL" "Oh-My-Zsh framework directory missing"
         all_pass=false
     fi
-    
+
     # Check plugins
     for plugin_name in "${!OMZ_PLUGINS[@]}"; do
         if dir_exists "$OMZ_PLUGINS_DIR/$plugin_name"; then
@@ -180,7 +180,7 @@ verify_oh_my_zsh() {
             all_pass=false
         fi
     done
-    
+
     # Check theme
     if dir_exists "$OMZ_THEMES_DIR/spaceship-prompt"; then
         log_test "PASS" "Spaceship theme"
@@ -188,7 +188,7 @@ verify_oh_my_zsh() {
         log_test "FAIL" "Spaceship theme missing"
         all_pass=false
     fi
-    
+
     if $all_pass; then
         return 0
     else

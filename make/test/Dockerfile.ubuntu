@@ -1,0 +1,36 @@
+# Ubuntu test image for make/install-ubuntu.sh
+#
+# Installs only what the *container* lacks, never what the installer is supposed to
+# do - otherwise the test proves nothing.
+FROM ubuntu:24.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        bash \
+        ca-certificates \
+        curl \
+        git \
+        locales \
+        make \
+        shellcheck \
+        sudo \
+        tzdata \
+    && rm -rf /var/lib/apt/lists/*
+
+# 238 sudo calls with no root fallback, so a non-root user with passwordless sudo is
+# the only configuration these scripts can run under.
+RUN useradd --create-home --shell /bin/bash tester \
+    && echo 'tester ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/tester \
+    && chmod 0440 /etc/sudoers.d/tester
+
+USER tester
+WORKDIR /home/tester
+
+# Deliberately NOT setting USER=tester. Docker leaves $USER unset, which is exactly
+# the condition that used to abort install-ubuntu.sh under `set -u`; leaving it unset
+# is what verifies the ${USER:-$(id -un)} guard.
+ENV HOME=/home/tester
+
+ENTRYPOINT ["bash", "/staging/make/test/entrypoint.sh"]

@@ -19,29 +19,48 @@ RESET=\033[0m
 .PHONY: clean
 .PHONY: all
 .PHONY: default
+.PHONY: remove_env
+.PHONY: remove_env-dry-run
+.PHONY: test-container
+.PHONY: test-container-full
+.PHONY: test-container-extras
+.PHONY: aws
+.PHONY: gcp
+.PHONY: azure
+.PHONY: kubernetes
+.PHONY: llm
+.PHONY: tui
+.PHONY: cloud
 
 default: help
 
 help:
-	@echo " $(CYAN)Usage: make [target]$(RESET)\n "
-		@echo " $(GREEN)Targets:$(RESET) "
-		@echo "  $(YELLOW)hello$(RESET):            hello"
-		@echo "  $(YELLOW)install$(RESET):          download applications"
-		@echo "  $(YELLOW)init$(RESET):             config all dotfiles"
-		@echo "  $(YELLOW)test$(RESET):             run all verification tests"
-		@echo "  $(YELLOW)test-install$(RESET):     verify tool installations"
-		@echo "  $(YELLOW)test-symlinks$(RESET):    verify dotfile symlinks"
-		@echo "  $(YELLOW)test-fix$(RESET):         verify and fix broken symlinks"
-		@echo "  $(YELLOW)status$(RESET):           show dotfile status"
-		@echo "  $(YELLOW)dark$(RESET):             configure system for dark theme"
-		@echo "  $(YELLOW)light$(RESET):            configure system for light theme"
-		@echo "  $(YELLOW)diff$(RESET):             show dotfile diff"
-		@echo "  $(YELLOW)add$(RESET):              add changes to git"
-		@echo "  $(YELLOW)commit$(RESET):           commit changes"
-		@echo "  $(YELLOW)ls$(RESET):               show dotfiles"
-		@echo "  $(YELLOW)rm_env$(RESET):           remove env"
-		@echo "  $(YELLOW)aws$(RESET):              install aws tool"
-		@echo "  $(YELLOW)kubernetes$(RESET):       install kubernetes tool"
+	@printf '%b\n' " $(CYAN)Usage: make [target]$(RESET) "
+		@printf '%b\n' " $(GREEN)Targets:$(RESET) "
+		@printf '%b\n' "  $(YELLOW)hello$(RESET):            hello"
+		@printf '%b\n' "  $(YELLOW)install$(RESET):          download applications"
+		@printf '%b\n' "  $(YELLOW)init$(RESET):             config all dotfiles"
+		@printf '%b\n' "  $(YELLOW)test$(RESET):             run all verification tests"
+		@printf '%b\n' "  $(YELLOW)test-install$(RESET):     verify tool installations"
+		@printf '%b\n' "  $(YELLOW)test-symlinks$(RESET):    verify dotfile symlinks"
+		@printf '%b\n' "  $(YELLOW)test-fix$(RESET):         verify and fix broken symlinks"
+		@printf '%b\n' "  $(YELLOW)status$(RESET):           show dotfile status"
+		@printf '%b\n' "  $(YELLOW)dark$(RESET):             configure system for dark theme"
+		@printf '%b\n' "  $(YELLOW)light$(RESET):            configure system for light theme"
+		@printf '%b\n' "  $(YELLOW)diff$(RESET):             show dotfile diff"
+		@printf '%b\n' "  $(YELLOW)add$(RESET):              add changes to git"
+		@printf '%b\n' "  $(YELLOW)commit$(RESET):           commit changes"
+		@printf '%b\n' "  $(YELLOW)ls$(RESET):               show dotfiles"
+		@printf '%b\n' "  $(YELLOW)remove_env$(RESET):       unlink dotfiles and restore backups"
+		@printf '%b\n' "  $(YELLOW)test-container$(RESET):   run installers in throwaway containers"
+		@printf '%b\n' " $(GREEN)Optional tool sets:$(RESET) "
+		@printf '%b\n' "  $(YELLOW)aws$(RESET):              AWS CLI v2 + Session Manager plugin"
+		@printf '%b\n' "  $(YELLOW)gcp$(RESET):              Google Cloud CLI + GKE auth plugin"
+		@printf '%b\n' "  $(YELLOW)azure$(RESET):            Azure CLI + kubelogin"
+		@printf '%b\n' "  $(YELLOW)kubernetes$(RESET):       kubectl, eksctl, helm, krew, k9s, kustomize"
+		@printf '%b\n' "  $(YELLOW)llm$(RESET):              llm CLI + Gemini CLI"
+		@printf '%b\n' "  $(YELLOW)tui$(RESET):              basalt, parllama, gh-dash"
+		@printf '%b\n' "  $(YELLOW)cloud$(RESET):            aws + gcp + azure + kubernetes"
 
 # PHONY: help
 
@@ -61,7 +80,6 @@ help:
 
 env:
 		@echo ${ZSHRCPATH}
-		@echo ${ZSHRCPATH}
 		@echo ${ZSHRCBACKUPPATH}
 		@echo ${BASHRCPATH}
 		@echo ${BASHRCBACKUPPATH}
@@ -77,7 +95,7 @@ env:
 		./make/envtest.sh
 
 hello:
-	@echo " \n\
+	@printf '%b\n' " \n\
  _   _      _ _        __        __         _     _\n\
 | | | | ___| | | ___   \\ \\      / /__  _ __| | __| |\n\
 | |_| |/ _ \\ | |/ _ \\   \\ \\ /\\ / / _ \\| '__| |/ _\` |\n\
@@ -86,7 +104,7 @@ hello:
 
 
 install:
-		@echo "\n\
+		@printf '%b\n' "\n\
 	 ___           _        _ _   _____           _\n\
 	|_ _|_ __  ___| |_ __ _| | | |_   _|__   ___ | |___ \n\
 	 | || '_ \/ __| __/ _\` | | |   | |/ _ \ / _ \| / __|\n\
@@ -98,7 +116,7 @@ install:
 		@./make/install-init.sh
 
 dark:
-	@echo "$(PURPLE) ____             _     __        __         _     _   \n\
+	@printf '%b\n' "$(PURPLE) ____             _     __        __         _     _   \n\
 |  _ \\  __ _ _ __| | __ \\ \\      / /__  _ __| | __| | \n\
 | | | |/ _\` | '__| |/ /  \\ \\ /\\ / / _ \\| '__| |/ _\` | \n\
 | |_| | (_| | |  |   <    \\ V  V / (_) | |  | | (_| | \n\
@@ -106,7 +124,7 @@ dark:
 	@./make/color-theme.sh dark
 
 light:
-	@echo "$(YELLOW) \n\
+	@printf '%b\n' "$(YELLOW) \n\
   _     _       _     _    __        __         _     _ \n\
  | |   (_) __ _| |__ | |_  \ \      / /__  _ __| | __| | \n\
  | |   | |/ _\` | '_ \| __|  \ \ /\ / / _ \| '__| |/ _\` | \n\
@@ -117,7 +135,7 @@ light:
 	@./make/color-theme.sh light
 
 init:
-		@echo " \n\
+		@printf '%b\n' " \n\
 	 ___       _ _     ___           _   _____\n\
 	|_ _|_ __ (_) |_  |_ _|___ _ __ (_) | ____|_ ____   __\n\
 	 | || '_ \| | __|  | |/ _ \ '_ \| | |  _| | '_ \ \ / /\n\
@@ -129,19 +147,19 @@ init:
 		@./make/init.sh
 
 status:
-	/usr/bin/git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME} status
+	git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME} status
 
 diff:
-	/usr/bin/git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME} diff
+	git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME} diff
 
 add:
-	/usr/bin/git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME} add
+	git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME} add
 
 commit:
-	/usr/bin/git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME} commit -v
+	git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME} commit -v
 
 ls:
-	/usr/bin/git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME} ls-tree --full-tree -r HEAD
+	git --git-dir=${HOME}/.dotfiles/ --work-tree=${HOME} ls-tree --full-tree -r HEAD
 
 remove_env:
 	#@echo "\n\
@@ -153,50 +171,77 @@ remove_env:
 #\n\
 	#"
 
-	if [ -e ${HOME}/.zshrc.backup ]; then \
-		rm ${HOME}/.zshrc \
-		mv ${HOME}/.zshrc.backup ${HOME}/.zshrc; \
-	fi
-	if [ -e ${HOME}/.bashrc.backup ]; then \
-		rm ${HOME}/.bashrc \
-		mv ${HOME}/.bash.backup ${HOME}/.bashrc; \
-	fi
-	if [ -e ${HOME}/.tmux.conf.backup ]; then \
-		rm ${HOME}/.tmux.conf.backup \
-		mv ${HOME}/.tmux.conf.backup ${HOME}/.tmux.conf; \
-	fi
-	if [ -e ${HOME}/.gitconfig.backup ]; then \
-		rm ${HOME}/.gitconfig \
-		mv ${HOME}/.gitconfig.backup ${HOME}/.gitconfig; \
-	fi
-	if [ -e ${HOME}/.config/nvim/init.vim.backup ]; then \
-		rm ${HOME}/.config/nvim/init.vim \
-		mv ${HOME}/.config/nvim/init.vim.backup ${HOME}/.config/nvim/init.vim; \
-	fi
+	@./make/remove-env.sh
+
+remove_env-dry-run:
+	@./make/remove-env.sh --dry-run
 
 ################################################################################
 # TEST TARGETS
 ################################################################################
 
 test:
-	@echo " $(CYAN)Running all verification tests...$(RESET)"
+	@printf '%b\n' " $(CYAN)Running all verification tests...$(RESET)"
 	@./make/test.sh
 
 test-install:
-	@echo " $(CYAN)Running installation verification tests...$(RESET)"
+	@printf '%b\n' " $(CYAN)Running installation verification tests...$(RESET)"
 	@./make/test-install.sh
 
 test-symlinks:
-	@echo " $(CYAN)Running symlink verification tests...$(RESET)"
+	@printf '%b\n' " $(CYAN)Running symlink verification tests...$(RESET)"
 	@./make/test-symlinks.sh
 
 test-fix:
-	@echo " $(CYAN)Running symlink verification and fixing broken links...$(RESET)"
+	@printf '%b\n' " $(CYAN)Running symlink verification and fixing broken links...$(RESET)"
 	@./make/test-symlinks.sh --fix
 
 test-verbose:
-	@echo " $(CYAN)Running all tests with verbose output...$(RESET)"
+	@printf '%b\n' " $(CYAN)Running all tests with verbose output...$(RESET)"
 	@./make/test.sh --verbose
 
-# TODO: add aws and kubernetes script
+# Run the installers inside throwaway containers. See make/test/README.md.
+# NEVER run the installers directly on your own machine.
+test-container:
+	@printf '%b\n' " $(CYAN)Running fast container tests (all distros)...$(RESET)"
+	@./make/test/run.sh --phase fast
 
+test-container-full:
+	@printf '%b\n' " $(CYAN)Running full container installs (this takes a while)...$(RESET)"
+	@./make/test/run.sh --phase full
+
+test-container-extras:
+	@printf '%b\n' " $(CYAN)Running the optional tool installers in containers...$(RESET)"
+	@./make/test/run.sh --phase extras
+
+################################################################################
+# OPTIONAL TOOL SETS
+#
+# Not part of `make install` - these are opt-in, and each is safe to re-run.
+################################################################################
+
+aws:
+	@printf '%b\n' " $(CYAN)Installing AWS tools...$(RESET)"
+	@./make/install-aws.sh
+
+gcp:
+	@printf '%b\n' " $(CYAN)Installing Google Cloud tools...$(RESET)"
+	@./make/install-gcp.sh
+
+azure:
+	@printf '%b\n' " $(CYAN)Installing Azure tools...$(RESET)"
+	@./make/install-azure.sh
+
+kubernetes:
+	@printf '%b\n' " $(CYAN)Installing Kubernetes tools...$(RESET)"
+	@./make/install-kubernetes.sh
+
+llm:
+	@printf '%b\n' " $(CYAN)Installing LLM tooling...$(RESET)"
+	@./make/install-llm.sh
+
+tui:
+	@printf '%b\n' " $(CYAN)Installing terminal UI tools...$(RESET)"
+	@./make/install-tui.sh
+
+cloud: aws gcp azure kubernetes

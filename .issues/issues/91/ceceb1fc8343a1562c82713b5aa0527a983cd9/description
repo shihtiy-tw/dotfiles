@@ -1,0 +1,30 @@
+mac/install-mac.sh has no failure ledger, so it always exits 0
+
+The audit gave the Linux installers a failure ledger: safe_exec / record_failure /
+record_unsupported feed a tally that install_summary turns into an exit code, so
+`make install` can no longer report success with ten broken steps. mac/install-mac.sh
+never got that pass.
+
+Current state, measured:
+
+    installer                 safe_exec  record_failure  install_summary
+    install-ubuntu.sh                59               5  yes
+    install-archlinux.sh            142               2  yes
+    install-amazon-linux.sh          36              11  yes
+    mac/install-mac.sh                1               0  NO
+
+The single safe_exec is at mac/install-mac.sh:149 (rbenv). Everything else - Homebrew
+bootstrap, both brew bundle runs, all eleven sourced common/ modules, the cleanup -
+runs bare. The script ends with a log_success and some next-step echoes, so it exits 0
+regardless of what failed.
+
+Also worth checking during the same pass: :69-79 only log_warn if Brewfile.arm or
+Brewfile.x86 is missing, then carry on having installed none of that package set. That
+should be a record_failure.
+
+The work is mechanical and mirrors what was already done three times. It is untouched
+only because it cannot be verified from here: macOS cannot be containerized, so
+make/test/ covers Ubuntu, Arch, Amazon Linux and Termux and leaves this file to static
+review. Whoever has a Mac should do the wrapping and then actually run it once.
+
+make/mac/README.md documents the gap.

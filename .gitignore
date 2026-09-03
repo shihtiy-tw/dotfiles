@@ -8,3 +8,5 @@ theme.zsh
 # Ruby gems
 rubygems-*.tgz
 rubygems-*/
+.claude/worktrees/
+.claude/*.local.json

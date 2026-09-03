@@ -1,0 +1,38 @@
+Rewrite install-termux.sh or remove it
+
+install-termux.sh cannot work as written and is unreachable from any make target:
+
+- :10 clones a second copy of the repo into whatever the CWD happens to be, before its own
+  `cd "$HOME"` on :13, discarding the checkout the user is running from.
+- It never calls init.sh, so it links no configs at all. The single highest-value missing
+  line is `bash "$DOTFILES/make/init.sh"`.
+- It never sources make/modules/, so none of the shared helpers exist.
+- It ends by installing termux-style, whose menu is interactive.
+- bun is not packaged for Termux; `pkg install nodejs-lts` and skipping nvm is the
+  equivalent.
+
+init.sh itself does work correctly on Termux, verified in a container: 13 of 13 symlinks
+valid. So install-init.sh now tells Termux users to run `bash make/init.sh` directly and
+exits non-zero, instead of printing three /etc/os-release errors and exiting 0 having
+installed nothing. That is a holding position, not a fix.
+
+If real support is added, dispatch must invoke installers as `bash "$script"` rather than
+relying on shebangs: /usr/bin/env does not exist under the Termux prefix, so
+`#!/usr/bin/env bash` cannot be resolved by the kernel there.
+
+Also relevant to any Termux work, all found during the audit:
+
+- Go binaries look for /etc/ssl/certs, which does not exist under the Termux prefix, so
+  they fail with "x509: certificate signed by unknown authority" even where curl to the
+  same host works. The shared setup_go_tls helper points SSL_CERT_FILE at
+  $PREFIX/etc/tls/cert.pem; krew, gh, kubectl, eksctl, k9s and kustomize all need it.
+- /usr/local/bin is not on Termux's PATH, and can_root is true on a rooted device with
+  tsu, so install_binary needed an explicit $PREFIX/bin branch.
+- Six things upstream simply does not publish for Android and which are now recorded as
+  unsupported rather than failed: the AWS CLI v2, the Azure CLI, gke-gcloud-auth-plugin,
+  gh-dash, and (via dependencies with no Android wheel and no Rust compiler) llm and
+  parllama.
+
+The container image is termux/termux-docker:x86_64, so it is indicative only: no Android
+permissions model, no termux-api, /system is a stub, and the x86_64 target triple differs
+from a real aarch64 device.

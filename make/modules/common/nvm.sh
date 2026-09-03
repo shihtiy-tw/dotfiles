@@ -15,18 +15,23 @@ fi
 readonly _NVM_MODULE_LOADED=1
 
 # Source logger if not already loaded
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+MODULE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 if [[ -z "${_LOGGER_LOADED:-}" ]]; then
-    source "$SCRIPT_DIR/../helpers/logger.sh"
+    source "$MODULE_DIR/../helpers/logger.sh"
 fi
 
 ################################################################################
 # CONFIGURATION
 ################################################################################
 
-readonly NVM_VERSION="v0.40.0"
-readonly NVM_DIR_PATH="${NVM_DIR:-$HOME/.nvm}"
-readonly DEFAULT_NODE_VERSION="20"
+# Do NOT name this NVM_VERSION and do NOT make it readonly. nvm.sh gets sourced into
+# this same shell by _load_nvm, and it uses NVM_VERSION as a function-local during
+# version resolution (nvm_ensure_version_prefix). A readonly global of that name makes
+# nvm's `local NVM_VERSION` fail, after which `nvm install 20` silently resolves to
+# whatever node is already on PATH - and still reports success.
+NVM_INSTALLER_VERSION="v0.40.0"
+NVM_DIR_PATH="${NVM_DIR:-$HOME/.nvm}"
+DEFAULT_NODE_VERSION="20"
 
 ################################################################################
 # FUNCTIONS
@@ -35,16 +40,16 @@ readonly DEFAULT_NODE_VERSION="20"
 # Install NVM (Node Version Manager)
 install_nvm() {
     log_section "Installing NVM (Node Version Manager)"
-    
+
     if dir_exists "$NVM_DIR_PATH" && file_exists "$NVM_DIR_PATH/nvm.sh"; then
         log_skip "NVM already installed"
         _load_nvm
         return 0
     fi
-    
-    log_info "Installing NVM $NVM_VERSION..."
-    
-    if curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/$NVM_VERSION/install.sh" | bash; then
+
+    log_info "Installing NVM $NVM_INSTALLER_VERSION..."
+
+    if curl -fsSL "https://raw.githubusercontent.com/nvm-sh/nvm/$NVM_INSTALLER_VERSION/install.sh" | bash; then
         log_success "NVM installed"
         _load_nvm
         return 0
@@ -57,13 +62,13 @@ install_nvm() {
 # Load NVM into current shell session
 _load_nvm() {
     export NVM_DIR="$NVM_DIR_PATH"
-    
+
     if [[ -s "$NVM_DIR/nvm.sh" ]]; then
         # shellcheck source=/dev/null
         \. "$NVM_DIR/nvm.sh"
         log_info "NVM loaded into current session"
     fi
-    
+
     if [[ -s "$NVM_DIR/bash_completion" ]]; then
         # shellcheck source=/dev/null
         \. "$NVM_DIR/bash_completion"
@@ -74,41 +79,54 @@ _load_nvm() {
 # Usage: install_node "20" or install_node "18.17.0"
 install_node() {
     local version="${1:-$DEFAULT_NODE_VERSION}"
-    
+
     log_info "Installing Node.js version $version..."
-    
+
     # Ensure NVM is loaded
     _load_nvm
-    
+
     if ! command_exists nvm; then
         log_error "NVM is not available. Please install NVM first."
         return 1
     fi
-    
-    if nvm install "$version"; then
-        log_success "Node.js $version installed"
-        nvm use "$version"
-        log_info "Node version: $(node -v)"
-        log_info "NPM version: $(npm -v)"
-        return 0
-    else
+
+    if ! nvm install "$version"; then
         log_error "Failed to install Node.js $version"
         return 1
     fi
+
+    if ! nvm use "$version"; then
+        log_error "Installed Node.js $version but could not select it"
+        return 1
+    fi
+
+    # Confirm we got the version we asked for rather than trusting nvm's exit status.
+    # nvm reports success even when version resolution silently falls back to whatever
+    # node is already on PATH, which is how `nvm install 20` once yielded v26.
+    local active
+    active="$(node -v 2>/dev/null)"
+    if [[ "$version" =~ ^[0-9]+$ ]] && [[ "$active" != "v$version."* ]]; then
+        log_error "Asked for Node.js $version but got $active"
+        return 1
+    fi
+
+    log_success "Node.js $version installed ($active)"
+    log_info "NPM version: $(npm -v)"
+    return 0
 }
 
 # Install NVM and default Node version
 install_nvm_with_node() {
-    install_nvm
+    install_nvm || return 1
     install_node "$DEFAULT_NODE_VERSION"
 }
 
 # Verify NVM installation
 verify_nvm() {
     local all_pass=true
-    
+
     log_section "Verifying NVM Installation"
-    
+
     # Check NVM directory
     if dir_exists "$NVM_DIR_PATH"; then
         log_test "PASS" "NVM directory exists: $NVM_DIR_PATH"
@@ -116,7 +134,7 @@ verify_nvm() {
         log_test "FAIL" "NVM directory missing"
         all_pass=false
     fi
-    
+
     # Check nvm.sh script
     if file_exists "$NVM_DIR_PATH/nvm.sh"; then
         log_test "PASS" "NVM script exists"
@@ -124,7 +142,7 @@ verify_nvm() {
         log_test "FAIL" "NVM script missing"
         all_pass=false
     fi
-    
+
     # Load and check NVM command
     _load_nvm
     if command_exists nvm; then
@@ -133,7 +151,7 @@ verify_nvm() {
         log_test "FAIL" "NVM command not available"
         all_pass=false
     fi
-    
+
     # Check Node installation
     if command_exists node; then
         log_test "PASS" "Node.js installed: $(node -v)"
@@ -141,7 +159,7 @@ verify_nvm() {
         log_test "FAIL" "Node.js not installed"
         all_pass=false
     fi
-    
+
     if $all_pass; then
         return 0
     else

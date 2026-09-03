@@ -16,6 +16,35 @@
 set -u  # Exit on undefined variable
 set -o pipefail  # Exit on pipe failure
 
+# Keep apt non-interactive. Without this, `apt upgrade` and `apt full-upgrade` can
+# stop on an ncurses dialog (tzdata, service restarts) even when -y is passed,
+# which hangs an unattended run indefinitely.
+#
+# Exporting it is not enough on its own: every apt call here goes through sudo, and
+# sudo's default env_reset strips DEBIAN_FRONTEND before apt ever sees it. A container
+# run confirmed this - debconf still reported "unable to initialize frontend: Dialog"
+# and only survived because there was no controlling terminal to draw on.
+export DEBIAN_FRONTEND=noninteractive
+
+# So wrap sudo and re-inject the variable for the package tools. `sudo env VAR=...` is
+# used rather than `sudo -E` or `sudo VAR=...` because those two need the SETENV sudoers
+# tag and are refused under a stock `%sudo ALL=(ALL:ALL) ALL`; running /usr/bin/env as
+# root is subject to no such policy. `command sudo` prevents this recursing into itself.
+sudo() {
+    case "${1:-}" in
+        apt | apt-get | aptitude | dpkg | dpkg-reconfigure | debconf-set-selections)
+            command sudo env \
+                DEBIAN_FRONTEND=noninteractive \
+                DEBCONF_NONINTERACTIVE_SEEN=true \
+                NEEDRESTART_MODE=a \
+                "$@"
+            ;;
+        *)
+            command sudo "$@"
+            ;;
+    esac
+}
+
 ################################################################################
 # SETUP - Source Shared Modules
 ################################################################################
@@ -36,6 +65,8 @@ source "$SCRIPT_DIR/modules/common/gitflow.sh"
 source "$SCRIPT_DIR/modules/common/pyenv.sh"
 source "$SCRIPT_DIR/modules/common/fzf.sh"
 source "$SCRIPT_DIR/modules/common/bun.sh"
+source "$SCRIPT_DIR/modules/common/agent-deck.sh"
+source "$SCRIPT_DIR/modules/common/vibe-kanban.sh"
 
 ################################################################################
 # CONFIGURATION
@@ -109,10 +140,10 @@ safe_exec "fcitx5" sudo apt install -y fcitx5
 log_section "Installing Programming Languages"
 
 # Rust: Systems programming language - Using shared module
-install_rustup
+safe_exec "Rust toolchain (rustup)" install_rustup
 
 # Bun: Javascript runtime - Using shared module
-install_bun
+safe_exec "Bun" install_bun
 
 # Java: JDK for Java development
 log_info "Installing Java JDK..."
@@ -132,50 +163,81 @@ safe_exec "ruby" sudo apt install -y ruby
 safe_exec "ruby-dev" sudo apt-get install -y ruby-dev
 
 # RubyGems: Ruby package manager upgrade
+#
+# Unpacked into a mktemp dir with a trap rather than the current directory. This used to
+# download and extract into $PWD - which is the dotfiles checkout when run via `make
+# install` - then `cd "$HOME"` *before* the `rm`, so the cleanup ran in the wrong place
+# and left rubygems-<ver>.tgz and rubygems-<ver>/ as untracked files in the repo.
+# `ruby setup.rb` also needs root to write /usr/local/lib/site_ruby, and the success was
+# logged unconditionally, so an EACCES failure still reported "RubyGems upgraded".
 log_info "Upgrading RubyGems to version $RUBY_GEM_VERSION..."
-if wget https://rubygems.org/rubygems/rubygems-"$RUBY_GEM_VERSION".tgz; then
-    tar xvzf rubygems-"$RUBY_GEM_VERSION".tgz
-    (cd rubygems-"$RUBY_GEM_VERSION" && ruby setup.rb) || log_error "RubyGems setup failed"
-    cd "$HOME" || true
-    rm -f rubygems-"$RUBY_GEM_VERSION".tgz
-    log_success "RubyGems upgraded"
+_rubygems_tmp="$(mktemp -d)"
+trap 'rm -rf "$_rubygems_tmp"' EXIT
+if wget -q -O "$_rubygems_tmp/rubygems.tgz" \
+    "https://rubygems.org/rubygems/rubygems-$RUBY_GEM_VERSION.tgz"; then
+    if tar xzf "$_rubygems_tmp/rubygems.tgz" -C "$_rubygems_tmp" &&
+        (cd "$_rubygems_tmp/rubygems-$RUBY_GEM_VERSION" && sudo ruby setup.rb); then
+        log_success "RubyGems upgraded"
+    else
+        record_failure "RubyGems setup"
+    fi
 else
-    log_error "Failed to download RubyGems"
+    record_failure "RubyGems download"
 fi
+rm -rf "$_rubygems_tmp"
+trap - EXIT
 
 # NVM and Node.js - Using shared module
-install_nvm_with_node
+safe_exec "NVM and Node.js" install_nvm_with_node
 
 # git-sim
-sudo apt install pipx -y
-sudo apt update
-sudo apt install build-essential python3-dev libcairo2-dev libpango1.0-dev ffmpeg -y
-pipx install manim
-pipx install git-sim
+safe_exec "pipx" sudo apt install pipx -y
+safe_exec "manim build dependencies" sudo apt install -y \
+    build-essential python3-dev libcairo2-dev libpango1.0-dev ffmpeg
+safe_exec "manim" pipx install manim
+safe_exec "git-sim" pipx install git-sim
 
 # git
 #
-#$ curl https://github.com/so-fancy/diff-so-fancy/releases/download/v1.4.4/diff-so-fancy -o /usr/local/bin/diff-so-fancy
-LATEST_VERSION=$(curl -s https://api.github.com/repos/so-fancy/diff-so-fancy/releases/latest | grep -Po '"tag_name": "v\K[^"]*')
-sudo curl -L -o /usr/local/bin/diff-so-fancy "https://github.com/so-fancy/diff-so-fancy/releases/download/v${LATEST_VERSION}/diff-so-fancy"
-sudo chmod +x /usr/local/bin/diff-so-fancy
+# Two bugs here, both of the same shape as the Neovim one further down. The version was
+# scraped out of the GitHub API into an unquoted variable, so an API hiccup or a rate limit
+# produced the URL .../download/v/diff-so-fancy - and `curl -L` without -f writes the 404
+# body to the destination and exits 0, installing an HTML error page as the executable.
+# /releases/latest/download/ needs no scraping at all, and the release asset is the
+# fatpacked self-contained script.
+install_diff_so_fancy() {
+    local tmp
+    tmp="$(mktemp -d)" || return 1
+    if curl -fsSL -o "$tmp/diff-so-fancy" \
+        https://github.com/so-fancy/diff-so-fancy/releases/latest/download/diff-so-fancy; then
+        sudo install -m 0755 "$tmp/diff-so-fancy" /usr/local/bin/diff-so-fancy
+        local rc=$?
+        rm -rf "$tmp"
+        return "$rc"
+    fi
+    rm -rf "$tmp"
+    return 1
+}
 
-sudo apt install git-extras
+safe_exec "diff-so-fancy" install_diff_so_fancy
 
-sudo apt install git-lfs
+safe_exec "git-extras" sudo apt install -y git-extras
+safe_exec "git-lfs" sudo apt install -y git-lfs
 
-# See ~/dotfiles/git/commit-conventions.txt
-git config --global commit.template ~/dotfiles/git/commit-conventions.txt
-git config --global core.editor=nvim +18 -c 'startinsert'
+# commit.template and core.editor are not set here. git/gitconfig already carries both
+# (commit.template at :62, core.editor at :48) and `make init` symlinks ~/.gitconfig to
+# it, so writing them into ~/.gitconfig first only got them backed up and replaced.
+# The core.editor line was also malformed - `git config --global core.editor=nvim +18 -c
+# 'startinsert'` is not valid syntax and just printed the usage message.
 
 # precommit
 sudo apt install pre-commit -y
 
 # gitflow-cjs - Using shared module
-install_gitflow
+safe_exec "git-flow" install_gitflow
 
 # tree
-sudo apt install tree
+sudo apt install -y tree
 
 # zsh
 sudo apt install zsh powerline fonts-powerline -y
@@ -185,7 +247,7 @@ sudo apt install shellcheck -y
 
 # oh-my-zsh: Framework and plugins - Using shared module
 # This replaces ~30 lines of manual installation with a single function call
-install_oh_my_zsh
+safe_exec "oh-my-zsh" install_oh_my_zsh
 
 # bash-it
 #if [ ! -d ${HOME}/.bash_it ]; then \
@@ -206,7 +268,7 @@ log_info "Installing tmux..."
 safe_exec "tmux" sudo apt install -y tmux
 
 # Tmux Plugin Manager (TPM) - Using shared module
-install_tmux_tpm
+safe_exec "tmux plugin manager" install_tmux_tpm
 
 # vim
 # sudo apt-get install vim -y
@@ -216,34 +278,82 @@ log_info "Installing libfuse2 for AppImage support..."
 safe_exec "libfuse2" sudo apt install -y libfuse2
 
 # Neovim: Modern Vim-based text editor
+#
+# The asset used to be `nvim.appimage`; upstream renamed it to include the architecture
+# and the old name is now a 404. Because `curl -LO` has no -f it exited 0 having written
+# the 9-byte "Not Found" body, which then got moved to /usr/local/bin/nvim - and
+# test-install.sh only runs `command -v nvim`, so it reported neovim as installed.
+# -f makes an HTTP error a download failure, and the download lands in a temp dir so a
+# failure cannot leave anything behind in the current directory.
 log_info "Installing Neovim (latest via AppImage)..."
 if ! command -v nvim &> /dev/null; then
-    if curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage; then
-        chmod u+x nvim.appimage
-        safe_exec "neovim install" sudo mv nvim.appimage /usr/local/bin/nvim
+    case "$(uname -m)" in
+        x86_64) NVIM_APPIMAGE="nvim-linux-x86_64.appimage" ;;
+        aarch64 | arm64) NVIM_APPIMAGE="nvim-linux-arm64.appimage" ;;
+        *) NVIM_APPIMAGE="" ;;
+    esac
+
+    if [ -z "$NVIM_APPIMAGE" ]; then
+        record_failure "Neovim (no AppImage for $(uname -m))"
     else
-        log_error "Failed to download Neovim AppImage"
+        _nvim_tmp="$(mktemp -d)"
+        if curl -fsSL -o "$_nvim_tmp/nvim" \
+            "https://github.com/neovim/neovim/releases/latest/download/$NVIM_APPIMAGE"; then
+            chmod u+x "$_nvim_tmp/nvim"
+            safe_exec "neovim install" sudo install -m 0755 "$_nvim_tmp/nvim" /usr/local/bin/nvim
+        else
+            record_failure "Neovim AppImage download"
+        fi
+        rm -rf "$_nvim_tmp"
     fi
 else
-
     log_skip "Neovim already installed"
 fi
 
 # FZF: Fuzzy finder - Using shared module
-install_fzf
+safe_exec "FZF" install_fzf
 
 # ack
 #mkdir -p ${HOME}/.local/share/bin
 #curl https://beyondgrep.com/ack-v3.1.2 > ${HOME}/.local/share/bin/ack && chmod 0755 ${HOME}/.local/share/bin/ack
 
 # Autojump: Smart directory navigation - Using shared module
-install_autojump
+safe_exec "autojump" install_autojump
 
 # Yazi: Modern terminal file manager written in Rust
+#
+# Installed from the upstream release archive rather than from cargo. There is no longer a
+# working `cargo install` path: yazi-fm/yazi-cli stopped being published after 26.5.6 and
+# their build.rs now aborts with "must be built with `cargo install --force yazi-build`",
+# but yazi-build only builds Yazi from a source checkout - installed from crates.io it runs
+# `cargo --config .cargo/release.toml` inside the registry src directory, where that file
+# does not exist, and dies with "failed to parse value from --config argument". Both halves
+# were measured in a container. The release zip also skips a ~3 minute Rust build.
 log_info "Installing yazi file manager..."
 if ! command -v yazi &> /dev/null; then
-    rustup update || log_error "rustup update failed"
-    safe_exec "yazi" cargo install --locked yazi-fm yazi-cli
+    case "$(uname -m)" in
+        x86_64)          yazi_target=x86_64-unknown-linux-musl ;;
+        aarch64 | arm64) yazi_target=aarch64-unknown-linux-gnu ;;
+        *)               yazi_target="" ;;
+    esac
+
+    if [ -z "$yazi_target" ]; then
+        log_warn "No yazi release build for $(uname -m), skipping"
+    else
+        yazi_tmp="$(mktemp -d)"
+        yazi_dir="yazi-${yazi_target}"
+        if curl -fsSL -o "$yazi_tmp/yazi.zip" \
+            "https://github.com/sxyazi/yazi/releases/latest/download/${yazi_dir}.zip" \
+            && unzip -q -d "$yazi_tmp" "$yazi_tmp/yazi.zip"; then
+            # `ya` is the companion CLI (plugin/package manager); yazi's own docs treat the
+            # pair as one install.
+            safe_exec "yazi" sudo install -m 0755 \
+                "$yazi_tmp/$yazi_dir/yazi" "$yazi_tmp/$yazi_dir/ya" /usr/local/bin/
+        else
+            record_failure "yazi download"
+        fi
+        rm -rf "$yazi_tmp"
+    fi
 else
     log_skip "Yazi already installed"
 fi
@@ -257,7 +367,7 @@ else
 fi
 
 # Pyenv: Python version manager - Using shared module
-install_pyenv
+safe_exec "pyenv" install_pyenv
 
 # Source autojump if available
 load_autojump || true
@@ -273,7 +383,7 @@ safe_exec "Silver Searcher" sudo apt install -y silversearcher-ag
 log_section "Installing Docker"
 
 log_info "Removing old Docker packages..."
-for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do 
+for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do
     sudo apt-get remove -y "$pkg" 2>/dev/null || true
 done
 
@@ -291,7 +401,7 @@ echo \
   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
   $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-  
+
 safe_exec "apt update after Docker repo" sudo apt-get update
 
 # Install Docker packages
@@ -301,7 +411,7 @@ safe_exec "Docker installation" sudo apt-get install -y docker-ce docker-ce-cli 
 # Configure Docker group for non-root access
 log_info "Configuring Docker group for non-root usage..."
 sudo groupadd docker 2>/dev/null || log_skip "Docker group already exists"
-safe_exec "Add user to docker group" sudo usermod -aG docker "$USER"
+safe_exec "Add user to docker group" sudo usermod -aG docker "${USER:-$(id -un)}"
 
 # IMPORTANT: Docker group changes require logout/login or system restart to take effect
 # The 'newgrp docker' command would create a new shell session and block the script
@@ -319,7 +429,13 @@ log_info "Installing ImageMagick..."
 safe_exec "imagemagick" sudo apt install -y imagemagick
 
 # Mainline: Kernel update tool
+#
+# software-properties-common must come first: it is what provides add-apt-repository.
+# It used to be installed further down with the terraform prerequisites, so both PPA
+# calls failed with "sudo: add-apt-repository: command not found" and `mainline` was
+# never installed - the log only showed "E: Unable to locate package mainline".
 log_info "Installing Mainline kernel tool..."
+safe_exec "software-properties-common" sudo apt-get install -y software-properties-common
 safe_exec "PPA cappelikan" sudo add-apt-repository ppa:cappelikan/ppa -y
 safe_exec "apt update for mainline" sudo apt update
 # FIX: Add -y flag to full-upgrade for non-interactive execution
@@ -337,37 +453,57 @@ safe_exec "tig" sudo apt-get install -y tig
 
 # gh
 # https://github.com/cli/cli/blob/trunk/docs/install_linux.md
-(type -p wget >/dev/null || (sudo apt update && sudo apt-get install wget -y)) \
-	&& sudo mkdir -p -m 755 /etc/apt/keyrings \
-	&& wget -qO- https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null \
-	&& sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
-	&& echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
-	&& sudo apt update \
-	&& sudo apt install gh -y
-sudo apt update -y
-sudo apt install gh -y
-gh extension install dlvhdr/gh-dash
+#
+# Each third-party-repo install below is wrapped in a function so the whole chain reaches
+# the failure ledger. As bare `&&` sequences they could not: safe_exec takes a command, so
+# a break anywhere in the chain was invisible to install_summary and a machine that ended
+# up with no gh, no terraform and no packer still reported a successful run. The duplicate
+# `apt update -y; apt install gh -y` that used to follow this block is gone with it.
+install_gh() {
+	sudo mkdir -p -m 755 /etc/apt/keyrings \
+		&& wget -qO- https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null \
+		&& sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
+		&& echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+		&& sudo apt update \
+		&& sudo apt install gh -y
+}
+
+safe_exec "wget (gh prerequisite)" sudo apt-get install -y wget
+safe_exec "gh (GitHub CLI)" install_gh
+safe_exec "gh-dash extension" gh extension install dlvhdr/gh-dash
 
 # terraform
 # https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli
-sudo apt-get update && sudo apt-get install -y gnupg software-properties-common
-wget -O- https://apt.releases.hashicorp.com/gpg | \
-gpg --dearmor | \
-sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null
-gpg --no-default-keyring \
---keyring /usr/share/keyrings/hashicorp-archive-keyring.gpg \
---fingerprint
-echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
-https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
-sudo tee /etc/apt/sources.list.d/hashicorp.list
-sudo apt update
-sudo apt-get install terraform
+install_terraform() {
+	wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor \
+		| sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null \
+		&& echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list > /dev/null \
+		&& sudo apt-get update \
+		&& sudo apt-get install -y terraform
+}
+
+safe_exec "gnupg" sudo apt-get install -y gnupg software-properties-common
+safe_exec "terraform" install_terraform
 
 # Packer
 # https://developer.hashicorp.com/packer/tutorials/docker-get-started/get-started-install-cli
-curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
-sudo apt-add-repository -y "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-sudo apt-get update && sudo apt-get install packer
+#
+# Packer ships from the same HashiCorp repository the terraform block above just added, so
+# it needs no second key and no second source list. The old block re-added both with
+# `apt-key add`, which Ubuntu 24.04 no longer ships, and hardcoded arch=amd64.
+safe_exec "packer" sudo apt-get install -y packer
+
+################################################################################
+# AI TOOLS
+################################################################################
+
+log_section "Installing AI Tools"
+
+# Agent Deck: AI workspace manager - Using shared module
+safe_exec "Agent Deck" install_agent_deck
+
+# Vibe Kanban: AI-native kanban - Using shared module
+safe_exec "Vibe Kanban" install_vibe_kanban
 
 # Return to home directory
 cd "$HOME" || exit
@@ -377,7 +513,6 @@ cd "$HOME" || exit
 ################################################################################
 
 log_section "Installation Complete!"
-log_success "All packages and tools have been installed."
 log_info ""
 log_info "NEXT STEPS:"
 log_info "1. Run 'make init' to set up dotfile symlinks"
@@ -388,3 +523,8 @@ log_info ""
 log_warn "Important: Some tools require a logout/login to work properly!"
 echo ""
 
+# Exit non-zero if any step failed. Without this the script returned 0 no matter what -
+# a run with ten broken installs was indistinguishable from a clean one, so `make
+# install` could never be used as a gate.
+install_summary
+exit $?

@@ -1,0 +1,31 @@
+# Arch Linux test image for make/install-archlinux.sh
+#
+# Run the installer with DOTFILES_HEADLESS=1 (run.sh does this by default) or it will
+# try to pull firefox, libreoffice, gimp, obs-studio, cuda, qemu-full, wine and an
+# AUR Electron build - well over 10GB, none of it usable without a display.
+FROM archlinux:base
+
+# Without a populated keyring every `pacman -S` fails signature verification, and the
+# base image ships a keyring that is stale the moment it is published.
+RUN pacman-key --init \
+    && pacman-key --populate archlinux \
+    && pacman -Sy --noconfirm archlinux-keyring \
+    && pacman -Syu --noconfirm \
+        bash \
+        git \
+        make \
+        sudo \
+        which \
+    && pacman -Scc --noconfirm
+
+# makepkg (install-archlinux.sh, yay) refuses to run as root outright.
+RUN useradd --create-home --shell /bin/bash tester \
+    && echo 'tester ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/tester \
+    && chmod 0440 /etc/sudoers.d/tester
+
+USER tester
+WORKDIR /home/tester
+
+ENV HOME=/home/tester
+
+ENTRYPOINT ["bash", "/staging/make/test/entrypoint.sh"]

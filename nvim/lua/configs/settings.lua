@@ -73,6 +73,14 @@ vim.opt.signcolumn = "yes"
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
+-- No plugin here uses the remote-plugin providers, so turn them off rather
+-- than let :checkhealth warn about missing host packages for each one.
+-- Drop the matching line if a plugin ever needs one of these hosts.
+vim.g.loaded_node_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_python3_provider = 0
+vim.g.loaded_ruby_provider = 0
+
 -- auto-reload files when modified externally
 -- https://unix.stackexchange.com/a/383044
 -- Triger `autoread` when files changes on disk
