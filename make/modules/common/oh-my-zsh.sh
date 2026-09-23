@@ -14,6 +14,7 @@
 #   - zsh-vim-mode plugin
 #   - fzf-tab plugin
 #   - zsh-system-clipboard plugin
+#   - zsh-vi-man plugin
 #   - spaceship-prompt theme
 #   - spaceship-vi-mode plugin
 ################################################################################
@@ -47,6 +48,7 @@ declare -A OMZ_PLUGINS=(
     ["zsh-vim-mode"]="https://github.com/softmoth/zsh-vim-mode.git"
     ["fzf-tab"]="https://github.com/Aloxaf/fzf-tab"
     ["zsh-system-clipboard"]="https://github.com/kutsan/zsh-system-clipboard"
+    ["zsh-vi-man"]="https://github.com/TunaCuma/zsh-vi-man"
     ["spaceship-vi-mode"]="https://github.com/spaceship-prompt/spaceship-vi-mode.git"
 )
 

@@ -323,7 +323,7 @@ test_shell_tools() {
 
     local plugin
     for plugin in zsh-autosuggestions zsh-syntax-highlighting zsh-completions \
-        zsh-vim-mode fzf-tab zsh-system-clipboard; do
+        zsh-vim-mode fzf-tab zsh-system-clipboard zsh-vi-man; do
         expect_on "ubuntu arch amzn" "Oh-My-Zsh: $plugin" \
             test_directory "$omz/custom/plugins/$plugin"
     done

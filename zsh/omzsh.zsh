@@ -19,7 +19,13 @@ plugins=(
   zsh-completions
   zsh-vim-mode
   zsh-system-clipboard
-  zsh-vi-man
+)
+
+# Optional: zsh-vi-man is a third-party clone; load it only when installed so a
+# machine without it (e.g. a Mac provisioned by hand) does not warn on startup.
+[[ -d "${ZSH_CUSTOM:-$ZSH/custom}/plugins/zsh-vi-man" ]] && plugins+=(zsh-vi-man)
+
+plugins+=(
   fzf-tab
   zsh-autosuggestions
   zsh-syntax-highlighting
